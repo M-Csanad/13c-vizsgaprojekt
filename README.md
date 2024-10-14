@@ -11,9 +11,9 @@
 
 <p align="center">
   <a href="#felhasznált-technológiák">Felhasznált technológiák</a> •
-  <a href="#how-to-use">Használati útmutató</a> •
-  <a href="#download">Letöltés</a> •
-  <a href="#credits">Források</a> •
+  <a href="#használati-útmutató">Használati útmutató</a> •
+  <a href="#letöltés">Letöltés</a> •
+  <a href="#források">Források</a> •
   <a href="#licenc">Licenc</a>
 </p>
 
