@@ -7,7 +7,6 @@
     <?php 
         session_start(); 
         $isLoggedIn = false;
-        var_dump($_SESSION);
         if (isset($_SESSION['user_name'])) { // Ha be van jelentkezve a felhasználó
             $sessionId = session_id();
             $isLoggedIn = true;
