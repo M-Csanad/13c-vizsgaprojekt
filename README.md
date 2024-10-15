@@ -1,10 +1,8 @@
 
 <h1 align="center">
   <br>
-  <img src="./LOGO/herbalLogo_black_transparent.png" alt="Florens Botanica" width="600">
-  <br>
-  Florens Botanica
-  <br>
+  <img src="./LOGO/herbalLogo_black.png" alt="Florens Botanica" width="600">
+
 </h1>
 
 <h4 align="center">Egy gyógynövényekkel foglalkozó online áruház, ami segít az embereknek megismerni a természet gyógyító erejét.</h4>
