@@ -1,5 +1,6 @@
 RewriteEngine On
 RewriteRule ^login$ login.php [L]
+RewriteRule ^logout$ logout.php [L]
 RewriteRule ^register$ register.php [L]
 
 <Files "login_register_functions.php">
