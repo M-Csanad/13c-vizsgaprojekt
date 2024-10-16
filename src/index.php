@@ -8,7 +8,7 @@
         session_start(); 
         $isLoggedIn = false;
 
-        var_dump($_COOKIE);
+        // Emlékezz rám funkció
         if (isset($_COOKIE['rememberMe'])) {
             include "./db_connect.php";
             include "./cookie_session_functions.php";
@@ -23,7 +23,10 @@
             if ($successfulLogin) {
                 $result = $loginStatement -> get_result();
                 $user = $result -> fetch_assoc();
-                setSessionData($user);
+
+                if (time() < $user['cookie_expires_at']) { // Azt előzi meg, hogy egy ellopott, de lejárt sütivel ne tudjunk belépni
+                    setSessionData($user);
+                }
             }
             else {
                 throw $loginStatement -> error;
@@ -31,7 +34,8 @@
 
         }
 
-        if (isset($_SESSION['user_name'])) { // Ha be van jelentkezve a felhasználó
+        // Ha be van jelentkezve a felhasználó
+        if (isset($_SESSION['user_name'])) { 
             $sessionId = session_id();
             $isLoggedIn = true;
         }

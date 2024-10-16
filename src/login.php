@@ -30,6 +30,7 @@
         $rememberMe = isset($_POST['rememberMe']);
 
         $result = login($username, $password, $rememberMe);
+
         if ($result === true) {
             header('Location: index.php');
         }

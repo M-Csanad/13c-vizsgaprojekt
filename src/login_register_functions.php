@@ -1,11 +1,12 @@
 <?php
 function register($username, $password, $email) {
-    session_start();
     if (!$username || !$password || !$email) {
         return "Kérjük töltse ki az összes mezőt!";
     }
     
     include "./db_connect.php";
+
+    session_start();
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
     $registerStatement = $db -> prepare("INSERT INTO user (user_name, email, password_hash) VALUES (?, ?, ?)");
@@ -13,7 +14,7 @@ function register($username, $password, $email) {
     $successfulRegistration = $registerStatement -> execute();
 
     if ($successfulRegistration) {
-        return "Sikeres regiszráció!";
+        return "Sikeres regisztráció!";
     }
     else {
         return $registerStatement -> error;
@@ -21,24 +22,20 @@ function register($username, $password, $email) {
 }
 
 function login($username, $password, $rememberMe) {
-    session_start();
     if (!$username || !$password) {
         return "Kérjük töltse ki az összes mezőt!";
     }
     
     include "./db_connect.php";
     include "./cookie_session_functions.php";
+
+    session_start();
     $user = authenticate_user($username, $password);
     
     if ($user != null) {
         setSessionData($user);
         if ($rememberMe) {
-            $result = bindCookie($user);
-
-            // TESZTKÓD
-            if ($result !== true) {
-                echo $result;
-            }
+            bindCookie($user);
         }
         return true;
     } 
@@ -54,20 +51,14 @@ function authenticate_user($username, $password) {
     $loginStatement -> bind_param("s", $username);
 
     $successfulLogin = $loginStatement -> execute();
+    $result = $loginStatement -> get_result();
+    $data = $result -> fetch_assoc();
 
-    if ($successfulLogin) {
-        $result = $loginStatement -> get_result();
-        $data = $result -> fetch_assoc();
-    
-        if (!$data['num'] || !password_verify($password, $data['password_hash'])) {
-            return null;
-        }
-        else {
-            return $data;
-        }
+    if (!$data['num'] || !password_verify($password, $data['password_hash'])) {
+        return null;
     }
     else {
-        return $loginStatement -> error;
+        return $data;
     }
 }
 ?>
