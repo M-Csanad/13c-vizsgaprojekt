@@ -23,14 +23,7 @@
             if ($successfulLogin) {
                 $result = $loginStatement -> get_result();
                 $user = $result -> fetch_assoc();
-                
-                if (time() > $user['cookie_expires_at']) {
-                    echo "<br>Lejart: {$user['cookie_expires_at']}, ", time(), "<br>";
-                    removeCookie($cookieToken);
-                }
-                else {
-                    setSessionData($user);
-                }
+                setSessionData($user);
             }
             else {
                 throw $loginStatement -> error;
