@@ -8,6 +8,11 @@ RewriteRule ^register$ register.php [L]
     Deny from all
 </Files>
 
+<Files "db_connect.php">
+    Order allow,deny
+    Deny from all
+</Files>
+
 <Files "README.md">
     Order allow,deny
     Deny from all

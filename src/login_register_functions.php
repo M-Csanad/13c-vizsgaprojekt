@@ -1,70 +1,73 @@
 <?php
-session_start();
-
 function register($username, $password, $email) {
-
+    session_start();
     if (!$username || !$password || !$email) {
-        return "Please fill in all the fields!";
+        return "Kérjük töltse ki az összes mezőt!";
     }
     
-    $db = new mysqli('localhost', 'root', '', 'florens_botanica');
+    include "./db_connect.php";
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-    if (!$db -> connect_errno) {
-        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    $registerStatement = $db -> prepare("INSERT INTO user (user_name, email, password_hash) VALUES (?, ?, ?)");
+    $registerStatement -> bind_param("sss", $username, $email, $passwordHash);
+    $successfulRegistration = $registerStatement -> execute();
 
-        $registerStatement = $db -> prepare("INSERT INTO user (user_name, email, password_hash) VALUES (?, ?, ?)");
-
-        if ($registerStatement) {
-            $registerStatement -> bind_param("sss", $username, $email, $passwordHash);
-            $successfulRegistration = $registerStatement -> execute();
-
-            if ($successfulRegistration) {
-                return "Succesful registration!";
-            }
-            else {
-                return $registerStatement -> error;
-            }
-        }
-        else {
-            return $db -> error;
-        }
+    if ($successfulRegistration) {
+        return "Sikeres regiszráció!";
     }
     else {
-        return $db -> connect_error;
+        return $registerStatement -> error;
     }
 }
 
-function login($username, $password) {
+function login($username, $password, $rememberMe) {
+    session_start();
     if (!$username || !$password) {
-        return "Please fill in all the fields!";
+        return "Kérjük töltse ki az összes mezőt!";
     }
     
-    try {
-        $db = new mysqli('localhost', 'root', '', 'florens_botanica');
-    }
-    catch (\Throwable $e) {
-        return;
-    }
+    include "./db_connect.php";
+    include "./cookie_session_functions.php";
+    $user = authenticate_user($username, $password);
+    
+    if ($user != null) {
+        setSessionData($user);
+        if ($rememberMe) {
+            $result = bindCookie($user);
 
-    if (!$db -> connect_errno) {
-        $loginStatement = $db -> prepare("SELECT COUNT(*) as num, user.password_hash, user.role FROM user WHERE user.user_name = ?");
-        $loginStatement -> bind_param("s", $username);
-        $loginStatement -> execute();
+            // TESZTKÓD
+            if ($result !== true) {
+                echo $result;
+            }
+        }
+        return true;
+    } 
+    else {
+        return "Érvénytelen felhasználónév, vagy jelszó.";
+    }
+}
+
+function authenticate_user($username, $password) {
+    include "./db_connect.php";
+
+    $loginStatement = $db -> prepare("SELECT COUNT(*) as num, user.password_hash, user.role, user.id, user.user_name FROM user WHERE user.user_name = ?");
+    $loginStatement -> bind_param("s", $username);
+
+    $successfulLogin = $loginStatement -> execute();
+
+    if ($successfulLogin) {
         $result = $loginStatement -> get_result();
         $data = $result -> fetch_assoc();
-
+    
         if (!$data['num'] || !password_verify($password, $data['password_hash'])) {
-            return "Invalid username or password.";
+            return null;
         }
         else {
-            $_SESSION['user_name'] = $username;
-            $_SESSION['role'] = $data['role'];
-            return true;
+            return $data;
         }
     }
     else {
-        return "Something went wrong... Please try again later.";
+        return $loginStatement -> error;
     }
 }
-
 ?>

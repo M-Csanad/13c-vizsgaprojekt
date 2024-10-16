@@ -7,6 +7,37 @@
     <?php 
         session_start(); 
         $isLoggedIn = false;
+
+        var_dump($_COOKIE);
+        if (isset($_COOKIE['rememberMe'])) {
+            include "./db_connect.php";
+            include "./cookie_session_functions.php";
+
+            $cookieToken = $_COOKIE['rememberMe'];
+
+            $loginStatement = $db -> prepare("SELECT COUNT(*) as num, user.password_hash, user.role, user.id, user.user_name, user.cookie_expires_at FROM user WHERE user.cookie_id = ?");
+            $loginStatement -> bind_param("i", $cookieToken);
+
+            $successfulLogin = $loginStatement -> execute();
+
+            if ($successfulLogin) {
+                $result = $loginStatement -> get_result();
+                $user = $result -> fetch_assoc();
+                
+                if (time() > $user['cookie_expires_at']) {
+                    echo "<br>Lejart: {$user['cookie_expires_at']}, ", time(), "<br>";
+                    removeCookie($cookieToken);
+                }
+                else {
+                    setSessionData($user);
+                }
+            }
+            else {
+                throw $loginStatement -> error;
+            }
+
+        }
+
         if (isset($_SESSION['user_name'])) { // Ha be van jelentkezve a felhasználó
             $sessionId = session_id();
             $isLoggedIn = true;

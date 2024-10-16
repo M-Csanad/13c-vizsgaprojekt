@@ -3,20 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simple login</title>
+    <title>Egyszerű regisztráció</title>
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
     <p><a href="./">Vissza a főoldalra</a></p>
     <form action="" method="post">
-        <label for="username">Username: </label>
+        <label for="username">Felhasználónév: </label>
         <input type="text" name="username" id="username">
-        <label for="passwd">Password: </label>
+        <label for="passwd">Jelszó: </label>
         <input type="password" name="passwd" id="passwd">
         <label for="email">E-mail: </label>
         <input type="email" name="email" id="email">
         <div class="g-recaptcha" data-sitekey="6LeX3lUqAAAAAIE9E4-N_nbdUNW9BuIbLaI4nJ2v"></div>
-        <input type="submit" value="Create user" name="register">
+        <input type="submit" value="Profil létrehozása" name="register">
     </form>
 </body>
 </html>
@@ -30,10 +30,10 @@
         $response_keys = json_decode($response, true);
 
         if (intval($response_keys["success"]) != 1) {
-            echo "Please complete the reCAPTCHA verification.";
+            echo "Kérjük töltse ki a reCAPTCHA ellenőrzést.";
         } 
         else {
-            echo "reCAPTCHA verified. Form processed.<br>";
+            echo "reCAPTCHA megerősíve. Űrlap feldolgozva.<br>";
             $username = $_POST['username'];
             $password = $_POST['passwd'];
             $email = $_POST['email'];
