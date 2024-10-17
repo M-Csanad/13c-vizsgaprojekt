@@ -24,39 +24,44 @@
             <h1>Bejelentkezés</h1>
         </div>
         <div class="input-wrapper">
+            
             <div class="input-group">
-                <label for="username">Felhasználónév: </label>
+                <label for="username">Felhasználónév</label>
                 <input type="text" name="username" id="username" autocomplete='username' required>
             </div>
             <div class="input-group">
-                <label for="passwd">Jelszó: </label>
+                <label for="passwd">Jelszó</label>
                 <input type="password" name="passwd" id="passwd" autocomplete='current-password' required>
             </div>
-            <div class="input-group inline">
+            <div class="input-group-inline">
                 <input type="checkbox" name="rememberMe" id="rememberMe">
                 <label for="rememberMe">Maradjak bejelentkezve</label>
             </div>
         </div>
         <input type="submit" value="Bejelentkezés" name="login" class="action-button">
+
+        <a href="" class="form-link" id="forgotPassword">Elfelejtette a jelszavát?</a>
+        <div class="form-message">
+            <?php
+                include "./login_register_functions.php";
+    
+                if (isset($_POST['login'])) {
+                    $username = $_POST['username'];
+                    $password = $_POST['passwd'];
+                    $rememberMe = isset($_POST['rememberMe']);
+    
+                    $result = login($username, $password, $rememberMe);
+    
+                    if ($result === true) {
+                        header('Location: index.php');
+                    }
+                    else {
+                        echo $result;
+                    }
+                }
+    
+            ?>
+        </div>
     </form>
 </body>
 </html>
-<?php
-    include "./login_register_functions.php";
-
-    if (isset($_POST['login'])) {
-        $username = $_POST['username'];
-        $password = $_POST['passwd'];
-        $rememberMe = isset($_POST['rememberMe']);
-
-        $result = login($username, $password, $rememberMe);
-
-        if ($result === true) {
-            header('Location: index.php');
-        }
-        else {
-            echo $result;
-        }
-    }
-
-?>
