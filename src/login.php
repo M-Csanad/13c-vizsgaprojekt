@@ -53,7 +53,7 @@
                     $result = login($username, $password, $rememberMe);
     
                     if ($result === true) {
-                        header('Location: index.php');
+                        header('Location: ./');
                     }
                     else {
                         echo $result;
