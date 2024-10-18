@@ -27,8 +27,8 @@ body {
 form {
     padding: 20px;
     border: 4px solid var(--border);
-    width: 500px;
-    height: 550px;
+    width: 700px;
+    height: 650px;
     border-radius: 10px;
     display: flex;
     align-items: center;
@@ -62,7 +62,6 @@ form {
         position: relative;
         transition: all 0.3s ease;
         border-bottom: 3px solid rgb(68, 134, 73);
-        
     }
     .input-group input {
         height: 100%;
@@ -71,6 +70,8 @@ form {
         background-color: transparent;
         outline: none;
         font-size: 16px;
+        padding-left: 8px;
+        height: 38px;
     }
     
     .input-group label {
@@ -83,23 +84,43 @@ form {
         user-select: none;
     }
 
-    .input-group:has(input:focus) label, .input-group:has(input:valid) label, .input-group:has(input:-webkit-autofill) label {
+    .input-group:has(input:focus) label, .input-group:has(input:valid) label, .input-group:has(input:-webkit-autofill) label, .input-group:has(input[type='email']:not(:placeholder-shown)) label {
         transform: translateY(-25px);
         font-size: 14px;
         color: rgb(118, 118, 118);
     }
 
     .input-group-inline {
-        margin-block: 5px;
+        margin-block: 25px;
         display: flex;
         flex-direction: row;
         flex: 1;
-        padding-left: 8px;
+        gap: 15px;
+    }
+
+    .input-group-inline > input[type='checkbox'] {
+        margin-left: 8px;
+    }
+
+    .input-group:has(input[type='checkbox']) {
+        gap: 10px;
     }
 
     .input-group-inline > label {
         flex-grow: 1;
-        padding-left: 10px;
+        font-size: 14px;
+        word-break: break-all;
+    }
+
+    .input-group-inline > .input-group {
+        margin: 0;
+    }
+
+    .center {
+        display: flex;
+        width: 100%;
+        align-content: center;
+        justify-content: center;
     }
 
     .action-button {
@@ -133,18 +154,13 @@ form {
         text-decoration: none;
         border-bottom: 1px solid;
         transition: all 0.2s ease;
+        cursor: pointer;
     }
     .form-link:hover {
         letter-spacing: 1px;
     }
     .form-link:active {
         letter-spacing: 0.5px;
-    }
-
-    #forgotPassword {
-        position: absolute;
-        bottom: 35px;
-        font-size: 14px;
     }
 
     input[type="text"], input[type='password'] {

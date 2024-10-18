@@ -43,7 +43,7 @@
         <a href="" class="form-link" id="forgotPassword">Elfelejtette a jelszavát?</a>
         <div class="form-message">
             <?php
-                include "./login_register_functions.php";
+                include "./auth/login_register_functions.php";
     
                 if (isset($_POST['login'])) {
                     $username = $_POST['username'];

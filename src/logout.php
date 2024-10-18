@@ -3,7 +3,7 @@
     session_destroy();
     
     if (isset($_COOKIE['rememberMe'])) {
-        include "./cookie_session_functions.php";
+        include "./auth/cookie_session_functions.php";
         removeCookie($_COOKIE['rememberMe']);
     }
 

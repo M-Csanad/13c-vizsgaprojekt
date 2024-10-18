@@ -10,8 +10,8 @@
 
         // Emlékezz rám funkció
         if (isset($_COOKIE['rememberMe'])) {
-            include "./db_connect.php";
-            include "./cookie_session_functions.php";
+            include "./auth/db_connect.php";
+            include "./auth/cookie_session_functions.php";
 
             $cookieToken = $_COOKIE['rememberMe'];
 

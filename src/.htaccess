@@ -3,16 +3,6 @@ RewriteRule ^login$ login.php [L]
 RewriteRule ^logout$ logout.php [L]
 RewriteRule ^register$ register.php [L]
 
-<Files "login_register_functions.php">
-    Order allow,deny
-    Deny from all
-</Files>
-
-<Files "db_connect.php">
-    Order allow,deny
-    Deny from all
-</Files>
-
 <Files "README.md">
     Order allow,deny
     Deny from all

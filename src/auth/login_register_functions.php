@@ -4,7 +4,7 @@ function register($username, $password, $email) {
         return "Kérjük töltse ki az összes mezőt!";
     }
     
-    include "./db_connect.php";
+    include "./auth/db_connect.php";
 
     session_start();
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -26,8 +26,8 @@ function login($username, $password, $rememberMe) {
         return "Kérjük töltse ki az összes mezőt!";
     }
     
-    include "./db_connect.php";
-    include "./cookie_session_functions.php";
+    include "./auth/db_connect.php";
+    include "./auth/cookie_session_functions.php";
 
     session_start();
     $user = authenticate_user($username, $password);
@@ -45,7 +45,7 @@ function login($username, $password, $rememberMe) {
 }
 
 function authenticate_user($username, $password) {
-    include "./db_connect.php";
+    include "./auth/db_connect.php";
 
     $loginStatement = $db -> prepare("SELECT COUNT(*) as num, user.password_hash, user.role, user.id, user.user_name FROM user WHERE user.user_name = ?");
     $loginStatement -> bind_param("s", $username);

@@ -1,7 +1,7 @@
 <?php
 
 function bindCookie($user) {
-    include "./db_connect.php";
+    include "./auth/db_connect.php";
     $cookieToken = hash('sha256', bin2hex(random_bytes(32)));
     $expireTime = 5 * 60;
     $expireUnix = time() + $expireTime;
@@ -14,7 +14,7 @@ function bindCookie($user) {
 }
 
 function removeCookie($cookieToken) {
-    include "./db_connect.php";
+    include "./auth/db_connect.php";
 
     unset($_COOKIE['rememberMe']);
     setcookie('rememberMe', '', time() - 3600, '/');
