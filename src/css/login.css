@@ -1,5 +1,5 @@
 :root {
-    --border: #7d7d7d;
+    --border: #b6b6b6;
     --line-height: 24px;
     --padding: 16px 24px;
     --text: #222222;
@@ -57,7 +57,7 @@ form {
     }
 
     .input-group {
-        margin-block: 20px;
+        margin-block: 25px;
         width: 100%;
         position: relative;
         transition: all 0.3s ease;
@@ -83,8 +83,8 @@ form {
         user-select: none;
     }
 
-    .input-group:has(input:focus) label, .input-group:has(input:valid) label {
-        transform: translateY(-20px);
+    .input-group:has(input:focus) label, .input-group:has(input:valid) label, .input-group:has(input:-webkit-autofill) label {
+        transform: translateY(-25px);
         font-size: 14px;
         color: rgb(118, 118, 118);
     }
@@ -120,10 +120,9 @@ form {
 
     .action-button:hover {
         scale: 1.05;
-        /* letter-spacing: 1px; */
         border: 4px solid #83b680;
         background-color: #3a5b32;
-        box-shadow: 0px 0px 10px var(--border);
+        box-shadow: 0px 0px 10px greenyellow;
     }
     .action-button:active {
         scale: 0.95;
@@ -158,7 +157,7 @@ form {
 
     .form-message {
         position: absolute;
-        bottom: 150px;
+        bottom: 145px;
         font-style: italic;
         margin-top: 20px;
         color: red;
