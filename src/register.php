@@ -41,24 +41,24 @@
             <!-- E-mail cím mező -->
             <div class="input-group">
                 <label for="email">E-mail</label>
-                <input type="email" name="email" id="email" required placeholder="">
+                <input type="email" name="email" id="email" required placeholder="" autocomplete="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ""; ?>">
             </div>
 
             <!-- Felhasználónév mező -->
             <div class="input-group">
                 <label for="username">Felhasználónév</label>
-                <input type="text" name="username" id="username" required>
+                <input type="text" name="username" id="username" required autocomplete="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ""; ?>">
             </div>
 
             <!-- Jelszó és jelszó megerősítés mezők -->
             <div class="input-group-inline">
                 <div class="input-group">
-                    <label for="passwd">Jelszó</label>
-                    <input type="password" name="passwd" id="passwd" required>
+                    <label for="password">Jelszó</label>
+                    <input type="password" name="password" id="password" required oninput="validatePasswordInputs()" autocomplete="new-password" placeholder="">
                 </div>
                 <div class="input-group">
-                    <label for="passwd2">Jelszó megerősítése</label>
-                    <input type="password" name="passwd2" id="passwd2" required>
+                    <label for="passwordConfirm">Jelszó megerősítése</label>
+                    <input type="password" name="passwordConfirm" id="passwordConfirm" required oninput="validatePasswordInputs()" autocomplete="new-password" placeholder=" ">
                 </div>
             </div>
 
@@ -101,7 +101,7 @@
                 else {
                     // Felhasználónév, jelszó és e-mail cím lekérése a post adatokból
                     $username = $_POST['username'];
-                    $password = $_POST['passwd'];
+                    $password = $_POST['password'];
                     $email = $_POST['email'];
 
                     // Regisztrációs függvény meghívása, amely elmenti az új felhasználót
@@ -114,6 +114,7 @@
             ?>
         </div>
     </form>
+    <script src="./js/register.js"></script>
 </body>
 
 </html>

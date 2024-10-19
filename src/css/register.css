@@ -84,7 +84,11 @@ form {
         user-select: none;
     }
 
-    .input-group:has(input:focus) label, .input-group:has(input:valid) label, .input-group:has(input:-webkit-autofill) label, .input-group:has(input[type='email']:not(:placeholder-shown)) label {
+    .input-group:has(input:focus) label, 
+    .input-group:has(input:valid) label, 
+    .input-group:has(input:-webkit-autofill) label, 
+    .input-group:has(input[type='email']:not(:placeholder-shown)) label,
+    .input-group:has(input[type='password']:not(:placeholder-shown)) label {
         transform: translateY(-25px);
         font-size: 14px;
         color: rgb(118, 118, 118);
@@ -126,7 +130,7 @@ form {
     .action-button {
         padding-inline: 10px;
         padding-block: 10px;
-        width: 50%;
+        width: 45%;
         position: absolute;
         bottom: 0;
         bottom: 50px;
