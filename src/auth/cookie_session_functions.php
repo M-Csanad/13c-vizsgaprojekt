@@ -3,7 +3,7 @@
 function bindCookie($user) {
     include "./auth/db_connect.php";
     $cookieToken = hash('sha256', bin2hex(random_bytes(32)));
-    $expireTime = 5 * 60;
+    $expireTime = 5 * 60; // Lejárás ideje másodpercben
     $expireUnix = time() + $expireTime;
 
     setcookie('rememberMe', $cookieToken, $expireUnix, '/', '', false, false); // 5 perces süti létrehozása
