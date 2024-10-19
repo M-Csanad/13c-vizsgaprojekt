@@ -47,7 +47,7 @@
             <!-- Felhasználónév mező -->
             <div class="input-group">
                 <label for="username">Felhasználónév</label>
-                <input type="text" name="username" id="username" required autocomplete="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ""; ?>">
+                <input type="text" name="username" id="username" required placeholder="" autocomplete="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ""; ?>" pattern="[\w]+">
             </div>
 
             <!-- Jelszó és jelszó megerősítés mezők -->
@@ -58,7 +58,7 @@
                 </div>
                 <div class="input-group">
                     <label for="passwordConfirm">Jelszó megerősítése</label>
-                    <input type="password" name="passwordConfirm" id="passwordConfirm" required oninput="validatePasswordInputs()" autocomplete="new-password" placeholder=" ">
+                    <input type="password" name="passwordConfirm" id="passwordConfirm" required oninput="validatePasswordInputs()" autocomplete="new-password" placeholder="">
                 </div>
             </div>
 
@@ -107,8 +107,13 @@
                     // Regisztrációs függvény meghívása, amely elmenti az új felhasználót
                     $result = register($username, $password, $email);
 
-                    // Ha a regisztráció sikeres, átirányítás a bejelentkezési oldalra
-                    header("Location: ./login");
+                    if ($result === true) {
+                        // Ha a regisztráció sikeres, átirányítás a bejelentkezési oldalra
+                        header("Location: ./login");
+                    }
+                    else {
+                        echo $result;
+                    }
                 }
             }
             ?>

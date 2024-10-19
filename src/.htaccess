@@ -4,6 +4,7 @@ RewriteEngine On
 RewriteRule ^login$ login.php [L]
 RewriteRule ^logout$ logout.php [L]
 RewriteRule ^register$ register.php [L]
+RewriteRule ^profile$ profile.php [L]
 
 # Fájl eléréseinek letiltása
 <Files "README.md">

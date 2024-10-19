@@ -14,10 +14,19 @@ function register($username, $password, $email) {
     $successfulRegistration = $registerStatement -> execute();
 
     if ($successfulRegistration) {
-        return "Sikeres regisztráció!";
+        return true;
     }
     else {
-        return $registerStatement -> error;
+        $error = $registerStatement -> error;
+        if (str_contains($error, 'email')) {
+            return "Ez az E-mail cím már foglalt.";
+        }
+        else if (str_contains($error, 'user_name')) {
+            return "Ez a felhasználónév már foglalt.";
+        }
+        else {
+            return $error;
+        }
     }
 }
 

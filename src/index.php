@@ -65,6 +65,7 @@
         ?>
     </p>
     <p><a href="./register">Regisztráció</a></p> <!-- Regisztrációs link -->
+    <p><a href="./profile">Profil</a></p>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates ipsa aperiam excepturi pariatur, sapiente
         dolorem, quis iure ratione veritatis autem fugit eius tempore. Minus hic suscipit omnis explicabo illo nulla.
     </p>
