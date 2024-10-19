@@ -51,31 +51,33 @@
             </div>
         </div>
         <input type="submit" value="Profil létrehozása" name="register" class="action-button">
+
+        <div class='form-message'>
+            <?php
+                include "./auth/login_register_functions.php";
+
+                if (isset($_POST['register'])) {
+                    $recaptcha_secret = '6LeX3lUqAAAAADc1EcUrbOb9k_dbElHOgfwQ-lqg';
+                    $recaptcha_response = $_POST['g-recaptcha-response'];
+
+                    $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$recaptcha_secret&response=$recaptcha_response");
+                    $response_keys = json_decode($response, true);
+
+                    if (intval($response_keys["success"]) != 1) {
+                        echo "Kérjük töltse ki a reCAPTCHA ellenőrzést.";
+                    } 
+                    else {
+                        $username = $_POST['username'];
+                        $password = $_POST['passwd'];
+                        $email = $_POST['email'];
+
+                        $result = register($username, $password, $email);
+                        
+                        header("Location: ./login");
+                    }
+                }
+            ?>
+        </div>
     </form>
 </body>
 </html>
-<?php
-    include "./auth/login_register_functions.php";
-
-    if (isset($_POST['register'])) {
-        $recaptcha_secret = '6LeX3lUqAAAAADc1EcUrbOb9k_dbElHOgfwQ-lqg';
-        $recaptcha_response = $_POST['g-recaptcha-response'];
-
-        $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$recaptcha_secret&response=$recaptcha_response");
-        $response_keys = json_decode($response, true);
-
-        if (intval($response_keys["success"]) != 1) {
-            echo "Kérjük töltse ki a reCAPTCHA ellenőrzést.";
-        } 
-        else {
-            echo "reCAPTCHA megerősíve. Űrlap feldolgozva.<br>";
-            $username = $_POST['username'];
-            $password = $_POST['passwd'];
-            $email = $_POST['email'];
-
-            $result = register($username, $password, $email);
-            echo $result;
-        }
-    }
-
-?>
