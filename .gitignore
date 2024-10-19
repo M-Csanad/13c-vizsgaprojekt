@@ -16,7 +16,9 @@ __pycache__/
 *.exe
 
 # Érzékeny adatok
+auth/
 .env
+.htaccess
 *.pem
 *.key
 *.db
