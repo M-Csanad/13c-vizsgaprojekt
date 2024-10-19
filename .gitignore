@@ -2,6 +2,9 @@
 # Relatív minta: Ha nincs /, mint pl. *.log, auth/, az a teljes projektben, minden almappában hatással lesz.
 # Dupla csillag (**): Ezzel bármilyen szintű almappákban található fájlokat is figyelmen kívül hagyhatod, pl. **/debug/* minden debug nevű mappában lévő fájlt figyelmen kívül hagy.
 
+# git rm --cached -r *.htaccess
+# git rm --cached -r folder
+
 # Generált fájlok
 /python/
 *.class
