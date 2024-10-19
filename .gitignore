@@ -1,22 +1,32 @@
 # / a minta elején: Ha egy szabály /-el kezdődik (pl. /logs/), akkor az csak a gyökérkönyvtárban található logs mappára érvényes.
-# Relatív minta: Ha nincs /, mint pl. *.log, az a teljes projektben, minden almappában hatással lesz.
+# Relatív minta: Ha nincs /, mint pl. *.log, auth/, az a teljes projektben, minden almappában hatással lesz.
 # Dupla csillag (**): Ezzel bármilyen szintű almappákban található fájlokat is figyelmen kívül hagyhatod, pl. **/debug/* minden debug nevű mappában lévő fájlt figyelmen kívül hagy.
 
 # Generált fájlok
-*.class
 /python/
+*.class
 *.pyc
 __pycache__/
+*.o
+*.obj
+*.dll
+*.exe
 
 # Érzékeny adatok
 auth/
 .env
 .htaccess
+*.pem
 *.key
+*.db
 
 # Felhasználóspecifikus fájlok
 logs/
+log/
+debugs/
+debug/
 *.log
+*.tmp
 
 # Külső függőségek
 /node_modules/
