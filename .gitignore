@@ -17,7 +17,6 @@ __pycache__/
 
 # Érzékeny adatok
 .env
-.htaccess
 *.pem
 *.key
 *.db
