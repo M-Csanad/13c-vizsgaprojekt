@@ -59,12 +59,12 @@
 </html>
 <?php
     if ($isLoggedIn) {
-        echo "Welcome, {$_SESSION['user_name']}! You have {$_SESSION['role']} role.";
-        echo "Your sessionID is $sessionId";
+        echo "Üdvözlünk, {$_SESSION['user_name']}!{$_SESSION['role']} jogosultságod van.";
+        echo "A sessionID-d $sessionId";
     }
 
     if (isset($_SESSION['successful_logout']) && $_SESSION['successful_logout']) {
-        echo "<p style='color: green;'>You have been successfully logged out.</p>";
+        echo "<p style='color: green;'>Sikeres kijelentkezés.</p>";
         unset($_SESSION['successful_logout']);
     }
 ?>
