@@ -29,11 +29,14 @@
             $result = $loginStatement->get_result(); // Eredmény lekérése
             $user = $result->fetch_assoc(); // Felhasználói adatok lekérése
     
-            // Ellenőrzi, hogy a süti lejárati ideje nem múlt-e el
-            if (time() < $user['cookie_expires_at']) {
-                // Beállítja a session adatokat, ha a süti még érvényes
-                setSessionData($user);
+            if ($result -> num_rows == 1) { // Ha létezik olyan felhasználó, akinek ez a sütije
+                // Ellenőrzi, hogy a süti lejárati ideje nem múlt-e el
+                if (time() < $user['cookie_expires_at']) {
+                    // Beállítja a session adatokat, ha a süti még érvényes
+                    setSessionData($user);
+                }
             }
+
         } else {
             // Hiba dobása, ha nem sikerül a lekérdezés
             throw new Exception($loginStatement->error);

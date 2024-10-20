@@ -63,7 +63,8 @@ form {
         transition: all 0.3s ease;
         border-bottom: 3px solid var(--text-light);
     }
-    .input-group:has(input:not(:placeholder-shown)):has(input:valid) {
+    .input-group:has(input:not(:placeholder-shown)):has(input:valid),
+    .input-group:has(input:-webkit-autofill) {
         border-bottom: 3px solid rgb(57, 152, 65);
     }
     .input-group:has(input:not(:placeholder-shown)):has(input:invalid) {
@@ -93,7 +94,6 @@ form {
     .input-group:has(input:focus) label, 
     .input-group:has(input:valid) label, 
     .input-group:has(input:-webkit-autofill) label, 
-    /* .input-group:has(input[type='email']:not(:placeholder-shown)) label, */
     .input-group:has(input:not(:placeholder-shown)) label {
         transform: translateY(-25px);
         font-size: 14px;

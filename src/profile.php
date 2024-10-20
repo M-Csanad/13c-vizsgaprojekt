@@ -4,11 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil</title>
-    <?php session_start(); ?>
+    <?php 
+        session_start(); 
+
+        if (isset($_SESSION['user_name'])) {
+            include "./auth/user_management_functions.php";
+
+            $user = getUserData($_SESSION['user_id']);
+            
+            if ($user == null) { // Ha nincs olyan user, akinek az id-ja megegyezik a SESSION-ben lévővel
+                header("Location: ./");
+                exit();
+            }
+        } 
+        else {
+            header("Location: ./");
+            exit();
+        }
+    ?>
 </head>
 <body>
     <header>
-        <h1><?= isset($_SESSION['user_name']) ? "Üdvözlünk, {$_SESSION['user_name']}!": "Még nem vagy bejelentkezve."?></h1>
+        <h1>
+        <?php
+            echo "Üdvözlünk, {$_SESSION['user_name']}!";
+        ?>
+        </h1>
     </header>
 </body>
 </html>

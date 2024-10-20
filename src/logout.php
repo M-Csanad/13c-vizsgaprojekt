@@ -16,6 +16,6 @@ $_SESSION['successful_logout'] = true; // Beállítja, hogy a kijelentkezés sik
 
 // Átirányítás a főoldalra a kijelentkezés után
 header('Location: ./');
-exit; // A script futásának leállítása, hogy biztosan ne fusson tovább
+exit(); // A script futásának leállítása, hogy biztosan ne fusson tovább
 ?>
 
