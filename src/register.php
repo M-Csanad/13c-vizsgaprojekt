@@ -41,13 +41,13 @@
             <!-- E-mail cím mező -->
             <div class="input-group">
                 <label for="email">E-mail</label>
-                <input type="email" name="email" id="email" required placeholder="" autocomplete="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ""; ?>">
+                <input type="email" name="email" id="email" required placeholder="" autocomplete="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ""; ?>" oninput="validateEmailInput()">
             </div>
 
             <!-- Felhasználónév mező -->
             <div class="input-group">
                 <label for="username">Felhasználónév</label>
-                <input type="text" name="username" id="username" required placeholder="" autocomplete="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ""; ?>" pattern="[\w]+">
+                <input type="text" name="username" id="username" required placeholder="" autocomplete="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ""; ?>" oninput="validateUserNameInput()">
             </div>
 
             <!-- Jelszó és jelszó megerősítés mezők -->

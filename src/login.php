@@ -38,7 +38,7 @@
             <!-- Felhasználónév mező -->
             <div class="input-group">
                 <label for="username">Felhasználónév</label>
-                <input type="text" name="username" id="username" autocomplete='username' required placeholder="" pattern="[\w]+">
+                <input type="text" name="username" id="username" autocomplete='username' required placeholder="" oninput="validateUserNameInput()">
             </div>
             <!-- Jelszó mező -->
             <div class="input-group">
