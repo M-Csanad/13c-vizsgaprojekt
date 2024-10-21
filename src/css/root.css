@@ -1,0 +1,14 @@
+:root {
+    --background: #f2f3f4;
+    --background-dark: #121212;
+    --danger: rgb(181, 0, 0);
+    --border: #b6b6b6;
+    --line-height: 24px;
+    --padding: 16px 24px;
+    --text: #222222;
+    --text-light: #555555;
+}
+
+.border {
+    border: 1px solid red !important;
+}

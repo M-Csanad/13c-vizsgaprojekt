@@ -58,15 +58,21 @@ function authenticate_user($username, $password) {
     $loginStatement = $db -> prepare("SELECT COUNT(*) as num, user.password_hash, user.role, user.id, user.user_name FROM user WHERE user.user_name = ?");
     $loginStatement -> bind_param("s", $username);
 
-    $successfulLogin = $loginStatement -> execute();
-    $result = $loginStatement -> get_result();
-    $data = $result -> fetch_assoc();
-
-    if (!$data['num'] || !password_verify($password, $data['password_hash'])) {
-        return null;
+    try {
+        $successfulLogin = $loginStatement -> execute();
+        $result = $loginStatement -> get_result();
+        $data = $result -> fetch_assoc();
+    
+        if (!$data['num'] || !password_verify($password, $data['password_hash'])) {
+            return null;
+        }
+        else {
+            return $data;
+        }
     }
-    else {
-        return $data;
+    catch (Exception $error) {
+        $error = $loginStatement -> error;
+        return $error;
     }
 }
 ?>

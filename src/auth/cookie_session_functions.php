@@ -11,7 +11,7 @@ function bindCookie($user)
 
     $cookieStatement = $db->prepare("UPDATE user SET cookie_id = ?, cookie_expires_at = ? WHERE user.id = ?");
     $cookieStatement->bind_param("sii", $cookieToken, $expireUnix, $user['id']);
-    $successfulCookie = $cookieStatement->execute();
+    $successfulCookie = $cookieStatement->execute(); // TODO - Error kezelés
 }
 
 function removeCookie($cookieToken)
@@ -22,7 +22,7 @@ function removeCookie($cookieToken)
     setcookie('rememberMe', '', time() - 3600, '/');
     $cookieStatement = $db->prepare("UPDATE user SET cookie_id = NULL, cookie_expires_at = NULL WHERE user.cookie_id = ?");
     $cookieStatement->bind_param("i", $cookieToken);
-    $successfulCookie = $cookieStatement->execute();
+    $successfulCookie = $cookieStatement->execute(); // TODO - Error kezelés
 }
 
 function setSessionData($user)
