@@ -11,13 +11,12 @@ function register($username, $password, $email) {
 
     $registerStatement = $db -> prepare("INSERT INTO user (user_name, email, password_hash) VALUES (?, ?, ?)");
     $registerStatement -> bind_param("sss", $username, $email, $passwordHash);
-    $successfulRegistration = $registerStatement -> execute();
-
-    if ($successfulRegistration) {
+    
+    try {
+        $successfulRegistration = $registerStatement -> execute();
         return true;
-    }
-    else {
-        $error = $registerStatement -> error;
+        
+    } catch (Exception $error) {
         if (str_contains($error, 'email')) {
             return "Ez az E-mail cím már foglalt.";
         }
@@ -28,6 +27,11 @@ function register($username, $password, $email) {
             return $error;
         }
     }
+
+    // if ($successfulRegistration) {
+    // }
+    // else {
+    // }
 }
 
 function login($username, $password, $rememberMe) {
