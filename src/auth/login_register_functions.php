@@ -27,11 +27,6 @@ function register($username, $password, $email) {
             return $error;
         }
     }
-
-    // if ($successfulRegistration) {
-    // }
-    // else {
-    // }
 }
 
 function login($username, $password, $rememberMe) {
