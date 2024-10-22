@@ -5,27 +5,50 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!--root stylesheet-->
     <link rel="stylesheet" href="../css/root.css" />
+    <link rel="stylesheet" href="../css/box.css" />
 
     <!--main stylesheet-->
     <link rel="stylesheet" href="./css/main.css" />
-    <title>Document</title>
+    <title>Home - Florens Botanica</title>
   </head>
   <body>
     <header>
-      <section id="StickyNavbar_Container"></section>
+      <section id="StickyNavbar_container"></section>
     </header>
     <main>
-      <section id="__main_head">
-        <div id="headScroller_Container">
-          <div class="videoScene_wrapper"></div>
-          <div class="videoContent_wrapper"></div>
+      <section id="__main_head ">
+        <div id="headScroller_container flex-block">
+          <div class="videoScene_wrapper col-12">
+            <video id="welcomeVideo" autoplay muted loop>
+              <source
+                src="../media/video/mainpageWelcome.webm"
+                type="video/webm"
+              />
+              <source
+                src="../media/video/mainpageWelcome.mp4"
+                type="video/mp4"
+              />
+            </video>
+          </div>
+          <div class="videoContent_wrapper">
+            <div class="videoContent_scrollable">
+              <p>Something sexy content here</p>
+              <p>Something sexy content here</p>
+              <p>Something sexy content here</p>
+            </div>
+          </div>
         </div>
-        <div id="headSwiper_Container">
+        <div id="headSwiper_container">
           <div class="swiper"></div>
         </div>
       </section>
-      <section id="__main_body"><div></div></section>
+      <section id="__main_body">
+        <br /><br /><br /><br /><br /><br /><br />
+      </section>
     </main>
     <footer></footer>
+
+    <!--video restart-->
+    <script src="./js/video.js"></script>
   </body>
 </html>
