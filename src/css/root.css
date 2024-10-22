@@ -12,3 +12,25 @@
 .border {
     border: 1px solid red !important;
 }
+
+.error {
+    width: 100%;
+    background-color: rgb(159, 29, 29);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18px;
+    border: 3px solid rgb(250, 75, 75);
+    color: white;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.error::before {
+    content: '';
+    background-color: black;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100%;
+    z-index: -10;
+}

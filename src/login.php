@@ -38,7 +38,7 @@
             <!-- Felhasználónév mező -->
             <div class="input-group">
                 <label for="username">Felhasználónév</label>
-                <input type="text" name="username" id="username" autocomplete='username' required placeholder="" oninput="validateUserNameInput()">
+                <input type="text" name="username" id="username" autocomplete='username' required placeholder="" oninput="validateUserNameInput()" value="<?= isset($_POST['username']) ? $_POST['username'] : ''; ?>">
             </div>
             <!-- Jelszó mező -->
             <div class="input-group">

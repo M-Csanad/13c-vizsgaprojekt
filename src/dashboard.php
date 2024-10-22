@@ -23,117 +23,180 @@
     </p>
     <header class="page-title">Vezérlőpult</header>
 
+    <div class="section-group">
+        <div class="group-header">
+            <div class="group-title">Jogosultságok kezelése</div>
+            <div class="group-expander">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                </svg>
+            </div>
+        </div>
+        <div class="group-body">
+            <section></section>
+        </div>
+    </div>
+    <div class="section-group">
+        <div class="group-header">
+            <div class="group-title">Kategóriák kezelése</div>
+            <div class="group-expander">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                </svg>
+            </div>
+        </div>
+        <div class="group-body">
+            <section></section>
+        </div>
+    </div>
+
     <!----------------------------- Új termék felvitele ---------------------------->
-    <section>
-        <div class="section-title">Új termék felvitele</div>
-        <div class="section-body">
-            <form method="POST">
-                <div class="input-grid">
-                    <div class="inline-input">
-                        <label for="termekNev">Termék név</label>
-                        <input type="text" name="termekNev" id="termekNev">
-                    </div>
-                    <div class="inline-input">
-                        <label for="leiras">Leírás</label>
-                        <input type="text" name="leiras" id="leiras">
-                    </div>
-                    <div class="inline-input">
-                        <label for="ar">Egységár</label>
-                        <input type="number" name="ar" id="ar">
-                    </div>
-                    <div class="inline-input">
-                        <label for="keszlet">Készlet</label>
-                        <input type="number" name="keszlet" id="keszlet">
-                    </div>
-                    <div class="inline-input">
-                        <label for="kategoria">Kategória</label>
-                        <input type="text" name="kategoria" id="kategoria">
-                    </div>
-                    <div class="inline-input">
-                        <label for="alkategoria">Alkategória</label>
-                        <input type="text" name="alkategoria" id="alkategoria">
-                    </div>
-                    <div class="inline-input">
-                        <label for="boritokep">Borítókép</label>
-                        <input type="file" name="boritokep" id="boritokep">
-                    </div>
-                    <div class="inline-input">
-                        <label for="termekkepek">Termékképek</label>
-                        <input type="file" name="termekkepek" id="termekkepek" multiple>
-                    </div>
-                    <div class="inline-input">
-                        <label for="tartalom">Tartalom</label>
-                        <input type="text" name="tartalom" id="tartalom">
-                    </div>
-                </div>
-                <input type="submit" value="Felvitel" class="form-submit-primary">
-            </form>
+    <div class="section-group">
+        <div class="group-header">
+            <div class="group-title">Termékek kezelése</div>
+            <div class="group-expander">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                </svg>
+            </div>
         </div>
-    </section>
+        <div class="group-body">
+            <section>
+                <div class="section-title">Új termék felvitele</div>
+                <div class="section-body">
+                    <form method="POST">
+                        <div class="input-grid">
+                            <div class="inline-input">
+                                <label for="termekNev">Termék név</label>
+                                <input type="text" name="termekNev" id="termekNev">
+                            </div>
+                            <div class="inline-input">
+                                <label for="leiras">Leírás</label>
+                                <input type="text" name="leiras" id="leiras">
+                            </div>
+                            <div class="inline-input">
+                                <label for="ar">Egységár</label>
+                                <input type="number" name="ar" id="ar">
+                            </div>
+                            <div class="inline-input">
+                                <label for="keszlet">Készlet</label>
+                                <input type="number" name="keszlet" id="keszlet">
+                            </div>
+                            <div class="inline-input">
+                                <label for="kategoria">Kategória</label>
+                                <input type="text" name="kategoria" id="kategoria">
+                            </div>
+                            <div class="inline-input">
+                                <label for="alkategoria">Alkategória</label>
+                                <input type="text" name="alkategoria" id="alkategoria">
+                            </div>
+                            <div class="inline-input">
+                                <label for="boritokep">Borítókép</label>
+                                <input type="file" name="boritokep" id="boritokep">
+                            </div>
+                            <div class="inline-input">
+                                <label for="termekkepek">Termékképek</label>
+                                <input type="file" name="termekkepek" id="termekkepek" multiple>
+                            </div>
+                            <div class="inline-input">
+                                <label for="tartalom">Tartalom</label>
+                                <input type="text" name="tartalom" id="tartalom">
+                            </div>
+                        </div>
+                        <input type="submit" value="Felvitel" class="form-submit-primary" name='felvitel'>
+                    </form>
+                </div>
+            </section>
+            <!------------------------------- Termék törlése ------------------------------->
+            <section>
+                <div class="section-title">Termék törlése</div>
+                <div class="section-body">
+                    <form method="POST">
+                        <div class="input-select">
+                            <label for="termekNev">Termék kiválasztása</label>
+                            <select name="termek" id="termek">
+                                <option value=""></option>
+                            </select>
+                        </div>
+                        <input type="submit" value="Törlés" class="form-submit-danger" name='torles'>
+                    </form>
+                </div>
+            </section>
+            <!------------------------------ Termék módosítása ----------------------------->
+            <section>
+                <div class="section-title">Meglévő termék szerkesztése</div>
+                <div class="section-body">
+                    <form method="POST">
+                        <div class="input-grid">
+                            <div class="inline-input">
+                                <label for="termekNev">Termék név</label>
+                                <input type="text" name="termekNev" id="termekNev">
+                            </div>
+                            <div class="inline-input">
+                                <label for="leiras">Leírás</label>
+                                <input type="text" name="leiras" id="leiras">
+                            </div>
+                            <div class="inline-input">
+                                <label for="ar">Egységár</label>
+                                <input type="number" name="ar" id="ar">
+                            </div>
+                            <div class="inline-input">
+                                <label for="keszlet">Készlet</label>
+                                <input type="number" name="keszlet" id="keszlet">
+                            </div>
+                            <div class="inline-input">
+                                <label for="kategoria">Kategória</label>
+                                <input type="text" name="kategoria" id="kategoria">
+                            </div>
+                            <div class="inline-input">
+                                <label for="alkategoria">Alkategória</label>
+                                <input type="text" name="alkategoria" id="alkategoria">
+                            </div>
+                            <div class="inline-input">
+                                <label for="boritokep">Borítókép</label>
+                                <input type="file" name="boritokep" id="boritokep">
+                            </div>
+                            <div class="inline-input">
+                                <label for="termekkepek">Termékképek</label>
+                                <input type="file" name="termekkepek" id="termekkepek" multiple>
+                            </div>
+                            <div class="inline-input">
+                                <label for="tartalom">Tartalom</label>
+                                <input type="text" name="tartalom" id="tartalom">
+                            </div>
+                        </div>
+                        <input type="submit" value="Módosítás" class="form-submit-primary" name='modositas'>
+                    </form>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div>
+        <?php
 
-    <!------------------------------- Termék törlése ------------------------------->
-    <section>
-        <div class="section-title">Termék törlése</div>
-        <div class="section-body">
-            <form method="POST">
-                <div class="input-select">
-                    <label for="termekNev">Termék kiválasztása</label>
-                    <select name="termek" id="termek">
-                        <option value=""></option>
-                    </select>
-                </div>
-                <input type="submit" value="Törlés" class="form-submit-danger">
-            </form>
-        </div>
-    </section>
+            if (isset($_POST['felvitel'])) {
+                $termekNev = $_POST['termekNev'];
+                echo "termekNev: " , $termekNev, "<br>";
+                $leiras = $_POST['leiras'];
+                echo "leiras: " , $leiras, "<br>";
+                $ar = $_POST['ar'];
+                echo "ar: " , $ar, "<br>";
+                $keszlet = $_POST['keszlet'];
+                echo "keszlet: " , $keszlet, "<br>";
+                $kategoria = $_POST['kategoria'];
+                echo "kategoria: " , $kategoria, "<br>";
+                $alkategoria = $_POST['alkategoria'];
+                echo "alkategoria: " , $alkategoria, "<br>";
+                $boritokep = $_POST['boritokep'];
+                echo "boritokep: " , $boritokep, "<br>";
+                $termekkepek = $_POST['termekkepek'];
+                echo "termekkepek: " , $termekkepek, "<br>";
+                $tartalom = $_POST['tartalom'];
+                echo "tartalom: " , $tartalom, "<br>";
+            }
 
-    <!------------------------------ Termék módosítása ----------------------------->
-    <section>
-        <div class="section-title">Meglévő termék szerkesztése</div>
-        <div class="section-body">
-            <form method="POST">
-                <div class="input-grid">
-                    <div class="inline-input">
-                        <label for="termekNev">Termék név</label>
-                        <input type="text" name="termekNev" id="termekNev">
-                    </div>
-                    <div class="inline-input">
-                        <label for="leiras">Leírás</label>
-                        <input type="text" name="leiras" id="leiras">
-                    </div>
-                    <div class="inline-input">
-                        <label for="ar">Egységár</label>
-                        <input type="number" name="ar" id="ar">
-                    </div>
-                    <div class="inline-input">
-                        <label for="keszlet">Készlet</label>
-                        <input type="number" name="keszlet" id="keszlet">
-                    </div>
-                    <div class="inline-input">
-                        <label for="kategoria">Kategória</label>
-                        <input type="text" name="kategoria" id="kategoria">
-                    </div>
-                    <div class="inline-input">
-                        <label for="alkategoria">Alkategória</label>
-                        <input type="text" name="alkategoria" id="alkategoria">
-                    </div>
-                    <div class="inline-input">
-                        <label for="boritokep">Borítókép</label>
-                        <input type="file" name="boritokep" id="boritokep">
-                    </div>
-                    <div class="inline-input">
-                        <label for="termekkepek">Termékképek</label>
-                        <input type="file" name="termekkepek" id="termekkepek" multiple>
-                    </div>
-                    <div class="inline-input">
-                        <label for="tartalom">Tartalom</label>
-                        <input type="text" name="tartalom" id="tartalom">
-                    </div>
-                </div>
-                <input type="submit" value="Módosítás" class="form-submit-primary">
-            </form>
-        </div>
-    </section>
+        ?>
+    </div>
     <script src="./js/dashboard.js"></script>
 </body>
 </html>

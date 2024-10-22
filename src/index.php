@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Főoldal - TESZT</title>
+    <link rel="stylesheet" href="./css/root.css">
     <?php
     session_start();
     $isLoggedIn = false;  // Alapértelmezett, hogy a felhasználó nincs bejelentkezve
@@ -32,7 +33,7 @@
             }
         }
         catch (Exception $error) {
-            echo $error;
+            echo "<div class='error'>", $error, "</div>";
         }
     }
 
