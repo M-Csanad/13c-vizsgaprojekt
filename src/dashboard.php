@@ -64,43 +64,43 @@
             <section>
                 <div class="section-title">Új termék felvitele</div>
                 <div class="section-body">
-                    <form method="POST">
-                        <div class="input-grid">
+                    <form method="POST" enctype="multipart/form-data">
+                    <div class="input-grid">
                             <div class="inline-input">
-                                <label for="termekNev">Termék név</label>
-                                <input type="text" name="termekNev" id="termekNev">
+                                <label for="product_name">Termék név</label>
+                                <input type="text" name="product_name" id="product_name" required>
                             </div>
                             <div class="inline-input">
-                                <label for="leiras">Leírás</label>
-                                <input type="text" name="leiras" id="leiras">
+                                <label for="description">Leírás</label>
+                                <input type="text" name="description" id="description" required>
                             </div>
                             <div class="inline-input">
-                                <label for="ar">Egységár</label>
-                                <input type="number" name="ar" id="ar">
+                                <label for="price">Egységár</label>
+                                <input type="number" name="price" id="price" required>
                             </div>
                             <div class="inline-input">
-                                <label for="keszlet">Készlet</label>
-                                <input type="number" name="keszlet" id="keszlet">
+                                <label for="stock">Készlet</label>
+                                <input type="number" name="stock" id="stock" required>
                             </div>
                             <div class="inline-input">
-                                <label for="kategoria">Kategória</label>
-                                <input type="text" name="kategoria" id="kategoria">
+                                <label for="category">Kategória</label>
+                                <input type="text" name="category" id="category" required>
                             </div>
                             <div class="inline-input">
-                                <label for="alkategoria">Alkategória</label>
-                                <input type="text" name="alkategoria" id="alkategoria">
+                                <label for="subcategory">Alkategória</label>
+                                <input type="text" name="subcategory" id="subcategory" required>
                             </div>
                             <div class="inline-input">
-                                <label for="boritokep">Borítókép</label>
-                                <input type="file" name="boritokep" id="boritokep">
+                                <label for="thumbnail_image">Borítókép</label>
+                                <input type="file" name="thumbnail_image" id="thumbnail_image" required accept="image/png, image/jpeg">
                             </div>
                             <div class="inline-input">
-                                <label for="termekkepek">Termékképek</label>
-                                <input type="file" name="termekkepek" id="termekkepek" multiple>
+                                <label for="product_images">Termékképek</label>
+                                <input type="file" name="product_images[]" id="product_images" multiple required accept="image/png, image/jpeg">
                             </div>
                             <div class="inline-input">
-                                <label for="tartalom">Tartalom</label>
-                                <input type="text" name="tartalom" id="tartalom">
+                                <label for="content">Tartalom</label>
+                                <input type="text" name="content" id="content" required>
                             </div>
                         </div>
                         <input type="submit" value="Felvitel" class="form-submit-primary" name='felvitel'>
@@ -126,43 +126,43 @@
             <section>
                 <div class="section-title">Meglévő termék szerkesztése</div>
                 <div class="section-body">
-                    <form method="POST">
+                    <form method="POST" enctype="multipart/form-data">
                         <div class="input-grid">
                             <div class="inline-input">
-                                <label for="termekNev">Termék név</label>
-                                <input type="text" name="termekNev" id="termekNev">
+                                <label for="product_name">Termék név</label>
+                                <input type="text" name="product_name" id="product_name" required>
                             </div>
                             <div class="inline-input">
-                                <label for="leiras">Leírás</label>
-                                <input type="text" name="leiras" id="leiras">
+                                <label for="description">Leírás</label>
+                                <input type="text" name="description" id="description" required>
                             </div>
                             <div class="inline-input">
-                                <label for="ar">Egységár</label>
-                                <input type="number" name="ar" id="ar">
+                                <label for="price">Egységár</label>
+                                <input type="number" name="price" id="price" required>
                             </div>
                             <div class="inline-input">
-                                <label for="keszlet">Készlet</label>
-                                <input type="number" name="keszlet" id="keszlet">
+                                <label for="stock">Készlet</label>
+                                <input type="number" name="stock" id="stock" required>
                             </div>
                             <div class="inline-input">
-                                <label for="kategoria">Kategória</label>
-                                <input type="text" name="kategoria" id="kategoria">
+                                <label for="category">Kategória</label>
+                                <input type="text" name="category" id="category" required>
                             </div>
                             <div class="inline-input">
-                                <label for="alkategoria">Alkategória</label>
-                                <input type="text" name="alkategoria" id="alkategoria">
+                                <label for="subcategory">Alkategória</label>
+                                <input type="text" name="subcategory" id="subcategory" required>
                             </div>
                             <div class="inline-input">
-                                <label for="boritokep">Borítókép</label>
-                                <input type="file" name="boritokep" id="boritokep">
+                                <label for="thumbnail_image">Borítókép</label>
+                                <input type="file" name="thumbnail_image" id="thumbnail_image" required accept="image/png, image/jpeg">
                             </div>
                             <div class="inline-input">
-                                <label for="termekkepek">Termékképek</label>
-                                <input type="file" name="termekkepek" id="termekkepek" multiple>
+                                <label for="product_images">Termékképek</label>
+                                <input type="file" name="product_images[]" id="product_images" multiple required accept="image/png, image/jpeg">
                             </div>
                             <div class="inline-input">
-                                <label for="tartalom">Tartalom</label>
-                                <input type="text" name="tartalom" id="tartalom">
+                                <label for="content">Tartalom</label>
+                                <input type="text" name="content" id="content" required>
                             </div>
                         </div>
                         <input type="submit" value="Módosítás" class="form-submit-primary" name='modositas'>
@@ -175,24 +175,17 @@
         <?php
 
             if (isset($_POST['felvitel'])) {
-                $termekNev = $_POST['termekNev'];
-                echo "termekNev: " , $termekNev, "<br>";
-                $leiras = $_POST['leiras'];
-                echo "leiras: " , $leiras, "<br>";
-                $ar = $_POST['ar'];
-                echo "ar: " , $ar, "<br>";
-                $keszlet = $_POST['keszlet'];
-                echo "keszlet: " , $keszlet, "<br>";
-                $kategoria = $_POST['kategoria'];
-                echo "kategoria: " , $kategoria, "<br>";
-                $alkategoria = $_POST['alkategoria'];
-                echo "alkategoria: " , $alkategoria, "<br>";
-                $boritokep = $_POST['boritokep'];
-                echo "boritokep: " , $boritokep, "<br>";
-                $termekkepek = $_POST['termekkepek'];
-                echo "termekkepek: " , $termekkepek, "<br>";
-                $tartalom = $_POST['tartalom'];
-                echo "tartalom: " , $tartalom, "<br>";
+                include "./auth/product_management_functions.php";
+
+                unset($_POST['felvitel']);
+                $successfulUpload = uploadProduct();
+
+                if ($successfulUpload) {
+                    echo "Sikeres feltöltés!";
+                }
+                else {
+                    echo "<div class='error'>Sikertelen feltöltés!</div>";
+                }
             }
 
         ?>
