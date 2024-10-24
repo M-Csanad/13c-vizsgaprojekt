@@ -8,11 +8,33 @@
    Color elements
   */
   --dark_main: #0c0c0c;
+  --dark_main_op5: rgba(12, 12, 12, 0.5);
+  --dark_main_op6: rgba(12, 12, 12, 0.6);
+  --dark_main_op7: rgba(12, 12, 12, 0.7);
+  --dark_main_op8: rgba(12, 12, 12, 0.8);
+  --dark_main_op9: rgba(12, 12, 12, 0.9);
+  --dark_secondary: #1c1c1c;
+  --dark_secondary_op5: rgba(28, 28, 28, 0.5);
+  --dark_secondary_op6: rgba(28, 28, 28, 0.6);
+  --dark_secondary_op7: rgba(28, 28, 28, 0.7);
+  --dark_secondary_op8: rgba(28, 28, 28, 0.8);
+  --dark_secondary_op9: rgba(28, 28, 28, 0.9);
   --light_main: #ffffff;
+  --light_main-op5: rgba(255, 255, 255, 0.5);
   --light_main-op6: rgba(255, 255, 255, 0.6);
+  --light_main-op7: rgba(255, 255, 255, 0.7);
+  --light_main-op8: rgba(255, 255, 255, 0.8);
+  --light_main-op9: rgba(255, 255, 255, 0.9);
 
   /*
    Filter elements
   */
+  --blur1: blur(1px);
+  --blur2: blur(2px);
+  --blur3: blur(3px);
+  --blur4: blur(4px);
+  --blur5: blur(5px);
+  --blur6: blur(6px);
+  --blur7: blur(7px);
   --blur8: blur(8px);
 }
