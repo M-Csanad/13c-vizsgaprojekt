@@ -3,9 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!--lenis stylesheet-->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/lenis@1.1.14/dist/lenis.css"
+    />
+
     <!--root stylesheet-->
     <link rel="stylesheet" href="../css/root.css" />
+
+    <!--casual stylesheets-->
     <link rel="stylesheet" href="../css/box.css" />
+    <link rel="stylesheet" href="../css/font.css" />
 
     <!--main stylesheet-->
     <link rel="stylesheet" href="./css/main.css" />
@@ -21,27 +31,43 @@
           <div class="videoScene_wrapper col-12">
             <video id="welcomeVideo" autoplay muted loop>
               <source
-                src="../media/video/mainpageWelcome.webm"
+                src="../media/video/mainpageWelcome02.webm"
                 type="video/webm"
               />
               <source
-                src="../media/video/mainpageWelcome.mp4"
+                src="../media/video/mainpageWelcome02.mp4"
                 type="video/mp4"
               />
             </video>
           </div>
-          <div class="videoContent_wrapper_ghost"></div>
+
           <div class="videoContent_wrapper">
             <div class="videoContent_scrollable">
-              <h1>Florens Botanica</h1>
-              <p>Something sexy content here</p>
-              <p>Something sexy content here</p>
-              <p>Something sexy content here</p>
-              <p>Something sexy content here</p>
-              <p>Something sexy content here</p>
-              <p>Something sexy content here</p>
-              <p>Something sexy content here</p>
-              <p>Something sexy content here</p>
+              <div class="videoContent_card-content">
+                <img
+                  src="../media/img//herbalLogo_white.png"
+                  alt="Florens Botanica Logo"
+                />
+              </div>
+              <div class="videoContent_card-content">
+                <p class="__t01-mew1">
+                    Üdvözlünk a természet kincseinek világában, ahol a
+                    gyógynövények ereje és a harmónia találkozik.</a
+                  >
+                </p>
+              </div>
+              <div class="videoContent_card-content">
+                <p class="__t01-mew1">
+                  Nálunk minden termék gondosan válogatott, hogy támogassa
+                  egészséged és harmóniád.
+                </p>
+              </div>
+              <div class="videoContent_card-content">
+                <p class="__t01-mew1">
+                  Lépj be a Florens Botanica világába, és hagyd, hogy a
+                  természet ereje magával ragadjon!
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -55,8 +81,12 @@
     </main>
     <footer></footer>
 
+    <!--lenis scroll-->
+    <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+    <script src="./js/lenis.js"></script>
+
     <!--video restart-->
-    <script src="./js/video.js"></script>
+    <script src="./js/videoMouseHover.js"></script>
     <script src="./js/videoContentScroll.js"></script>
   </body>
 </html>
