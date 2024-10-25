@@ -81,7 +81,7 @@
         <div class='form-message'>
             <?php
             // Regisztrációs funkciókat tartalmazó fájl beillesztése
-            include "./auth/login_register_functions.php";
+            include_once "./auth/init.php";
 
             // Ha a regisztrációs űrlapot elküldték (post metódussal), a regisztrációs logika fut le
             if (isset($_POST['register'])) {
@@ -106,7 +106,7 @@
 
                     // Regisztrációs függvény meghívása, amely elmenti az új felhasználót
                     $result = register($username, $password, $email);
-
+                    
                     if ($result === true) {
                         // Ha a regisztráció sikeres, átirányítás a bejelentkezési oldalra
                         header("Location: ./login");

@@ -7,33 +7,30 @@
     <title>Főoldal - TESZT</title>
     <link rel="stylesheet" href="./css/root.css">
     <?php
+    include_once "./auth/init.php";
     session_start();
     $isLoggedIn = false;  // Alapértelmezett, hogy a felhasználó nincs bejelentkezve
     
     // Emlékezz rám funkció - ellenőrzi, hogy van-e 'rememberMe' süti
     if (isset($_COOKIE['rememberMe'])) {
-        include "./auth/db_connect.php";
-        include "./auth/cookie_session_functions.php";
-
         $cookieToken = $_COOKIE['rememberMe'];
-    
-        // SQL lekérdezés előkészítése, ami ellenőrzi, hogy létezik-e a süti a felhasználóhoz
-        $loginStatement = $db->prepare("SELECT COUNT(*) as num, user.password_hash, user.role, user.id, user.user_name, user.cookie_expires_at FROM user WHERE user.cookie_id = ?");
-        $loginStatement->bind_param("i", $cookieToken); // Token hozzárendelése a lekérdezéshez
-    
-        try {
-            $successfulLogin = $loginStatement -> execute();
-            $result = $loginStatement -> get_result();
-            $user = $result -> fetch_assoc();
+        $result = selectData("SELECT COUNT(*) as num, 
+                            user.password_hash, 
+                            user.role, user.id, 
+                            user.user_name, 
+                            user.cookie_expires_at 
+                            FROM user 
+                            WHERE user.cookie_id = ?", $cookieToken);
         
-            if ($result -> num_rows == 1) { // Ha létezik olyan felhasználó, akinek ez a sütije
-                if (time() < $user['cookie_expires_at']) {
-                    setSessionData($user); // Beállítja a session adatokat, ha a süti még érvényes
-                }
+        if (is_array($result)) {
+            $user = $result;
+            if (time() < $user['cookie_expires_at']) {
+                setSessionData($user);
             }
         }
-        catch (Exception $error) {
-            echo "<div class='error'>", $error, "</div>";
+        else {
+            echo "<div class='error'>", $result, "</div>";
+            exit();
         }
     }
 

@@ -62,7 +62,7 @@
         <div class="form-message">
             <?php
             // Bejelentkezési funkciókat tartalmazó fájl beillesztése
-            include "./auth/login_register_functions.php";
+            include_once "./auth/init.php";
 
             // Ha az űrlapot elküldték (post metódussal), a bejelentkezési logika fut le
             if (isset($_POST['login'])) {
@@ -72,7 +72,7 @@
             
                 // Bejelentkezési függvény meghívása, amely visszaadja a siker vagy hiba állapotát
                 $result = login($username, $password, $rememberMe);
-
+                
                 // Ha a bejelentkezés sikeres, átirányítás a főoldalra
                 if ($result === true) {
                     header('Location: ./');

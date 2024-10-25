@@ -9,6 +9,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
+    <?php include_once "./auth/init.php"; ?>
 </head>
 <body>
     <p>
@@ -46,7 +47,47 @@
             </div>
         </div>
         <div class="group-body">
-            <section></section>
+            <section>
+            <div class="section-title">Új kategória létrehozása</div>
+            <div class="section-body">
+                <form method="POST" enctype="multipart/form-data">
+                <div class="input-grid">
+                        <div class="inline-input">
+                            <label for="category_name">Név</label>
+                            <input type="text" name="category_name" id="category_name" required>
+                        </div>
+                        <div class="inline-input">
+                            <label for="description">Leírás</label>
+                            <input type="text" name="description" id="description" required>
+                        </div>
+                        <div class="inline-input">
+                            <label for="type">Típus</label>
+                            <select name="type" id="type">
+                                <option value="main">Főkategória</option>
+                                <option value="sub">Alkategória</option>
+                            </select>
+                        </div>
+                        <div class="inline-input" hidden>
+                            <label for="parent_category">Főkategória</label>
+                            <select name="parent_category" id="parent_category">
+                                <?php
+
+                                ?>
+                            </select>
+                        </div>
+                        <div class="inline-input">
+                            <label for="category">Főkategória</label>
+                            <input type="text" name="category" id="category" required>
+                        </div>
+                        <div class="inline-input">
+                            <label for="thumbnail_image">Borítókép</label>
+                            <input type="file" name="thumbnail_image" id="thumbnail_image" required accept="image/png, image/jpeg">
+                        </div>
+                    </div>
+                    <input type="submit" value="Felvitel" class="form-submit-primary" name='felvitel'>
+                </form>
+            </div>
+            </section>
         </div>
     </div>
 
@@ -175,7 +216,7 @@
         <?php
 
             if (isset($_POST['felvitel'])) {
-                include "./auth/product_management_functions.php";
+                include_once "./auth/product_management_functions.php";
 
                 unset($_POST['felvitel']);
                 $successfulUpload = uploadProduct();

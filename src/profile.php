@@ -6,14 +6,14 @@
     <title>Profil</title>
     <link rel="stylesheet" href="./css/root.css">
     <?php 
+        include_once "./auth/init.php";
         session_start(); 
 
         if (isset($_SESSION['user_name'])) {
-            include "./auth/user_management_functions.php";
 
             $user = getUserData($_SESSION['user_id']);
             
-            if ($user == null) { // Ha nincs olyan user, akinek az id-ja megegyezik a SESSION-ben lévővel
+            if ($user == "Nincs találat!") { // Ha nincs olyan user, akinek az id-ja megegyezik a SESSION-ben lévővel
                 header("Location: ./");
                 exit();
             }
