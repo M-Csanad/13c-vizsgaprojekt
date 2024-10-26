@@ -34,9 +34,6 @@ function removeCookie($cookieToken)
     else {
         echo "<div class='error'>$result</div>";
     }
-    // $cookieStatement = $db->prepare("UPDATE user SET cookie_id = NULL, cookie_expires_at = NULL WHERE user.cookie_id = ?");
-    // $cookieStatement->bind_param("i", $cookieToken);
-    // $successfulCookie = $cookieStatement->execute(); // TODO - Error kezelés
 }
 
 function setSessionData($user)

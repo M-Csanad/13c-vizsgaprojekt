@@ -30,8 +30,6 @@ function login($username, $password, $rememberMe) {
         return "Kérjük töltse ki az összes mezőt!";
     }
     include_once "./auth/init.php";
-    // include_once "./auth/db_connect.php";
-    // include_once "./auth/cookie_session_functions.php";
 
     session_start();
     $user = authenticate_user($username, $password);
@@ -54,7 +52,6 @@ function login($username, $password, $rememberMe) {
 }
 
 function authenticate_user($username, $password) {
-    // include_once "./auth/query_functions.php";
     include_once "./auth/init.php";
     $result = selectData("SELECT user.password_hash, 
                           user.role, user.id, 

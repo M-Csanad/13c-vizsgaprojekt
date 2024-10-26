@@ -61,10 +61,10 @@ form {
 
     .input-group:has(input:not(:placeholder-shown)):has(input:valid), 
     .input-group:has(input:-webkit-autofill) {
-        border-bottom: 3px solid rgb(57, 152, 65) !important;
+        border-bottom: 3px solid var(--valid) !important;
     }
     .input-group:has(input:not(:placeholder-shown)):has(input:invalid) {
-        border-bottom: 3px solid rgb(220, 21, 21);
+        border-bottom: 3px solid var(--invalid);
     }
     
     .input-group input {

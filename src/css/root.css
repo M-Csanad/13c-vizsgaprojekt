@@ -1,5 +1,5 @@
 :root {
-    --background: #f2f3f4;
+    --background: #fafafa;
     --background-dark: #121212;
     --danger: rgb(181, 0, 0);
     --border: #b6b6b6;
@@ -7,6 +7,8 @@
     --padding: 16px 24px;
     --text: #222222;
     --text-light: #555555;
+    --valid: rgb(57, 152, 65);
+    --invalid: rgb(220, 21, 21);
 }
 
 .border {
