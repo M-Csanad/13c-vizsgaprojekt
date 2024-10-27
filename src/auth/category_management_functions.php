@@ -68,8 +68,11 @@ function createCategory($categoryData) {
     return $successful;
 }
 
-function removeCategory() {
-    
+function removeCategory($categoryName) {
+    include_once './auth/init.php';
+    $db = createConnection();
+
+    var_dump($categoryName);
 }
 
 ?>

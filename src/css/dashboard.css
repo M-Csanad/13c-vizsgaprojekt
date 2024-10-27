@@ -1,4 +1,5 @@
 @import url('./root.css');
+@import url('./search.css');
 
 *{
     padding: 0;
@@ -103,7 +104,7 @@ section {
         height: 30px;
     }
 
-    .inline-input > label {
+    .inline-input > label{
         display: flex;
         align-items: center;
         font-weight: 600;
@@ -181,7 +182,7 @@ section {
     .file-input > div > label.input-wrapper > input {
         display: none;
     }
-    .file-input:hover > div > label.input-wrapper {
+    .file-input:hover > div > label.input-wrapper    {
         background-color: #e8e8e8;
     }
 
