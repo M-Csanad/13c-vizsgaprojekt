@@ -111,6 +111,13 @@ section {
         width: 20%;
     }
 
+    .inline-input:has(input:required:not(:disabled)) > label::after, .inline-input:has(select:required:not(:disabled)) > label::after {
+        content: '*';
+        color: red;
+        height: 100%;
+        font-family:'Courier New', Courier, monospace;
+    }
+
     .inline-input > input, .inline-input > select {
         display: flex;
         align-items: center;
@@ -192,7 +199,6 @@ section {
     }
 
     .form-submit-primary:hover {
-        scale: 1.1;
         background-color: #2a2a2a;
         border: 2px solid #6b6b6b;
     }
@@ -215,7 +221,6 @@ section {
     }
 
     .form-submit-danger:hover {
-        scale: 1.1;
         background-color: #ca3535;
         border: 2px solid #8f1717;
     }

@@ -1,3 +1,7 @@
+const parentCategoryInput = document.querySelector("select#parent_category");
+const parentCategoryHiddenInput = document.querySelector("input[name='parent_category_id']");
+const categoryType = document.getElementById('type');
+
 function updateHeight() {
     let activeGroups = document.querySelectorAll(".section-group.active > .group-body");
     for (let group of activeGroups) {
@@ -25,18 +29,25 @@ window.addEventListener("load", ()=> {
     for (let header of groupHeaders) {
         header.addEventListener("click", expandGroup);
     }
+
+    parentCategoryHiddenInput.value = parentCategoryInput.querySelector('option:checked').dataset.id;
 });
 
 window.addEventListener("resize", updateHeight);
 
 document.getElementById('type').addEventListener('change', ()=> {
-    let selected = document.getElementById('type').value;
-    let parentCategoryInput = document.querySelector("div > select#parent_category");
+    let selected = categoryType.value;
     
     if (selected == "sub") {
         parentCategoryInput.removeAttribute("disabled");
+        parentCategoryHiddenInput.removeAttribute("disabled");
     }
     else {
         parentCategoryInput.setAttribute("disabled", true);
+        parentCategoryHiddenInput.setAttribute("disabled", true);
     }
+});
+
+parentCategoryInput.addEventListener("change", () => {
+    parentCategoryHiddenInput.value = parentCategoryInput.querySelector('option:checked').dataset.id;
 });
