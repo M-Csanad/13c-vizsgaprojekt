@@ -253,6 +253,33 @@ h6 {
   pointer-events: none;
   z-index: 1;
 }
+
+.swiper-slide .img-wrapper .text-overlay {
+  position: absolute;
+
+  left: 15%; /* Távolság a bal széltől */
+  top: 40%; /* Függőlegesen középre igazítva */
+  transform: translateY(-50%);
+  color: var(--light_main);
+  padding: 10px 15px;
+  border-radius: 5px;
+  max-width: 30vw;
+  z-index: 10;
+}
+.swiper-slide .img-wrapper .text-overlay h1 {
+  font-family: "Cubano";
+  font-weight: 500;
+  text-transform: capitalize;
+  padding: 10px 0;
+  text-shadow: 1px 0px 5px var(--dark_main), 0 0 80px var(--dark_main);
+}
+.swiper-slide .img-wrapper .text-overlay p {
+  text-align: justify;
+  font-family: "Poppins", sans-serif;
+  padding: 10px 0;
+  text-shadow: 1px 0px 5px var(--dark_main), 0 0 80px var(--dark_main);
+}
+
 .swiper-slide .img-wrapper img {
   filter: grayscale(0.36) brightness(0.84);
   width: 100vw;
