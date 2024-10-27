@@ -10,6 +10,15 @@
       href="https://unpkg.com/lenis@1.1.14/dist/lenis.css"
     />
 
+    <!--swiper stylesheet-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.0.4/swiper-bundle.css"
+      integrity="sha512-3OuH/9eh0Sx9s/c23ZFG5SJb3GvBluF9cdGgQXhZyMyId4GP87W9QBgkHmocx+8kZaCZmXQUUuLOD4Q4f5PaWQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
     <!--root stylesheet-->
     <link rel="stylesheet" href="../css/root.css" />
 
@@ -40,7 +49,6 @@
               />
             </video>
           </div>
-
           <div class="videoContent_wrapper">
             <div class="videoContent_scrollable">
               <div class="videoContent_card-content">
@@ -50,20 +58,19 @@
                 />
               </div>
               <div class="videoContent_card-content">
-                <p class="__t01-mew1">
-                    Üdvözlünk a természet kincseinek világában, ahol a
-                    gyógynövények ereje és a harmónia találkozik.</a
-                  >
+                <p class="__t03-law1">
+                  Üdvözlünk a természet kincseinek világában, ahol a
+                  gyógynövények ereje és a harmónia találkozik.
                 </p>
               </div>
               <div class="videoContent_card-content">
-                <p class="__t01-mew1">
+                <p class="__t03-law1">
                   Nálunk minden termék gondosan válogatott, hogy támogassa
                   egészséged és harmóniád.
                 </p>
               </div>
               <div class="videoContent_card-content">
-                <p class="__t01-mew1">
+                <p class="__t03-law1">
                   Lépj be a Florens Botanica világába, és hagyd, hogy a
                   természet ereje magával ragadjon!
                 </p>
@@ -71,22 +78,181 @@
             </div>
           </div>
         </div>
-        <div id="headSwiper_container">
-          <div class="swiper"></div>
+        <div id="Parallax_container">
+          <!--TODO-->
+          <!-- <div id="Parallax_box01" class="Parallax_box" data-speed="0.2">
+            <img id="ImgParallax" src="../media/img/treeLog.png" alt="PhotoDesign" />
+          </div> -->
+        </div>
+        <div id="categorychooser">
+          <div class="swiper bg_slider">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div class="img-wrapper">
+                  <img src="../media/img/gradient/g01.jpg" alt="" />
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="img-wrapper">
+                  <img src="../media/img/gradient/g02.jpg" alt="" />
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="img-wrapper">
+                  <img src="../media/img/gradient/g03.jpg" alt="" />
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="img-wrapper">
+                  <img src="../media/img/gradient/g04.jpg" alt="" />
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="img-wrapper">
+                  <img src="../media/img/gradient/g05.jpg" alt="" />
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="img-wrapper">
+                  <img src="../media/img/gradient/g06.jpg" alt="" />
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="img-wrapper">
+                  <img src="../media/img/gradient/g07.jpg" alt="" />
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="img-wrapper">
+                  <img src="../media/img/gradient/g08.jpg" alt="" />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="swiper bg_slider-thumbs">
+            <div class="swiper-wrapper thumbs-container">
+              <div class="swiper-slide">
+                <div class="circleImg">
+                  <img src="../media/img/gradient/g01.jpg" alt="" />
+                </div>
+                <div class="contentImg">
+                  <p class="__t01-men1">Lorem Ipsum Dole</p>
+                  <h2 class="__t03-law4">Kecske</h2>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="circleImg">
+                  <img src="../media/img/gradient/g02.jpg" alt="" />
+                </div>
+                <div class="contentImg">
+                  <p class="__t01-men1">Lorem Ipsum Dole</p>
+                  <h2 class="__t03-law4">Kecske</h2>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="circleImg">
+                  <img src="../media/img/gradient/g03.jpg" alt="" />
+                </div>
+                <div class="contentImg">
+                  <p class="__t01-men1">Lorem Ipsum Dole</p>
+                  <h2 class="__t03-law4">Kecske</h2>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="circleImg">
+                  <img src="../media/img/gradient/g04.jpg" alt="" />
+                </div>
+                <div class="contentImg">
+                  <p class="__t01-men1">Lorem Ipsum Dole</p>
+                  <h2 class="__t03-law4">Kecske</h2>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="circleImg">
+                  <img src="../media/img/gradient/g05.jpg" alt="" />
+                </div>
+                <div class="contentImg">
+                  <p class="__t01-men1">Lorem Ipsum Dole</p>
+                  <h2 class="__t03-law4">Kecske</h2>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="circleImg">
+                  <img src="../media/img/gradient/g06.jpg" alt="" />
+                </div>
+                <div class="contentImg">
+                  <p class="__t01-men1">Lorem Ipsum Dole</p>
+                  <h2 class="__t03-law4">Kecske</h2>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="circleImg">
+                  <img src="../media/img/gradient/g07.jpg" alt="" />
+                </div>
+                <div class="contentImg">
+                  <p class="__t01-men1">Lorem Ipsum Dole</p>
+                  <h2 class="__t03-law4">Kecske</h2>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="circleImg">
+                  <img src="../media/img/gradient/g08.jpg" alt="" />
+                </div>
+                <div class="contentImg">
+                  <p class="__t01-men1">Lorem Ipsum Dole</p>
+                  <h2 class="__t03-law4">Kecske</h2>
+                </div>
+              </div>
+            </div>
+            <!-- Nyilak a navigációhoz -->
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-button-next"></div>
+          </div>
         </div>
       </section>
       <section id="__main_body">
-        <br /><br /><br /><br /><br /><br /><br />
+        <br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br /><br />
       </section>
     </main>
     <footer></footer>
+
+    <!--jQuery-->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+      integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
     <!--lenis scroll-->
     <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
     <script src="./js/lenis.js"></script>
 
+    <!--swiper bundle-->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.0.4/swiper-bundle.min.js"
+      integrity="sha512-0N/5ZOjfsh3niel+5dRD40HQkFOWaxoVzqMVAHnmAO2DC3nY/TFB7OYTaPRAFJ571IRS/XRsXGb2XyiFLFeu1g=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script type="text/javascript" src="./js/swiper.js"></script>
+    <script type="text/javascript" src="./js/swiperThumbs.js"></script>
+
     <!--video restart-->
     <script src="./js/videoMouseHover.js"></script>
     <script src="./js/videoContentScroll.js"></script>
+
+    <!--parallax-->
+    <script src="./js/parallaxEffect.js"></script>
+
+    <!--ionicons-->
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
   </body>
 </html>

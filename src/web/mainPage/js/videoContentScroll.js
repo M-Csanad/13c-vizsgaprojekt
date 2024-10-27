@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
   );
 
   // Az elem aktiválásához szükséges eltolás (pixelekben)
-  const offset = 200;
+  const offset = 250;
 
   // Ellenőrzi, hogy az elem a viewport látható részén belül van-e (a képernyőn)
   const elementInView = (el) => {
