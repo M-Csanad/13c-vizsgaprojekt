@@ -4,6 +4,7 @@
 // Thumbnail Swiper
 var thumbSwiper = new Swiper(".bg_slider-thumbs", {
   loop: false,
+  initialSlide: 0,
   spaceBetween: 0,
   slidesPerView: 4,
   watchSlidesVisibility: true,
@@ -11,6 +12,12 @@ var thumbSwiper = new Swiper(".bg_slider-thumbs", {
   navigation: {
     nextEl: ".swiper-button-next",
     prevEl: ".swiper-button-prev",
+  },
+  on: {
+    init: function () {
+      this.slideTo(0, 0, false); // Kötelezően az 1. elemnél kezdődik
+      this.update();
+    },
   },
 });
 

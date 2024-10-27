@@ -283,9 +283,7 @@ h6 {
   display: flex;
   position: relative;
   flex-direction: row;
-  justify-content: center;
   align-items: center;
-  width: 300%;
 }
 
 .bg_slider-thumbs .swiper-slide {
@@ -295,7 +293,7 @@ h6 {
   flex: 0 0 auto;
   filter: brightness(1);
   opacity: 1;
-  transform: translateX(215%);
+  transform: translateX(15%);
   transition: filter 0.4s ease, opacity 0.4s ease;
 }
 
