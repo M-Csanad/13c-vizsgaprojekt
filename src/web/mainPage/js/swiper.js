@@ -1,6 +1,6 @@
 /*
  ===== Swiper =====
- */
+*/
 // Thumbnail Swiper
 var thumbSwiper = new Swiper(".bg_slider-thumbs", {
   loop: false,
@@ -18,6 +18,12 @@ var thumbSwiper = new Swiper(".bg_slider-thumbs", {
       this.slideTo(0, 0, false); // Kötelezően az 1. elemnél kezdődik
       this.update();
     },
+    slideChange: function () {
+      // Frissíti a csúszka pozícióját a slide váltásával
+      const totalSlides = this.slides.length - 1;
+      const progress = (this.realIndex / totalSlides) * 100;
+      document.querySelector(".thumb-slider").value = progress;
+    },
   },
 });
 
@@ -26,9 +32,9 @@ var mainSwiper = new Swiper(".bg_slider", {
   loop: true,
   slidesPerView: 1,
   spaceBetween: 0,
-  speed: 2000,
+  speed: 1000,
   thumbs: {
-    swiper: thumbSwiper, // Link the thumbnail swiper
+    swiper: thumbSwiper, // thumbnail swiper link
   },
   autoplay: {
     delay: 4000,
@@ -37,4 +43,27 @@ var mainSwiper = new Swiper(".bg_slider", {
   },
   watchSlidesVisibility: true,
   watchSlidesProgress: true,
+  navigation: {
+    nextEl: ".swiper-button-next",
+    prevEl: ".swiper-button-prev",
+  },
+  on: {
+    slideChange: function () {
+      const activeIndex = this.realIndex; // Aktuális index a loop miatt
+
+      // Minden thumbSlide-ra alapértelmezett inaktív stílus
+      thumbSwiper.slides.forEach((slide) => {
+        slide.classList.remove("active");
+        slide.classList.add("inactive");
+      });
+      this.update();
+
+      // Az aktuális thumbSlide aktív stílusa
+      const activeThumbSlide = thumbSwiper.slides[activeIndex];
+      if (activeThumbSlide) {
+        activeThumbSlide.classList.add("active");
+        activeThumbSlide.classList.remove("inactive");
+      }
+    },
+  },
 });

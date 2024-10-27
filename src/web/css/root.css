@@ -3,18 +3,30 @@
    Color elements
   */
   --dark_main: #0c0c0c;
-  --dark_main_op5: rgba(12, 12, 12, 0.5);
-  --dark_main_op6: rgba(12, 12, 12, 0.6);
-  --dark_main_op7: rgba(12, 12, 12, 0.7);
-  --dark_main_op8: rgba(12, 12, 12, 0.8);
-  --dark_main_op9: rgba(12, 12, 12, 0.9);
+  --dark_main-op1: rgba(12, 12, 12, 0.1);
+  --dark_main-op2: rgba(12, 12, 12, 0.2);
+  --dark_main-op3: rgba(12, 12, 12, 0.3);
+  --dark_main-op4: rgba(12, 12, 12, 0.4);
+  --dark_main-op5: rgba(12, 12, 12, 0.5);
+  --dark_main-op6: rgba(12, 12, 12, 0.6);
+  --dark_main-op7: rgba(12, 12, 12, 0.7);
+  --dark_main-op8: rgba(12, 12, 12, 0.8);
+  --dark_main-op9: rgba(12, 12, 12, 0.9);
   --dark_secondary: #1c1c1c;
-  --dark_secondary_op5: rgba(28, 28, 28, 0.5);
-  --dark_secondary_op6: rgba(28, 28, 28, 0.6);
-  --dark_secondary_op7: rgba(28, 28, 28, 0.7);
-  --dark_secondary_op8: rgba(28, 28, 28, 0.8);
-  --dark_secondary_op9: rgba(28, 28, 28, 0.9);
+  --dark_secondary-op1: rgba(28, 28, 28, 0.1);
+  --dark_secondary-op2: rgba(28, 28, 28, 0.2);
+  --dark_secondary-op3: rgba(28, 28, 28, 0.3);
+  --dark_secondary-op4: rgba(28, 28, 28, 0.4);
+  --dark_secondary-op5: rgba(28, 28, 28, 0.5);
+  --dark_secondary-op6: rgba(28, 28, 28, 0.6);
+  --dark_secondary-op7: rgba(28, 28, 28, 0.7);
+  --dark_secondary-op8: rgba(28, 28, 28, 0.8);
+  --dark_secondary-op9: rgba(28, 28, 28, 0.9);
   --light_main: #ffffff;
+  --light_main-op1: rgba(255, 255, 255, 0.1);
+  --light_main-op2: rgba(255, 255, 255, 0.2);
+  --light_main-op3: rgba(255, 255, 255, 0.3);
+  --light_main-op4: rgba(255, 255, 255, 0.4);
   --light_main-op5: rgba(255, 255, 255, 0.5);
   --light_main-op6: rgba(255, 255, 255, 0.6);
   --light_main-op7: rgba(255, 255, 255, 0.7);
@@ -34,6 +46,4 @@
   --blur8: blur(8px);
   --blur9: blur(9px);
   --blur10: blur(10px);
-  --blur11: blur(11px);
-  --blur12: blur(12px);
 }
