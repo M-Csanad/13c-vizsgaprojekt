@@ -132,14 +132,16 @@
                     <form method="POST">
                         <div class="input-grid">
                             <div class="search">
-                                <input type="text" name="category_name" id="category_name_delete">
+                                <input type="text" name="category_name" id="category_name_delete" placeholder="Kategória keresése">
                                 <label for="category_name_delete" class="search-button">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                                     </svg>
                                 </label>
+                                <div class="items"></div>
+                                <input type="hidden" name="selected_category" id="selected_category_delete" value="null">
+                                <input type="hidden" name="selected_category_type" id="selected_category_type_delete" value="null">
                             </div>
-                            <input type="hidden" name="selected_type" id="selected_type_delete">
                             <div class="form-submit-wrapper">
                                 <input type="submit" value="Törlés" class="form-submit-danger" name='delete_product'>
                             </div>
@@ -370,5 +372,6 @@
         ?>
     </div>
     <script src="./js/dashboard.js"></script>
+    <script src="./js/category_search.js"></script>
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 function selectData($query, $parameters) {
     try {
-        include_once "./auth/init.php";
+        include_once "init.php";
         $db = createConnection();
 
         $statement = $db -> prepare($query);
@@ -23,8 +23,11 @@ function selectData($query, $parameters) {
         $result = $statement -> get_result();
         $db -> close();
 
-        if ($result -> num_rows > 0) {
+        if ($result -> num_rows == 1) {
             return $result -> fetch_assoc();
+        }
+        if ($result -> num_rows > 0) {
+            return $result -> fetch_all(MYSQLI_ASSOC);
         }
         else {
             return "Nincs találat!";
