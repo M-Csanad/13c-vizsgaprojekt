@@ -36,11 +36,11 @@ var mainSwiper = new Swiper(".bg_slider", {
   thumbs: {
     swiper: thumbSwiper, // thumbnail swiper link
   },
-  autoplay: {
+  /* autoplay: {
     delay: 4000,
     disableOnInteraction: false,
     pauseOnMouseEnter: true,
-  },
+  }, */
   watchSlidesVisibility: true,
   watchSlidesProgress: true,
   navigation: {
