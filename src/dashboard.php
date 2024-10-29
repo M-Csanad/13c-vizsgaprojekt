@@ -38,38 +38,41 @@
     </p>
     <header class="page-title">Vezérlőpult</header>
 
-    <!------------------------------ Jogosultságok kezelése ----------------------------->
-    <div class="section-group">
-        <div class="group-header">
-            <div class="group-title">Jogosultságok kezelése</div>
-            <div class="group-expander">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
-                </svg>
-            </div>
+    <nav class="pages">
+        <div class="page active" data-pageid="0">
+            Kategóriák
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+            </svg>
         </div>
-        <div class="group-body">
-            <section></section>
+        <div class="page" data-pageid="1">
+            Termékek
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+            </svg>
         </div>
-    </div>
+        <div class="page" data-pageid="2">
+            Jogosultságok
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+            </svg>
+        </div>
+    </nav>
 
     <!------------------------------ Kategóriák kezelése ----------------------------->
-    <div class="section-group">
-        <div class="group-header">
-            <div class="group-title">Kategóriák kezelése</div>
-            <div class="group-expander">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
-                </svg>
-            </div>
-        </div>
+    <div class="section-group active">
         <div class="group-body">
             <!-------------------------- Új kategória létrehozása ------------------------>
             <section>
-                <div class="section-title">Új kategória létrehozása</div>
+                <div class="section-header">
+                    <div class="section-title">Új kategória létrehozása</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
                 <div class="section-body">
                     <form method="POST" enctype="multipart/form-data">
-                    <div class="input-grid">
+                        <div class="input-grid">
                             <div class="inline-input">
                                 <label for="category_name">Név</label>
                                 <input type="text" name="category_name" id="category_name" required>
@@ -127,7 +130,12 @@
                 </div>
             </section>
             <section>
-                <div class="section-title">Kategória törlése</div>
+                <div class="section-header">
+                    <div class="section-title">Kategória törlése</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
                 <div class="section-body">
                     <form method="POST">
                         <div class="input-grid">
@@ -138,7 +146,6 @@
                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                                     </svg>
                                 </label>
-                                <div class="items"></div>
                                 <input type="hidden" name="selected_category" id="selected_category_delete" value="null">
                                 <input type="hidden" name="selected_category_type" id="selected_category_type_delete" value="null">
                             </div>
@@ -147,25 +154,22 @@
                             </div>
                         </div>
                     </form>
+                    <div class="items"></div>
                 </div>
             </section>
         </div>
     </div>
-
     <!------------------------------ Termékek kezelése ----------------------------->
     <div class="section-group">
-        <div class="group-header">
-            <div class="group-title">Termékek kezelése</div>
-            <div class="group-expander">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
-                </svg>
-            </div>
-        </div>
         <div class="group-body">
             <!----------------------------- Új termék felvitele ---------------------------->
             <section>
-                <div class="section-title">Új termék felvitele</div>
+                <div class="section-header">
+                    <div class="section-title">Új termék felvitele</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
                 <div class="section-body">
                     <form method="POST" enctype="multipart/form-data">
                         <div class="input-grid">
@@ -240,7 +244,12 @@
             </section>
             <!------------------------------- Termék törlése ------------------------------->
             <section>
-                <div class="section-title">Termék törlése</div>
+                <div class="section-header">
+                    <div class="section-title">Termék törlése</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
                 <div class="section-body">
                     <form method="POST">
                         <div class="input-select">
@@ -257,7 +266,12 @@
             </section>
             <!------------------------------ Termék módosítása ----------------------------->
             <section>
-                <div class="section-title">Meglévő termék szerkesztése</div>
+                <div class="section-header">
+                    <div class="section-title">Termék módosítása</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
                 <div class="section-body">
                 <form method="POST" enctype="multipart/form-data">
                         <div class="input-grid">
@@ -332,6 +346,14 @@
             </section>
         </div>
     </div>
+    <!------------------------------ Jogosultságok kezelése ----------------------------->
+    <div class="section-group">
+        <div class="group-body">
+            <section></section>
+        </div>
+    </div>
+
+
     <div>
         <?php
             if (isset($_POST['create_category'])) {
