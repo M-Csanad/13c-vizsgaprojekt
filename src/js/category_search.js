@@ -12,6 +12,7 @@ function positionDropdown() {
 function populateItemContainer(categories) {
     if (categories == "Nincs találat!") {
         searchItemsContainer.style.display = "none";
+        searchItemsContainer.innerHTML = "";
         search.style.borderRadius = "5px 5px 5px 5px";
         return;
     }
@@ -29,12 +30,27 @@ function populateItemContainer(categories) {
         searchItemsContainer.appendChild(categoryDOM);
     }
 }
+function resetInputs() {
+    search.querySelector("input[name=category_id]").value = 'null'; 
+    search.querySelector("input[name=category_type]").value = 'null';
+}
+
+function validateSearchInput() {
+    if (search.querySelector("input[name=category_id]").value == 'null' || search.querySelector("input[name=category_type]").value == 'null') {
+        searchInput.setCustomValidity('Kérjük válasszon egy meglévő kategóriát!');
+    }
+    else {
+        searchInput.setCustomValidity('');
+    }
+}
 
 function setInputs(id, type, name) { 
     search.querySelector("input[name=category_id]").value = id; 
     search.querySelector("input[name=category_type]").value = type;
     searchInput.value = name;
     search.style.borderRadius = "5px 5px 5px 5px";
+    searchItemsContainer.innerHTML = "";
+    validateSearchInput();
     toggleDropdown(false);
 }
 
@@ -42,7 +58,8 @@ function toggleDropdown(show) {
     searchItemsContainer.style.display = show ? "block" : "none";
 }
 
-searchInput.addEventListener("focusin", () => {
+searchInput.addEventListener("focusin", async () => {
+    await searchCategory();
     if (searchItemsContainer.children.length > 0) {
         toggleDropdown(true);
         positionDropdown();
@@ -56,9 +73,14 @@ document.addEventListener("click", (e) => {
         toggleDropdown(false);
     }
 });
-
 searchInput.addEventListener("input", async () => {
+    resetInputs();
     positionDropdown();
+    await searchCategory();
+    validateSearchInput();
+});
+
+async function searchCategory(){
     let input = searchInput.value;
     let data = new FormData();
     data.append('search_term', input);
@@ -80,4 +102,4 @@ searchInput.addEventListener("input", async () => {
         searchItemsContainer.style.display = "none";
         search.style.borderRadius = "5px 5px 5px 5px";
     }
-});
+}

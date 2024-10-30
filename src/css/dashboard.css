@@ -131,7 +131,7 @@ section {
         font-size: 16px;
         width: 20%;
     }
-    
+
     .inline-input:has(input:required:not(:disabled)) > label::after, .inline-input:has(select:required:not(:disabled)) > label::after {
         content: '*';
         color: red;
@@ -202,7 +202,7 @@ section {
     .file-input > div > label.input-wrapper > input {
         display: none;
     }
-    .file-input:hover > div > label.input-wrapper    {
+    .file-input > div:hover > label.input-wrapper    {
         background-color: #e8e8e8;
     }
 
