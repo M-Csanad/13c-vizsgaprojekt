@@ -24,4 +24,17 @@
     color: white;
     padding: 10px;
     box-sizing: border-box;
+    transition: opacity 1s ease;
+}
+
+.success {
+    width: 100%;
+    background-color: rgb(18, 155, 0);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 18px;
+    border: 3px solid rgb(23, 235, 34);
+    color: white;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: opacity 1s ease;
 }

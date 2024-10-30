@@ -40,7 +40,7 @@ function selectData($query, $parameters) {
 
 function updateData($query, $parameters) {
     try {
-        include_once "./auth/init.php";
+        include_once "init.php";
         $db = createConnection();
         if (!is_array($parameters)) {
             $parameters = [$parameters];
@@ -57,7 +57,10 @@ function updateData($query, $parameters) {
         $statement -> execute();
 
         $db -> close();
-        return true;
+        if ($statement -> affected_rows > 0) {
+            return true;
+        }
+        else return false;
     }
     catch(Exception $e) {
         return $db -> error;

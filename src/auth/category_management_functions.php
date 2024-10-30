@@ -1,5 +1,23 @@
 <?php
 
+function createCategory($categoryData) {
+    include_once 'init.php';
+    $db = createConnection();
+    
+    $categoryType = $categoryData['type'];
+    unset($categoryData['type']);
+    $thumbnailURI = createCategoryDirectory($categoryData, $categoryType);
+    
+    if (!$thumbnailURI) {
+        return false;
+    }
+    
+    $categoryData['thumbnail_uri'] = $thumbnailURI;
+    
+    $successful = uploadCategoryData($categoryData, $categoryType);
+    return $successful;
+}
+
 function createCategoryDirectory($categoryData, $categoryType) {
     if (count(array_filter($_FILES, function ($e) { return $e['error'] == 1; })) > 0) {
         echo "<div class='error'>Hiba merült fel a feltöltés során.</div>";
@@ -50,29 +68,63 @@ function uploadCategoryData($categoryData, $categoryType) {
     }
 }
 
-function createCategory($categoryData) {
-    include_once './auth/init.php';
-    $db = createConnection();
+function removeCategory($categoryData) {
+    include_once 'init.php';
 
-    $categoryType = $categoryData['type'];
-    unset($categoryData['type']);
-    $thumbnailURI = createCategoryDirectory($categoryData, $categoryType);
 
-    if (!$thumbnailURI) {
-        return false;
+    $successfulDelete = removeCategoryFromDB($categoryData);
+
+    if ($successfulDelete === false) {
+        return "Ez a kategória nem létezik!";
+    }
+    else if ($successfulDelete !== true) {
+        return $successfulDelete;
     }
 
-    $categoryData['thumbnail_uri'] = $thumbnailURI;
-
-    $successful = uploadCategoryData($categoryData, $categoryType);
-    return $successful;
+    $successfulDirectoryDelete = removeCategoryDirectory($categoryData['name']);
+    
+    return $successfulDirectoryDelete;
 }
 
-function removeCategory($categoryName) {
-    include_once './auth/init.php';
+function removeCategoryFromDB($categoryData) {
     $db = createConnection();
+    
+    $query = "DELETE FROM x WHERE x.id = ?;";
+    $query = str_replace("x", $categoryData['type'], $query);
+    $successfulDelete = updateData($query, $categoryData['id']);
 
-    var_dump($categoryName);
+    return $successfulDelete;
 }
 
+function removeCategoryDirectory($categoryName) {
+    $baseDir = "./images/categories/";
+    $categoryName = str_replace(" ", "-", strtolower($categoryName));
+    $categoryDirURI = $baseDir.$categoryName."/";
+
+    $successfulDelete = deleteFolder($categoryDirURI);
+
+    return $successfulDelete;
+}
+
+function deleteFolder($folderPath) {
+    if (!is_dir($folderPath)) {
+        return false;
+    }
+    $files = scandir($folderPath);
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') {
+            continue;
+        }
+
+        $filePath = $folderPath . DIRECTORY_SEPARATOR . $file;
+
+        if (is_dir($filePath)) {
+            deleteFolder($filePath);
+        } else {
+            unlink($filePath);
+        }
+    }
+
+    return rmdir($folderPath);
+}
 ?>

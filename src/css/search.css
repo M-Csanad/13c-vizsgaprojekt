@@ -53,7 +53,6 @@
 }
 .items > * {
     scroll-snap-align: start;
-    /* scroll-snap-stop: always; */
     display: flex;
     align-items: center;
     gap: 5px;

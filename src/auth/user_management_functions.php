@@ -1,7 +1,7 @@
 <?php
 
     function getUserData($userId) {
-        include_once "./auth/init.php";
+        include_once "init.php";
         $result = selectData("SELECT user.email, 
                                      user.user_name, 
                                      user.role, 
@@ -17,7 +17,7 @@
     }
 
     function modifyUserData($userId, $userData) {
-        include_once "./auth/init.php";
+        include_once "init.php";
         var_dump($userData);
     }
 

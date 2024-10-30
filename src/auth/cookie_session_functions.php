@@ -2,7 +2,7 @@
 
 function bindCookie($user)
 {
-    include_once "./auth/init.php";
+    include_once "init.php";
     $cookieToken = hash('sha256', bin2hex(random_bytes(32)));
     $expireTime = 5 * 60; // Lejárás ideje másodpercben
     $expireUnix = time() + $expireTime;
@@ -21,7 +21,7 @@ function bindCookie($user)
 
 function removeCookie($cookieToken)
 {
-    include_once "./auth/init.php";
+    include_once "init.php";
     $result = updateData("UPDATE user 
                           SET cookie_id = NULL, 
                           cookie_expires_at = NULL 

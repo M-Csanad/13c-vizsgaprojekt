@@ -1,7 +1,7 @@
 <?php
 
 function createProduct() { //$_FILES és $_POST látszódik, mivel szuperglobális, így nem kell paraméterként kezelni.
-    include_once "./auth/init.php";
+    include_once "init.php";
     $baseDirectory = './images/products/';
 
     if (count(array_filter($_FILES, function ($e) { return $e['error'] == 1; })) > 0) {

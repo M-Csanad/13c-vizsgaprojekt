@@ -4,7 +4,7 @@ function register($username, $password, $email) {
         return "Kérjük töltse ki az összes mezőt!";
     }
     
-    include_once "./auth/init.php";
+    include_once "init.php";
 
     session_start();
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -29,7 +29,7 @@ function login($username, $password, $rememberMe) {
     if (!$username || !$password) {
         return "Kérjük töltse ki az összes mezőt!";
     }
-    include_once "./auth/init.php";
+    include_once "init.php";
 
     session_start();
     $user = authenticate_user($username, $password);
@@ -52,7 +52,7 @@ function login($username, $password, $rememberMe) {
 }
 
 function authenticate_user($username, $password) {
-    include_once "./auth/init.php";
+    include_once "init.php";
     $result = selectData("SELECT user.password_hash, 
                           user.role, user.id, 
                           user.user_name

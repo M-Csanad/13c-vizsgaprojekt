@@ -129,6 +129,8 @@
                     </form>
                 </div>
             </section>
+
+            <!-------------------------- Kategória törlése ------------------------>
             <section>
                 <div class="section-header">
                     <div class="section-title">Kategória törlése</div>
@@ -146,12 +148,12 @@
                                         <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                                     </svg>
                                 </label>
-                                <input type="hidden" name="selected_category" id="selected_category_delete" value="null">
-                                <input type="hidden" name="selected_category_type" id="selected_category_type_delete" value="null">
+                                <input type="hidden" name="category_id" id="category_id_delete" value="null">
+                                <input type="hidden" name="category_type" id="category_type_delete" value="null">
                             </div>
-                            <div class="form-submit-wrapper">
-                                <input type="submit" value="Törlés" class="form-submit-danger" name='delete_product'>
-                            </div>
+                        </div>
+                        <div class="form-submit-wrapper">
+                            <input type="submit" value="Törlés" class="form-submit-danger" name='delete_category'>
                         </div>
                     </form>
                     <div class="items"></div>
@@ -352,47 +354,64 @@
             <section></section>
         </div>
     </div>
+    <?php
+        if (isset($_POST['create_category'])) {
+            unset($_POST['create_category']);
 
+            $categoryData = array(
+                "name" => $_POST['category_name'],
+                "type" => $_POST['type'],
+                "description" => $_POST['description']);
 
-    <div>
-        <?php
-            if (isset($_POST['create_category'])) {
-                unset($_POST['create_category']);
+            if (isset($_POST['parent_category'])) {
+                $categoryData['parent_category'] = $_POST['parent_category'];
+                $categoryData['parent_category_id'] = $_POST['parent_category_id'];
+            }
 
+            $successfulOperation = createCategory($categoryData);
+
+            if ($successfulOperation === true) {
+                echo "<div class='success'>Kategória sikeresen létrehozva!</div>";
+            }
+            else {
+                echo "<div class='error'>A kategória létrehozása sikertelen!</div>";
+            }
+        }
+
+        if (isset($_POST['delete_category'])) {
+            if ($_POST['category_type'] == 'null' || $_POST['category_id'] == 'null') {
+                echo "<div class='error'>Ez a kategória nem létezik!</div>"; 
+            }
+            else {
                 $categoryData = array(
                     "name" => $_POST['category_name'],
-                    "type" => $_POST['type'],
-                    "description" => $_POST['description']);
-
-                if (isset($_POST['parent_category'])) {
-                    $categoryData['parent_category'] = $_POST['parent_category'];
-                    $categoryData['parent_category_id'] = $_POST['parent_category_id'];
-                }
-
-                $successfulOperation = createCategory($categoryData);
+                    "type" => $_POST['category_type'],
+                    "id" => $_POST['category_id']
+                );
+                $successfulOperation = removeCategory($categoryData);
 
                 if ($successfulOperation === true) {
-                    echo "Kategória sikeresen létrehozva!";
+                    echo "<div class='success'>A kategória sikeresen törölve.</div>";
                 }
                 else {
-                    echo "<div class='error'>A kategória létrehozása sikertelen!</div>";
+                    echo "<div class='error'>A kategória törlése sikertelen! $successfulOperation</div>";
                 }
             }
+        }
 
-            if (isset($_POST['create_product'])) {
-                unset($_POST['create_product']);
-                $successfulOperation = createProduct();
+        if (isset($_POST['create_product'])) {
+            unset($_POST['create_product']);
+            $successfulOperation = createProduct();
 
-                if ($successfulOperation) {
-                    echo "Termék sikeresen létrehozva!";
-                }
-                else {
-                    echo "<div class='error'>A termék létrehozása sikertelen!</div>";
-                }
+            if ($successfulOperation === true) {
+                echo "<div class='success'>Termék sikeresen létrehozva!</div>";
             }
+            else {
+                echo "<div class='error'>A termék létrehozása sikertelen!</div>";
+            }
+        }
 
-        ?>
-    </div>
+    ?>
     <script src="./js/dashboard.js"></script>
     <script src="./js/category_search.js"></script>
 </body>

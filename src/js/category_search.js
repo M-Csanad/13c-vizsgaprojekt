@@ -9,6 +9,39 @@ function positionDropdown() {
     searchItemsContainer.style.width = `${rect.width}px`;
 }
 
+function populateItemContainer(categories) {
+    if (categories == "Nincs találat!") {
+        searchItemsContainer.style.display = "none";
+        search.style.borderRadius = "5px 5px 5px 5px";
+        return;
+    }
+
+    if (!Array.isArray(categories)) categories = [categories];
+    
+    searchItemsContainer.innerHTML = "";
+    searchItemsContainer.style.display = "block";
+    search.style.borderRadius = "5px 5px 0 0";
+    for (let category of categories) {
+        let categoryDOM = document.createElement("div");
+        categoryDOM.className = "search-item";
+        categoryDOM.addEventListener("click", ()=>{ setInputs(category.id, category.category_type, category.name);});
+        categoryDOM.innerHTML = `<img src='${category.thumbnail_image_uri}'><div><b>${category.name}</b> - ${(category.category_type == "category") ? "Főkategória" : `Alkategória <i>(${category.parent_category})</i></div>`}`;
+        searchItemsContainer.appendChild(categoryDOM);
+    }
+}
+
+function setInputs(id, type, name) { 
+    search.querySelector("input[name=category_id]").value = id; 
+    search.querySelector("input[name=category_type]").value = type;
+    searchInput.value = name;
+    search.style.borderRadius = "5px 5px 5px 5px";
+    toggleDropdown(false);
+}
+
+function toggleDropdown(show) {
+    searchItemsContainer.style.display = show ? "block" : "none";
+}
+
 searchInput.addEventListener("focusin", () => {
     if (searchItemsContainer.children.length > 0) {
         toggleDropdown(true);
@@ -48,36 +81,3 @@ searchInput.addEventListener("input", async () => {
         search.style.borderRadius = "5px 5px 5px 5px";
     }
 });
-
-function populateItemContainer(categories) {
-    if (categories == "Nincs találat!") {
-        searchItemsContainer.style.display = "none";
-        search.style.borderRadius = "5px 5px 5px 5px";
-        return;
-    }
-
-    if (!Array.isArray(categories)) categories = [categories];
-
-    searchItemsContainer.innerHTML = "";
-    searchItemsContainer.style.display = "block";
-    search.style.borderRadius = "5px 5px 0 0";
-    for (let category of categories) {
-        let categoryDOM = document.createElement("div");
-        categoryDOM.className = "search-item";
-        categoryDOM.addEventListener("click", ()=>{ setInputs(category.id, category.category_type, category.name);});
-        categoryDOM.innerHTML = `<img src='${category.thumbnail_image_uri}'><b>${category.name}</b> - ${(category.category_type == "category") ? "Főkategória" : `Alkategória <i>(${category.parent_category})</i>`}`;
-        searchItemsContainer.appendChild(categoryDOM);
-    }
-}
-
-function setInputs(id, type, name) { 
-    search.querySelector("input[name=selected_category]").value = id; 
-    search.querySelector("input[name=selected_category_type]").value = type;
-    searchInput.value = name;
-    search.style.borderRadius = "5px 5px 5px 5px";
-    toggleDropdown(false);
-}
-
-function toggleDropdown(show) {
-    searchItemsContainer.style.display = show ? "block" : "none";
-}
