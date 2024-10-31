@@ -2,10 +2,6 @@
 @import url("../../css/font.css");
 
 body {
-  /* background-repeat: repeat;
-  background-position: center;
-  background-attachment: fixed;
-  background-size: 10vw; */
   background: var(--dark_primary);
   color: var(--light_main);
   margin: 0 !important;
@@ -16,6 +12,7 @@ body {
   -ms-user-select: none;
   user-select: none;
 }
+
 html,
 main {
   scroll-behavior: smooth;
@@ -37,6 +34,30 @@ h5,
 h6 {
   margin: 0;
   padding: 0;
+}
+#bg {
+  position: fixed;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  width: 100vw;
+  height: 100vh;
+  -webkit-filter: brightness(0.5) grayscale(1);
+  -moz-filter: brightness(0.5) grayscale(1);
+  -o-filter: brightness(0.5) grayscale(1);
+  -ms-filter: brightness(0.5) grayscale(1);
+  filter: brightness(0.5) grayscale(1);
+  background-image: url("../../media/img/blackSand.jpg");
+  background-color: rgba(12, 12, 12, 0.5);
+  background-blend-mode: multiply;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  background-size: 100vw;
+}
+#content {
+  position: relative;
+  z-index: 9999;
 }
 /*
  =============================
@@ -68,7 +89,7 @@ h6 {
   z-index: 2;
 }
 #BGDT01 {
-  color: var(--dark_tertiary);
+  color: var(--dark_secondary);
   font-size: clamp(15rem, calc(24rem + 0.39vw), 60rem);
   text-transform: uppercase;
   font-family: "Poppins";
@@ -77,7 +98,7 @@ h6 {
   transform: translateY(120%);
 }
 #BGDT02 {
-  color: var(--dark_quaternary);
+  color: var(--dark_tertiary);
   font-size: clamp(13rem, calc(16rem + 0.39vw), 40rem);
   font-weight: 300;
   text-transform: capitalize;
@@ -86,7 +107,7 @@ h6 {
   transform: translateY(90%);
 }
 #BGDT03 {
-  color: var(--dark_tertiary);
+  color: var(--dark_secondary);
   font-size: clamp(15rem, calc(20rem + 0.39vw), 50rem);
   text-transform: uppercase;
   font-family: "Poppins";
@@ -96,7 +117,7 @@ h6 {
   mix-blend-mode: difference;
 }
 #BGDT04 {
-  color: var(--dark_quaternary);
+  color: var(--dark_tertiary);
   font-size: clamp(13rem, calc(16rem + 0.39vw), 40rem);
   font-weight: 300;
   text-transform: capitalize;

@@ -2,7 +2,7 @@
   /*
    Color elements
   */
-  --dark_primary: #0c0c0c;
+  --dark_primary: rgb(12, 12, 12);
   --dark_primary-op1: rgba(12, 12, 12, 0.1);
   --dark_primary-op2: rgba(12, 12, 12, 0.2);
   --dark_primary-op3: rgba(12, 12, 12, 0.3);
@@ -12,7 +12,7 @@
   --dark_primary-op7: rgba(12, 12, 12, 0.7);
   --dark_primary-op8: rgba(12, 12, 12, 0.8);
   --dark_primary-op9: rgba(12, 12, 12, 0.9);
-  --dark_secondary: #121212;
+  --dark_secondary: rgb(18, 18, 18);
   --dark_secondary-op1: rgba(18, 18, 18, 0.1);
   --dark_secondary-op2: rgba(18, 18, 18, 0.2);
   --dark_secondary-op3: rgba(18, 18, 18, 0.3);
@@ -22,26 +22,26 @@
   --dark_secondary-op7: rgba(18, 18, 18, 0.7);
   --dark_secondary-op8: rgba(18, 18, 18, 0.8);
   --dark_secondary-op9: rgba(18, 18, 18, 0.9);
-  --dark_tertiary: #1c1c1c;
-  --dark_tertiary-op1: rgba(28, 28, 28, 0.1);
-  --dark_tertiary-op2: rgba(28, 28, 28, 0.2);
-  --dark_tertiary-op3: rgba(28, 28, 28, 0.3);
-  --dark_tertiary-op4: rgba(28, 28, 28, 0.4);
-  --dark_tertiary-op5: rgba(28, 28, 28, 0.5);
-  --dark_tertiary-op6: rgba(28, 28, 28, 0.6);
-  --dark_tertiary-op7: rgba(28, 28, 28, 0.7);
-  --dark_tertiary-op8: rgba(28, 28, 28, 0.8);
-  --dark_tertiary-op9: rgba(28, 28, 28, 0.9);
-  --dark_quaternary: rgb(38, 38, 38);
-  --dark_quaternary-op1: rgba(38, 38, 38, 0.1);
-  --dark_quaternary-op2: rgba(38, 38, 38, 0.2);
-  --dark_quaternary-op3: rgba(38, 38, 38, 0.3);
-  --dark_quaternary-op4: rgba(38, 38, 38, 0.4);
-  --dark_quaternary-op5: rgba(38, 38, 38, 0.5);
-  --dark_quaternary-op6: rgba(38, 38, 38, 0.6);
-  --dark_quaternary-op7: rgba(38, 38, 38, 0.7);
-  --dark_quaternary-op8: rgba(38, 38, 38, 0.8);
-  --dark_quaternary-op9: rgba(38, 38, 38, 0.9);
+  --dark_tertiary: rgb(24, 24, 24);
+  --dark_tertiary-op1: rgba(24, 24, 24, 0.1);
+  --dark_tertiary-op2: rgba(24, 24, 24, 0.2);
+  --dark_tertiary-op3: rgba(24, 24, 24, 0.3);
+  --dark_tertiary-op4: rgba(24, 24, 24, 0.4);
+  --dark_tertiary-op5: rgba(24, 24, 24, 0.5);
+  --dark_tertiary-op6: rgba(24, 24, 24, 0.6);
+  --dark_tertiary-op7: rgba(24, 24, 24, 0.7);
+  --dark_tertiary-op8: rgba(24, 24, 24, 0.8);
+  --dark_tertiary-op9: rgba(24, 24, 24, 0.9);
+  --dark_quaternary: rgb(30, 30, 30);
+  --dark_quaternary-op1: rgba(30, 30, 30, 0.1);
+  --dark_quaternary-op2: rgba(30, 30, 30, 0.2);
+  --dark_quaternary-op3: rgba(30, 30, 30, 0.3);
+  --dark_quaternary-op4: rgba(30, 30, 30, 0.4);
+  --dark_quaternary-op5: rgba(30, 30, 30, 0.5);
+  --dark_quaternary-op6: rgba(30, 30, 30, 0.6);
+  --dark_quaternary-op7: rgba(30, 30, 30, 0.7);
+  --dark_quaternary-op8: rgba(30, 30, 30, 0.8);
+  --dark_quaternary-op9: rgba(30, 30, 30, 0.9);
   --light_main: #ffffff;
   --light_main-op1: rgba(255, 255, 255, 0.1);
   --light_main-op2: rgba(255, 255, 255, 0.2);
