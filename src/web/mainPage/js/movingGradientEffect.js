@@ -1,5 +1,4 @@
 const container = document.getElementById("brand-philosophy_container");
-
 let lastMouseX = null;
 let lastMouseY = null;
 let scrollTimeout = null; // Időzítő a görgetés figyelésére
@@ -21,8 +20,6 @@ container.addEventListener("mousemove", (event) => {
   lastMouseX = event.clientX - containerRect.left;
   lastMouseY = event.clientY - containerRect.top;
 
-  console.log("Hover pozíció:", lastMouseX, lastMouseY);
-  console.log("Container Rect Hover:", containerRect);
   updatePosition(lastMouseX, lastMouseY);
 });
 
@@ -46,44 +43,79 @@ window.addEventListener("scroll", () => {
   }, 500); // 500 ms késleltetés után
 });
 
+/*
+ * Blob section
+ */
 const notifBlob = document.getElementById("notifBlob");
+const brandPhilosophyContainer = document.getElementById(
+  "brand-philosophy_container"
+);
 let blobScrollTimeout = null;
 let mouseMoveTimeout = null;
 
+// Funkció az egér pozíciójának ellenőrzésére a containeren belül
+function isMouseInContainer() {
+  const containerRect = brandPhilosophyContainer.getBoundingClientRect();
+  const mouseX = event.clientX;
+  const mouseY = event.clientY;
+
+  return (
+    mouseX >= containerRect.left &&
+    mouseX <= containerRect.right &&
+    mouseY >= containerRect.top &&
+    mouseY <= containerRect.bottom
+  );
+}
+
+// Rendszeres időzítő az egér pozíciójának ellenőrzésére
+setInterval(() => {
+  if (isMouseInContainer()) {
+    notifBlob.style.opacity = 1;
+  } else {
+    notifBlob.style.opacity = 0;
+  }
+}, 500);
+
 // Egér mozgásának figyelése és `notifBlob` pozíciójának frissítése
 window.addEventListener("mousemove", (event) => {
-  // `notifBlob` eltüntetése azonnal, amikor az egér mozog
   notifBlob.style.opacity = 0;
 
-  // Frissítjük a `notifBlob` pozícióját az egér mellett
-  notifBlob.style.left = `${event.clientX + 10}px`; // Kicsit eltolva az egér pozíciójától
-  notifBlob.style.top = `${event.clientY + 10}px`;
+  if (isMouseInContainer()) {
+    notifBlob.style.left = `${event.clientX + 10}px`;
+    notifBlob.style.top = `${event.clientY + 10}px`;
 
-  // Ha van aktív egér-időzítő, töröljük azt
-  if (mouseMoveTimeout) {
-    clearTimeout(mouseMoveTimeout);
+    if (mouseMoveTimeout) {
+      clearTimeout(mouseMoveTimeout);
+    }
+
+    mouseMoveTimeout = setTimeout(() => {
+      notifBlob.style.opacity = 1;
+    }, 500);
+  } else {
+    notifBlob.style.opacity = 0;
   }
-
-  // Beállítunk egy időzítőt, hogy megjelenjen a `notifBlob`, ha az egér 500 ms-ig nem mozog
-  mouseMoveTimeout = setTimeout(() => {
-    notifBlob.style.opacity = 1; // `notifBlob` megjelenik, ha az egér mozgása megáll
-  }, 500); // 500 ms késleltetés után jelenik meg a `notifBlob`
 });
 
 // Görgetési esemény figyelése
 window.addEventListener("scroll", () => {
-  notifBlob.style.opacity = 0; // `notifBlob` eltűnik görgetés közben
+  notifBlob.style.opacity = 0;
 
-  // Ha van aktív scroll-időzítő, töröljük azt
   if (blobScrollTimeout) {
     clearTimeout(blobScrollTimeout);
   }
 
-  // Időzítő beállítása a görgetés végére
   blobScrollTimeout = setTimeout(() => {
-    // Csak akkor jelenítjük meg újra a `notifBlob`-ot, ha az egér nem mozog
-    if (!mouseMoveTimeout) {
-      notifBlob.style.opacity = 1; // `notifBlob` megjelenik, ha a görgetés megáll és az egér nem mozog
+    const containerRect = brandPhilosophyContainer.getBoundingClientRect();
+    const mouseX = parseInt(notifBlob.style.left, 10) - 10;
+    const mouseY = parseInt(notifBlob.style.top, 10) - 10;
+
+    if (
+      mouseX >= containerRect.left &&
+      mouseX <= containerRect.right &&
+      mouseY >= containerRect.top &&
+      mouseY <= containerRect.bottom
+    ) {
+      notifBlob.style.opacity = 1;
     }
-  }, 500); // 500 ms késleltetés után jelenik meg a `notifBlob`
+  }, 500);
 });

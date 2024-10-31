@@ -32,6 +32,16 @@
   --dark_tertiary-op7: rgba(28, 28, 28, 0.7);
   --dark_tertiary-op8: rgba(28, 28, 28, 0.8);
   --dark_tertiary-op9: rgba(28, 28, 28, 0.9);
+  --dark_quaternary: rgb(38, 38, 38);
+  --dark_quaternary-op1: rgba(38, 38, 38, 0.1);
+  --dark_quaternary-op2: rgba(38, 38, 38, 0.2);
+  --dark_quaternary-op3: rgba(38, 38, 38, 0.3);
+  --dark_quaternary-op4: rgba(38, 38, 38, 0.4);
+  --dark_quaternary-op5: rgba(38, 38, 38, 0.5);
+  --dark_quaternary-op6: rgba(38, 38, 38, 0.6);
+  --dark_quaternary-op7: rgba(38, 38, 38, 0.7);
+  --dark_quaternary-op8: rgba(38, 38, 38, 0.8);
+  --dark_quaternary-op9: rgba(38, 38, 38, 0.9);
   --light_main: #ffffff;
   --light_main-op1: rgba(255, 255, 255, 0.1);
   --light_main-op2: rgba(255, 255, 255, 0.2);

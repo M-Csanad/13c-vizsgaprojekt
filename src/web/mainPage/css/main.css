@@ -58,48 +58,52 @@ h6 {
   position: absolute;
   will-change: transform;
 }
+.z2 {
+  z-index: 2;
+}
 
 .__BG-designText {
   position: absolute;
-
   padding: 12px;
-  z-index: 0;
+  z-index: 2;
 }
 #BGDT01 {
-  color: var(--dark_secondary);
+  color: var(--dark_tertiary);
   font-size: clamp(15rem, calc(24rem + 0.39vw), 60rem);
   text-transform: uppercase;
   font-family: "Poppins";
   font-weight: 600;
   left: 5rem;
-  transform: translateY(60%);
+  transform: translateY(120%);
 }
 #BGDT02 {
-  color: var(--dark_tertiary);
+  color: var(--dark_quaternary);
   font-size: clamp(13rem, calc(16rem + 0.39vw), 40rem);
   font-weight: 300;
   text-transform: capitalize;
   font-family: "Maitree";
   right: 5rem;
-  transform: translateY(40%);
+  transform: translateY(90%);
 }
 #BGDT03 {
-  color: var(--dark_secondary);
+  color: var(--dark_tertiary);
   font-size: clamp(15rem, calc(20rem + 0.39vw), 50rem);
   text-transform: uppercase;
   font-family: "Poppins";
   font-weight: 600;
   right: 2rem;
   transform: translateY(-160%);
+  mix-blend-mode: difference;
 }
 #BGDT04 {
-  color: var(--dark_tertiary);
+  color: var(--dark_quaternary);
   font-size: clamp(13rem, calc(16rem + 0.39vw), 40rem);
   font-weight: 300;
   text-transform: capitalize;
   font-family: "Maitree";
   left: 12rem;
   transform: translateY(-220%);
+  mix-blend-mode: difference;
 }
 
 /*
@@ -544,20 +548,23 @@ h6 {
   flex-direction: column;
   justify-content: center;
   margin: 48em auto;
-  width: 35vw;
+  width: 100vw;
+  height: 86vh;
+  color: var(--light_main);
   padding: 2rem;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0) 0% var(--dark_primary) 30% var(--dark_primary) 70%
-      rgba(0, 0, 0, 0) 100%
-  );
-  z-index: 1;
 }
-#brand-philosophy h1 {
+
+.brand-philosophy_wrapper {
+  position: relative;
+  z-index: 3;
+  width: 36vw;
+  margin-inline: auto;
+}
+#brand-philosophy .brand-philosophy_wrapper h1 {
   font-family: "Maitree", sans-serif;
   font-weight: 500;
 }
-#brand-philosophy p {
+#brand-philosophy .brand-philosophy_wrapper p {
   font-family: "Poppins", sans-serif;
   font-weight: 200;
   padding: 12px 0 12px 6rem;
@@ -635,10 +642,13 @@ h6 {
 #notifBlob {
   position: fixed;
   display: flex;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(180, 180, 180, 0.2);
   backdrop-filter: var(--blur8);
   -webkit-backdrop-filter: var(--blur8);
-  color: black;
+  color: var(--light_main);
+  /* -webkit-filter: invert(100%);
+  filter: invert(100%); */
+  mix-blend-mode: difference;
   text-shadow: 1px 0 5px var(--light_main), 0 0 15px var(--light_main-op7);
   height: 30px;
   width: 30px;
@@ -672,6 +682,137 @@ h6 {
   80% {
     border-radius: 50% 70% 52% 68% / 51% 61% 59% 69%;
   }
+}
+
+/*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+
+.ImgGallery_container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) 0.5fr; /* 3 nagy oszlop és 1 kisebb */
+  gap: 6px 12px;
+  justify-content: center;
+  width: 96vw;
+  height: auto;
+  margin-inline: auto;
+  margin-top: 12rem;
+  padding: 12px;
+}
+
+.ImgGallery_container .media_box {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+    rgba(0, 0, 0, 0.22) 0px 10px 10px;
+  overflow: hidden;
+}
+
+.ImgGallery_container .media_box:nth-child(5n + 1) {
+  grid-column: 1;
+  grid-row: span 2; /* Első kép, két sor magas */
+  height: 36vh;
+}
+
+.ImgGallery_container .media_box:nth-child(5n + 2) {
+  grid-column: 2;
+  grid-row: span 2; /* Második kép, két sor magas */
+  height: 36vh;
+}
+
+.ImgGallery_container .media_box:nth-child(5n + 3) {
+  grid-column: 3;
+  grid-row: span 2; /* Harmadik kép, két sor magas */
+  height: 36vh;
+}
+
+.ImgGallery_container .media_box:nth-child(5n + 4) {
+  grid-column: 4;
+  grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+  height: 18vh;
+}
+
+.ImgGallery_container .media_box:nth-child(5n + 5) {
+  grid-column: 4;
+  grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+  height: 18vh;
+}
+
+.ImgGallery_container .media_box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: filter 0.3s;
+}
+
+.ImgGallery_container .media_box:hover img,
+.ImgGallery_container .media_box:hover video {
+  filter: brightness(0.6) grayscale(1);
+}
+
+.ImgGallery_container .mediaGallery_video {
+  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ImgGallery_container .caption {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  background: linear-gradient(
+    to top,
+    var(--dark_primary) 1%,
+    rgba(0, 0, 0, 0.4) 30%,
+    rgba(0, 0, 0, 0) 50%
+  );
+  color: white;
+
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.ImgGallery_container .media_box:hover .caption {
+  opacity: 1;
+}
+
+.ImgGallery_container .caption p {
+  font-family: "Poppins";
+}
+.ImgGallery_container .caption .title_caption {
+  margin-top: auto;
+  margin-bottom: 0;
+  padding: 0 1.2rem;
+  font-weight: 300;
+}
+
+.ImgGallery_container .caption .subcontent_caption {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem;
+  font-weight: 200;
+}
+
+.ImgGallery_container .caption .subcontent_caption .subtitle_caption {
+}
+.ImgGallery_container .caption .subcontent_caption .productCount_caption {
+  color: var(--light_main-op6);
 }
 
 #break {
