@@ -67,3 +67,17 @@ var mainSwiper = new Swiper(".bg_slider", {
     },
   },
 });
+var productSwiper = new Swiper(".topProduct_slider", {
+  loop: true,
+  centeredSlides: true,
+  spaceBetween: 0,
+  speed: 1000,
+
+  autoplay: {
+    delay: 3000,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: true,
+  },
+  watchSlidesVisibility: true,
+  watchSlidesProgress: true,
+});

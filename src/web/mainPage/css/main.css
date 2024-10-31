@@ -229,6 +229,150 @@ h6 {
 
 /*
  =============================
+    swiper top products
+ =============================
+ */
+
+/* Basic styling for the card */
+
+#topProducts_container .swiper-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+#topProducts_container .swiper-wrapper .swiper-slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 12rem;
+  margin-bottom: 12rem;
+  margin-inline: auto;
+}
+
+.swiper-slide .swiper-card_wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 84vw;
+  height: auto;
+}
+
+.swiper-slide .card-image {
+  position: absolute;
+  display: flex;
+  width: 24vw;
+  height: 65vh;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  bottom: calc((1.2rem + 2 * 2.4rem) + 8px);
+  left: calc(((84vw - 55vw) / 2) + (55vw / 1.2 / 24));
+  z-index: 2;
+}
+
+.swiper-slide .card-image img {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.swiper-slide .card-image .book-now {
+  position: absolute;
+  bottom: 24px;
+  margin-inline: auto;
+  background-color: var(--dark_tertiary);
+  color: var(--light_main);
+  padding: 8px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.swiper-slide .swiper-card {
+  background-color: var(--dark_tertiary);
+  position: relative;
+  z-index: 1;
+  margin: 3.6rem 0;
+  padding: 2.4rem 0.6rem;
+  overflow: hidden;
+  color: var(--light_main);
+  width: 55vw;
+  height: 55vh;
+  font-family: Arial, sans-serif;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.swiper-slide .swiper-card .text-overlay {
+  padding: 15px;
+  padding-left: 0;
+  width: 48%;
+  margin-left: auto;
+  margin-right: 0;
+}
+
+.swiper-slide .swiper-card .text-overlay .title {
+  margin: 10px 0;
+  font-family: "Maitree";
+}
+
+.swiper-slide .swiper-card .text-overlay .rating {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+  margin-bottom: 2rem;
+  font-size: 1em;
+  gap: 5px;
+}
+.swiper-slide .swiper-card .text-overlay .text {
+  height: 36vh;
+}
+
+.swiper-slide .swiper-card .text-overlay .text .description {
+  margin: 10px 0;
+  text-align: justify;
+  padding: 6px 24px 12px 0;
+  font-family: "Poppins";
+}
+
+.swiper-slide .swiper-card .text-overlay .card-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.swiper-slide .swiper-card .text-overlay .card-footer .cast {
+  display: flex;
+  gap: 12px;
+}
+
+.swiper-slide .swiper-card .text-overlay .card-footer .cast img {
+  width: 50px;
+  height: 50px;
+}
+
+.swiper-slide .swiper-card .text-overlay .card-footer .actions {
+  display: flex;
+  gap: 10px;
+}
+
+.swiper-slide .swiper-card .text-overlay .card-footer .actions .more-info {
+  background-color: var(--light_main);
+  color: var(--dark_primary);
+  padding: 8px 12px;
+  position: relative;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+/*
+ =============================
     swiper category chooser
  =============================
  */
@@ -809,8 +953,6 @@ h6 {
   font-weight: 200;
 }
 
-.ImgGallery_container .caption .subcontent_caption .subtitle_caption {
-}
 .ImgGallery_container .caption .subcontent_caption .productCount_caption {
   color: var(--light_main-op6);
 }
