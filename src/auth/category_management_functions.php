@@ -1,5 +1,9 @@
 <?php
 
+function format_str($s) {
+    return str_replace(" ", "-", strtolower($s));
+}
+
 function createCategory($categoryData) {
     include_once 'init.php';
     $db = createConnection();
@@ -27,10 +31,10 @@ function createCategoryDirectory($categoryData, $categoryType) {
     $baseDirectory = './images/categories/';
 
     if ($categoryType == 'sub') {
-        $baseDirectory .= str_replace(" ", "-", strtolower($categoryData['parent_category']))."/";
+        $baseDirectory .= format_str($categoryData['parent_category'])."/";
     }
 
-    $categoryName = str_replace(" ", "-", strtolower($categoryData['name']));
+    $categoryName = format_str($categoryData['name']);
     $categoryDirURI = $baseDirectory.$categoryName."/";
     
     if (!is_dir($categoryDirURI)) {
@@ -71,7 +75,19 @@ function uploadCategoryData($categoryData, $categoryType) {
 function removeCategory($categoryData) {
     include_once 'init.php';
 
+    if ($categoryData['type'] == "subcategory") {
+        $parentId = selectData("SELECT category.name 
+                                FROM subcategory 
+                                INNER JOIN category 
+                                ON subcategory.category_id = category.id 
+                                WHERE subcategory.id = ?", $categoryData['id']);
 
+        if ($parentId == "Nincs találat!") {
+            return "Ez a kategória nem létezik!";
+        }
+
+        $categoryData['parent_category'] = format_str($parentId['name']);
+    }
     $successfulDelete = removeCategoryFromDB($categoryData);
 
     if ($successfulDelete === false) {
@@ -81,8 +97,11 @@ function removeCategory($categoryData) {
         return $successfulDelete;
     }
 
-    $successfulDirectoryDelete = removeCategoryDirectory($categoryData['name']);
+    $successfulDirectoryDelete = removeCategoryDirectory($categoryData);
     
+    if (!$successfulDirectoryDelete) {
+        return "A mappa törlése sikertelen! (A mappát manuálisan kell törölni).";
+    }
     return $successfulDirectoryDelete;
 }
 
@@ -96,9 +115,14 @@ function removeCategoryFromDB($categoryData) {
     return $successfulDelete;
 }
 
-function removeCategoryDirectory($categoryName) {
+function removeCategoryDirectory($categoryData) {
     $baseDir = "./images/categories/";
-    $categoryName = str_replace(" ", "-", strtolower($categoryName));
+    $categoryName = str_replace(" ", "-", strtolower($categoryData['name']));
+
+    if ($categoryData['type'] == "subcategory") {
+        $baseDir .= $categoryData['parent_category']."/";
+    }
+
     $categoryDirURI = $baseDir.$categoryName."/";
 
     $successfulDelete = deleteFolder($categoryDirURI);

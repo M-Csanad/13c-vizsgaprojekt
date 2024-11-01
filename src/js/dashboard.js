@@ -6,8 +6,8 @@ const pages = document.querySelectorAll(".section-group");
 
 function expandGroup(e) {
     let sourceElement = e.target;
-    let sectionBody = sourceElement.closest(".section-header").nextElementSibling;
-    sectionBody.classList.toggle("active");
+    let section = sourceElement.closest("section");
+    section.classList.toggle("active");
 }
 
 function togglePage(id) {
@@ -50,6 +50,9 @@ window.addEventListener("load", ()=> {
 
     parentCategoryHiddenInput.value = parentCategoryInput.querySelector('option:checked').dataset.id;
 
+    for (let page of pageLinks) {
+        page.addEventListener("click", ()=>{ togglePage(page.dataset.pageid); });
+    }
     hideDisplayMessages();
 });
 
@@ -68,12 +71,4 @@ document.getElementById('type').addEventListener('change', ()=> {
 
 parentCategoryInput.addEventListener("change", () => {
     parentCategoryHiddenInput.value = parentCategoryInput.querySelector('option:checked').dataset.id;
-});
-
-window.addEventListener("load", () => {
-    parentCategoryHiddenInput.value = parentCategoryInput.querySelector('option:checked').dataset.id;
-
-    for (let page of pageLinks) {
-        page.addEventListener("click", ()=>{ togglePage(page.dataset.pageid); });
-    }
 });

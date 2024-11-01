@@ -57,6 +57,7 @@ body {
     transform: translateY(-0.5rem);
 }
 .page > svg {
+    flex-shrink: 0;
     transform: rotate(-45deg);
 }
 
@@ -91,16 +92,17 @@ section {
         font-weight: 500;
         flex-grow: 1;
     }
+    .section-header > svg {
+        flex-shrink: 0;
+        width: 20px;
+        transition: transform 0.3s ease;
+    }
 
     .section-body {
         display: grid;
         grid-template-rows: 0fr;
         opacity: 0;
         transition: grid-template-rows 0.3s ease, opacity 0.3s ease;
-    }
-    .section-body.active {
-        opacity: 1;
-        grid-template-rows: 1fr;
     }
 
     .section-body > form {
@@ -139,7 +141,15 @@ section {
         font-family:'Courier New', Courier, monospace;
     }
 
-    .inline-input > input, .inline-input > select {
+    .inline-input > div {
+        display: flex;
+        flex-direction: row;
+        align-items: stretch;
+        gap: 10px;
+        flex-grow: 1;
+    }
+
+    .inline-input > div > input, .inline-input > div > select {
         display: flex;
         align-items: center;
         flex-grow: 1;
@@ -151,16 +161,50 @@ section {
         font-size: 16px;
         border-radius: 0%;
         transition: all 0.3s ease;
+        min-width: 0px;
     }
 
-    .inline-input > input:valid, .inline-input > select:valid {
+    .inline-input > div > svg {
+        height: 100%;
+        width: 20px;
+        flex-shrink: 0;
+    }
+    .inline-input > div > svg.valid {
+        color: var(--valid);
+    }
+    .inline-input > div > svg.invalid {
+        color: var(--invalid);
+    }
+
+    .inline-input > div > input:valid, .inline-input > div > select:valid {
         border-bottom: 3px solid var(--valid);
     }
-    .inline-input > input:invalid, .inline-input > select:invalid {
+    .inline-input > div > input:invalid, .inline-input > div > select:invalid {
         border-bottom: 3px solid var(--invalid);
     }
+    .inline-input > div > input:valid ~ svg.valid, .inline-input > div > select:valid ~ svg.valid {
+        display: block;
+    }
+    .inline-input > div > input:invalid ~ svg.valid, .inline-input > div > select:invalid ~ svg.valid  {
+        display: none;
+    }
+    .inline-input > div > input:valid ~ svg.invalid, .inline-input > div > select:valid ~ svg.invalid  {
+        display: none;
+    }
+    .inline-input > div > input:invalid ~ svg.invalid, .inline-input > div > select:invalid ~ svg.invalid  {
+        display: block;
+    }
+    .inline-input > div:has(input:disabled) > svg, .inline-input > div:has(select:disabled) > svg {
+        display: none;
+    }
+    .inline-input > div:has(input:disabled) > svg.disabled, .inline-input > div:has(select:disabled) > svg.disabled {
+        display: block;
+    }
+    .inline-input > div > input:not(:disabled) ~ svg.disabled, .inline-input > div > select:not(:disabled) ~ svg.disabled {
+        display: none;
+    }
 
-    .inline-input > input:disabled, .inline-input > select:disabled {
+    .inline-input > div > input:disabled, .inline-input > div > select:disabled {
         border-bottom: 3px solid rgb(20, 20, 20) !important;
         color: #6c6c6c;
         background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.5) 75%, transparent 75%, transparent);
@@ -191,12 +235,17 @@ section {
         user-select: none;
     }
 
-    .file-input > div > svg.check {
+    .file-input:has(input:invalid) > div > svg.valid {
         display: none;
     }
-
-    .file-input:has(input:valid) > div > svg.check {
+    .file-input:has(input:invalid) > div > svg.invalid {
         display: block;
+    }
+    .file-input:has(input:valid) > div > svg.valid {
+        display: block;
+    }
+    .file-input:has(input:valid) > div > svg.invalid {
+        display: none;
     }
 
     .file-input > div > label.input-wrapper > input {
@@ -248,6 +297,25 @@ section {
 
     .form-submit-danger:active {
         scale: 0.9;
+    }
+}
+
+section.active {
+    .section-body {
+        opacity: 1;
+        grid-template-rows: 1fr;
+    }
+    .section-header > svg {
+        transform: rotate(180deg);
+    }
+}
+
+@media screen and (max-width: 285px) {
+    .page {
+        font-size: 20px;
+    }
+    .section-title {
+        font-size: 20px;
     }
 }
 

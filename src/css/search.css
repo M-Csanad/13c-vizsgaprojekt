@@ -1,25 +1,60 @@
+.search-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    height: 32px;
+    gap: 10px;
+    min-width: 0;
+}
+.search-wrapper > svg {
+    flex-shrink: 0;
+    height: 100%;
+    display: none;
+}
+.search-wrapper > svg.valid {
+    color: var(--valid);
+}
+.search-wrapper > svg.invalid {
+    color: var(--invalid);
+}
+.search-wrapper:has(input:valid) > svg.valid {
+    display: block;
+}
+.search-wrapper:has(input:valid) > svg.invalid {
+    display: none;
+}
+.search-wrapper:has(input:invalid) > svg.valid {
+    display: none;
+}
+.search-wrapper:has(input:invalid) > svg.invalid {
+    display: block;
+}
 .search {
+    flex-grow: 1;
     display: flex;
     align-items: stretch;
     flex-direction: row;
     position: relative;
     width: 50%;
     height: 32px;
-    border: 1px solid var(--border);
     border-radius: 5px;
     transition: color 0.3s ease, border 0.3s ease;
     color: grey;
+    flex-shrink: 1;
+    min-width: 0;
 
     input {
         flex: 1;
-        max-width: 100%;
+        width: 100%;
         min-width: 0;
+        max-width: 100%;
         border-radius: 5px;
         outline: none;
         border: none;
         background-color: var(--background);
         padding-left: 5px;
         font-size: 16px;
+        transition: color 0.3s ease;
     }
 
     label.search-button {
@@ -33,6 +68,18 @@
         color: grey;
     }
 
+}
+.search:has(input:valid) {
+    border: 2px solid var(--valid);
+}
+.search:has(input:invalid) {
+    border: 2px solid var(--invalid);
+}
+.search > input:invalid {
+    color: grey;
+}
+.search:has(input:valid) > label > svg {
+    color: black;
 }
 .items {
     display: none;
@@ -74,12 +121,13 @@
 }
 
 .search:hover, .search:has(input:focus), .search:has(input:active){
-    border: 1px solid black;
-    color: black;
-
     label.search-button > svg {
         color: rgb(0, 0, 0);
     }
+}
+
+.search:hover > input, .search > input:focus, .search > input:active {
+    color: black;
 }
 
 @media screen and (max-width: 991px) {
