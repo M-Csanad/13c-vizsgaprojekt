@@ -449,30 +449,71 @@ h6 {
   z-index: 1;
 }
 
-.swiper-slide .img-wrapper .text-overlay {
+.swiper-slide .img-wrapper .content_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  width: auto;
   position: absolute;
+  top: 25%;
+}
 
-  left: 15%; /* Távolság a bal széltől */
-  top: 40%; /* Függőlegesen középre igazítva */
-  transform: translateY(-50%);
+.swiper-slide .img-wrapper .text-main {
+  position: relative;
+  width: 100%;
+  top: 30%; /* Függőlegesen középre igazítva */
   color: var(--light_main);
   padding: 10px 15px;
-  border-radius: 5px;
-  max-width: 30vw;
   z-index: 10;
 }
-.swiper-slide .img-wrapper .text-overlay h1 {
+
+.swiper-slide .img-wrapper .text-main h1,
+.swiper-slide .img-wrapper .text-main h2 {
+  font-family: "Cormorant Unicase", serif;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.swiper-slide .img-wrapper .text-main h1 {
+  text-align: left;
+  position: relative;
+  text-shadow: 1px 0px 12px var(--dark_primary-op5);
+}
+.swiper-slide .img-wrapper .text-main h2 {
+  text-align: left;
+  position: relative;
+  left: -1%;
+  text-shadow: 1px 0px 6px var(--dark_primary-op5);
+}
+
+.swiper-slide .img-wrapper .underline {
+  content: "";
+  position: relative;
+  width: 97%;
+  height: 2px;
+  background: var(--light_main-op3);
+}
+
+.swiper-slide .img-wrapper .text-overlay {
+  position: relative;
+  top: 60%; /* Függőlegesen középre igazítva */
+  left: 1%;
+  color: var(--light_main);
+  width: 30vw;
+  z-index: 10;
+}
+.swiper-slide .img-wrapper .text-overlay h3 {
   font-family: "Cubano";
   font-weight: 500;
   text-transform: capitalize;
   padding: 10px 0;
-  text-shadow: 1px 0px 5px var(--dark_primary);
+  text-shadow: 1px 0px 6px var(--dark_primary-op5);
 }
 .swiper-slide .img-wrapper .text-overlay p {
   text-align: justify;
   font-family: "Poppins", sans-serif;
   padding: 10px 0;
-  text-shadow: 1px 0px 3px var(--dark_primary);
+  text-shadow: 1px 0px 6px var(--dark_primary-op5);
 }
 
 .swiper-slide .img-wrapper img {
@@ -499,7 +540,7 @@ h6 {
   width: 70px;
   height: 70px;
   display: flex;
-  top: 40%;
+  top: 50%;
   align-items: center;
   justify-content: center;
   z-index: 1000;
@@ -565,6 +606,7 @@ h6 {
 
 .bg_slider-thumbs .swiper-slide .contentImg {
   position: relative;
+  text-transform: capitalize;
   padding: 8px;
   margin-left: 2rem;
 }

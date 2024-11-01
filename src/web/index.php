@@ -239,60 +239,88 @@
             <div class="swiper-wrapper">
               <div class="swiper-slide">
                 <div class="img-wrapper">
-                  <div class="text-overlay">
-                    <h1 class="__t01-law5">kecske</h1>
-                    <p class="__t02-men1">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing
-                      elit. At quidem voluptatum officia cum maiores sequi
-                      nostrum deleniti tempora provident earum saepe
-                      repellendus quia, alias ea esse laudantium laboriosam
-                      vitae reprehenderit?
-                    </p>
+                  <div class="content_wrapper">
+                    <div class="text-main">
+                      <h2 class="__t00-law5-custom02">The</h2>
+                      <h1 class="__t00-law5-custom01">Lorem ipsum dole</h1>
+                      <div class="underline"></div>
+                    </div>
+                    <div class="text-overlay">
+                      <h3 class="__t03-law5">Kecske</h3>
+                      <p class="__t02-men1">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. At quidem voluptatum officia cum maiores sequi
+                        nostrum deleniti tempora provident earum saepe
+                        repellendus quia, alias ea esse laudantium laboriosam
+                        vitae reprehenderit?
+                      </p>
+                    </div>
                   </div>
                   <img src="./media/img/testImg/testImg_vertical01.jpg" alt="" />
                 </div>
               </div>
               <div class="swiper-slide">
                 <div class="img-wrapper">
-                  <div class="text-overlay">
-                    <h1 class="__t01-law5">kecske</h1>
-                    <p class="__t02-men1">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing
-                      elit. At quidem voluptatum officia cum maiores sequi
-                      nostrum deleniti tempora provident earum saepe
-                      repellendus quia, alias ea esse laudantium laboriosam
-                      vitae reprehenderit?
-                    </p>
+                  <div class="content_wrapper">
+                    <div class="text-main">
+                      <h2 class="__t00-law5-custom02">The</h2>
+                      <h1 class="__t00-law5-custom01">At quidem</h1>
+                      <div class="underline"></div>
+                    </div>
+                    <div class="text-overlay">
+                      <h3 class="__t03-law5">Kecske</h3>
+                      <p class="__t02-men1">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. At quidem voluptatum officia cum maiores sequi
+                        nostrum deleniti tempora provident earum saepe
+                        repellendus quia, alias ea esse laudantium laboriosam
+                        vitae reprehenderit?
+                      </p>
+                    </div>
                   </div>
                   <img src="./media/img/testImg/testImg_vertical02.jpg" alt="" />
                 </div>
               </div>
               <div class="swiper-slide">
                 <div class="img-wrapper">
-                  <div class="text-overlay">
-                    <h1 class="__t01-law5">kecske</h1>
-                    <p class="__t02-men1">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing
-                      elit. At quidem voluptatum officia cum maiores sequi
-                      nostrum deleniti tempora provident earum saepe
-                      repellendus quia, alias ea esse laudantium laboriosam
-                      vitae reprehenderit?
-                    </p>
+                  <div class="content_wrapper">
+                    <div class="text-main">
+                      <h2 class="__t00-law5-custom02">The</h2>
+                      <h1 class="__t00-law5-custom01">Officia cum maiores</h1>
+                      <div class="underline"></div>
+                    </div>
+                    <div class="text-overlay">
+                      <h3 class="__t03-law5">Kecske</h3>
+                      <p class="__t02-men1">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. At quidem voluptatum officia cum maiores sequi
+                        nostrum deleniti tempora provident earum saepe
+                        repellendus quia, alias ea esse laudantium laboriosam
+                        vitae reprehenderit?
+                      </p>
+                    </div>
                   </div>
                   <img src="./media/img/testImg/testImg_vertical03.jpg" alt="" />
                 </div>
               </div>
               <div class="swiper-slide">
                 <div class="img-wrapper">
-                  <div class="text-overlay">
-                    <h1 class="__t01-law5">kecske</h1>
-                    <p class="__t02-men1">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing
-                      elit. At quidem voluptatum officia cum maiores sequi
-                      nostrum deleniti tempora provident earum saepe
-                      repellendus quia, alias ea esse laudantium laboriosam
-                      vitae reprehenderit?
-                    </p>
+                  <div class="content_wrapper">
+                    <div class="text-main">
+                      <h2 class="__t00-law5-custom02">The</h2>
+                      <h1 class="__t00-law5-custom01">Dolor Sit</h1>
+                      <div class="underline"></div>
+                    </div>
+                    <div class="text-overlay">
+                      <h3 class="__t03-law5">Kecske</h3>
+                      <p class="__t02-men1">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. At quidem voluptatum officia cum maiores sequi
+                        nostrum deleniti tempora provident earum saepe
+                        repellendus quia, alias ea esse laudantium laboriosam
+                        vitae reprehenderit?
+                      </p>
+                    </div>
                   </div>
                   <img src="./media/img/testImg/testImg_vertical04.jpg" alt="" />
                 </div>
@@ -323,7 +351,7 @@
                   </div>
                 </div>
                 <div class="contentImg">
-                  <p class="__t01-men1">Lorem Ipsum Dole</p>
+                  <p class="__t01-men1">At Quidem</p>
                   <h2 class="__t03-law4">Kecske</h2>
                 </div>
               </div>
@@ -335,7 +363,7 @@
                   </div>
                 </div>
                 <div class="contentImg">
-                  <p class="__t01-men1">Lorem Ipsum Dole</p>
+                  <p class="__t01-men1">Officia Cum Maiores</p>
                   <h2 class="__t03-law4">Kecske</h2>
                 </div>
               </div>
@@ -347,7 +375,7 @@
                   </div>
                 </div>
                 <div class="contentImg">
-                  <p class="__t01-men1">Lorem Ipsum Dole</p>
+                  <p class="__t01-men1">dolor sit</p>
                   <h2 class="__t03-law4">Kecske</h2>
                 </div>
               </div>
