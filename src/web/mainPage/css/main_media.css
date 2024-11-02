@@ -32,6 +32,21 @@
   .videoContent_scrollable .videoContent_card-content img {
     width: 90vw;
   }
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  #brand-philosophy {
+    padding: 0;
+  }
+  .brand-philosophy_wrapper {
+    width: 72vw;
+  }
+  #brand-philosophy .brand-philosophy_wrapper p {
+    padding: 12px 0 12px 0;
+  }
 }
 
 /* Nagyobb mobilok */
@@ -85,10 +100,56 @@
     swiper category chooser
  =============================
  */
+  /* TODO - video slider reszponzivitását megnézni*/
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  #brand-philosophy {
+    padding: 0;
+  }
+  .brand-philosophy_wrapper {
+    width: 72vw;
+  }
+  #brand-philosophy .brand-philosophy_wrapper p {
+    padding: 12px 0 12px 0;
+  }
+
+  #brand-description {
+    margin: 0;
+    padding: 24px;
+    width: 94vw;
+  }
+  #brand-description .brandImages {
+    top: 25%;
+  }
+  #brand-description .brandContent {
+    width: 72vw !important;
+    margin-left: 0 !important;
+    margin-right: auto;
+  }
+  #brand-description .brandContent h1 {
+    position: relative;
+    width: 84vw;
+    white-space: wrap;
+    font-size: 2rem;
+    padding: 12px 0 12px 0;
+  }
+  #brand-description .brandContent .brandContentParagraph {
+    margin-top: 3.6rem;
+    position: relative;
+    top: 5%;
+    width: 100%;
+  }
+  #brand-description .brandImages {
+    display: none !important;
+  }
 }
 
 /* Fekvő tájolású tabletek */
-@media (min-width: 600px) and (max-width: 768px) and (orientation: landscape) {
+@media (min-width: 601px) and (max-width: 767px) and (orientation: landscape) {
   /* Stílusok fekvő tájolású tabletekhez */
 
   /*
@@ -134,10 +195,41 @@
     swiper category chooser
  =============================
  */
+  /* TODO - video slider reszponzivitását megnézni*/
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 50vw;
+  }
+  #brand-description .brandImages {
+    top: 25%;
+  }
+  #brand-description .brandContent h1 {
+    top: 4rem;
+    width: 70vw;
+    white-space: wrap;
+    font-size: 3rem;
+    padding: 12px 0 12px 0;
+  }
+  #brand-description .brandContent .brandContentParagraph {
+    margin-top: auto;
+    margin-bottom: auto;
+    position: relative;
+    top: 5%;
+    width: 100%;
+  }
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
 }
 
 /* Álló tájolású tabletek */
-@media (min-width: 600px) and (max-width: 768px) and (orientation: portrait) {
+@media (min-width: 601px) and (max-width: 767px) and (orientation: portrait) {
   /* Stílusok álló tájolású tabletekhez */
 
   /*
@@ -185,10 +277,41 @@
     swiper category chooser
  =============================
  */
+  /* TODO - video slider reszponzivitását megnézni*/
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 50vw;
+  }
+  #brand-description .brandImages {
+    top: 25%;
+  }
+  #brand-description .brandContent h1 {
+    top: 4rem;
+    width: 70vw;
+    white-space: wrap;
+    font-size: 3rem;
+    padding: 12px 0 12px 0;
+  }
+  #brand-description .brandContent .brandContentParagraph {
+    margin-top: auto;
+    margin-bottom: auto;
+    position: relative;
+    top: 5%;
+    width: 100%;
+  }
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
 }
 
 /* Fekvő tájolású tabletek */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+@media (min-width: 767px) and (max-width: 1024px) and (orientation: landscape) {
   /* Stílusok fekvő tájolású tabletekhez */
 
   /*
@@ -231,10 +354,35 @@
     swiper category chooser
  =============================
  */
+
+  /* TODO - video slider reszponzivitását megnézni*/
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 50vw;
+  }
+  #brand-description .brandImages {
+    top: 25%;
+    margin-right: 7rem;
+  }
+  #brand-description .brandContent h1 {
+    top: 4rem;
+    width: 70vw;
+    white-space: wrap;
+    padding: 12px 0 12px 0;
+  }
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
 }
 
 /* Álló tájolású tabletek */
-@media (min-width: 768px) and (max-width: 1024px) and (orientation: portrait) {
+@media (min-width: 767px) and (max-width: 1024px) and (orientation: portrait) {
   /* Stílusok fekvő tájolású tabletekhez */
 
   /*
@@ -277,10 +425,34 @@
     swiper category chooser
  =============================
  */
+
+  /* TODO - video slider reszponzivitását megnézni*/
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 50vw;
+  }
+  #brand-description .brandImages {
+    top: 25%;
+  }
+  #brand-description .brandContent h1 {
+    top: 4rem;
+    width: 70vw;
+    white-space: wrap;
+    padding: 12px 0 12px 0;
+  }
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
 }
 
 /* Kisebb laptopok */
-@media (min-width: 1024px) and (max-width: 1280px) {
+@media (min-width: 1025px) and (max-width: 1280px) {
   /* Stílusok kisebb laptopokhoz */
 
   /*
@@ -323,6 +495,26 @@
     swiper category chooser
  =============================
  */
+
+  /* TODO - video slider reszponzivitását megnézni*/
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 50vw;
+  }
+  #brand-description .brandContent h1 {
+    top: 0rem;
+    white-space: wrap;
+    padding: 12px 0 12px 0;
+  }
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
 }
 
 /* Átlagos laptopok és kisebb monitorok */
@@ -366,15 +558,45 @@
     swiper category chooser
  =============================
  */
+
+  /* TODO - video slider reszponzivitását megnézni*/
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 48vw;
+  }
+  #brand-description .brandContent h1 {
+    top: 0rem;
+    white-space: wrap;
+    padding: 12px 0 12px 0;
+  }
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
 }
 
 /* Nagy monitorok, mint a te monitorod */
 @media (min-width: 1440px) and (max-width: 2194px) {
   /* Stílusok nagy monitorokhoz, de kisebb mint 2195px */
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  #brand-description .brandContent h1 {
+    top: 0rem;
+    white-space: wrap;
+    padding: 12px 0 12px 0;
+  }
 }
 
 /* Még nagyobb monitorok, 2195px és felette */
-@media (min-width: 2195px) and (max-width: 2560px) {
+@media (min-width: 2194px) and (max-width: 2560px) {
   /* Stílusok a 2195px - 2560px közötti monitorokhoz, pl. szélesvásznú vagy ívelt monitor */
 }
 
