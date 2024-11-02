@@ -13,6 +13,28 @@ body {
     padding: 50px;
 }
 
+.popup {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+.popup-body {
+    position: absolute;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    width: 500px;
+    height: 200px;
+    border-radius: 3px;
+    background-color: var(--background);
+    transform: translate(-50%, -50%);
+    border-top: 5px solid var(--invalid);
+    box-shadow: 2px 2px 5px black;
+}
+
 .back-link {
     display: block;
     width: fit-content;
@@ -52,6 +74,7 @@ body {
     flex-direction: row;
     align-items: center;
     gap: 5px;
+    padding-right: 4px;
 }
 .pages > *:not(.page.active):hover {
     transform: translateY(-0.5rem);
@@ -85,6 +108,7 @@ section {
         align-items: center;
         border-bottom: 2px solid #dfdfdf;
         padding-block: 0.5rem;
+        padding-right: 10px;
         margin-bottom: 0.5rem;
     }
     .section-header > .section-title {
@@ -126,12 +150,50 @@ section {
         height: 30px;
     }
 
+
     .inline-input > label{
         display: flex;
         align-items: center;
+        position: relative;
         font-weight: 600;
         font-size: 16px;
-        width: 20%;
+        width: 22%;
+        flex-grow: 1;
+        max-width: 22%;
+    }
+    .inline-input > label > svg {
+        flex-shrink: 0;
+        padding-left: 5px;
+        width: 20px;
+    }
+
+    .inline-input > label > .label-tooltip {
+        position: absolute;
+        bottom: 100%;
+        background-color: grey;
+        color: white;
+        font-size: 12px;
+        width: max-content;
+        padding-inline: 1rem;
+        padding-block: 0.2rem;
+        border-radius: 5px;
+        text-align: center;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0.2s ease, opacity 0.2s ease;
+    }
+    .inline-input > label > .label-tooltip::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 15px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: grey transparent transparent transparent;
+    }
+    .inline-input > label:hover:not(:has(.label-tooltip:hover)) > .label-tooltip {
+        visibility: visible;
+        opacity: 1;
     }
 
     .inline-input:has(input:required:not(:disabled)) > label::after, .inline-input:has(select:required:not(:disabled)) > label::after {

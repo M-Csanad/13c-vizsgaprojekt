@@ -6,7 +6,7 @@ function initializeSearch(search) {
     const searchConfig = {
         category: {
             template: (item) => `
-                <img src='${item.thumbnail_image_uri}'><div><b>${item.name}</b> - 
+                <img src='${item.thumbnail_image_horizontal_uri}'><div><b>${item.name}</b> - 
                 ${(item.type === "category") ? "Főkategória" : `Alkategória <i>(${item.parent_category})</i>`}</div>`,
             clickHandler: (item) => itemClickHandler(item, ["id", "type", "name"])
         },
@@ -85,12 +85,13 @@ function initializeSearch(search) {
 
         fields.forEach(field => {
             const input = search.querySelector(`input[name=${searchType}_${field}]`);
-            if (input) input.value = item[field] || 'null';
+            if (input) input.value = item[field];
         });
 
         searchInput.value = item.name;
         toggleDropdown(false);
         validateSearchInput();
+        enableDisabledInputs();
     }
     
     // A rejtett mezők értékének visszaállítása
@@ -102,6 +103,11 @@ function initializeSearch(search) {
     function validateSearchInput() {
         const invalid = Array.from(search.querySelectorAll("input[type=hidden]")).some(input => input.value === 'null');
         searchInput.setCustomValidity(invalid ? 'Kérjük válasszon egy meglévő elemet!' : '');
+    }
+
+    function enableDisabledInputs() {
+        let disabledInputs = search.closest('.input-grid').querySelectorAll("input:disabled, select:disabled");
+        Array.from(disabledInputs).forEach((input)=>{input.removeAttribute("disabled")});
     }
 
     // Eseménykezelés

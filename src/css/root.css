@@ -10,6 +10,10 @@
     --valid: rgb(57, 152, 65);
     --invalid: rgb(220, 21, 21);
 }
+/* :focus {
+    outline: 2px solid #d6d6d6;
+    outline-offset: 0px;
+} */
 
 .border {
     border: 1px solid red !important;

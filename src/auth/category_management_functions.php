@@ -4,104 +4,148 @@ function format_str($s) {
     return str_replace(" ", "-", strtolower($s));
 }
 
+function hasUploadError() {
+    return count(array_filter($_FILES, function ($e) { return $e['error'] == 1; })) > 0;
+}
+
+function hasError($paths) {
+    return count(array_filter($paths, function ($e) {return $e === false; })) > 0;
+}
+
 function createCategory($categoryData) {
     include_once 'init.php';
     $db = createConnection();
     
     $categoryType = $categoryData['type'];
     unset($categoryData['type']);
-    $thumbnailURI = createCategoryDirectory($categoryData, $categoryType);
-    
-    if (!$thumbnailURI) {
-        return false;
+
+    $images = array('thumbnail_image_vertical', 'thumbnail_image_horizontal', 'thumbnail_video');
+    $paths = createCategoryDirectory($categoryData, $categoryType, $images);
+
+    if (!is_array($paths)) return $paths;
+    if (hasError($paths)) return false;
+
+    for ($i = 0; $i < count($images); $i++) {
+        $categoryData[$images[$i]] = $paths[$i];
     }
     
-    $categoryData['thumbnail_uri'] = $thumbnailURI;
-    
-    $successful = uploadCategoryData($categoryData, $categoryType);
-    return $successful;
+    return uploadCategoryData($categoryData, $categoryType);
 }
 
-function createCategoryDirectory($categoryData, $categoryType) {
-    if (count(array_filter($_FILES, function ($e) { return $e['error'] == 1; })) > 0) {
-        echo "<div class='error'>Hiba merült fel a feltöltés során.</div>";
-        return false;
+function createCategoryDirectory($categoryData, $categoryType, $images) {
+    // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
+    if (hasUploadError()) {
+        return "Hiba merült fel a feltöltés során.";
     }
 
-    $baseDirectory = './images/categories/';
-
-    if ($categoryType == 'sub') {
-        $baseDirectory .= format_str($categoryData['parent_category'])."/";
-    }
-
-    $categoryName = format_str($categoryData['name']);
-    $categoryDirURI = $baseDirectory.$categoryName."/";
+    $baseDirectory = './images/categories/'.($categoryType === 'sub' ? format_str($categoryData['parent_category']) . "/" : "");
+    $categoryDirURI = $baseDirectory . format_str($categoryData['name'])."/";
     
-    if (!is_dir($categoryDirURI)) {
-        mkdir($categoryDirURI, 0755, true);
-    }
-    else {
-        echo "<div class='error'>Ilyen nevű kategória már létezik.</div>";
-        return false;
+    if (!createDirectory($categoryDirURI)) {
+        return "Ilyen nevű kategória már létezik.";
     }
 
-    $thumbnailTmp = $_FILES['thumbnail_image']['tmp_name'];
-    $thumbnail = $_FILES['thumbnail_image']['name'];
-    $extension = pathinfo($thumbnail, PATHINFO_EXTENSION);
 
-    $filePath = $categoryDirURI."thumbnail.".$extension;
-    $successfulOperation = move_uploaded_file($thumbnailTmp, $filePath);
+    $paths = array();
+
+    foreach ($images as $name) {
+        $newPath = moveFile($_FILES[$name]['tmp_name'], $_FILES[$name]['name'], $name, $categoryDirURI);
+
+        if ($newPath !== false) {
+            array_push($paths, $newPath);
+        }
+        else if ($name == "thumbnail_video"){
+            array_push($paths, null);
+        }
+        else {
+            return false;
+        }
+    }
+
+    return $paths;
+}
+
+function createDirectory($path) {
+    if (!is_dir($path)) {
+        mkdir($path, 0755, true);
+        return true;
+    }
+
+    return false;
+}
+
+function moveFile($tmp, $name, $basename,$dir) {
+    $extension = pathinfo($name, PATHINFO_EXTENSION);
+    
+    $filePath = $dir."$basename.".$extension;
+    $successfulOperation = move_uploaded_file($tmp, $filePath);
     if (!$successfulOperation) {
         return false;
     }
-
+    
     return $filePath;
 }
 
 function uploadCategoryData($categoryData, $categoryType) {
-    if ($categoryType == "main") {
-        $successfulUpload = updateData("INSERT INTO `category`(`name`, `description`, `thumbnail_image_uri`) 
-                                        VALUES (?, ?, ?);", array_values($categoryData));
-        return $successfulUpload;
+    $isMainCategory = ($categoryType == "main");
+    $table = $isMainCategory ? "category" : "subcategory";
+    
+    $fields = array("name", "subname", "description", "thumbnail_image_horizontal_uri", "thumbnail_image_vertical_uri");
+    $values = array(
+        $categoryData['name'],
+        $categoryData['subname'],
+        $categoryData['description'],
+        $categoryData['thumbnail_image_horizontal'],
+        $categoryData['thumbnail_image_vertical']
+    );
+    
+    if (!empty($categoryData['thumbnail_video'])) {
+        array_push($fields, "thumbnail_video_uri");
+        array_push($values, $categoryData['thumbnail_video']);
     }
-    else {
-        unset($categoryData['parent_category']);
-        $successfulUpload = updateData("INSERT INTO `subcategory`(`name`, `description`, `category_id`, `thumbnail_image_uri`) 
-                                        VALUES (?, ?, ?, ?);", array_values($categoryData));
-        return $successfulUpload;
+    
+    if (!$isMainCategory) {
+        array_push($fields, "category_id");
+        array_push($values, $categoryData['category_id']);
     }
+    
+    $fieldList = implode(", ", $fields);
+    $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
+    $query = "INSERT INTO `$table`($fieldList) VALUES ($placeholderList);";
+    
+    return updateData($query, $values);
 }
+
 
 function removeCategory($categoryData) {
     include_once 'init.php';
 
+    // Az alkategóriához tartozó főkategória lekérdezése
     if ($categoryData['type'] == "subcategory") {
-        $parentId = selectData("SELECT category.name 
+        $result = selectData("SELECT category.name 
                                 FROM subcategory 
                                 INNER JOIN category 
                                 ON subcategory.category_id = category.id 
                                 WHERE subcategory.id = ?", $categoryData['id']);
 
-        if ($parentId == "Nincs találat!") {
+        // Ha nincs főkategóriája, akkor nincs olyan alkategória, mivel kötelező a category_id
+        if ($result == "Nincs találat!") {
             return "Ez a kategória nem létezik!";
         }
 
-        $categoryData['parent_category'] = format_str($parentId['name']);
+        $categoryData['parent_category'] = format_str($result['name']);
     }
+
+    // A kategória törlése az adatbázisból
     $successfulDelete = removeCategoryFromDB($categoryData);
+    if ($successfulDelete === false) return "Ez a kategória nem létezik!";
 
-    if ($successfulDelete === false) {
-        return "Ez a kategória nem létezik!";
-    }
-    else if ($successfulDelete !== true) {
-        return $successfulDelete;
-    }
+    else if ($successfulDelete !== true) return $successfulDelete;
 
+    // A kategória mappájának törlése
     $successfulDirectoryDelete = removeCategoryDirectory($categoryData);
-    
-    if (!$successfulDirectoryDelete) {
-        return "A mappa törlése sikertelen! (A mappát manuálisan kell törölni).";
-    }
+    if (!$successfulDirectoryDelete) return "A mappa törlése sikertelen! (A mappát manuálisan kell törölni).";
+
     return $successfulDirectoryDelete;
 }
 
