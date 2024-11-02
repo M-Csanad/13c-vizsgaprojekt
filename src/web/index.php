@@ -22,6 +22,7 @@
 
   <!--main stylesheet-->
   <link rel="stylesheet" href="./mainPage/css/main.css" />
+  <link rel="stylesheet" href="./mainPage/css/main_media.css" />
   <link rel="stylesheet" href="./css/footer.css" />
   <link rel="stylesheet" href="./css/navbar.css" />
   <script src="./js/autogenerate__footer.js" defer></script>
@@ -96,21 +97,9 @@
                           Lorem ipsum dolor sit amet, consectetur adipisicing
                           elit. Est ut pariatur totam facilis, id facere
                           dolores eos maiores quaerat iste assumenda, amet
-                          recusandae sunt molestias numquam explicabo
-                          dignissimos tempore vero?
+                          recusandae sunt molestias.
                         </p>
-                        <p class="__t02-men1 description">
-                          Eaque et culpa similique ex commodi nam, veritatis
-                          ipsa incidunt dolore ducimus mollitia sint beatae
-                          expedita aliquam facere cum nulla voluptatem illo
-                          accusantium, iusto laboriosam? Esse at distinctio
-                          numquam sint! Facere doloremque esse amet
-                          temporibus! Quidem, ut impedit maiores velit
-                          suscipit est rerum eaque labore, animi officia illo
-                          tenetur dolorum consectetur praesentium, incidunt
-                          quia. Reprehenderit quod doloribus provident vel
-                          unde?
-                        </p>
+
                       </div>
 
                       <div class="card-footer">
@@ -146,20 +135,7 @@
                           Lorem ipsum dolor sit amet, consectetur adipisicing
                           elit. Est ut pariatur totam facilis, id facere
                           dolores eos maiores quaerat iste assumenda, amet
-                          recusandae sunt molestias numquam explicabo
-                          dignissimos tempore vero?
-                        </p>
-                        <p class="__t02-men1 description">
-                          Eaque et culpa similique ex commodi nam, veritatis
-                          ipsa incidunt dolore ducimus mollitia sint beatae
-                          expedita aliquam facere cum nulla voluptatem illo
-                          accusantium, iusto laboriosam? Esse at distinctio
-                          numquam sint! Facere doloremque esse amet
-                          temporibus! Quidem, ut impedit maiores velit
-                          suscipit est rerum eaque labore, animi officia illo
-                          tenetur dolorum consectetur praesentium, incidunt
-                          quia. Reprehenderit quod doloribus provident vel
-                          unde?
+                          recusandae sunt molestias.
                         </p>
                       </div>
 
@@ -198,20 +174,7 @@
                           Lorem ipsum dolor sit amet, consectetur adipisicing
                           elit. Est ut pariatur totam facilis, id facere
                           dolores eos maiores quaerat iste assumenda, amet
-                          recusandae sunt molestias numquam explicabo
-                          dignissimos tempore vero?
-                        </p>
-                        <p class="__t02-men1 description">
-                          Eaque et culpa similique ex commodi nam, veritatis
-                          ipsa incidunt dolore ducimus mollitia sint beatae
-                          expedita aliquam facere cum nulla voluptatem illo
-                          accusantium, iusto laboriosam? Esse at distinctio
-                          numquam sint! Facere doloremque esse amet
-                          temporibus! Quidem, ut impedit maiores velit
-                          suscipit est rerum eaque labore, animi officia illo
-                          tenetur dolorum consectetur praesentium, incidunt
-                          quia. Reprehenderit quod doloribus provident vel
-                          unde?
+                          recusandae sunt molestias.
                         </p>
                       </div>
 

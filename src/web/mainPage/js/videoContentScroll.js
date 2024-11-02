@@ -4,17 +4,21 @@ document.addEventListener("DOMContentLoaded", function () {
     ".videoContent_scrollable p, .videoContent_scrollable h1, .videoContent_scrollable h2, .videoContent_scrollable h3, .videoContent_scrollable h4, .videoContent_scrollable h5, .videoContent_scrollable h6"
   );
 
-  // Az elem aktiválásához szükséges eltolás (pixelekben)
-  const offset = 250;
+  // Az elem aktiválásához és elrejtéséhez szükséges eltolás százalékban
+  const hideOffsetTopPercentage = 0.2; // Felső 20%
+  const hideOffsetBottomPercentage = 0.2; // Alsó 20%
 
   // Ellenőrzi, hogy az elem a viewport látható részén belül van-e (a képernyőn)
-  const elementInView = (el) => {
+  const elementInView = (el, offsetTop, offsetBottom) => {
     const elementTop = el.getBoundingClientRect().top;
     const viewportHeight =
       window.innerHeight || document.documentElement.clientHeight;
 
-    // Ha az elem közeledik a képernyő tetejéhez, de még nem hagyta el azt
-    return elementTop <= viewportHeight - offset && elementTop >= 50 + offset;
+    // Ha az elem a képernyő alja vagy teteje közelében van
+    return (
+      elementTop <= viewportHeight * (1 - offsetBottom) &&
+      elementTop >= viewportHeight * offsetTop
+    );
   };
 
   // Megjeleníti az elemet azzal, hogy hozzáadja a .videoContent_SHOW osztályt és eltávolítja a .videoContent_HIDE osztályt
@@ -32,7 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Végigmegy az összes kiválasztott elemeken, és megnézi, hogy éppen láthatóak-e a képernyőn, vagy éppen elhagyják azt
   const handleScrollAnimation = () => {
     scrollElements.forEach((el) => {
-      if (elementInView(el)) {
+      if (
+        elementInView(el, hideOffsetTopPercentage, hideOffsetBottomPercentage)
+      ) {
         // Ha az elem a viewportban van, figyelembe véve az offsetet
         displayScrollElement(el);
       } else {
