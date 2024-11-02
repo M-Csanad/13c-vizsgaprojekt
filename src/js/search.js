@@ -91,7 +91,23 @@ function initializeSearch(search) {
         searchInput.value = item.name;
         toggleDropdown(false);
         validateSearchInput();
+        if (item.role) {
+            disableRoleOption(item.role);
+            selectFirstValidOption();
+        }
         enableDisabledInputs();
+    }
+
+    function disableRoleOption(role) {
+        let inputGrid = search.closest('.input-grid');
+        let currentRoleOption = inputGrid.querySelector(`option[value='${role}']`);
+
+        Array.from(inputGrid.querySelectorAll("option")).forEach((e) => {e.removeAttribute('disabled')});
+        currentRoleOption.setAttribute('disabled', true);
+    }
+
+    function selectFirstValidOption() {
+        search.closest('.input-grid').querySelector('option:enabled').setAttribute('selected', true);
     }
     
     // A rejtett mezők értékének visszaállítása

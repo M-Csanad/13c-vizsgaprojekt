@@ -4,12 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vezérlőpult</title>
-    <link rel="stylesheet" href="./css/dashboard.css">
     <link rel="stylesheet" href="./css/root.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="./css/dashboard.css">
     <?php 
         include_once "./auth/init.php"; 
 
@@ -727,7 +723,14 @@
         }
 
         if (isset($_POST['modify_role'])) {
-            
+            $userId = $_POST['user_id'];
+            $role = $_POST['role'];
+            if (modifyRole($userId, $role) === true) {
+                echo "<div class='success'>Sikeres művelet!</div>";
+            }
+            else {
+                echo "<div class='error'>A művelet sikertelen!</div>";
+            }
         }
     ?>
     <script src="./js/dashboard.js"></script>

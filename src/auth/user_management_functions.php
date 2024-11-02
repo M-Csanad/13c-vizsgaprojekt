@@ -21,4 +21,11 @@
         var_dump($userData);
     }
 
+    function modifyRole($userId, $role) {
+        include_once "init.php";
+        $result = updateData("UPDATE user SET user.role = ? WHERE user.id = ?", [$role, $userId]);
+
+        return $result;
+    }
+
 ?>
