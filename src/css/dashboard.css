@@ -402,7 +402,13 @@ section {
     }
 
     .file-input > div > label.input-wrapper > input {
-        display: none;
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-25%);
+        cursor: pointer;
+        opacity: 0;
+        z-index: -1;
     }
     .file-input > div:hover > label.input-wrapper    {
         background-color: #e8e8e8;

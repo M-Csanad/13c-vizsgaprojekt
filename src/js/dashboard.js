@@ -4,6 +4,7 @@ const categoryType = document.getElementById('type');
 const pageLinks = document.querySelectorAll(".page");
 const pages = document.querySelectorAll(".section-group");
 
+let maxFileSize = 10;
 let isPopupVisible = false;
 
 function expandGroup(e) {
@@ -133,6 +134,27 @@ function isFormException(form) {
     }
 }
 
+function getImageOrientation(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+            const img = new Image();
+            img.onload = () => {
+                const isHorizontal = img.width >= img.height;
+                resolve(isHorizontal ? "horizontal" : "vertical");
+            };
+            img.onerror = reject;
+            img.src = reader.result;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+function getFileSize(file) {
+    return file.size >> 20; // 2^10 - nel osztunk (B -> MB)
+}
+
 window.addEventListener("load", () => {
     let sectionHeaders = document.querySelectorAll(".section-header");
 
@@ -148,14 +170,56 @@ window.addEventListener("load", () => {
         page.addEventListener("keydown", (e) => { if (e.code=="Space" || e.code=="Enter") togglePage(page.dataset.pageid) });
     }
 
+    document.querySelectorAll("input[data-type=image]").forEach((input) => {
+        input.addEventListener("input", async () => {
+            if (input.dataset.count == "singular") {
+                let file = input.files[0] || null;
+
+                if (!file) { // Ha nem töltött fel fájlt
+                    input.setCustomValidity('Kérjük adjon meg egy képet!');
+                    input.value = "";
+                    input.reportValidity();
+                    return;
+                }
+
+                let type = file.type || null;
+                let acceptedTypes = input.getAttribute("accept");
+
+                if (!acceptedTypes.includes(type)) { // Ha nem képet töltött fel
+                    input.setCustomValidity('Kérjük képet adjon meg!');
+                    input.value = "";
+                    input.reportValidity();
+                    return;
+                }
+
+                if (getFileSize(file) > maxFileSize) {
+                    input.setCustomValidity('Kérjük maximum 10 MB méretű képet töltsön fel!');
+                    input.value = "";
+                    input.reportValidity();
+                    return;
+                }
+
+                let orientation = await getImageOrientation(file);
+                if (orientation != input.dataset.orientation) {
+                    input.setCustomValidity('Kérjük megfelelő tájolású képet adjon meg!');
+                    input.value = "";
+                    input.reportValidity();
+                    return;
+                }
+
+                input.setCustomValidity('');
+            }
+        });
+    });
+
     // A megerősítést igénylő űrlapokhoz hozzácsatoljuk az eseményt, ami létrehozza felugró ablakokat beadáskor
     let confirmForms = document.querySelectorAll("form[data-needs-confirm='true']");
 
     confirmForms.forEach((form)=>{
         const formSubmitter = form.querySelector("input[type=submit]");
         form.addEventListener("submit", (e)=>{
+
             if (isPopupVisible || isFormException(form) === false) {
-                if (isPopupVisible) e.preventDefault();
                 return;
             }
 
@@ -198,3 +262,7 @@ document.getElementById('type').addEventListener('change', ()=> {
 parentCategoryInput.addEventListener("change", () => {
     parentCategoryHiddenInput.value = parentCategoryInput.querySelector('option:checked').dataset.id;
 });
+
+document.querySelectorAll("input[type=file]").forEach((input) => {
+    input.focus = () => {input.parentElement.focus()};
+})

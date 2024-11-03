@@ -170,7 +170,7 @@
                                             <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                                             <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
                                         </svg>
-                                        <input type="file" name="thumbnail_image_vertical" id="thumbnail_image_vertical" required accept="image/png, image/jpeg">
+                                        <input type="file" name="thumbnail_image_vertical" id="thumbnail_image_vertical" required accept="image/png, image/jpeg" data-orientation="vertical" data-type="image" data-count="singular" tabindex="-1">
                                         Kép kiválasztása
                                     </label>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -199,7 +199,7 @@
                                             <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                                             <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
                                         </svg>
-                                        <input type="file" name="thumbnail_image_horizontal" id="thumbnail_image_horizontal" required accept="image/png, image/jpeg">
+                                        <input type="file" name="thumbnail_image_horizontal" id="thumbnail_image_horizontal" required accept="image/png, image/jpeg"  data-orientation="horizontal" data-type="image" data-count="singular" tabindex="-1">
                                         Kép kiválasztása
                                     </label>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -219,7 +219,7 @@
                                             <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                                             <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
                                         </svg>
-                                        <input type="file" name="thumbnail_video" id="thumbnail_video" accept="video/*">
+                                        <input type="file" name="thumbnail_video" id="thumbnail_video" accept="video/*" data-type="video" tabindex="-1">
                                         Videó kiválasztása
                                     </label>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
