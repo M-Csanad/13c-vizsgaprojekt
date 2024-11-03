@@ -11,6 +11,8 @@ function validateUserNameInput() {
 
 window.addEventListener("load", ()=>{
   document.querySelectorAll(".empty").forEach((input)=>{
+    if (input.value) input.classList.remove("empty")
+    else input.classList.add("empty")
     input.addEventListener("input", ()=>{
       if (input.value) input.classList.remove("empty")
       else input.classList.add("empty")

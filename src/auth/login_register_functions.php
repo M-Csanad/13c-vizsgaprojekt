@@ -43,7 +43,7 @@ function login($username, $password, $rememberMe) {
     } 
     else {
         if ($user == null || $user == "Nincs találat!") {
-            return "Érvénytelen felhasználónév, vagy jelszó.";
+            return "Érvénytelen felhasználónév vagy jelszó.";
         }
         else {
             return "<div class='error'>$user</div>";

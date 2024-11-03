@@ -19,6 +19,13 @@ body {
     font-weight: 500;
 }
 
+/*Firefox nem támogatja a dvh-t*/
+@supports(height: 100dvh) { 
+    body {
+        height: 100dvh;
+    }
+}
+
 form {
     padding: 20px;
     border: 4px solid var(--border);
