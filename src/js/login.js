@@ -7,4 +7,13 @@ function validateUserNameInput() {
     else {
       username.setCustomValidity('Kérjük tartsa magát a kívánt formátumhoz.');
     }
-  }
+}
+
+window.addEventListener("load", ()=>{
+  document.querySelectorAll(".empty").forEach((input)=>{
+    input.addEventListener("input", ()=>{
+      if (input.value) input.classList.remove("empty")
+      else input.classList.add("empty")
+    });
+  });
+});

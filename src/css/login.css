@@ -59,16 +59,16 @@ form {
         border-bottom: 3px solid var(--text-light);
     }
 
-    .input-group:has(input:not(:placeholder-shown)):has(input:valid), 
+    .input-group:has(input:not(.empty)):has(input:valid), 
     .input-group:has(input:-webkit-autofill) {
         border-bottom: 3px solid var(--valid) !important;
     }
-    .input-group:has(input:not(:placeholder-shown)):has(input:invalid) {
-        border-bottom: 3px solid var(--invalid);
+    .input-group:has(input:not(.empty)):has(input:invalid) {
+        border-bottom: 3px solid var(--invalid) !important;
     }
     
     .input-group input {
-        height: 100%;
+        height: 40px;
         width: 100%;
         border: none;
         background-color: transparent;
@@ -86,7 +86,10 @@ form {
         user-select: none;
     }
 
-    .input-group:has(input:focus) label, .input-group:has(input:valid) label, .input-group:has(input:-webkit-autofill) label, .input-group:has(input:not(:placeholder-shown)) label {
+    .input-group:has(input:focus) label, 
+    .input-group:has(input:valid) label, 
+    .input-group:has(input:-webkit-autofill) label, 
+    .input-group:has(input:not(.empty)) label {
         transform: translateY(-25px);
         font-size: 14px;
         color: rgb(118, 118, 118);
@@ -187,4 +190,36 @@ form {
     90% {transform: translateX(-1px);}
     96% {transform: translateX(0px);}
     100% {transform: translateX(1px);}
+}
+
+@media screen and (max-width: 285px) {
+    form {
+
+    }
+}
+
+@media screen and (max-width: 310px) {
+    form {
+
+    }
+}
+
+@media screen and (max-width: 479px) {
+    body {
+        display: block;
+    }
+    form {
+        background-color: rgba(250, 250, 250, 0.85);
+        backdrop-filter: blur(5px);
+        width: 100%;
+        height: 100%;
+        border: 3px solid transparent;
+        border-radius: 0px;
+    }
+    .input-wrapper {
+        width: 80% !important;
+    }
+    .action-button {
+        width: 75% !important;
+    }
 }

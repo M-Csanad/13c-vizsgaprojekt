@@ -35,12 +35,12 @@
             <!-- Felhasználónév mező -->
             <div class="input-group">
                 <label for="username">Felhasználónév</label>
-                <input type="text" name="username" id="username" autocomplete='username' required placeholder="" oninput="validateUserNameInput()" value="<?= isset($_POST['username']) ? $_POST['username'] : ''; ?>">
+                <input type="text" class="empty" name="username" id="username" autocomplete='username' required placeholder="" oninput="validateUserNameInput()" value="<?= isset($_POST['username']) ? $_POST['username'] : ''; ?>">
             </div>
             <!-- Jelszó mező -->
             <div class="input-group">
                 <label for="passwd">Jelszó</label>
-                <input type="password" name="passwd" id="passwd" autocomplete='current-password' required placeholder="">
+                <input type="password" class="empty" name="passwd" id="passwd" autocomplete='current-password' required placeholder="">
             </div>
             <!-- "Emlékezz rám" opció (maradjak bejelentkezve) -->
             <div class="input-group-inline">
