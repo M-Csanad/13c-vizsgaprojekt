@@ -3,8 +3,7 @@ const parentCategoryHiddenInput = document.querySelector("input[name='parent_cat
 const categoryType = document.getElementById('type');
 const pageLinks = document.querySelectorAll(".page");
 const pages = document.querySelectorAll(".section-group");
-const formRole = document.getElementById("form-role");
-const formRoleSubmitter = formRole.querySelector("input[type=submit]");
+
 let isPopupVisible = false;
 
 function expandGroup(e) {
@@ -44,8 +43,9 @@ function hideDisplayMessages() {
     }
 }
 
-function createConfirmPopup() {
+function createConfirmPopup(message) {
     isPopupVisible = true;
+
     let popup = document.createElement("div");
     let popupBody = document.createElement("div");
 
@@ -57,7 +57,7 @@ function createConfirmPopup() {
                                 </svg>
                            </div>
                            <h2 class='popup-message'>Biztosan folytatni szeretné?</h2>
-                           <div class='popup-description'>Adminisztrátori jogokkal csak megbízható személyeket lásson el!</div>
+                           <div class='popup-description'>${message}</div>
                            <div class='button-group-wrapper'>
                                 <div class='button-group'>
                                     <input type='button' value='Folytatás' class='confirm'>
@@ -108,23 +108,30 @@ function closePopup(popup) {
     }, 300);
 }
 
-formRole.addEventListener("submit", (e) => {
-    if (formRole.querySelector("select[name=role]").value == "Administrator" && !isPopupVisible) {
-        e.preventDefault();
-        let popup = createConfirmPopup();
-        popup.querySelector("input.confirm").addEventListener("click", ()=>{
-            closePopup(popup);
-            setTimeout(() => {
-                formRoleSubmitter.click();
-                isPopupVisible = false;
-            }, 300);
-        });
-        popup.querySelector("input.cancel").addEventListener("click", ()=>{
-            closePopup(popup);
-            isPopupVisible = false;
-        });
+// Azok az űrlapok, amelyeknél egy beviteli mező értékétől függ, hogy megjelenjen-e a felugró ablak
+const formExceptions = {
+    "#form-role": { // Az űrlap szelektor értéke
+        "field": "select[name=role]", // Melyik mező értékétől függ
+        "value": "Administrator" // Milyen értéknél kell a felugró ablak
     }
-});
+}
+
+// Ellenőrizzük, hogy az aktuális űrlap kivétel-e (Tehát nem minden leadáskor kell figyelmeztető üzenet, csak ha megfelel a feltételeknek)
+function isFormException(form) {
+    let selector = Object.keys(formExceptions).find(selector => form.matches(selector)) || null;
+    if (selector) {
+        let field = form.querySelector(formExceptions[selector]["field"]);
+        if (field && field.value == formExceptions[selector]["value"]) {
+            return true; // Az űrlap kivétel, és az értéke megyegyezik a kivételben szereplővel
+        }
+        else {
+            return false; // Az űrlap kivétel, de a kérdéses mező értéke nem egyezik meg a kivételben szereplővel
+        }
+    }
+    else {
+        return null; // Az űrlap nem kivétel
+    }
+}
 
 window.addEventListener("load", () => {
     let sectionHeaders = document.querySelectorAll(".section-header");
@@ -140,6 +147,38 @@ window.addEventListener("load", () => {
         page.addEventListener("click", ()=>{ togglePage(page.dataset.pageid); });
         page.addEventListener("keydown", (e) => { if (e.code=="Space" || e.code=="Enter") togglePage(page.dataset.pageid) });
     }
+
+    // A megerősítést igénylő űrlapokhoz hozzácsatoljuk az eseményt, ami létrehozza felugró ablakokat beadáskor
+    let confirmForms = document.querySelectorAll("form[data-needs-confirm='true']");
+
+    confirmForms.forEach((form)=>{
+        const formSubmitter = form.querySelector("input[type=submit]");
+        form.addEventListener("submit", (e)=>{
+            if (isPopupVisible || isFormException(form) === false) {
+                if (isPopupVisible) e.preventDefault();
+                return;
+            }
+
+            // Megakadályozzuk az automatikus leadást, és létrehozzuk az előugró ablakot
+            e.preventDefault();
+            let popup = createConfirmPopup(form.dataset.confirmMessage);
+
+            // A gombokra nyomáskor vagy szimuláljuk a leadást, vagy csak bezárjuk az előugró ablakot.
+            popup.querySelector("input.confirm").addEventListener("click", ()=>{
+                closePopup(popup);
+                setTimeout(() => {
+                    formSubmitter.click();
+                    isPopupVisible = false;
+                }, 300);
+            });
+
+            popup.querySelector("input.cancel").addEventListener("click", ()=>{
+                closePopup(popup);
+                isPopupVisible = false;
+            });
+        });
+    });
+
     hideDisplayMessages();
 });
 

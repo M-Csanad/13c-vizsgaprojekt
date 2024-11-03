@@ -86,7 +86,7 @@ form {
         user-select: none;
     }
 
-    .input-group:has(input:focus) label, .input-group:has(input:valid) label, .input-group:has(input:-webkit-autofill) label {
+    .input-group:has(input:focus) label, .input-group:has(input:valid) label, .input-group:has(input:-webkit-autofill) label, .input-group:has(input:not(:placeholder-shown)) label {
         transform: translateY(-25px);
         font-size: 14px;
         color: rgb(118, 118, 118);

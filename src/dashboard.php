@@ -68,7 +68,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" enctype="multipart/form-data">
+                    <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="">
                         <div class="input-grid">
                             <div class="inline-input">
                                 <label for="category_name">Név</label>
@@ -248,7 +248,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST">
+                    <form method="POST" data-needs-confirm="true" data-confirm-message="A kategória törlése nem visszavonható művelet!">
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-search-type="category" data-id-input="category_id" data-type-input="category_type">
@@ -291,7 +291,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" enctype="multipart/form-data">
+                    <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="">
                         <div class="input-grid">
                             <div class="inline-input">
                                 <label for="product_name">Termék név</label>
@@ -440,7 +440,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST">
+                    <form method="POST" data-needs-confirm="true" data-confirm-message="A termék törlése nem visszavonható művelet!">
                         <div class="input-select">
                             <label for="termek">Termék kiválasztása</label>
                             <select name="termek" id="termek">
@@ -462,7 +462,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                <form method="POST" enctype="multipart/form-data">
+                <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="">
                         <div class="input-grid">
                             <div class="inline-input">
                                 <label for="product_name">Termék név</label>
@@ -615,7 +615,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" id="form-role">
+                    <form method="POST" id="form-role" data-needs-confirm="true" data-confirm-message="Adminisztrátori jogokkal csak megbízható személyeket lásson el!">
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-search-type="user" data-id-input="user_id">
@@ -721,7 +721,7 @@
                 echo "<div class='error'>A termék létrehozása sikertelen!</div>";
             }
         }
-
+        
         if (isset($_POST['modify_role'])) {
             $userId = $_POST['user_id'];
             $role = $_POST['role'];
