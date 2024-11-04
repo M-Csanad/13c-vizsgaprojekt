@@ -1038,8 +1038,3 @@ h6 {
 .ImgGallery_container .caption .subcontent_caption .productCount_caption {
   color: var(--light_main-op6);
 }
-
-#break {
-  margin: 100vh 0;
-  background: #303030;
-}

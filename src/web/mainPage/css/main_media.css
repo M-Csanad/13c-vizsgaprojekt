@@ -146,6 +146,66 @@
   #brand-description .brandImages {
     display: none !important;
   }
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 16vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 16vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 16vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 16vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 16vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
+  }
 }
 
 /* Fekvő tájolású tabletek */
@@ -225,6 +285,66 @@
   .brandImages .brandImages_imgHorizontal img {
     width: 30vw;
     transform: translate(-50%, 50%);
+  }
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 24vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
   }
 }
 
@@ -308,6 +428,66 @@
     width: 30vw;
     transform: translate(-50%, 50%);
   }
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 24vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
+  }
 }
 
 /* Fekvő tájolású tabletek */
@@ -379,6 +559,67 @@
     width: 30vw;
     transform: translate(-50%, 50%);
   }
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 24vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
+  }
 }
 
 /* Álló tájolású tabletek */
@@ -449,6 +690,66 @@
     width: 30vw;
     transform: translate(-50%, 50%);
   }
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 24vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
+  }
 }
 
 /* Kisebb laptopok */
@@ -514,6 +815,67 @@
   .brandImages .brandImages_imgHorizontal img {
     width: 30vw;
     transform: translate(-50%, 50%);
+  }
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 24vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
   }
 }
 

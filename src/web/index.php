@@ -15,7 +15,7 @@
 
   <!--root stylesheet-->
   <link rel="stylesheet" href="./css/root.css" />
-  <!--temp comment-->
+
   <!--casual stylesheets-->
   <link rel="stylesheet" href="./css/box.css" />
   <link rel="stylesheet" href="./css/font.css" />
@@ -630,7 +630,7 @@
   <!--parallax-->
   <script src="./mainPage/js/parallaxEffect.js"></script>
   <script src="./mainPage/js/imageParallaxGallery.js"></script>
-  <!-- <script src="./mainPage/js/movingGradientEffect.js"></script> -->
+  <script src="./mainPage/js/movingGradientEffect.js"></script>
 
   <!--ionicons-->
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
