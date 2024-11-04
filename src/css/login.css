@@ -19,6 +19,13 @@ body {
     font-weight: 500;
 }
 
+input.autofilled {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color: light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4)) !important;
+    color: fieldtext !important;
+}
+
 /*Firefox nem támogatja a dvh-t*/
 @supports(height: 100dvh) { 
     body {
@@ -67,7 +74,8 @@ form {
     }
 
     .input-group:has(input:not(.empty)):has(input:valid), 
-    .input-group:has(input:-webkit-autofill) {
+    .input-group:has(input:-webkit-autofill),
+    .input-group:has(input.autofilled) {
         border-bottom: 3px solid var(--valid) !important;
     }
     .input-group:has(input:not(.empty)):has(input:invalid) {
@@ -75,7 +83,7 @@ form {
     }
     
     .input-group input {
-        height: 40px;
+        height: 35px;
         width: 100%;
         border: none;
         background-color: transparent;
@@ -96,6 +104,7 @@ form {
     .input-group:has(input:focus) label, 
     .input-group:has(input:valid) label, 
     .input-group:has(input:-webkit-autofill) label, 
+    .input-group:has(input.autofilled) label,
     .input-group:has(input:not(.empty)) label {
         transform: translateY(-25px);
         font-size: 14px;

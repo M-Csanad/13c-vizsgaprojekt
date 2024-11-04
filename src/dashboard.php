@@ -665,6 +665,7 @@
         </div>
     </div>
     <?php
+        // Kategória létrehozása
         if (isset($_POST['create_category'])) {
 
             $categoryData = array(
@@ -688,6 +689,7 @@
             }
         }
 
+        // Kategória törlése
         if (isset($_POST['delete_category'])) {
             if ($_POST['category_type'] == 'null' || $_POST['category_id'] == 'null') {
                 echo "<div class='error'>A kategória törlése sikertelen! Ez a kategória nem létezik!</div>"; 
@@ -709,10 +711,25 @@
             }
         }
 
+        // Termék létrehozása
         if (isset($_POST['create_product'])) {
-            $productData = array();
+            $productData = array(
+                "name" => $_POST['product_name'],
+                "unit_price" => $_POST['price'],
+                "stock" => $_POST['stock'],
+                "description" => $_POST['description']
+            );
 
-            $successfulOperation = createProduct($productData);
+            $productPageData = array(
+                "product_id" => null, // Termékfeltöltés után lesz beállítva
+                "link_slug" => null, // Létrehozáskor meghatározzuk a kategória és alkategória neveiből
+                "category_id" => $_POST['category_id'],
+                "subcategory_id" => $_POST['subcategory_id'],
+                "page_title" => $_POST['product_name'],
+                "page_content" => $_POST['content']
+            );
+
+            $successfulOperation = createProduct($productData, $productPageData);
 
             if ($successfulOperation === true) {
                 echo "<div class='success'>Termék sikeresen létrehozva!</div>";
@@ -722,6 +739,7 @@
             }
         }
         
+        // Jogosultság változtatása
         if (isset($_POST['modify_role'])) {
             $userId = $_POST['user_id'];
             $role = $_POST['role'];

@@ -109,6 +109,18 @@ function closePopup(popup) {
     }, 300);
 }
 
+function setCategoryHiddenInput() {
+    let selected = parentCategoryInput.querySelector('option:checked') || null;
+    
+    if (selected) {
+        parentCategoryInput.removeAttribute("disabled");
+        parentCategoryHiddenInput.value = selected.dataset.id;
+    }
+    else {
+        parentCategoryInput.setAttribute("disabled", true);
+    }
+}
+
 // Azok az űrlapok, amelyeknél egy beviteli mező értékétől függ, hogy megjelenjen-e a felugró ablak
 const formExceptions = {
     "#form-role": { // Az űrlap szelektor értéke
@@ -140,8 +152,7 @@ function getImageOrientation(file) {
         reader.onload = () => {
             const img = new Image();
             img.onload = () => {
-                const isHorizontal = img.width >= img.height;
-                resolve(isHorizontal ? "horizontal" : "vertical");
+                resolve( (img.width >= img.height) ? "horizontal" : "vertical");
             };
             img.onerror = reject;
             img.src = reader.result;
@@ -152,7 +163,7 @@ function getImageOrientation(file) {
 }
 
 function getFileSize(file) {
-    return file.size >> 20; // 2^10 - nel osztunk (B -> MB)
+    return file.size >> 20; // 2^20 - nal osztunk (B -> MB)
 }
 
 window.addEventListener("load", () => {
@@ -162,8 +173,6 @@ window.addEventListener("load", () => {
         header.addEventListener("click", expandGroup);
         header.addEventListener("keydown", (e) => { if (e.code=="Space" || e.code=="Enter") expandGroup(e) });
     }
-
-    parentCategoryHiddenInput.value = parentCategoryInput.querySelector('option:checked').dataset.id;
 
     for (let page of pageLinks) {
         page.addEventListener("click", ()=>{ togglePage(page.dataset.pageid); });
@@ -252,6 +261,7 @@ document.getElementById('type').addEventListener('change', ()=> {
     if (selected == "sub") {
         parentCategoryInput.removeAttribute("disabled");
         parentCategoryHiddenInput.removeAttribute("disabled");
+        setCategoryHiddenInput();
     }
     else {
         parentCategoryInput.setAttribute("disabled", true);
@@ -259,10 +269,4 @@ document.getElementById('type').addEventListener('change', ()=> {
     }
 });
 
-parentCategoryInput.addEventListener("change", () => {
-    parentCategoryHiddenInput.value = parentCategoryInput.querySelector('option:checked').dataset.id;
-});
-
-document.querySelectorAll("input[type=file]").forEach((input) => {
-    input.focus = () => {input.parentElement.focus()};
-})
+parentCategoryInput.addEventListener("change", setCategoryHiddenInput);

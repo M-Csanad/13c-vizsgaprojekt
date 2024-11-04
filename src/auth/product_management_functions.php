@@ -1,23 +1,26 @@
 <?php
 
-function createProduct() { //$_FILES és $_POST látszódik, mivel szuperglobális, így nem kell paraméterként kezelni.
+function createProduct($productData) {
     include_once "init.php";
-    $baseDirectory = './images/products/';
 
-    if (count(array_filter($_FILES, function ($e) { return $e['error'] == 1; })) > 0) {
-        echo "<div class='error'>Hiba merült fel a feltöltés során.</div>";
-        return false;
+    // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
+    if (hasUploadError()) {
+        return "Hiba merült fel a feltöltés során.";
     }
+
+    $paths = createProductDirectory($productData);
+}
+
+function createProductDirectory($productData) {
+
+    $baseDirectory = './images/products/';
     
-    $productName = str_replace(" ", "-", strtolower($_POST['product_name']));
+    $productName = str_replace(" ", "-", strtolower($productData['name']));
     $productDirURI = $baseDirectory.$productName."/";
     
-    if (!is_dir($productDirURI)) {
-        mkdir($productDirURI, 0755, true);
-        mkdir($productDirURI.'thumbnail/', 0755, true);
-        mkdir($productDirURI.'gallery/', 0755, true);
-    }
-    else {
+    $successfulDirectoryCreate = createDirectory([$productDirURI,$productDirURI.'thumbnail/', $productDirURI.'gallery/']);
+
+    if (!$successfulDirectoryCreate) {
         echo "<div class='error'>Ilyen nevű termék már létezik.</div>";
         return false;
     }
@@ -26,7 +29,7 @@ function createProduct() { //$_FILES és $_POST látszódik, mivel szuperglobál
     $thumbnail = $_FILES['thumbnail_image']['name'];
     $extension = pathinfo($thumbnail, PATHINFO_EXTENSION);
 
-    $successfulUpload = move_uploaded_file($thumbnailTmp, $productDirURI."thumbnail/thumbnail".$extension);
+    $successfulUpload = move_uploaded_file($thumbnailTmp, $productDirURI."thumbnail/thumbnail." . $extension);
     if (!$successfulUpload) {
         return false;
     }
@@ -37,13 +40,52 @@ function createProduct() { //$_FILES és $_POST látszódik, mivel szuperglobál
         $productImage = $_FILES['product_images']['name'][$i];
         $extension = pathinfo($productImage, PATHINFO_EXTENSION);
 
-        $successfulUpload = move_uploaded_file($productImageTmp, $productDirURI."gallery/image".$i.$extension);
+        $successfulUpload = move_uploaded_file($productImageTmp, $productDirURI."gallery/image" . $i . "." . $extension);
         if (!$successfulUpload) {
             return false;
         }
     }
 
     return true;
+}
+
+function uploadProductData() {
+
+}
+
+function removeProduct($productData) {
+    include_once 'init.php';
+
+    // A kategória törlése az adatbázisból
+    $successfulDelete = removeProductFromDB($productData);
+    if ($successfulDelete === false) return "Ez a termék nem létezik!";
+
+    else if ($successfulDelete !== true) return $successfulDelete;
+
+    // A kategória mappájának törlése
+    $successfulDirectoryDelete = removeProductDirectory($productData);
+    if (!$successfulDirectoryDelete) return "A mappa törlése sikertelen! (A mappát manuálisan kell törölni).";
+
+    return $successfulDirectoryDelete;
+}
+
+function removeProductFromDB($productData) {
+    $db = createConnection();
+    
+    $successfulDelete = updateData("DELETE FROM product WHERE product.id = ?;", $productData['id']);
+
+    return $successfulDelete;
+}
+
+function removeProductDirectory($productData) {
+    $baseDir = "./images/products/";
+    $productName = format_str($productData['name']);
+
+    $productDirURI = $baseDir.$productName."/";
+
+    $successfulDelete = deleteFolder($productDirURI);
+
+    return $successfulDelete;
 }
 
 ?>

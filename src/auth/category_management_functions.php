@@ -1,19 +1,13 @@
 <?php
 
-function format_str($s) {
-    return str_replace(" ", "-", strtolower($s));
-}
-
-function hasUploadError() {
-    return count(array_filter($_FILES, function ($e) { return $e['error'] == 1; })) > 0;
-}
-
-function hasError($paths) {
-    return count(array_filter($paths, function ($e) {return $e === false; })) > 0;
-}
-
 function createCategory($categoryData) {
     include_once 'init.php';
+
+    // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
+    if (hasUploadError()) {
+        return "Hiba merült fel a feltöltés során.";
+    }
+
     $db = createConnection();
     
     $categoryType = $categoryData['type'];
@@ -33,18 +27,12 @@ function createCategory($categoryData) {
 }
 
 function createCategoryDirectory($categoryData, $categoryType, $images) {
-    // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
-    if (hasUploadError()) {
-        return "Hiba merült fel a feltöltés során.";
-    }
-
     $baseDirectory = './images/categories/'.($categoryType === 'sub' ? format_str($categoryData['parent_category']) . "/" : "");
     $categoryDirURI = $baseDirectory . format_str($categoryData['name'])."/";
     
     if (!createDirectory($categoryDirURI)) {
         return "Ilyen nevű kategória már létezik.";
     }
-
 
     $paths = array();
 
@@ -63,27 +51,6 @@ function createCategoryDirectory($categoryData, $categoryType, $images) {
     }
 
     return $paths;
-}
-
-function createDirectory($path) {
-    if (!is_dir($path)) {
-        mkdir($path, 0755, true);
-        return true;
-    }
-
-    return false;
-}
-
-function moveFile($tmp, $name, $basename,$dir) {
-    $extension = pathinfo($name, PATHINFO_EXTENSION);
-    
-    $filePath = $dir."$basename.".$extension;
-    $successfulOperation = move_uploaded_file($tmp, $filePath);
-    if (!$successfulOperation) {
-        return false;
-    }
-    
-    return $filePath;
 }
 
 function uploadCategoryData($categoryData, $categoryType) {
@@ -106,7 +73,7 @@ function uploadCategoryData($categoryData, $categoryType) {
     
     if (!$isMainCategory) {
         array_push($fields, "category_id");
-        array_push($values, $categoryData['category_id']);
+        array_push($values, $categoryData['parent_category_id']);
     }
     
     $fieldList = implode(", ", $fields);
@@ -172,27 +139,5 @@ function removeCategoryDirectory($categoryData) {
     $successfulDelete = deleteFolder($categoryDirURI);
 
     return $successfulDelete;
-}
-
-function deleteFolder($folderPath) {
-    if (!is_dir($folderPath)) {
-        return false;
-    }
-    $files = scandir($folderPath);
-    foreach ($files as $file) {
-        if ($file === '.' || $file === '..') {
-            continue;
-        }
-
-        $filePath = $folderPath . DIRECTORY_SEPARATOR . $file;
-
-        if (is_dir($filePath)) {
-            deleteFolder($filePath);
-        } else {
-            unlink($filePath);
-        }
-    }
-
-    return rmdir($folderPath);
 }
 ?>

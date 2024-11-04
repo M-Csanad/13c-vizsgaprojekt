@@ -34,7 +34,7 @@ function selectData($query, $parameters) {
         }
     }
     catch(Exception $e) {
-        return $db -> error;
+        return $e;
     }
 }
 
@@ -63,7 +63,7 @@ function updateData($query, $parameters) {
         else return false;
     }
     catch(Exception $e) {
-        return $db -> error;
+        return $e;
     }
 }
 
