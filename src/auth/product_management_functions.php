@@ -19,7 +19,38 @@ function createProduct($productData, $productPageData) {
         return "Sikertelen feltöltés a product táblába. ($result)";
     }
 
+    $result = getLinkSlug($productData['id']);
+    if (is_array($result)) {
+        $productPageData["category_id"] = $result["category_id"];
+        $productPageData["subcategory_id"] = $result["subcategory_id"];
+        $productPageData["link_slug"] = $result["link_slug"];
+    }
+
+
     $result = uploadProductPageData($productPageData);
+    if (!is_numeric($result)) {
+        return "Sikertelen feltöltés a product_page táblába. ($result)";
+    }
+}
+
+function getLinkSlug($id, $name) {
+    $result = selectData("SELECT category.name as category_name, 
+                                 subcategory.name as subcategory_name,
+                                 product_page.category_id,
+                                 product_page.subcategory_id,
+                          FROM product_page
+                          INNER JOIN category ON product_page.category_id = category.id 
+                          INNER JOIN subcategory ON product_page.subcategory_id = subcategory.id 
+                          WHERE product_page.id = ?;", $id);
+
+    if (is_array($result)) {
+        $link_slug = format_str($result["category_name"]) . "/" . format_str($result["subcategory_id"] . "/" . format_str($name));
+        return array(
+            "category_id": $result["category_id"],
+            "subcategory_id": $result["subcategory_id"],
+            "link_slug": $link_slug
+        );
+    }
 }
 
 function createProductDirectory($productData) {
