@@ -56,6 +56,7 @@ let mouseMoveTimeout = null;
 // Funkció az egér pozíciójának ellenőrzésére a containeren belül
 function isMouseInContainer() {
   const containerRect = brandPhilosophyContainer.getBoundingClientRect();
+  if (!event) return;
   const mouseX = event.clientX;
   const mouseY = event.clientY;
 

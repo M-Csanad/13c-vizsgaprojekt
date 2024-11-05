@@ -134,6 +134,7 @@
     position: relative;
     width: 84vw;
     white-space: wrap;
+
     font-size: 2rem;
     padding: 12px 0 12px 0;
   }
@@ -272,6 +273,7 @@
     top: 4rem;
     width: 70vw;
     white-space: wrap;
+    position: relative;
     font-size: 3rem;
     padding: 12px 0 12px 0;
   }
@@ -414,6 +416,7 @@
     top: 4rem;
     width: 70vw;
     white-space: wrap;
+    position: relative;
     font-size: 3rem;
     padding: 12px 0 12px 0;
   }
@@ -553,7 +556,9 @@
     top: 4rem;
     width: 70vw;
     white-space: wrap;
+    position: relative;
     padding: 12px 0 12px 0;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
   }
   .brandImages .brandImages_imgHorizontal img {
     width: 30vw;
@@ -684,7 +689,9 @@
     top: 4rem;
     width: 70vw;
     white-space: wrap;
+    position: relative;
     padding: 12px 0 12px 0;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
   }
   .brandImages .brandImages_imgHorizontal img {
     width: 30vw;
@@ -810,7 +817,15 @@
   #brand-description .brandContent h1 {
     top: 0rem;
     white-space: wrap;
+    position: relative;
     padding: 12px 0 12px 0;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+  }
+  #brand-description .brandContent .brandContentParagraph {
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 80%;
+    padding: 0 8px;
   }
   .brandImages .brandImages_imgHorizontal img {
     width: 30vw;
