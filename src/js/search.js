@@ -107,6 +107,7 @@ function initializeSearch(search) {
     }
 
     function selectFirstValidOption() {
+        search.closest('.input-grid').querySelector('option:checked').removeAttribute("selected");
         search.closest('.input-grid').querySelector('option:enabled').setAttribute('selected', true);
     }
     
