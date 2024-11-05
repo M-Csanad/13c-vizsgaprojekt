@@ -44,11 +44,11 @@ function getLinkSlug($id, $name) {
                           WHERE product_page.id = ?;", $id);
 
     if (is_array($result)) {
-        $link_slug = format_str($result["category_name"]) . "/" . format_str($result["subcategory_id"] . "/" . format_str($name));
+        $link_slug = format_str($result["category_name"]) . "/" . format_str($result["subcategory_id"]) . "/" . format_str($name);
         return array(
-            "category_id": $result["category_id"],
-            "subcategory_id": $result["subcategory_id"],
-            "link_slug": $link_slug
+            "category_id" => $result["category_id"],
+            "subcategory_id" => $result["subcategory_id"],
+            "link_slug" => $link_slug
         );
     }
 }
@@ -56,8 +56,8 @@ function getLinkSlug($id, $name) {
 function createProductDirectory($productData) {
 
     $baseDirectory = './images/products/';
-    
-    $productName = str_replace(" ", "-", strtolower($productData['name']));
+
+    $productName = str_replace(" ", "-", mb_strtolower($productData['name']));
     $productDirURI = $baseDirectory.$productName."/";
     
     $successfulDirectoryCreate = createDirectory([$productDirURI,$productDirURI.'thumbnail/', $productDirURI.'gallery/']);
@@ -102,13 +102,14 @@ function uploadProductData($data) {
 }
 
 function uploadProductPageData($data) {
-    $fields = array("product_id", "link_slug", "category_id", "subcategory_id", "page_title", "page_content");
+    var_dump($data);
+    // $fields = array("product_id", "link_slug", "category_id", "subcategory_id", "page_title", "page_content");
     
-    $fieldList = implode(", ", $fields);
-    $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
-    $query = "INSERT INTO `product_page`($fieldList) VALUES ($placeholderList);";
+    // $fieldList = implode(", ", $fields);
+    // $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
+    // $query = "INSERT INTO `product_page`($fieldList) VALUES ($placeholderList);";
     
-    return updateData($query, $values);
+    // return updateData($query, $values);
 }
 
 function removeProduct($productData) {

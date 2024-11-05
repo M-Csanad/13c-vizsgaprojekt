@@ -44,6 +44,7 @@ function hideDisplayMessages() {
     }
 }
 
+
 function createConfirmPopup(message) {
     isPopupVisible = true;
 
@@ -107,18 +108,6 @@ function closePopup(popup) {
     setTimeout(() => {
         document.body.removeChild(popup);
     }, 300);
-}
-
-function setCategoryHiddenInput() {
-    let selected = parentCategoryInput.querySelector('option:checked') || null;
-    
-    if (selected) {
-        parentCategoryInput.removeAttribute("disabled");
-        parentCategoryHiddenInput.value = selected.dataset.id;
-    }
-    else {
-        parentCategoryInput.setAttribute("disabled", true);
-    }
 }
 
 // Azok az űrlapok, amelyeknél egy beviteli mező értékétől függ, hogy megjelenjen-e a felugró ablak
@@ -260,13 +249,57 @@ document.getElementById('type').addEventListener('change', ()=> {
     
     if (selected == "sub") {
         parentCategoryInput.removeAttribute("disabled");
-        parentCategoryHiddenInput.removeAttribute("disabled");
-        setCategoryHiddenInput();
     }
     else {
         parentCategoryInput.setAttribute("disabled", true);
-        parentCategoryHiddenInput.setAttribute("disabled", true);
     }
 });
 
-parentCategoryInput.addEventListener("change", setCategoryHiddenInput);
+async function populateOptions(select, category) {
+    let table = select.dataset.table;
+
+    let data = new FormData();
+    data.append('table', table);
+    if (category) data.append("category_name", category);
+    
+    const response = await fetch(`./misc/get_categories.php`, {
+        method: "POST",
+        body: data
+    });
+
+    if (response.ok) {
+        let data = await response.json();
+        
+        select.innerHTML = "";
+        if (Array.isArray(data) || typeof data == "object") {
+            if (!Array.isArray(data) && typeof data == "object") data = [data];
+            data.forEach(category => select.innerHTML += `<option value='${category.name}' data-id='${category.id}'>${category.name}</option>`);
+        }
+
+    }
+}
+
+function setHiddenInput(select) {
+    let value = (select.children.length > 0) ? select.querySelector("option:checked").dataset.id : "null";
+    select.closest('div').querySelector('input[type=hidden]').value = value;
+}
+
+document.querySelectorAll("select[data-table=category]").forEach(async select => {
+
+    await populateOptions(select);
+    setHiddenInput(select);
+
+    let subcategorySelect = select.closest('.inline-input').nextElementSibling.querySelector('select[data-table=subcategory]');
+    if (subcategorySelect) {
+        await populateOptions(subcategorySelect, select.value);
+        setHiddenInput(subcategorySelect);
+    }
+
+    select.addEventListener("change", async () => {
+        setHiddenInput(select);
+        if (subcategorySelect) {
+            await populateOptions(subcategorySelect, select.value);
+            setHiddenInput(subcategorySelect);
+        }
+    });
+});
