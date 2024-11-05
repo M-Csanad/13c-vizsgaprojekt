@@ -681,7 +681,7 @@
 
             $successfulOperation = createCategory($categoryData);
 
-            if ($successfulOperation === true) {
+            if (is_numeric($successfulOperation)) {
                 echo "<div class='success'>Kategória sikeresen létrehozva!</div>";
             }
             else {

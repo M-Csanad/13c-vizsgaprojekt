@@ -58,7 +58,10 @@ function updateData($query, $parameters) {
 
         $db -> close();
         if ($statement -> affected_rows > 0) {
-            return true;
+            if (str_contains($query, "INSERT")) {
+                return $statement -> insert_id;
+            }
+            else return true;
         }
         else return false;
     }

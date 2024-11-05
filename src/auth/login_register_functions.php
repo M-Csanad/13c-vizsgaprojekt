@@ -11,7 +11,7 @@ function register($username, $password, $email) {
 
     $result = updateData("INSERT INTO user (user_name, email, password_hash) 
                           VALUES (?, ?, ?)", [$username, $email, $passwordHash]);
-    if ($result !== true) {
+    if (!is_numeric($result)) {
         $error = $result;
         if (str_contains($error, 'email')) {
             return "Ez az E-mail cím már foglalt.";

@@ -1,6 +1,6 @@
 <?php
 
-function createProduct($productData) {
+function createProduct($productData, $productPageData) {
     include_once "init.php";
 
     // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
@@ -9,6 +9,17 @@ function createProduct($productData) {
     }
 
     $paths = createProductDirectory($productData);
+    $result = uploadProductData($productData);
+
+    if (is_numeric($result)) {
+        $productData["id"] = $result;
+        $productPageData["product_id"] = $result;
+    }
+    else {
+        return "Sikertelen feltöltés a product táblába. ($result)";
+    }
+
+    $result = uploadProductPageData($productPageData);
 }
 
 function createProductDirectory($productData) {
@@ -49,8 +60,24 @@ function createProductDirectory($productData) {
     return true;
 }
 
-function uploadProductData() {
+function uploadProductData($data) {
+    $fields = array("name", "unit_price", "stock", "description");
 
+    $fieldList = implode(", ", $fields);
+    $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
+    $query = "INSERT INTO `product`($fieldList) VALUES ($placeholderList);";
+    
+    return updateData($query, $values);
+}
+
+function uploadProductPageData($data) {
+    $fields = array("product_id", "link_slug", "category_id", "subcategory_id", "page_title", "page_content");
+    
+    $fieldList = implode(", ", $fields);
+    $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
+    $query = "INSERT INTO `product_page`($fieldList) VALUES ($placeholderList);";
+    
+    return updateData($query, $values);
 }
 
 function removeProduct($productData) {
