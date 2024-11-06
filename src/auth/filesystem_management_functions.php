@@ -1,7 +1,7 @@
 <?php
 
 function format_str($s) {
-    return str_replace(" ", "-", strtolower($s));
+    return str_replace(" ", "-", mb_strtolower($s));
 }
 
 function getOrientation($image) {
@@ -13,8 +13,12 @@ function getOrientation($image) {
         return ($width >= $height) ? "horizontal" : "vertical";
 
     } else {
-        return "Failed to get image dimensions.";
+        return "Nem sikerült a kép tájolásának kinyerése.";
     }
+}
+
+function getMediaType($image) {
+    return mime_content_type($image);
 }
 
 function createDirectory($paths) {

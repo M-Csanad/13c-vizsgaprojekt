@@ -720,7 +720,12 @@
                 "page_content" => $_POST['content']
             );
 
-            $successfulOperation = createProduct($productData, $productPageData);
+            $productCategoryData = array(
+                "category" => $_POST['category'],
+                "subcategory" => $_POST['subcategory'],
+            );
+
+            $successfulOperation = createProduct($productData, $productPageData, $productCategoryData);
 
             if ($successfulOperation === true) {
                 echo "<div class='success'>Termék sikeresen létrehozva!</div>";

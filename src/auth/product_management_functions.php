@@ -1,6 +1,6 @@
 <?php
 
-function createProduct($productData, $productPageData) {
+function createProduct($productData, $productPageData, $productCategoryData) {
     include_once "init.php";
 
     // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
@@ -9,8 +9,11 @@ function createProduct($productData, $productPageData) {
     }
 
     $paths = createProductDirectory($productData);
-    $result = uploadProductData($productData);
+    if (!is_array($paths)) {
+        return "Sikertelen képfeltöltés. ($paths)";
+    }
 
+    $result = uploadProductData($productData);
     if (is_numeric($result)) {
         $productData["id"] = $result;
         $productPageData["product_id"] = $result;
@@ -18,81 +21,81 @@ function createProduct($productData, $productPageData) {
     else {
         return "Sikertelen feltöltés a product táblába. ($result)";
     }
-
-    $result = getLinkSlug($productData['id']);
+    
+    $result = getLinkSlug($productData['name'], $productCategoryData);
     if (is_array($result)) {
-        $productPageData["category_id"] = $result["category_id"];
-        $productPageData["subcategory_id"] = $result["subcategory_id"];
         $productPageData["link_slug"] = $result["link_slug"];
     }
-
-
+    
     $result = uploadProductPageData($productPageData);
     if (!is_numeric($result)) {
         return "Sikertelen feltöltés a product_page táblába. ($result)";
     }
+
+    $result = uploadProductImages($paths);
+
+    return true;
 }
 
-function getLinkSlug($id, $name) {
-    $result = selectData("SELECT category.name as category_name, 
-                                 subcategory.name as subcategory_name,
-                                 product_page.category_id,
-                                 product_page.subcategory_id,
-                          FROM product_page
-                          INNER JOIN category ON product_page.category_id = category.id 
-                          INNER JOIN subcategory ON product_page.subcategory_id = subcategory.id 
-                          WHERE product_page.id = ?;", $id);
-
-    if (is_array($result)) {
-        $link_slug = format_str($result["category_name"]) . "/" . format_str($result["subcategory_id"]) . "/" . format_str($name);
-        return array(
-            "category_id" => $result["category_id"],
-            "subcategory_id" => $result["subcategory_id"],
-            "link_slug" => $link_slug
-        );
-    }
+function getLinkSlug($name, $categoryData) {
+    $link_slug = format_str($categoryData["category"]) . "/" . format_str($categoryData["subcategory"]) . "/" . format_str($name);
+    return array(
+        "link_slug" => $link_slug
+    );
 }
 
 function createProductDirectory($productData) {
+    $paths = array();
 
     $baseDirectory = './images/products/';
 
-    $productName = str_replace(" ", "-", mb_strtolower($productData['name']));
+    $productName = format_str($productData['name']);
     $productDirURI = $baseDirectory.$productName."/";
     
     $successfulDirectoryCreate = createDirectory([$productDirURI,$productDirURI.'thumbnail/', $productDirURI.'gallery/']);
 
     if (!$successfulDirectoryCreate) {
-        echo "<div class='error'>Ilyen nevű termék már létezik.</div>";
-        return false;
+        return "Ilyen nevű termék már létezik.";
     }
 
     $thumbnailTmp = $_FILES['thumbnail_image']['tmp_name'];
     $thumbnail = $_FILES['thumbnail_image']['name'];
     $extension = pathinfo($thumbnail, PATHINFO_EXTENSION);
+    $path = $productDirURI."thumbnail/thumbnail." . $extension;
 
-    $successfulUpload = move_uploaded_file($thumbnailTmp, $productDirURI."thumbnail/thumbnail." . $extension);
+    $successfulUpload = move_uploaded_file($thumbnailTmp, $path);
     if (!$successfulUpload) {
         return false;
     }
+
+    array_push($paths, $path);
 
     $fileCount = count($_FILES['product_images']['name']);
     for ($i=0; $i < $fileCount; $i++) {
         $productImageTmp = $_FILES['product_images']['tmp_name'][$i];
         $productImage = $_FILES['product_images']['name'][$i];
         $extension = pathinfo($productImage, PATHINFO_EXTENSION);
+        $path = $productDirURI."gallery/image" . $i . "." . $extension;
 
         $successfulUpload = move_uploaded_file($productImageTmp, $productDirURI."gallery/image" . $i . "." . $extension);
         if (!$successfulUpload) {
             return false;
         }
+
+        array_push($paths, $path);
     }
 
-    return true;
+    return $paths;
 }
 
 function uploadProductData($data) {
     $fields = array("name", "unit_price", "stock", "description");
+    $values = array(
+        $data['name'],
+        $data['unit_price'],
+        $data['stock'],
+        $data['description'],
+    );
 
     $fieldList = implode(", ", $fields);
     $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
@@ -102,14 +105,29 @@ function uploadProductData($data) {
 }
 
 function uploadProductPageData($data) {
-    var_dump($data);
-    // $fields = array("product_id", "link_slug", "category_id", "subcategory_id", "page_title", "page_content");
+
+    $fields = array("product_id", "link_slug", "category_id", "subcategory_id", "page_title", "page_content");
+    $values = array(
+        $data['product_id'],
+        $data['link_slug'],
+        $data['category_id'],
+        $data['subcategory_id'],
+        $data['page_title'],
+        $data['page_content']
+    );
     
-    // $fieldList = implode(", ", $fields);
-    // $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
-    // $query = "INSERT INTO `product_page`($fieldList) VALUES ($placeholderList);";
+    $fieldList = implode(", ", $fields);
+    $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
+    $query = "INSERT INTO `product_page`($fieldList) VALUES ($placeholderList);";
     
-    // return updateData($query, $values);
+    return updateData($query, $values);
+}
+
+function uploadProductImages($paths) {
+    foreach ($paths as $path) {
+        $orientation = getOrientation($path);
+        var_dump($orientation);
+    }
 }
 
 function removeProduct($productData) {
