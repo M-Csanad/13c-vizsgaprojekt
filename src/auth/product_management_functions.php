@@ -32,7 +32,16 @@ function createProduct($productData, $productPageData, $productCategoryData) {
         return "Sikertelen feltöltés a product_page táblába. ($result)";
     }
 
-    $result = uploadProductImages($paths);
+    $insertIds = uploadProductImages($paths);
+    if (!is_array($insertIds)) {
+        return "Sikertelen feltöltés az image táblába. ($insertIds)";
+    }
+    
+    $result = connectProductImages($insertIds, $productData['id']);
+
+    if ($result !== true) {
+        return "Sikertelen feltöltés a product_image táblába. ($result)";
+    }
 
     return true;
 }
@@ -124,10 +133,31 @@ function uploadProductPageData($data) {
 }
 
 function uploadProductImages($paths) {
+    $insertIds = array();
+
     foreach ($paths as $path) {
+        $mediaType = getMediaType($path);
         $orientation = getOrientation($path);
-        var_dump($orientation);
+        
+        $result = updateData("INSERT INTO `image`(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, $orientation, $mediaType]);
+        if (!is_numeric($result)) {
+            return false;
+        }
+        array_push($insertIds, $result);
     }
+
+    return $insertIds;
+}
+
+function connectProductImages($insertIds, $productId) {
+    foreach ($insertIds as $image) {
+        $result = updateData("INSERT INTO `product_image`(image_id, product_id) VALUES (?, ?);", [$image, $productId]);
+
+        if (!is_numeric($result)) {
+            return false;
+        }
+    }
+    return true;
 }
 
 function removeProduct($productData) {

@@ -6,7 +6,7 @@ function format_str($s) {
 
 function getOrientation($image) {
     $size = getimagesize($image);
-    if ($imageInfo) {
+    if ($size) {
         $width = $size[0];
         $height = $size[1];
 
