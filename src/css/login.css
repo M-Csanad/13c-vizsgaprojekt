@@ -87,8 +87,10 @@ form {
         width: 100%;
         border: none;
         background-color: transparent;
+        position: relative;
         outline: none;
         font-size: 16px;
+        z-index: 10;
     }
     
     .input-group label {
@@ -99,6 +101,7 @@ form {
         padding-left: 8px;
         color: var(--text-light);
         user-select: none;
+        z-index: 2;
     }
 
     .input-group:has(input:focus) label, 

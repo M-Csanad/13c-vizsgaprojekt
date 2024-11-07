@@ -141,6 +141,7 @@ function getImageOrientation(file) {
         reader.onload = () => {
             const img = new Image();
             img.onload = () => {
+                console.log((img.width >= img.height))
                 resolve( (img.width >= img.height) ? "horizontal" : "vertical");
             };
             img.onerror = reject;
@@ -150,6 +151,28 @@ function getImageOrientation(file) {
         reader.readAsDataURL(file);
     });
 }
+
+function getVideoOrientation(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        
+        reader.onload = () => {
+            let video = document.createElement("video");
+            
+            video.onloadedmetadata = () => {
+                resolve((video.videoWidth >= video.videoHeight) ? "horizontal" : "vertical");
+                video = null;
+            };
+            
+            video.onerror = reject;
+            video.src = reader.result;
+        };
+        
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
 
 function getFileSize(file) {
     return file.size >> 20; // 2^20 - nal osztunk (B -> MB)
@@ -168,9 +191,26 @@ window.addEventListener("load", () => {
         page.addEventListener("keydown", (e) => { if (e.code=="Space" || e.code=="Enter") togglePage(page.dataset.pageid) });
     }
 
-    document.querySelectorAll("input[data-type=image]").forEach((input) => {
+    document.querySelectorAll("input[data-type]").forEach((input) => {
+        let parent = input.closest('.main-wrapper');
+        let trashIcon = document.createElement("div");
+        trashIcon.classList.add("input-trash");
+        trashIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+        </svg>`;
+
+        parent.appendChild(trashIcon);
+
+        trashIcon.addEventListener("click", () => {
+            input.value = "";
+        });
+
+        let orientation = input.dataset.orientation;
+        let inputCount = input.dataset.count;
+        let acceptedType = input.dataset.type;
+
         input.addEventListener("input", async () => {
-            if (input.dataset.count == "singular") {
+            if (inputCount == "singular") {
                 let file = input.files[0] || null;
 
                 if (!file) { // Ha nem töltött fel fájlt
@@ -181,9 +221,8 @@ window.addEventListener("load", () => {
                 }
 
                 let type = file.type || null;
-                let acceptedTypes = input.getAttribute("accept");
 
-                if (!acceptedTypes.includes(type)) { // Ha nem képet töltött fel
+                if (!type.includes(acceptedType)) { // Ha nem képet töltött fel
                     input.setCustomValidity('Kérjük képet adjon meg!');
                     input.value = "";
                     input.reportValidity();
@@ -197,9 +236,9 @@ window.addEventListener("load", () => {
                     return;
                 }
 
-                let orientation = await getImageOrientation(file);
-                if (orientation != input.dataset.orientation) {
-                    input.setCustomValidity('Kérjük megfelelő tájolású képet adjon meg!');
+                let currentOrientation = (type.includes("image")) ? await getImageOrientation(file) : await getVideoOrientation(file);
+                if (currentOrientation != orientation) {
+                    input.setCustomValidity(`Kérjük megfelelő tájolású ${(acceptedType=="image") ? "képet" : "videót"} adjon meg!`);
                     input.value = "";
                     input.reportValidity();
                     return;
@@ -215,6 +254,7 @@ window.addEventListener("load", () => {
 
     confirmForms.forEach((form)=>{
         const formSubmitter = form.querySelector("input[type=submit]");
+        let formMessage = form.dataset.confirmMessage;
         form.addEventListener("submit", (e)=>{
 
             if (isPopupVisible || isFormException(form) === false) {
@@ -223,7 +263,7 @@ window.addEventListener("load", () => {
 
             // Megakadályozzuk az automatikus leadást, és létrehozzuk az előugró ablakot
             e.preventDefault();
-            let popup = createConfirmPopup(form.dataset.confirmMessage);
+            let popup = createConfirmPopup(formMessage);
 
             // A gombokra nyomáskor vagy szimuláljuk a leadást, vagy csak bezárjuk az előugró ablakot.
             popup.querySelector("input.confirm").addEventListener("click", ()=>{
@@ -255,8 +295,7 @@ document.getElementById('type').addEventListener('change', ()=> {
     }
 });
 
-async function populateOptions(select, category) {
-    let table = select.dataset.table;
+async function populateOptions(select, category, table) {
 
     let data = new FormData();
     data.append('table', table);
@@ -286,19 +325,21 @@ function setHiddenInput(select) {
 
 document.querySelectorAll("select[data-table=category]").forEach(async select => {
 
-    await populateOptions(select);
+    let table = select.dataset.table;
+
+    await populateOptions(select, null, table);
     setHiddenInput(select);
 
     let subcategorySelect = select.closest('.inline-input').nextElementSibling.querySelector('select[data-table=subcategory]');
     if (subcategorySelect) {
-        await populateOptions(subcategorySelect, select.value);
+        await populateOptions(subcategorySelect, select.value, table);
         setHiddenInput(subcategorySelect);
     }
 
     select.addEventListener("change", async () => {
         setHiddenInput(select);
         if (subcategorySelect) {
-            await populateOptions(subcategorySelect, select.value);
+            await populateOptions(subcategorySelect, select.value, table);
             setHiddenInput(subcategorySelect);
         }
     });

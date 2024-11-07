@@ -9,7 +9,7 @@ function validateUserNameInput() {
     }
 }
 
-window.addEventListener("load", ()=>{
+window.addEventListener("DOMContentLoaded", ()=>{
   document.querySelectorAll(".empty").forEach((input)=>{
     if (input.value) input.classList.remove("empty")
     else input.classList.add("empty")

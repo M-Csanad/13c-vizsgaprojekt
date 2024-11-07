@@ -71,7 +71,7 @@
                     <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="">
                         <div class="input-grid">
                             <div class="inline-input">
-                                <label for="category_name">Név</label>
+                                <label for="category_name"><div>Név</div></label>
                                 <div>
                                     <input type="text" name="category_name" id="category_name" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -84,7 +84,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="category_subname">Alcím</label>
+                                <label for="category_subname"><div>Alcím</div></label>
                                 <div>
                                     <input type="text" name="category_subname" id="category_subname" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -97,7 +97,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="description">Leírás</label>
+                                <label for="description"><div>Leírás</div></label>
                                 <div>
                                     <input type="text" name="description" id="description" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -110,7 +110,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="type">Típus</label>
+                                <label for="type"><div>Típus</div></label>
                                 <div>
                                     <select name="type" id="type" required>
                                         <option value="main">Főkategória</option>
@@ -126,7 +126,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="parent_category">Főkategória</label>
+                                <label for="parent_category"><div>Főkategória</div></label>
                                 <div>
                                     <select name="parent_category" id="parent_category" disabled required data-table="category"></select>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -144,7 +144,7 @@
                             </div>
                             <div class="file-input inline-input">
                                 <label>
-                                    Borítókép
+                                    <div>Borítókép</div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                                         <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
@@ -154,14 +154,16 @@
                                     </div>
                                 </label>
                                 <div>
-                                    <label for="thumbnail_image_vertical" class="input-wrapper" tabindex="0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-upload upload" viewBox="0 0 16 16">
-                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
-                                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
-                                        </svg>
-                                        <input type="file" name="thumbnail_image_vertical" id="thumbnail_image_vertical" required accept="image/png, image/jpeg" data-orientation="vertical" data-type="image" data-count="singular" tabindex="-1">
-                                        Kép kiválasztása
-                                    </label>
+                                    <div class="main-wrapper">
+                                        <label for="thumbnail_image_vertical" class="input-wrapper" tabindex="0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-upload upload" viewBox="0 0 16 16">
+                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+                                            </svg>
+                                            <input type="file" name="thumbnail_image_vertical" id="thumbnail_image_vertical" required accept="image/png, image/jpeg" data-orientation="vertical" data-type="image" data-count="singular" tabindex="-1">
+                                            Kép kiválasztása
+                                        </label>
+                                    </div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
                                         <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
                                         <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
@@ -173,7 +175,7 @@
                             </div>
                             <div class="file-input inline-input">
                                 <label>
-                                    Borítókép
+                                    <div>Borítókép</div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
                                         <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
                                         <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
@@ -183,14 +185,16 @@
                                     </div>
                                 </label>
                                 <div>
-                                    <label for="thumbnail_image_horizontal" class="input-wrapper" tabindex="0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-upload upload" viewBox="0 0 16 16">
-                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
-                                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
-                                        </svg>
-                                        <input type="file" name="thumbnail_image_horizontal" id="thumbnail_image_horizontal" required accept="image/png, image/jpeg"  data-orientation="horizontal" data-type="image" data-count="singular" tabindex="-1">
-                                        Kép kiválasztása
-                                    </label>
+                                    <div class="main-wrapper">
+                                        <label for="thumbnail_image_horizontal" class="input-wrapper" tabindex="0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-upload upload" viewBox="0 0 16 16">
+                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+                                            </svg>
+                                            <input type="file" name="thumbnail_image_horizontal" id="thumbnail_image_horizontal" required accept="image/png, image/jpeg"  data-orientation="horizontal" data-type="image" data-count="singular" tabindex="-1">
+                                            Kép kiválasztása
+                                        </label>
+                                    </div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
                                         <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
                                         <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
@@ -201,16 +205,27 @@
                                 </div>
                             </div>
                             <div class="file-input inline-input">
-                                <label>Videó</label>
+                                <label style="gap: 5px">
+                                    <div>Videó</div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                                    </svg>
+                                    <div class='label-tooltip'>
+                                        Vízszintes tájolású videó (opcionális)
+                                    </div>
+                                </label>
                                 <div>
-                                    <label for="thumbnail_video" class="input-wrapper" tabindex="0">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-upload upload" viewBox="0 0 16 16">
-                                            <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
-                                            <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
-                                        </svg>
-                                        <input type="file" name="thumbnail_video" id="thumbnail_video" accept="video/*" data-type="video" tabindex="-1">
-                                        Videó kiválasztása
-                                    </label>
+                                    <div class="main-wrapper">
+                                        <label for="thumbnail_video" class="input-wrapper" tabindex="0">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-upload upload" viewBox="0 0 16 16">
+                                                <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
+                                                <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
+                                            </svg>
+                                            <input type="file" name="thumbnail_video" id="thumbnail_video" accept="video/*" data-type="video" data-orientation="horizontal" data-type="video" data-count="singular" tabindex="-1">
+                                            Videó kiválasztása
+                                        </label>
+                                    </div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
                                         <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
                                         <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
@@ -283,7 +298,7 @@
                     <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="">
                         <div class="input-grid">
                             <div class="inline-input">
-                                <label for="product_name">Termék név</label>
+                                <label for="product_name"><div>Termék név</div></label>
                                 <div>
                                     <input type="text" name="product_name" id="product_name" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -296,7 +311,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="description">Leírás</label>
+                                <label for="description"><div>Leírás</div></label>
                                 <div>
                                     <input type="text" name="description" id="description" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -309,7 +324,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="price">Egységár</label>
+                                <label for="price"><div>Egységár</div></label>
                                 <div>
                                     <input type="number" name="price" id="price" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -322,7 +337,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="stock">Készlet</label>
+                                <label for="stock"><div>Készlet</div></label>
                                 <div>
                                     <input type="number" name="stock" id="stock" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -335,7 +350,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="category">Kategória</label>
+                                <label for="category"><div>Kategória</div></label>
                                 <div>
                                     <select name="category" id="product_category" required data-table="category"></select>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -349,7 +364,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="subcategory">Alkategória</label>
+                                <label for="subcategory"><div>Alkategória</div></label>
                                 <div>
                                     <select name="subcategory" id="product_subcategory" required data-table="subcategory"></select>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -363,7 +378,7 @@
                                 </div>
                             </div>
                             <div class="file-input inline-input">
-                                <label>Borítókép</label>
+                                <label><div>Borítókép</div></label>
                                 <div>
                                     <label for="thumbnail_image_create" class="input-wrapper">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-upload" viewBox="0 0 16 16">
@@ -383,7 +398,7 @@
                                 </div>
                             </div>
                             <div class="file-input inline-input">
-                                <label>Termékképek</label>
+                                <label><div>Termékképek</div></label>
                                 <div>
                                     <label for="product_images_create" class="input-wrapper">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-upload" viewBox="0 0 16 16">
@@ -403,7 +418,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="content">Tartalom</label>
+                                <label for="content"><div>Tartalom</div></label>
                                 <div>
                                     <input type="text" name="content" id="content" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -447,7 +462,7 @@
             <!------------------------------ Termék módosítása ----------------------------->
             <section>
                 <div class="section-header" tabindex="0">
-                    <div class="section-title">Termék módosítása</div>
+                    <div class="section-title"><div>Termék módosítása</div></div>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
                         <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
                     </svg>
@@ -456,7 +471,7 @@
                 <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="">
                         <div class="input-grid">
                             <div class="inline-input">
-                                <label for="product_name">Termék név</label>
+                                <label for="product_name"><div>Termék név</div></label>
                                 <div>
                                     <input type="text" name="product_name" id="product_name" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -469,7 +484,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="description">Leírás</label>
+                                <label for="description"><div>Leírás</div></label>
                                 <div>
                                     <input type="text" name="description" id="description" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -482,7 +497,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="price">Egységár</label>
+                                <label for="price"><div>Egységár</div></label>
                                 <div>
                                     <input type="number" name="price" id="price" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -495,7 +510,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="stock">Készlet</label>
+                                <label for="stock"><div>Készlet</div></label>
                                 <div>
                                     <input type="number" name="stock" id="stock" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -508,7 +523,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="category">Kategória</label>
+                                <label for="category"><div>Kategória</div></label>
                                 <div>
                                     <input type="text" name="category" id="category" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -521,7 +536,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="subcategory">Alkategória</label>
+                                <label for="subcategory"><div>Alkategória</div></label>
                                 <div>
                                     <input type="text" name="subcategory" id="subcategory" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -534,7 +549,7 @@
                                 </div>
                             </div>
                             <div class="file-input inline-input">
-                                <label>Borítókép</label>
+                                <label><div>Borítókép</div></label>
                                 <div>
                                     <label for="thumbnail_image_create" class="input-wrapper">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-upload" viewBox="0 0 16 16">
@@ -554,7 +569,7 @@
                                 </div>
                             </div>
                             <div class="file-input inline-input">
-                                <label>Termékképek</label>
+                                <label><div>Termékképek</div></label>
                                 <div>
                                     <label for="product_images_create" class="input-wrapper">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="black" class="bi bi-upload" viewBox="0 0 16 16">
@@ -574,7 +589,7 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="content">Tartalom</label>
+                                <label for="content"><div>Tartalom</div></label>
                                 <div>
                                     <input type="text" name="content" id="content" required>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
@@ -627,7 +642,7 @@
                                 </svg>
                             </div>
                             <div class="inline-input">
-                                <label for="role">Jogosultság</label>
+                                <label for="role"><div>Jogosultság</div></label>
                                 <div>
                                     <select name="role" id="role" required disabled>
                                         <option value="Guest">Guest</option>
