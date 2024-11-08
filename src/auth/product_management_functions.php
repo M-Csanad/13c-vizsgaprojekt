@@ -79,6 +79,18 @@ function createProductDirectory($productData) {
 
     array_push($paths, $path);
 
+    $videoTmp = $_FILES['product_video']['tmp_name'];
+    $video = $_FILES['product_video']['name'];
+    $extension = pathinfo($video, PATHINFO_EXTENSION);
+    $path = $productDirURI."thumbnail/thumbnail." . $extension;
+
+    $successfulUpload = move_uploaded_file($videoTmp, $path);
+    if (!$successfulUpload) {
+        return false;
+    }
+
+    array_push($paths, $path);
+
     $fileCount = count($_FILES['product_images']['name']);
     for ($i=0; $i < $fileCount; $i++) {
         $productImageTmp = $_FILES['product_images']['tmp_name'][$i];
@@ -137,7 +149,12 @@ function uploadProductImages($paths) {
 
     foreach ($paths as $path) {
         $mediaType = getMediaType($path);
-        $orientation = getOrientation($path);
+        if (str_contains($mediaType, "video")) {
+            $orientation = "horizontal";
+        }
+        else {
+            $orientation = getOrientation($path);
+        }
         
         $result = updateData("INSERT INTO `image`(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, $orientation, $mediaType]);
         if (!is_numeric($result)) {
@@ -177,10 +194,10 @@ function removeProduct($productData) {
 }
 
 function removeProductFromDB($productData) {
-    $db = createConnection();
+    $successfulDelete = updateData("DELETE `image` FROM `image` INNER JOIN product_image ON image.id=product_image.image_id WHERE product_image.product_id=?;", $productData['id']);
+    if ($successfulDelete !== true) return $successfulDelete;
     
     $successfulDelete = updateData("DELETE FROM product WHERE product.id = ?;", $productData['id']);
-
     return $successfulDelete;
 }
 

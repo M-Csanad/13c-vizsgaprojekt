@@ -141,7 +141,6 @@ function getImageOrientation(file) {
         reader.onload = () => {
             const img = new Image();
             img.onload = () => {
-                console.log((img.width >= img.height))
                 resolve( (img.width >= img.height) ? "horizontal" : "vertical");
             };
             img.onerror = reject;
@@ -192,18 +191,6 @@ window.addEventListener("load", () => {
     }
 
     document.querySelectorAll("input[data-type]").forEach((input) => {
-        let parent = input.closest('.main-wrapper');
-        let trashIcon = document.createElement("div");
-        trashIcon.classList.add("input-trash");
-        trashIcon.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-        </svg>`;
-
-        parent.appendChild(trashIcon);
-
-        trashIcon.addEventListener("click", () => {
-            input.value = "";
-        });
 
         let orientation = input.dataset.orientation;
         let inputCount = input.dataset.count;
@@ -211,6 +198,7 @@ window.addEventListener("load", () => {
 
         input.addEventListener("input", async () => {
             if (inputCount == "singular") {
+
                 let file = input.files[0] || null;
 
                 if (!file) { // Ha nem töltött fel fájlt
@@ -332,14 +320,14 @@ document.querySelectorAll("select[data-table=category]").forEach(async select =>
 
     let subcategorySelect = select.closest('.inline-input').nextElementSibling.querySelector('select[data-table=subcategory]');
     if (subcategorySelect) {
-        await populateOptions(subcategorySelect, select.value, table);
+        await populateOptions(subcategorySelect, select.value, 'subcategory');
         setHiddenInput(subcategorySelect);
     }
 
     select.addEventListener("change", async () => {
         setHiddenInput(select);
         if (subcategorySelect) {
-            await populateOptions(subcategorySelect, select.value, table);
+            await populateOptions(subcategorySelect, select.value, 'subcategory');
             setHiddenInput(subcategorySelect);
         }
     });

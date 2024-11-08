@@ -9,7 +9,7 @@ if ($searchTerm) {
                            FROM user 
                            WHERE user.user_name LIKE ? 
                            OR user.email LIKE ?;", array_fill(0, 2, $searchTerm));
-    echo json_encode($matches);
+    echo json_encode($matches, JSON_UNESCAPED_UNICODE);
 }
 
 ?>

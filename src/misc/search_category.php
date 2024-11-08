@@ -15,7 +15,7 @@ if ($searchTerm) {
                            INNER JOIN category ON subcategory.category_id = category.id
                            WHERE subcategory.name LIKE ? 
                            ORDER BY 'type', `name`;", array_fill(0, 2, $searchTerm));
-    echo json_encode($matches);
+    echo json_encode($matches, JSON_UNESCAPED_UNICODE);
 }
 
 ?>
