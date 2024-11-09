@@ -189,6 +189,86 @@ body {
 .group-body:first-child {
     margin-top: 0.5rem;
 }
+
+.form-divider{
+    width: 100%;
+    flex-grow: 1;
+    height: 1px;
+    background-color: #dfdfdf;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.toggle {
+    width: 50px;
+    min-width: 50px;
+    height: 24px;
+    border-radius: 12px;
+    background-color: #666;
+    outline: 2px solid transparent;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s ease, outline 0.3s ease;
+}
+
+.toggle:hover {
+    outline: 2px solid #a8a8a8 ;
+}
+
+.toggle.on {
+    background-color: #4caf50;
+}
+.toggle.on:hover {
+    outline: 2px solid #8bde8e;
+}
+
+.toggle-text {
+    position: absolute;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+    font-size: 12px;
+    font-weight: bold;
+    color: #fff;
+    user-select: none;
+    transition: opacity 0.3s ease;
+    }
+
+.toggle-text.off {
+    opacity: 1;
+    left: 70%;
+}
+
+.toggle.on .toggle-text.off {
+    opacity: 0;
+}
+
+.toggle-text.on {
+    opacity: 0;
+    left: 30%;
+}
+
+.toggle.on .toggle-text.on {
+    opacity: 1;
+}
+
+.toggle-circle {
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle at bottom right, rgb(220, 220, 220), white);
+    box-shadow: 2px 2px 5px #666;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(0%, -50%);
+    left: 2px;
+    transition: left 0.3s ease;
+}
+
+.toggle.on .toggle-circle {
+    left: 28px;
+}
+
 section {
     .section-header {
         user-select: none;
@@ -252,6 +332,7 @@ section {
         flex-grow: 1;
         max-width: 22%;
         min-width: 110px;
+        transition: color 0.3s ease;
     }
     .inline-input > label > div:first-child {
         flex-grow: 1;
@@ -294,12 +375,18 @@ section {
         opacity: 1;
     }
 
-    .inline-input:has(input:required:not(:disabled)) > label > div:first-child:after, 
-    .inline-input:has(select:required:not(:disabled)) > label > div:first-child:after {
+    .inline-input:has(input) > label > div:first-child:after,
+    .inline-input:has(select) > label > div:first-child:after {
         content: '*';
         color: red;
-        /* height: 100%; */
+        opacity: 0;
         font-family:'Courier New', Courier, monospace;
+        transition: opacity 0.3s ease;
+    }
+
+    .inline-input:has(input:required:not(:disabled)) > label > div:first-child:after, 
+    .inline-input:has(select:required:not(:disabled)) > label > div:first-child:after {
+        opacity: 1;
     }
 
     .inline-input > div {
@@ -365,7 +452,8 @@ section {
         display: none;
     }
 
-    .inline-input > div > input:disabled, .inline-input > div > select:disabled {
+    .inline-input > div > input:disabled, 
+    .inline-input > div > select:disabled {
         border-bottom: 3px solid rgb(20, 20, 20) !important;
         color: #6c6c6c;
         background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.5) 75%, transparent 75%, transparent);
@@ -373,19 +461,20 @@ section {
         background-repeat: repeat;
         cursor: not-allowed;
     }
+
+    
     .file-input > div {
         flex-grow: 1;
         display: flex;
         align-items: center;
         gap: 10px;
     }
-
+    
     .file-input > div > .main-wrapper {
         width: 60%;
         height: 100%;
         position: relative;
         display: flex;
-        /* justify-content: left; */
         flex-direction: row;
         border: 1px solid var(--text);
     }
@@ -396,14 +485,28 @@ section {
         gap: 5px;
         align-items: center;
         justify-content: center;
-        transition: background-color 0.2s ease;
+        transition: background-image 0.3s ease, color 0.3s ease;
         font-size: 16px;
         cursor: pointer;
         font-family: Arial, Helvetica, sans-serif;
         user-select: none;
     }
+    
+    .file-input > div > div.main-wrapper:has(input:disabled) > label {
+        background-image: linear-gradient(135deg, #f7f7f7 25%, #efefef 25%, #efefef 50%, #f7f7f7 50%, #f7f7f7 75%, #efefef 75%, #efefef);
+        background-size: 20px 20px;
+        background-repeat: repeat;
+        cursor: not-allowed;
+        color: #6c6c6c;
+    }
+    .file-input > div > div.main-wrapper:has(input:disabled) > label > svg {
+        fill: #6c6c6c;
+    }
 
-
+    .file-input > div > div.main-wrapper > label > svg {
+        transition: fill 0.3s ease;
+    }
+    
     .file-input:has(input:invalid) > div > svg.valid {
         display: none;
     }
@@ -416,6 +519,12 @@ section {
     .file-input:has(input:valid) > div > svg.invalid {
         display: none;
     }
+    .file-input:has(input:disabled) > div > svg.disabled {
+        display: block;
+    }
+    .file-input:has(input:not(:disabled)) > div > svg.disabled {
+        display: none;
+    }
 
     .file-input > div > .main-wrapper > label.input-wrapper > input {
         position: absolute;
@@ -426,7 +535,7 @@ section {
         opacity: 0;
         z-index: -1;
     }
-    .file-input > div > .main-wrapper > label.input-wrapper:hover    {
+    .file-input > div > .main-wrapper > label.input-wrapper:hover:not(:has(input:disabled))    {
         background-color: #e8e8e8;
     }
 

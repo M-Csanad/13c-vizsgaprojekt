@@ -1,6 +1,7 @@
 <?php
 
 $table = $_POST['table'] ?? '';
+
 if ($table) {
     include_once "../auth/init.php";
 
@@ -15,8 +16,8 @@ if ($table) {
         }
 
         $matches = selectData("SELECT subcategory.id, subcategory.name FROM subcategory 
-                            INNER JOIN category ON subcategory.category_id = category.id
-                            WHERE category.name = ?;", $_POST['category_name']);
+                               INNER JOIN category ON subcategory.category_id = category.id
+                               WHERE category.name = ?;", $_POST['category_name']);
     }
     echo json_encode($matches, JSON_UNESCAPED_UNICODE);
 }

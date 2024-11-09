@@ -177,6 +177,19 @@ function getFileSize(file) {
     return file.size >> 20; // 2^20 - nal osztunk (B -> MB)
 }
 
+const toggleButton = document.getElementById("toggle-button");
+    toggleButton.addEventListener("click", () => {
+    toggleButton.classList.toggle("on");
+    if (toggleButton.classList.contains("on")) {
+        toggleButton.closest('.file-input').querySelector('input[type=file]').removeAttribute("disabled");
+        toggleButton.closest('.file-input').querySelector('input[type=file]').setAttribute("required", true);
+    }
+    else {
+        toggleButton.closest('.file-input').querySelector('input[type=file]').setAttribute("disabled", true);
+        toggleButton.closest('.file-input').querySelector('input[type=file]').removeAttribute("required");
+    }
+});
+
 window.addEventListener("load", () => {
     let sectionHeaders = document.querySelectorAll(".section-header");
 

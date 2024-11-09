@@ -13,7 +13,9 @@ function createCategory($categoryData) {
     $categoryType = $categoryData['type'];
     unset($categoryData['type']);
 
-    $images = array('thumbnail_image_vertical', 'thumbnail_image_horizontal', 'thumbnail_video');
+    $images = array('thumbnail_image_vertical', 'thumbnail_image_horizontal');
+    if (isset($_FILES['thumbnail_video'])) array_push($images, 'thumbnail_video');
+    
     $paths = createCategoryDirectory($categoryData, $categoryType, $images);
 
     if (!is_array($paths)) return $paths;
