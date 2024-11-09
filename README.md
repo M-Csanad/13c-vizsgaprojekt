@@ -43,13 +43,31 @@ $ git clone https://github.com/M-Csanad/13c-vizsgaprojekt/
 
 # Belépés a repositoryba
 $ cd 13c-vizsgaprojekt
-
-# Függőségek telepítése
-$ npm install
-
-# Alkalmazás elindítása (Futó XAMPP)
-$ npm start
 ```
+Ezután indítsd el az XAMPP-ot, amivel lokális szerveren fog elindulni a projekt, majd tallózd ki a my.ini fájlt, ami általában a C:\xampp\mysql\data mappában van. Itt át kell írnod a következő sorokat:
+```ini
+# The following options will be passed to all MySQL clients
+[client]
+# password       = your_password 
+port=3307 <------ Írd át 3307-re, ha nem az volt beállítva
+
+[...]
+
+# The MySQL server
+default-character-set=utf8mb4
+[mysqld]
+port=3307 <------ Írd át 3307-re, ha nem az volt beállítva
+[...]
+```
+Amint ez megvan, tallózd ki a config.inc.php fájlt, ami általában a C:\xampp\phpMyAdmin mappában van. Ebben a fájlban a következő sorokat kell átírnod:
+```php
+[...]
+/* Bind to the localhost ipv4 address and tcp */
+$cfg['Servers'][$i]['host'] = '127.0.0.1:3307'; <---- Írd mögé a 3307-es portot (IP:3307)
+$cfg['Servers'][$i]['connect_type'] = 'tcp';
+[...]
+```
+
 ## Letöltés
 
 Az alkalmazásunk legfrissebb verzióját [erről a linkről](https://github.com/M-Csanad/13c-vizsgaprojekt/releases) tudod letölteni.
