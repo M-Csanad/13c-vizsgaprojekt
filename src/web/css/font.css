@@ -24,346 +24,416 @@
     01...09 - legnagyobbtól a legkisebbik terjedő számskála
 /*/
 
-/*/
+/* Alapértelmezett stílusok (mobil eszközök) */
+
+/* Kisebb mobiltelefonok (max. 240px) */
+@media (min-width: 239px) and (orientation: portrait) {
+  /* Stílusok 239px-től felfelé */
+}
+
+@media (min-width: 239px) and (orientation: landscape) {
+  /* Stílusok 239px-től felfelé */
+}
+
+/* Nagyobb mobiltelefonok (max. 480px) */
+@media (min-width: 481px) and (orientation: portrait) {
+  /* Stílusok 481px-től felfelé */
+}
+@media (min-width: 481px) and (orientation: landscape) {
+  /* Stílusok 481px-től felfelé */
+}
+
+/* Táblagépek portré módban (max. 768px) */
+@media (min-width: 769px) and (orientation: portrait) {
+  /* Stílusok 769px-től felfelé */
+}
+@media (min-width: 769px) and (orientation: landscape) {
+  /* Stílusok 769px-től felfelé */
+}
+
+/* Táblagépek fekvő módban (max. 1024px) */
+@media (min-width: 1025px) and (orientation: portrait) {
+  /* Stílusok 1025px-től felfelé */
+}
+
+@media (min-width: 1025px) and (orientation: landscape) {
+  /* Stílusok 1025px-től felfelé */
+}
+
+/* Laptopok és kisebb asztali monitorok (max. 1280px) */
+@media (min-width: 1281px) {
+  /* Stílusok 1281px-től felfelé */
+}
+
+/* Nagyobb asztali monitorok (max. 1440px) */
+@media (min-width: 1441px) {
+  /* Stílusok 1441px-től felfelé */
+}
+
+/* Szélesvásznú monitorok (max. 1920px) */
+@media (min-width: 1921px) {
+  /* Stílusok 1921px-től felfelé */
+  /*/
 /---------/---------/
     LARGE TEXT
 /---------/---------/
 /*/
 
-.__t00-law5-custom01 {
-  font-size: clamp(2.5rem, calc(4.8rem + 1.39vw), 7.2rem);
-  letter-spacing: clamp(calc(8px * 5 / 1), 0.1em, calc(8.5px * 5 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
+  .__t00-law5-custom01 {
+    font-size: clamp(2.5rem, calc(4.8rem + 1.39vw), 7.2rem);
+    letter-spacing: clamp(calc(8px * 5 / 1), 0.1em, calc(8.5px * 5 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
 
-.__t00-law5-custom02 {
-  font-size: clamp(1.15rem, calc(2.4rem + 0.39vw), 4.1rem);
-  letter-spacing: clamp(calc(4px * 5 / 1), 0.1em, calc(4.5px * 5 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
+  .__t00-law5-custom02 {
+    font-size: clamp(1.15rem, calc(2.4rem + 0.39vw), 4.1rem);
+    letter-spacing: clamp(calc(4px * 5 / 1), 0.1em, calc(4.5px * 5 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
 
-/*__t01*/
-.__t01-law1 {
-  font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
-  letter-spacing: clamp(calc(1px * 1 / 1), 0.1em, calc(1.5px * 1 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t01-law2 {
-  font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
-  letter-spacing: clamp(calc(1px * 2 / 1), 0.1em, calc(1.5px * 2 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t01-law3 {
-  font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
-  letter-spacing: clamp(calc(1px * 3 / 1), 0.1em, calc(1.5px * 3 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t01-law4 {
-  font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
-  letter-spacing: clamp(calc(1px * 4 / 1), 0.1em, calc(1.5px * 4 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t01-law5 {
-  font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
-  letter-spacing: clamp(calc(1px * 5 / 1), 0.1em, calc(1.5px * 5 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
+  /*__t01*/
+  .__t01-law1 {
+    font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
+    letter-spacing: clamp(calc(1px * 1 / 1), 0.1em, calc(1.5px * 1 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t01-law2 {
+    font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
+    letter-spacing: clamp(calc(1px * 2 / 1), 0.1em, calc(1.5px * 2 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t01-law3 {
+    font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
+    letter-spacing: clamp(calc(1px * 3 / 1), 0.1em, calc(1.5px * 3 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t01-law4 {
+    font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
+    letter-spacing: clamp(calc(1px * 4 / 1), 0.1em, calc(1.5px * 4 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t01-law5 {
+    font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
+    letter-spacing: clamp(calc(1px * 5 / 1), 0.1em, calc(1.5px * 5 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
 
-.__t01-lan1 {
-  font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
-  letter-spacing: clamp(calc(-1.5px * 1 / 1), -0.1em, calc(-1px * 1 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t01-lan2 {
-  font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
-  letter-spacing: clamp(calc(-1.5px * 2 / 1), -0.1em, calc(-1px * 2 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t01-lan3 {
-  font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
-  letter-spacing: clamp(calc(-1.5px * 3 / 1), -0.1em, calc(-1px * 3 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t01-lan4 {
-  font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
-  letter-spacing: clamp(calc(-1.5px * 4 / 1), -0.1em, calc(-1px * 4 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t01-lan5 {
-  font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
-  letter-spacing: clamp(calc(-1.5px * 5 / 1), -0.1em, calc(-1px * 5 / 1));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-/*__t02*/
-.__t02-law1 {
-  font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
-  letter-spacing: clamp(calc(1px * 1 / 2), 0.1em, calc(1.5px * 1 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t02-law2 {
-  font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
-  letter-spacing: clamp(calc(1px * 2 / 2), 0.1em, calc(1.5px * 2 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t02-law3 {
-  font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
-  letter-spacing: clamp(calc(1px * 3 / 2), 0.1em, calc(1.5px * 3 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t02-law4 {
-  font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
-  letter-spacing: clamp(calc(1px * 4 / 2), 0.1em, calc(1.5px * 4 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t02-law5 {
-  font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
-  letter-spacing: clamp(calc(1px * 5 / 2), 0.1em, calc(1.5px * 5 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
+  .__t01-lan1 {
+    font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
+    letter-spacing: clamp(calc(-1.5px * 1 / 1), -0.1em, calc(-1px * 1 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t01-lan2 {
+    font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
+    letter-spacing: clamp(calc(-1.5px * 2 / 1), -0.1em, calc(-1px * 2 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t01-lan3 {
+    font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
+    letter-spacing: clamp(calc(-1.5px * 3 / 1), -0.1em, calc(-1px * 3 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t01-lan4 {
+    font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
+    letter-spacing: clamp(calc(-1.5px * 4 / 1), -0.1em, calc(-1px * 4 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t01-lan5 {
+    font-size: clamp(1.5rem, calc(3.36rem + 0.39vw), 5.2rem);
+    letter-spacing: clamp(calc(-1.5px * 5 / 1), -0.1em, calc(-1px * 5 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  /*__t02*/
+  .__t02-law1 {
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    letter-spacing: clamp(calc(1px * 1 / 2), 0.1em, calc(1.5px * 1 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t02-law2 {
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    letter-spacing: clamp(calc(1px * 2 / 2), 0.1em, calc(1.5px * 2 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t02-law3 {
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    letter-spacing: clamp(calc(1px * 3 / 2), 0.1em, calc(1.5px * 3 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t02-law4 {
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    letter-spacing: clamp(calc(1px * 4 / 2), 0.1em, calc(1.5px * 4 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t02-law5 {
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    letter-spacing: clamp(calc(1px * 5 / 2), 0.1em, calc(1.5px * 5 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
 
-.__t02-lan1 {
-  font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
-  letter-spacing: clamp(calc(-1.5px * 1 / 2), -0.1em, calc(-1px * 1 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t02-lan2 {
-  font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
-  letter-spacing: clamp(calc(-1.5px * 2 / 2), -0.1em, calc(-1px * 2 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t02-lan3 {
-  font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
-  letter-spacing: clamp(calc(-1.5px * 3 / 2), -0.1em, calc(-1px * 3 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t02-lan4 {
-  font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
-  letter-spacing: clamp(calc(-1.5px * 4 / 2), -0.1em, calc(-1px * 4 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t02-lan5 {
-  font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
-  letter-spacing: clamp(calc(-1.5px * 5 / 2), -0.1em, calc(-1px * 5 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
+  .__t02-lan1 {
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    letter-spacing: clamp(calc(-1.5px * 1 / 2), -0.1em, calc(-1px * 1 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t02-lan2 {
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    letter-spacing: clamp(calc(-1.5px * 2 / 2), -0.1em, calc(-1px * 2 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t02-lan3 {
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    letter-spacing: clamp(calc(-1.5px * 3 / 2), -0.1em, calc(-1px * 3 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t02-lan4 {
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    letter-spacing: clamp(calc(-1.5px * 4 / 2), -0.1em, calc(-1px * 4 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t02-lan5 {
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    letter-spacing: clamp(calc(-1.5px * 5 / 2), -0.1em, calc(-1px * 5 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
 
-/*__t03*/
-.__t03-law1 {
-  font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
-  letter-spacing: clamp(calc(1px * 1 / 3), 0.1em, calc(1.5px * 1 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t03-law2 {
-  font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
-  letter-spacing: clamp(calc(1px * 2 / 3), 0.1em, calc(1.5px * 2 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t03-law3 {
-  font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
-  letter-spacing: clamp(calc(1px * 3 / 3), 0.1em, calc(1.5px * 3 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t03-law4 {
-  font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
-  letter-spacing: clamp(calc(1px * 4 / 3), 0.1em, calc(1.5px * 4 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t03-law5 {
-  font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
-  letter-spacing: clamp(calc(1px * 5 / 3), 0.1em, calc(1.5px * 5 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
+  /*__t03*/
+  .__t03-law1 {
+    font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
+    letter-spacing: clamp(calc(1px * 1 / 3), 0.1em, calc(1.5px * 1 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t03-law2 {
+    font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
+    letter-spacing: clamp(calc(1px * 2 / 3), 0.1em, calc(1.5px * 2 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t03-law3 {
+    font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
+    letter-spacing: clamp(calc(1px * 3 / 3), 0.1em, calc(1.5px * 3 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t03-law4 {
+    font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
+    letter-spacing: clamp(calc(1px * 4 / 3), 0.1em, calc(1.5px * 4 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t03-law5 {
+    font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
+    letter-spacing: clamp(calc(1px * 5 / 3), 0.1em, calc(1.5px * 5 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
 
-.__t03-lan1 {
-  font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
-  letter-spacing: clamp(calc(-1.5px * 1 / 3), -0.1em, calc(-1px * 1 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t03-lan2 {
-  font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
-  letter-spacing: clamp(calc(-1.5px * 2 / 3), -0.1em, calc(-1px * 2 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t03-lan3 {
-  font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
-  letter-spacing: clamp(calc(-1.5px * 3 / 3), -0.1em, calc(-1px * 3 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t03-lan4 {
-  font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
-  letter-spacing: clamp(calc(-1.5px * 4 / 3), -0.1em, calc(-1px * 4 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
-.__t03-lan5 {
-  font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
-  letter-spacing: clamp(calc(-1.5px * 5 / 3), -0.1em, calc(-1px * 5 / 2));
-  line-height: clamp(1.2, 1.3, 1.4);
-}
+  .__t03-lan1 {
+    font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
+    letter-spacing: clamp(calc(-1.5px * 1 / 3), -0.1em, calc(-1px * 1 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t03-lan2 {
+    font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
+    letter-spacing: clamp(calc(-1.5px * 2 / 3), -0.1em, calc(-1px * 2 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t03-lan3 {
+    font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
+    letter-spacing: clamp(calc(-1.5px * 3 / 3), -0.1em, calc(-1px * 3 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t03-lan4 {
+    font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
+    letter-spacing: clamp(calc(-1.5px * 4 / 3), -0.1em, calc(-1px * 4 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .__t03-lan5 {
+    font-size: clamp(1.1rem, calc(1.2rem + 0.39vw), 2.6rem);
+    letter-spacing: clamp(calc(-1.5px * 5 / 3), -0.1em, calc(-1px * 5 / 2));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
 
-/*/
+  /*/
 /---------/---------/
     MEDIUM TEXT
 /---------/---------/
 /*/
 
-.__t01-mew1 {
-  font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
-  letter-spacing: clamp(calc(1px * 1 / 1), 0.08em, calc(1.2px * 1 / 1));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t01-mew2 {
-  font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
-  letter-spacing: clamp(calc(1px * 2 / 1), 0.08em, calc(1.2px * 2 / 1));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t01-mew3 {
-  font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
-  letter-spacing: clamp(calc(1px * 3 / 1), 0.08em, calc(1.2px * 3 / 1));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t01-mew4 {
-  font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
-  letter-spacing: clamp(calc(1px * 4 / 1), 0.08em, calc(1.2px * 4 / 1));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t01-mew5 {
-  font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
-  letter-spacing: clamp(calc(1px * 5 / 1), 0.08em, calc(1.2px * 5 / 1));
-  line-height: clamp(1.24, 1.36, 1.6);
+  .__t01-mew1 {
+    font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
+    letter-spacing: clamp(calc(1px * 1 / 1), 0.08em, calc(1.2px * 1 / 1));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t01-mew2 {
+    font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
+    letter-spacing: clamp(calc(1px * 2 / 1), 0.08em, calc(1.2px * 2 / 1));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t01-mew3 {
+    font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
+    letter-spacing: clamp(calc(1px * 3 / 1), 0.08em, calc(1.2px * 3 / 1));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t01-mew4 {
+    font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
+    letter-spacing: clamp(calc(1px * 4 / 1), 0.08em, calc(1.2px * 4 / 1));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t01-mew5 {
+    font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
+    letter-spacing: clamp(calc(1px * 5 / 1), 0.08em, calc(1.2px * 5 / 1));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+
+  .__t01-men1 {
+    font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
+    letter-spacing: clamp(calc(-1px * 1 / 1), -0.08em, calc(-0.2px * 1 / 1));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t01-men2 {
+    font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
+    letter-spacing: clamp(calc(-1px * 2 / 1), -0.08em, calc(-0.2px * 2 / 1));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t01-men3 {
+    font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
+    letter-spacing: clamp(calc(-1px * 3 / 1), -0.08em, calc(-0.2px * 3 / 1));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t01-men4 {
+    font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
+    letter-spacing: clamp(calc(-1px * 4 / 1), -0.08em, calc(-0.2px * 4 / 1));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t01-men5 {
+    font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
+    letter-spacing: clamp(calc(-1px * 5 / 1), -0.08em, calc(-0.2px * 5 / 1));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+
+  /*__t02*/
+
+  .__t02-mew1 {
+    font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
+    letter-spacing: clamp(calc(1px * 1 / 2), 0.08em, calc(1.2px * 1 / 2));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t02-mew2 {
+    font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
+    letter-spacing: clamp(calc(1px * 2 / 2), 0.08em, calc(1.2px * 2 / 2));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t02-mew3 {
+    font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
+    letter-spacing: clamp(calc(1px * 3 / 2), 0.08em, calc(1.2px * 3 / 2));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t02-mew4 {
+    font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
+    letter-spacing: clamp(calc(1px * 4 / 2), 0.08em, calc(1.2px * 4 / 2));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t02-mew5 {
+    font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
+    letter-spacing: clamp(calc(1px * 5 / 2), 0.08em, calc(1.2px * 5 / 2));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+
+  .__t02-men1 {
+    font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
+    letter-spacing: clamp(calc(-1px * 1 / 2), -0.08em, calc(-0.2px * 1 / 2));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t02-men2 {
+    font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
+    letter-spacing: clamp(calc(-1px * 2 / 2), -0.08em, calc(-0.2px * 2 / 2));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t02-men3 {
+    font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
+    letter-spacing: clamp(calc(-1px * 3 / 2), -0.08em, calc(-0.2px * 3 / 2));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t02-men4 {
+    font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
+    letter-spacing: clamp(calc(-1px * 4 / 2), -0.08em, calc(-0.2px * 4 / 2));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t02-men5 {
+    font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
+    letter-spacing: clamp(calc(-1px * 5 / 2), -0.08em, calc(-0.2px * 5 / 2));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+
+  /*__t03*/
+
+  .__t03-mew1 {
+    font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
+    letter-spacing: clamp(calc(1px * 1 / 3), 0.08em, calc(1.2px * 1 / 3));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t03-mew2 {
+    font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
+    letter-spacing: clamp(calc(1px * 2 / 3), 0.08em, calc(1.2px * 2 / 3));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t03-mew3 {
+    font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
+    letter-spacing: clamp(calc(1px * 3 / 3), 0.08em, calc(1.2px * 3 / 3));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t03-mew4 {
+    font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
+    letter-spacing: clamp(calc(1px * 4 / 3), 0.08em, calc(1.2px * 4 / 3));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t03-mew5 {
+    font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
+    letter-spacing: clamp(calc(1px * 5 / 3), 0.08em, calc(1.2px * 5 / 3));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+
+  .__t03-men1 {
+    font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
+    letter-spacing: clamp(calc(-1px * 1 / 3), -0.08em, calc(-0.2px * 1 / 3));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t03-men2 {
+    font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
+    letter-spacing: clamp(calc(-1px * 2 / 3), -0.08em, calc(-0.2px * 2 / 3));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t03-men3 {
+    font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
+    letter-spacing: clamp(calc(-1px * 3 / 3), -0.08em, calc(-0.2px * 3 / 3));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t03-men4 {
+    font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
+    letter-spacing: clamp(calc(-1px * 4 / 3), -0.08em, calc(-0.2px * 4 / 3));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
+  .__t03-men5 {
+    font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
+    letter-spacing: clamp(calc(-1px * 5 / 3), -0.08em, calc(-0.2px * 5 / 3));
+    line-height: clamp(1.24, 1.36, 1.6);
+  }
 }
 
-.__t01-men1 {
-  font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
-  letter-spacing: clamp(calc(-1px * 1 / 1), -0.08em, calc(-0.2px * 1 / 1));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t01-men2 {
-  font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
-  letter-spacing: clamp(calc(-1px * 2 / 1), -0.08em, calc(-0.2px * 2 / 1));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t01-men3 {
-  font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
-  letter-spacing: clamp(calc(-1px * 3 / 1), -0.08em, calc(-0.2px * 3 / 1));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t01-men4 {
-  font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
-  letter-spacing: clamp(calc(-1px * 4 / 1), -0.08em, calc(-0.2px * 4 / 1));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t01-men5 {
-  font-size: clamp(1rem, calc(0.9rem + 0.39vw), 2.4rem);
-  letter-spacing: clamp(calc(-1px * 5 / 1), -0.08em, calc(-0.2px * 5 / 1));
-  line-height: clamp(1.24, 1.36, 1.6);
+/* Extra nagy monitorok és TV-k (max. 2560px) */
+@media (min-width: 2561px) {
+  /* Stílusok 2561px-től felfelé */
 }
 
-/*__t02*/
-
-.__t02-mew1 {
-  font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
-  letter-spacing: clamp(calc(1px * 1 / 2), 0.08em, calc(1.2px * 1 / 2));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t02-mew2 {
-  font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
-  letter-spacing: clamp(calc(1px * 2 / 2), 0.08em, calc(1.2px * 2 / 2));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t02-mew3 {
-  font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
-  letter-spacing: clamp(calc(1px * 3 / 2), 0.08em, calc(1.2px * 3 / 2));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t02-mew4 {
-  font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
-  letter-spacing: clamp(calc(1px * 4 / 2), 0.08em, calc(1.2px * 4 / 2));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t02-mew5 {
-  font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
-  letter-spacing: clamp(calc(1px * 5 / 2), 0.08em, calc(1.2px * 5 / 2));
-  line-height: clamp(1.24, 1.36, 1.6);
+/* Ultra széles monitorok és 4K TV-k (max. 3840px) */
+@media (min-width: 3841px) {
+  /* Stílusok 3841px-től felfelé */
 }
 
-.__t02-men1 {
-  font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
-  letter-spacing: clamp(calc(-1px * 1 / 2), -0.08em, calc(-0.2px * 1 / 2));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t02-men2 {
-  font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
-  letter-spacing: clamp(calc(-1px * 2 / 2), -0.08em, calc(-0.2px * 2 / 2));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t02-men3 {
-  font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
-  letter-spacing: clamp(calc(-1px * 3 / 2), -0.08em, calc(-0.2px * 3 / 2));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t02-men4 {
-  font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
-  letter-spacing: clamp(calc(-1px * 4 / 2), -0.08em, calc(-0.2px * 4 / 2));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t02-men5 {
-  font-size: clamp(0.9rem, calc(0.6rem + 0.39vw), 1.6rem);
-  letter-spacing: clamp(calc(-1px * 5 / 2), -0.08em, calc(-0.2px * 5 / 2));
-  line-height: clamp(1.24, 1.36, 1.6);
+/* 8K és nagyobb felbontású eszközök (max. 7680px) */
+@media (min-width: 7681px) {
+  /* Stílusok 7681px-től felfelé */
 }
 
-/*__t03*/
-
-.__t03-mew1 {
-  font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
-  letter-spacing: clamp(calc(1px * 1 / 3), 0.08em, calc(1.2px * 1 / 3));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t03-mew2 {
-  font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
-  letter-spacing: clamp(calc(1px * 2 / 3), 0.08em, calc(1.2px * 2 / 3));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t03-mew3 {
-  font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
-  letter-spacing: clamp(calc(1px * 3 / 3), 0.08em, calc(1.2px * 3 / 3));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t03-mew4 {
-  font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
-  letter-spacing: clamp(calc(1px * 4 / 3), 0.08em, calc(1.2px * 4 / 3));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t03-mew5 {
-  font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
-  letter-spacing: clamp(calc(1px * 5 / 3), 0.08em, calc(1.2px * 5 / 3));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-
-.__t03-men1 {
-  font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
-  letter-spacing: clamp(calc(-1px * 1 / 3), -0.08em, calc(-0.2px * 1 / 3));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t03-men2 {
-  font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
-  letter-spacing: clamp(calc(-1px * 2 / 3), -0.08em, calc(-0.2px * 2 / 3));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t03-men3 {
-  font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
-  letter-spacing: clamp(calc(-1px * 3 / 3), -0.08em, calc(-0.2px * 3 / 3));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t03-men4 {
-  font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
-  letter-spacing: clamp(calc(-1px * 4 / 3), -0.08em, calc(-0.2px * 4 / 3));
-  line-height: clamp(1.24, 1.36, 1.6);
-}
-.__t03-men5 {
-  font-size: clamp(0.8rem, calc(0.48rem + 0.39vw), 1.4rem);
-  letter-spacing: clamp(calc(-1px * 5 / 3), -0.08em, calc(-0.2px * 5 / 3));
-  line-height: clamp(1.24, 1.36, 1.6);
+/* 16K és nagyobb felbontású eszközök (max. 15360px) */
+@media (min-width: 15361px) {
+  /* Stílusok 15361px-től felfelé */
 }
 
 /*/

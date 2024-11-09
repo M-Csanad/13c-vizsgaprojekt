@@ -50,7 +50,7 @@ $category_content = [
     </div>
 </nav>
 
-<div id="fb-subcontentContainer" class="flex-block fb-nav-subcontent-container">
+<div id="fb-subcontentContainer" class="fb-nav-subcontent-container">
     <div id="fb-categoryContentWrapper" class="col-8 fb-nav-subcontent-wrapper">
         <?php foreach ($category_content as $content): ?>
             <div class="fb-nav-subcontent-frame">

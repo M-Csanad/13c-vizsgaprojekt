@@ -127,15 +127,15 @@
   }
   #brand-description .brandContent {
     width: 72vw !important;
-    margin-left: 0 !important;
+    margin-left: auto;
     margin-right: auto;
   }
   #brand-description .brandContent h1 {
-    position: relative;
-    width: 84vw;
+    top: 0rem;
+    width: auto;
     white-space: wrap;
-
-    font-size: 2rem;
+    position: relative;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
     padding: 12px 0 12px 0;
   }
   #brand-description .brandContent .brandContentParagraph {
@@ -270,11 +270,11 @@
     top: 25%;
   }
   #brand-description .brandContent h1 {
-    top: 4rem;
-    width: 70vw;
+    top: 0rem;
+    width: auto;
     white-space: wrap;
     position: relative;
-    font-size: 3rem;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
     padding: 12px 0 12px 0;
   }
   #brand-description .brandContent .brandContentParagraph {
@@ -413,11 +413,11 @@
     top: 25%;
   }
   #brand-description .brandContent h1 {
-    top: 4rem;
-    width: 70vw;
+    top: 0rem;
+    width: auto;
     white-space: wrap;
     position: relative;
-    font-size: 3rem;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
     padding: 12px 0 12px 0;
   }
   #brand-description .brandContent .brandContentParagraph {
@@ -553,8 +553,8 @@
     margin-right: 7rem;
   }
   #brand-description .brandContent h1 {
-    top: 4rem;
-    width: 70vw;
+    top: 0rem;
+    width: auto;
     white-space: wrap;
     position: relative;
     padding: 12px 0 12px 0;
@@ -686,8 +686,8 @@
     top: 25%;
   }
   #brand-description .brandContent h1 {
-    top: 4rem;
-    width: 70vw;
+    top: 0rem;
+    width: auto;
     white-space: wrap;
     position: relative;
     padding: 12px 0 12px 0;
@@ -949,8 +949,11 @@
   #brand-description .brandContent h1 {
     top: 0rem;
     white-space: wrap;
+    position: relative;
     padding: 12px 0 12px 0;
+    font-size: clamp(1.15rem, calc(2.1rem + 0.39vw), 3.6rem);
   }
+
   .brandImages .brandImages_imgHorizontal img {
     width: 30vw;
     transform: translate(-50%, 50%);
@@ -969,6 +972,8 @@
     top: 0rem;
     white-space: wrap;
     padding: 12px 0 12px 0;
+    position: relative;
+    font-size: clamp(1.8rem, calc(2.4rem + 1.39vw), 4rem);
   }
 }
 

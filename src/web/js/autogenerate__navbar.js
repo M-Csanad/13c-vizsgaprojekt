@@ -4,6 +4,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
   navLink.addEventListener("click", function () {
     resetAnimations();
+
+    subContentContainer.classList.add("flex-block");
+    subContentContainer.classList.remove("hidden");
     subContentContainer.style.display = "flex";
     subContentContainer.style.top = "100%";
     subContentContainer.style.opacity = "1";
@@ -34,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
     subContentContainer.style.transition = "all 0.4s ease-out";
     subContentContainer.style.position = "absolute";
     setTimeout(() => {
-      subContentContainer.style.display = "none";
+      subContentContainer.classList.remove("flex-block");
+      subContentContainer.classList.add("hidden");
     }, 500);
   });
 
@@ -46,7 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
-  subContentContainer.style.display = "none";
+  subContentContainer.classList.remove("flex-block");
+  subContentContainer.classList.add("hidden");
   subContentContainer.style.top = "-100%";
   subContentContainer.style.opacity = "0";
   subContentContainer.style.position = "absolute";
