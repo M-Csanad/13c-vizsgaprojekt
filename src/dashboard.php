@@ -571,6 +571,22 @@
                                     </svg>
                                 </div>
                             </div>
+                            <div class="inline-input tag-wrapper">
+                                <label><div>Allergének</div></label>
+                                <div>
+                                    <?php
+                                        $tags = selectData("SELECT * FROM tag;", null);
+                                        if (is_array($tags)) {
+                                            $count = 0;
+                                            for ($i = 0; $i < count($tags); $i++) {
+                                                $tag = $tags[$i];
+                                                $id = "tag".$i;
+                                                echo "<label for='$id' class='tag-checkbox'><img src='{$tag['icon_uri']}' draggable='false' title='{$tag['name']}' alt='{$tag['name']}'><input type='checkbox' name='tags[]' id='$id' value='{$tag['id']}'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>";
+                                            }
+                                        }
+                                    ?>
+                                </div>
+                            </div>
                             <div class="form-divider"></div>
                             <div class="inline-input">
                                 <label for="category"><div>Kategória</div></label>
@@ -1027,7 +1043,9 @@
                 "subcategory" => $_POST['subcategory'],
             );
 
-            $successfulOperation = createProduct($productData, $productPageData, $productCategoryData);
+            $tags = $_POST['tags'];
+
+            $successfulOperation = createProduct($productData, $productPageData, $productCategoryData, $tags);
 
             if ($successfulOperation === true) {
                 echo "<div class='success'>Termék sikeresen létrehozva!</div>";
@@ -1068,5 +1086,6 @@
     ?>
     <script src="./js/dashboard.js"></script>
     <script src="./js/search.js"></script>
+    <script src="./js/tag-checkbox.js"></script>
 </body>
 </html>

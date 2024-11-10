@@ -15,8 +15,8 @@ if ($searchTerm) {
                            LEFT JOIN image ON product_image.image_id = image.id 
                            WHERE product.name LIKE ? 
                            AND image.orientation = 'horizontal' 
-                           AND image.media_type = 'image' 
-                           LIMIT 1;", 
+                           AND image.media_type = 'image'
+                           GROUP BY product.id;", 
                            [$searchTerm]);
                            
     echo json_encode($matches, JSON_UNESCAPED_UNICODE);

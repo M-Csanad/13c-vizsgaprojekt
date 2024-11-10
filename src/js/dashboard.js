@@ -8,6 +8,7 @@ const pages = document.querySelectorAll(".section-group");
 let maxFileSize = 10;
 let isPopupVisible = false;
 
+
 function expandGroup(e) {
     let sourceElement = e.target;
     let section = sourceElement.closest("section");

@@ -136,8 +136,19 @@ function connectProductImages($insertIds, $productId) {
     return true;
 }
 
+function connectProductTags($id, $tags) {
+    $placeholderList = implode(", ", array_fill(0, count($tags), "(?, ?)"));;
+    $values = array();
+
+    foreach ($tags as $tag) {
+        array_push($values, $tag, $id);
+    }
+
+    return updateData("INSERT INTO product_tag (tag_id, product_id) VALUES $placeholderList;", $values);
+}
+
 // Termék létrehozása - Fő függvény
-function createProduct($productData, $productPageData, $productCategoryData) {
+function createProduct($productData, $productPageData, $productCategoryData, $tags) {
     include_once "init.php";
 
     // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
@@ -177,6 +188,11 @@ function createProduct($productData, $productPageData, $productCategoryData) {
     $result = connectProductImages($insertIds, $productData['id']);
     if ($result !== true) {
         return "Sikertelen feltöltés a product_image táblába. ($result)";
+    }
+
+    $result = connectProductTags($productData['id'], $tags);
+    if (!is_numeric($result)) {
+        return "Sikertelen feltöltés a product_tag táblába. ($result)";
     }
 
     return true;

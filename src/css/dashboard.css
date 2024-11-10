@@ -1,5 +1,6 @@
 @import url('./root.css');
 @import url('./search.css');
+@import url('./allergen-checkbox.css');
 
 *{
     padding: 0;
@@ -673,6 +674,9 @@ section.active {
     }
     .inline-input > *:not(label) {
         width: 100% !important;
+    }
+    .allergen-wrapper {
+        height: 100px !important;
     }
     .file-input > div > .main-wrapper {
         width: 100% !important;
