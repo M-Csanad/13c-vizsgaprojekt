@@ -1,6 +1,7 @@
 const parentCategoryInput = document.querySelector("select#parent_category");
-const parentCategoryHiddenInput = document.querySelector("input[name='parent_category_id']");
+const parentCategoryModifyInput = document.querySelector("select#parent_category_modify");
 const categoryType = document.getElementById('type');
+const categoryTypeModify = document.getElementById('type_modify');
 const pageLinks = document.querySelectorAll(".page");
 const pages = document.querySelectorAll(".section-group");
 
@@ -177,17 +178,18 @@ function getFileSize(file) {
     return file.size >> 20; // 2^20 - nal osztunk (B -> MB)
 }
 
-const toggleButton = document.getElementById("toggle-button");
-    toggleButton.addEventListener("click", () => {
-    toggleButton.classList.toggle("on");
-    if (toggleButton.classList.contains("on")) {
-        toggleButton.closest('.file-input').querySelector('input[type=file]').removeAttribute("disabled");
-        toggleButton.closest('.file-input').querySelector('input[type=file]').setAttribute("required", true);
+const toggleButton = document.querySelectorAll('.toggle').forEach(button => {
+    button.addEventListener("click", () => {
+    button.classList.toggle("on");
+    if (button.classList.contains("on")) {
+        button.closest('.file-input').querySelector('input[type=file]').removeAttribute("disabled");
+        button.closest('.file-input').querySelector('input[type=file]').setAttribute("required", true);
     }
     else {
-        toggleButton.closest('.file-input').querySelector('input[type=file]').setAttribute("disabled", true);
-        toggleButton.closest('.file-input').querySelector('input[type=file]').removeAttribute("required");
+        button.closest('.file-input').querySelector('input[type=file]').setAttribute("disabled", true);
+        button.closest('.file-input').querySelector('input[type=file]').removeAttribute("required");
     }
+    });
 });
 
 window.addEventListener("load", () => {
@@ -285,7 +287,7 @@ window.addEventListener("load", () => {
     hideDisplayMessages();
 });
 
-document.getElementById('type').addEventListener('change', ()=> {
+categoryType.addEventListener('change', ()=> {
     let selected = categoryType.value;
     
     if (selected == "sub") {
@@ -293,6 +295,17 @@ document.getElementById('type').addEventListener('change', ()=> {
     }
     else {
         parentCategoryInput.setAttribute("disabled", true);
+    }
+});
+
+categoryTypeModify.addEventListener('change', ()=> {
+    let selected = categoryTypeModify.value;
+    
+    if (selected == "sub") {
+        parentCategoryModifyInput.removeAttribute("disabled");
+    }
+    else {
+        parentCategoryModifyInput.setAttribute("disabled", true);
     }
 });
 

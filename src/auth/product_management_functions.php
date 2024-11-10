@@ -25,32 +25,24 @@ function createProductDirectory($productData) {
     if (!createDirectory([$productDirURI,$productDirURI.'thumbnail/', $productDirURI.'gallery/'])) {
         return "Ilyen nevű termék már létezik.";
     }
-
-    // A borítókép feltöltése
-    $thumbnailTmp = $_FILES['thumbnail_image']['tmp_name'];
-    $thumbnail = $_FILES['thumbnail_image']['name'];
-    $extension = pathinfo($thumbnail, PATHINFO_EXTENSION);
-    $path = $productDirURI."thumbnail/thumbnail." . $extension;
-
-    if (!move_uploaded_file($thumbnailTmp, $path)) {
-        return false;
-    }
-
-    array_push($paths, $path);
-
-    // A termékvideó feltöltése
-    $videoTmp = $_FILES['product_video']['tmp_name'];
-    $video = $_FILES['product_video']['name'];
-    $extension = pathinfo($video, PATHINFO_EXTENSION);
-    $path = $productDirURI."thumbnail/thumbnail." . $extension;
-
-    if (!move_uploaded_file($videoTmp, $path)) {
-        return false;
-    }
-
-    array_push($paths, $path);
-
+    
     // A termékképek feltöltése
+    $thumbnailImages = array('thumbnail_image');
+    if (isset($_FILES['product_video'])) array_push($thumbnailImages, 'product_video');
+
+    foreach ($thumbnailImages as $image) {
+        $tmp = $_FILES[$image]['tmp_name'];
+        $name = $_FILES[$image]['name'];
+        $extension = pathinfo($name, PATHINFO_EXTENSION);
+        $path = $productDirURI."thumbnail/thumbnail." . $extension;
+
+        if (!move_uploaded_file($tmp, $path)) {
+            return false;
+        }
+    
+        array_push($paths, $path);
+    }
+    
     $fileCount = count($_FILES['product_images']['name']);
     for ($i = 0; $i < $fileCount; $i++) {
 
