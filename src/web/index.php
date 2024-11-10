@@ -214,13 +214,18 @@
                         Lorem ipsum dolor sit amet, consectetur adipisicing
                         elit. At quidem voluptatum officia cum maiores sequi
                         nostrum deleniti tempora provident earum saepe
-                        repellendus quia, alias ea esse laudantium laboriosam
-                        vitae reprehenderit?
+                        repellendus quia.
                       </p>
                     </div>
                   </div>
-                  <img src="./media/img/testImg/testImg_vertical01.jpg" alt="" />
+                  <picture>
+                    <source media="(min-width: 320px) and (orientation: portrait)" srcset="./media/img/HerbsOnDesk.jpg">
+                    <source media="(max-width: 1024px)" srcset="./media/img/HerbsOnDesk.jpg">
+                    <img src="./media/img/mushrooms.jpg" alt="">
+                  </picture>
                 </div>
+                <div class="swiper-button-next frosted-glass"></div>
+                <div class="swiper-button-prev frosted-glass"></div>
               </div>
               <div class="swiper-slide">
                 <div class="img-wrapper">
@@ -243,6 +248,8 @@
                   </div>
                   <img src="./media/img/testImg/testImg_vertical02.jpg" alt="" />
                 </div>
+                <div class="swiper-button-next frosted-glass"></div>
+                <div class="swiper-button-prev frosted-glass"></div>
               </div>
               <div class="swiper-slide">
                 <div class="img-wrapper">
@@ -265,6 +272,8 @@
                   </div>
                   <img src="./media/img/testImg/testImg_vertical03.jpg" alt="" />
                 </div>
+                <div class="swiper-button-next frosted-glass"></div>
+                <div class="swiper-button-prev frosted-glass"></div>
               </div>
               <div class="swiper-slide">
                 <div class="img-wrapper">
@@ -287,10 +296,11 @@
                   </div>
                   <img src="./media/img/testImg/testImg_vertical04.jpg" alt="" />
                 </div>
+                <div class="swiper-button-next frosted-glass"></div>
+                <div class="swiper-button-prev frosted-glass"></div>
               </div>
             </div>
-            <div class="swiper-button-next frosted-glass"></div>
-            <div class="swiper-button-prev frosted-glass"></div>
+
           </div>
           <div class="swiper bg_slider-thumbs">
             <div class="swiper-wrapper thumbs-container">

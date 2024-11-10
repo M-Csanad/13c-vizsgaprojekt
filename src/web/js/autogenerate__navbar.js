@@ -56,3 +56,37 @@ document.addEventListener("DOMContentLoaded", function () {
   subContentContainer.style.opacity = "0";
   subContentContainer.style.position = "absolute";
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  const hamburgerMenu = document.querySelector(".hamburger-menu");
+  const categoryContent = JSON.parse("<?= $category_json; ?>"); // PHP JSON adat importálása
+
+  // Mobil menü tartalom generálása
+  categoryContent.forEach((content) => {
+    const categoryItem = document.createElement("div");
+    categoryItem.classList.add("hamburger-menu-item");
+
+    const categoryTitle = document.createElement("h3");
+    categoryTitle.textContent = content.title;
+    categoryItem.appendChild(categoryTitle);
+
+    const subcategoryList = document.createElement("ul");
+    content.subcategories.forEach((sub) => {
+      const subcategoryItem = document.createElement("li");
+      const subcategoryLink = document.createElement("a");
+      subcategoryLink.href = sub.url;
+      subcategoryLink.textContent = sub.name;
+      subcategoryLink.classList.add("fb-link");
+      subcategoryItem.appendChild(subcategoryLink);
+      subcategoryList.appendChild(subcategoryItem);
+    });
+
+    categoryItem.appendChild(subcategoryList);
+    hamburgerMenu.appendChild(categoryItem);
+  });
+});
+
+// Hamburger menü megnyitása és bezárása
+function toggleMobileMenu() {
+  document.querySelector(".hamburger-menu").classList.toggle("active");
+}

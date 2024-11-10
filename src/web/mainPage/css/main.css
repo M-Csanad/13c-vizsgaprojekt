@@ -264,7 +264,6 @@ h6 {
 #topProducts_container .swiper-wrapper {
   display: flex;
   align-items: center;
-  height: 100vh;
 }
 
 #topProducts_container .swiper-wrapper .swiper-slide {
@@ -431,7 +430,7 @@ h6 {
   justify-content: center;
   z-index: 111 !important;
   width: 100%;
-  margin-bottom: 2rem;
+  margin-bottom: 20rem;
 }
 
 .bg_slider .swiper-slide {
@@ -448,7 +447,7 @@ h6 {
   justify-content: center;
   position: relative;
   width: 100%;
-  height: 100vh; /* ÁLLÓ KÉPNÉL EZT MÓDOSÍTSD auto-ra */
+
   overflow: hidden;
 }
 .swiper-slide .img-wrapper::after {
@@ -479,10 +478,10 @@ h6 {
 
 .swiper-slide .img-wrapper .text-main {
   position: relative;
-  width: 100%;
+
   top: 30%; /* Függőlegesen középre igazítva */
   color: var(--light_main);
-  padding: 10px 15px;
+  padding: 1.2rem 2.4rem;
   z-index: 10;
 }
 
@@ -491,6 +490,8 @@ h6 {
   font-family: "Cormorant Unicase", serif;
   font-weight: 300;
   text-transform: uppercase;
+  /* word-break: break-all; */
+  white-space: normal;
 }
 
 .swiper-slide .img-wrapper .text-main h1 {
@@ -520,6 +521,7 @@ h6 {
   color: var(--light_main);
   width: 30vw;
   z-index: 10;
+  padding: 1.2rem 2.4rem;
 }
 .swiper-slide .img-wrapper .text-overlay h3 {
   font-family: "Cubano";
@@ -539,6 +541,7 @@ h6 {
   position: relative;
   top: 0;
   filter: grayscale(0.36) brightness(0.84);
+
   width: 100vw;
   height: auto;
   object-fit: cover;
@@ -559,7 +562,7 @@ h6 {
   width: 70px;
   height: 70px;
   display: flex;
-  top: 50%;
+  top: 55%;
   align-items: center;
   justify-content: center;
   z-index: 1000;
@@ -569,11 +572,11 @@ h6 {
 
 /* Navigációs nyilak elhelyezése */
 .bg_slider .swiper-button-next {
-  right: 20%;
+  right: 18%;
 }
 
 .bg_slider .swiper-button-prev {
-  right: 25%;
+  right: 27%;
 }
 
 .frosted-glass {
@@ -591,7 +594,8 @@ h6 {
   height: 300px;
   position: absolute;
   z-index: 777 !important;
-  transform: translateY(150%);
+  transform: translateY(100%);
+  padding-inline: 10%;
   width: 80%;
 }
 
@@ -604,12 +608,16 @@ h6 {
 
 .bg_slider-thumbs .swiper-slide {
   display: flex;
-  flex-direction: row;
   align-items: center;
+  align-content: flex-start;
+
+  flex-flow: row wrap;
   flex: 0 0 auto;
   filter: brightness(1);
   opacity: 1;
-  transform: translateX(15%);
+  position: relative;
+  top: 24%;
+
   transition: filter 0.4s ease, opacity 0.4s ease;
 }
 
@@ -627,7 +635,6 @@ h6 {
   position: relative;
   text-transform: capitalize;
   padding: 8px;
-  margin-left: 2rem;
 }
 .bg_slider-thumbs .swiper-slide .circleImg {
   border-radius: 50%;
@@ -647,7 +654,7 @@ h6 {
 /* Halo styling */
 .bg_slider-thumbs .halo {
   position: absolute;
-  top: 30%;
+  top: 0%;
   left: 0%;
   width: 145px;
   height: 145px;
@@ -744,6 +751,8 @@ h6 {
 #brand-philosophy_container {
   position: relative;
   overflow: hidden;
+  margin-top: calc(24vh + 24em);
+  border-top: 1px solid red;
 }
 
 #brand-philosophy_container::before {

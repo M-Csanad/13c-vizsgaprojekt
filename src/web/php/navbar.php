@@ -47,8 +47,15 @@ $category_content = [
                 <?php endforeach; ?>
             </div>
         </div>
+        <div class="hamburger-icon" onclick="toggleMobileMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
     </div>
+    <div class="hamburger-menu"></div>
 </nav>
+
 
 <div id="fb-subcontentContainer" class="fb-nav-subcontent-container">
     <div id="fb-categoryContentWrapper" class="col-8 fb-nav-subcontent-wrapper">
