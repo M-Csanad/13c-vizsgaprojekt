@@ -31,7 +31,7 @@ $category_content = [
 ?>
 
 
-<nav id="fb-navbar" class="fb-sticky">
+<nav id="fb-navbar" class="fb-sticky" data-category='<?= json_encode($category_content); ?>'>
     <div id="fb-navTopWrapper" class="fb-nav-links-wrapper">
         <a href="<?= $base_url ?>"><img class="fb-logo" src="<?= $logo_url ?>" alt="logo" /></a>
         <div class="fb-nav-links-wrapper-mini">
@@ -48,9 +48,9 @@ $category_content = [
             </div>
         </div>
         <div class="hamburger-icon" onclick="toggleMobileMenu()">
-            <div></div>
-            <div></div>
-            <div></div>
+            <div class="line line1"></div>
+            <div class="line line2"></div>
+            <div class="line line3"></div>
         </div>
     </div>
     <div class="hamburger-menu"></div>

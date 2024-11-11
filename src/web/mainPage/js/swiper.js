@@ -7,6 +7,18 @@ var thumbSwiper = new Swiper(".bg_slider-thumbs", {
   initialSlide: 0,
   spaceBetween: 0,
   slidesPerView: 4,
+  breakpoints: {
+    // Mobil és tablet felbontásokhoz
+    0: {
+      slidesPerView: 2, // Mobil és kisebb kijelzők
+    },
+    1100: {
+      slidesPerView: 3, // Tabletek
+    },
+    1600: {
+      slidesPerView: 4, // Nagyobb kijelzők
+    },
+  },
   watchSlidesVisibility: true,
   watchSlidesProgress: true,
   navigation: {

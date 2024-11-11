@@ -1,31 +1,37 @@
 const ImgGallery_container = document.querySelector(".ImgGallery_container");
-const images = document.querySelectorAll(".media_box");
+let parallaxActive = false; // Változó, hogy nyomon kövessük az állapotot
+let throttleMouseMove; // A throttle-olt eseményfigyelő helye
 
-images.forEach((img) => {
-  //const randomSpeed = (Math.random() * (0.24 - 0.12 + 1) + 0.12).toFixed(2);
-  const randomSpeed = 1.2;
-  img.setAttribute("data-speed", randomSpeed);
-});
+function shouldRunScript() {
+  const isPortrait = window.matchMedia("(orientation: portrait)").matches;
+  const isNarrowScreen = window.innerWidth < 1024;
 
-//Kép parallax
-
-// Throttle függvény, hogy csökkentsük az esemény kezelését
-function throttle(callback, limit) {
-  let waiting = false;
-  return function (...args) {
-    if (!waiting) {
-      callback.apply(this, args);
-      waiting = true;
-      setTimeout(() => {
-        waiting = false;
-      }, limit);
-    }
-  };
+  return !(isPortrait || isNarrowScreen);
 }
 
-ImgGallery_container.addEventListener(
-  "mousemove",
-  throttle((event) => {
+function initializeParallax() {
+  const images = document.querySelectorAll(".media_box");
+
+  images.forEach((img) => {
+    const randomSpeed = 1.2;
+    img.setAttribute("data-speed", randomSpeed);
+  });
+
+  // Throttle függvény az esemény kezelés csökkentéséhez
+  function throttle(callback, limit) {
+    let waiting = false;
+    return function (...args) {
+      if (!waiting) {
+        callback.apply(this, args);
+        waiting = true;
+        setTimeout(() => {
+          waiting = false;
+        }, limit);
+      }
+    };
+  }
+
+  throttleMouseMove = throttle((event) => {
     const rect = ImgGallery_container.getBoundingClientRect();
     const x = (event.clientX - rect.left) / rect.width;
     const y = (event.clientY - rect.top) / rect.height;
@@ -70,7 +76,33 @@ ImgGallery_container.addEventListener(
         img.style.transform = newTransform;
       }
     });
-  }, 15) // 15ms limit a throttle-hoz
-);
+  }, 15); // 15ms limit a throttle-hoz
 
-ImgGallery_container.add;
+  ImgGallery_container.addEventListener("mousemove", throttleMouseMove);
+  parallaxActive = true;
+}
+
+function destroyParallax() {
+  if (parallaxActive) {
+    ImgGallery_container.removeEventListener("mousemove", throttleMouseMove);
+    parallaxActive = false;
+  }
+}
+
+// Figyeljük az ablak méretének változását
+window.addEventListener("resize", () => {
+  if (shouldRunScript()) {
+    if (!parallaxActive) {
+      initializeParallax();
+      console.log("A szkript fut!");
+    }
+  } else {
+    destroyParallax();
+  }
+});
+
+// Első ellenőrzés az oldal betöltésekor
+if (shouldRunScript()) {
+  initializeParallax();
+} else {
+}

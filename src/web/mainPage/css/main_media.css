@@ -157,6 +157,9 @@
   .bg_slider-thumbs .thumbs-container {
     height: auto;
   }
+  .bg_slider-thumbs .swiper-slide {
+    flex-flow: column !important;
+  }
 
   .bg_slider-thumbs .swiper-slide .contentImg h2 {
     display: none;
@@ -185,6 +188,10 @@
     top: 20%;
   }
 
+  .swiper-slide .img-wrapper .underline {
+    display: none;
+  }
+
   .bg_slider .swiper-button-prev:after,
   .bg_slider .swiper-button-next:after {
     display: none;
@@ -198,6 +205,10 @@
   .bg_slider-thumbs .halo {
     width: 97px;
     height: 97px;
+    transform: translate(0%, -10%);
+    margin-inline: auto;
+    left: auto;
+    right: auto;
   }
 
   .bg_slider-thumbs .halo .point {
@@ -378,6 +389,10 @@
     height: auto;
   }
 
+  .bg_slider-thumbs .swiper-slide {
+    flex-flow: column !important;
+  }
+
   .bg_slider-thumbs .swiper-slide .contentImg h2 {
     display: none;
   }
@@ -406,6 +421,10 @@
     top: 20%;
   }
 
+  .swiper-slide .img-wrapper .underline {
+    display: none;
+  }
+
   .bg_slider .swiper-button-prev:after,
   .bg_slider .swiper-button-next:after {
     font-size: 2rem;
@@ -429,6 +448,10 @@
   .bg_slider-thumbs .halo {
     width: 97px;
     height: 97px;
+    transform: translate(0%, -10%);
+    margin-inline: auto;
+    left: auto;
+    right: auto;
   }
 
   .bg_slider-thumbs .halo .point {
@@ -597,6 +620,10 @@
     height: auto;
   }
 
+  .bg_slider-thumbs .swiper-slide {
+    flex-flow: column !important;
+  }
+
   .bg_slider-thumbs .swiper-slide .contentImg h2 {
     display: none;
   }
@@ -644,10 +671,19 @@
     right: 15%;
     top: 65%;
   }
+
+  .swiper-slide .img-wrapper .underline {
+    display: none;
+  }
+
   /* Halo styling */
   .bg_slider-thumbs .halo {
     width: 97px;
     height: 97px;
+    transform: translate(0%, -10%);
+    margin-inline: auto;
+    left: auto;
+    right: auto;
   }
 
   .bg_slider-thumbs .halo .point {
@@ -825,6 +861,10 @@
     right: 30%;
   }
 
+  .swiper-slide .img-wrapper .underline {
+    display: none;
+  }
+
   /*
  =============================
     brand philosophy + description
@@ -973,6 +1013,10 @@
 
   .bg_slider .swiper-button-prev {
     right: 30%;
+  }
+
+  .swiper-slide .img-wrapper .underline {
+    display: none;
   }
 
   /*
