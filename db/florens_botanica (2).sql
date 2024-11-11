@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2024. Nov 10. 11:45
+-- Létrehozás ideje: 2024. Nov 10. 21:31
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -22,18 +22,6 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `florens_botanica` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
 USE `florens_botanica`;
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `allergy`
---
-
-CREATE TABLE `allergy` (
-  `id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `icon_uri` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
 
@@ -146,18 +134,6 @@ CREATE TABLE `product` (
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `product_allergy`
---
-
-CREATE TABLE `product_allergy` (
-  `id` int(11) NOT NULL,
-  `allergy_id` int(11) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
--- --------------------------------------------------------
-
---
 -- Tábla szerkezet ehhez a táblához `product_image`
 --
 
@@ -183,6 +159,18 @@ CREATE TABLE `product_page` (
   `subcategory_id` int(11) DEFAULT NULL COMMENT 'On delete: SET NULL',
   `page_title` varchar(255) DEFAULT NULL,
   `page_content` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `product_tag`
+--
+
+CREATE TABLE `product_tag` (
+  `id` int(11) NOT NULL,
+  `tag_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
@@ -227,6 +215,34 @@ INSERT INTO `subcategory` (`id`, `category_id`, `name`, `subname`, `description`
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `tag`
+--
+
+CREATE TABLE `tag` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `icon_uri` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `tag`
+--
+
+INSERT INTO `tag` (`id`, `name`, `icon_uri`) VALUES
+(2, 'BPA-mentes', './images/tags/bpa-free.png'),
+(3, 'Gluténmentes', './images/tags/gluten-free.png'),
+(4, 'Méz', './images/tags/honeycomb.png'),
+(5, 'Halmentes', './images/tags/no-fish.png'),
+(6, 'GMO-mentes', './images/tags/non-gmo.png'),
+(7, 'Mogyoró mentes', './images/tags/peanut-free.png'),
+(8, 'Pollen', './images/tags/pollen.png'),
+(9, 'Tinktúra', './images/tags/serum.png'),
+(10, 'Cukormentes', './images/tags/sugar-free.png'),
+(11, 'Vegán', './images/tags/vegan.png');
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `user`
 --
 
@@ -254,12 +270,6 @@ INSERT INTO `user` (`id`, `email`, `user_name`, `password_hash`, `role`, `cookie
 --
 -- Indexek a kiírt táblákhoz
 --
-
---
--- A tábla indexei `allergy`
---
-ALTER TABLE `allergy`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- A tábla indexei `cart`
@@ -302,14 +312,6 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`id`);
 
 --
--- A tábla indexei `product_allergy`
---
-ALTER TABLE `product_allergy`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `allergy_id` (`allergy_id`),
-  ADD KEY `product_id` (`product_id`);
-
---
 -- A tábla indexei `product_image`
 --
 ALTER TABLE `product_image`
@@ -327,6 +329,14 @@ ALTER TABLE `product_page`
   ADD KEY `product_page_ibfk_3` (`subcategory_id`);
 
 --
+-- A tábla indexei `product_tag`
+--
+ALTER TABLE `product_tag`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `allergy_id` (`tag_id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
 -- A tábla indexei `review`
 --
 ALTER TABLE `review`
@@ -342,6 +352,12 @@ ALTER TABLE `subcategory`
   ADD KEY `subcategory_ibfk_1` (`category_id`);
 
 --
+-- A tábla indexei `tag`
+--
+ALTER TABLE `tag`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- A tábla indexei `user`
 --
 ALTER TABLE `user`
@@ -352,12 +368,6 @@ ALTER TABLE `user`
 --
 -- A kiírt táblák AUTO_INCREMENT értéke
 --
-
---
--- AUTO_INCREMENT a táblához `allergy`
---
-ALTER TABLE `allergy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `cart`
@@ -390,12 +400,6 @@ ALTER TABLE `product`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
--- AUTO_INCREMENT a táblához `product_allergy`
---
-ALTER TABLE `product_allergy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT a táblához `product_image`
 --
 ALTER TABLE `product_image`
@@ -408,6 +412,12 @@ ALTER TABLE `product_page`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
+-- AUTO_INCREMENT a táblához `product_tag`
+--
+ALTER TABLE `product_tag`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `review`
 --
 ALTER TABLE `review`
@@ -418,6 +428,12 @@ ALTER TABLE `review`
 --
 ALTER TABLE `subcategory`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT a táblához `tag`
+--
+ALTER TABLE `tag`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT a táblához `user`
@@ -449,13 +465,6 @@ ALTER TABLE `order`
   ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Megkötések a táblához `product_allergy`
---
-ALTER TABLE `product_allergy`
-  ADD CONSTRAINT `product_allergy_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
-  ADD CONSTRAINT `product_allergy_ibfk_2` FOREIGN KEY (`allergy_id`) REFERENCES `allergy` (`id`);
-
---
 -- Megkötések a táblához `product_image`
 --
 ALTER TABLE `product_image`
@@ -469,6 +478,13 @@ ALTER TABLE `product_page`
   ADD CONSTRAINT `product_page_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `product_page_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `product_page_ibfk_3` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategory` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `product_tag`
+--
+ALTER TABLE `product_tag`
+  ADD CONSTRAINT `product_tag_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
+  ADD CONSTRAINT `product_tag_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`);
 
 --
 -- Megkötések a táblához `review`

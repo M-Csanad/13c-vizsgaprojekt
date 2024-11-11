@@ -33,6 +33,7 @@
     padding: 10px;
     box-sizing: border-box;
     transition: opacity 1s ease;
+    cursor: pointer;
 }
 
 .success {
@@ -45,4 +46,5 @@
     padding: 10px;
     box-sizing: border-box;
     transition: opacity 1s ease;
+    cursor: pointer;
 }

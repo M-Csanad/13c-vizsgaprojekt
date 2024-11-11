@@ -5,7 +5,7 @@
     height: 32px;
     gap: 10px;
     min-width: 0;
-    width: 50%;
+    width: 66%;
 }
 .search-wrapper > svg {
     flex-shrink: 0;

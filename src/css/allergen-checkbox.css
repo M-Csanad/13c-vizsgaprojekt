@@ -1,15 +1,43 @@
 .tag-wrapper {
-    height: 50px;
-    /* height: fit-content; */
-    /* max-height: fit-content; */
+    height: 70px !important;
+    position: relative;
 }
 
-.tag-wrapper > div {
+.tag-wrapper > .swipe-indicator {
+    position: absolute;
+    bottom: -15px;
+    left: calc(22% + 20px);
+    flex: 0;
+    max-width: 20px;
+}
+
+.tag-items {
+    flex-shrink: 1;
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-wrap: nowrap;
     flex-direction: row;
-    /* width: 100% !important; */
+    overflow: hidden;
+}
+
+.tag-wrapper > .tag-body > .tag-items {
+    max-width: 100%;
+    width: max-content;
+    flex-grow: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    overflow-x: scroll;
+    padding-right: 7px;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    scroll-snap-type: x mandatory;
+    gap: 10px;
 }
 
 .tag-wrapper > * {
@@ -22,6 +50,7 @@
 
 .tag-checkbox {
     flex-shrink: 0;
+    scroll-snap-align: start;
 
     display: flex;
     align-items: center;

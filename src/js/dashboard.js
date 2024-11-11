@@ -29,14 +29,24 @@ function hideDisplayMessages() {
     let success = document.querySelector(".success");
 
     if (error) {
-        setTimeout(() => {
+        error.addEventListener("click", ()=>{
             error.style.opacity = "0";
             setTimeout(() => {
                 document.body.removeChild(error);
             }, 1000);
-        }, 5000);
+        });
     }
-    else if (success) {
+
+    if (success) {
+        success.addEventListener("click", ()=>{
+            success.style.opacity = "0";
+            setTimeout(() => {
+                document.body.removeChild(success);
+            }, 1000);
+        });
+    }
+
+    if (success) {
         setTimeout(() => {
             success.style.opacity = "0";
             setTimeout(() => {

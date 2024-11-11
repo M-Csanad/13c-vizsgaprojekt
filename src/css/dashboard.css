@@ -196,7 +196,7 @@ body {
     flex-grow: 1;
     height: 1px;
     background-color: #dfdfdf;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     margin-bottom: 0.5rem;
 }
 
@@ -334,6 +334,7 @@ section {
         max-width: 22%;
         min-width: 110px;
         transition: color 0.3s ease;
+        flex-shrink: 0;
     }
     .inline-input > label > div:first-child {
         flex-grow: 1;
@@ -675,7 +676,7 @@ section.active {
     .inline-input > *:not(label) {
         width: 100% !important;
     }
-    .allergen-wrapper {
+    .tag-wrapper {
         height: 100px !important;
     }
     .file-input > div > .main-wrapper {
@@ -726,6 +727,15 @@ section.active {
     }
     .page-title {
         font-size: 50px;
+    }
+}
+
+@media screen and (min-width: 1400px) {
+    .inline-input {
+        width: 50% !important;
+    }
+    .search-wrapper {
+        width: 50% !important;
     }
 }
 
