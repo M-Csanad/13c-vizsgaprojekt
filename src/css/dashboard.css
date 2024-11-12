@@ -324,6 +324,7 @@ section {
 
 
     .inline-input > label{
+        gap: 5px;
         display: flex;
         align-items: center;
         position: relative;
