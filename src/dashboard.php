@@ -20,6 +20,9 @@
             exit();
         }
     ?>
+    <script defer src="./js/dashboard.js"></script>
+    <script defer src="./js/search.js"></script>
+    <script defer src="./js/tag-checkbox.js"></script>
 </head>
 <body>
     <p>
@@ -1102,8 +1105,5 @@
             }
         }
     ?>
-    <script src="./js/dashboard.js"></script>
-    <script src="./js/search.js"></script>
-    <script src="./js/tag-checkbox.js"></script>
 </body>
 </html>
