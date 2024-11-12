@@ -1,17 +1,6 @@
 <?php
 /* --------------------------- Termék létrehozása --------------------------- */
 
-// Link Slug (pl. www.oldalam.hu << /aloldalam >>) létrehozása
-function getLinkSlug($name, $categoryData) {
-
-    // Formátum: főkategória/alkategória/terméknév
-    $link_slug = format_str($categoryData["category"]) . "/" . format_str($categoryData["subcategory"]) . "/" . format_str($name);
-
-    return array(
-        "link_slug" => $link_slug
-    );
-}
-
 // Termékképek számára mappa létrehozása
 function createProductDirectory($productData) {
 
@@ -23,7 +12,7 @@ function createProductDirectory($productData) {
     $productDirURI = $baseDirectory.$productName."/";
     
     if (!createDirectory([$productDirURI,$productDirURI.'thumbnail/', $productDirURI.'gallery/'])) {
-        return "Ilyen nevű termék már létezik.";
+        return "Ilyen nevű termék már létezik a fájlrendszerben.";
     }
     
     // A termékképek feltöltése
@@ -79,26 +68,6 @@ function uploadProductData($data) {
     return updateData($query, $values);
 }
 
-// A termékadatok feltöltése a `product_page` táblába
-function uploadProductPageData($data) {
-
-    $fields = array("product_id", "link_slug", "category_id", "subcategory_id", "page_title", "page_content");
-    $values = array(
-        $data['product_id'],
-        $data['link_slug'],
-        $data['category_id'],
-        $data['subcategory_id'],
-        $data['page_title'],
-        $data['page_content']
-    );
-    
-    $fieldList = implode(", ", $fields);
-    $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
-    $query = "INSERT INTO `product_page`($fieldList) VALUES ($placeholderList);";
-    
-    return updateData($query, $values);
-}
-
 // A termék képeinek feltöltése az `image` táblába
 function uploadProductImages($paths) {
 
@@ -148,7 +117,7 @@ function connectProductTags($id, $tags) {
 }
 
 // Termék létrehozása - Fő függvény
-function createProduct($productData, $productPageData, $productCategoryData, $tags) {
+function createProduct($productData, $tags) {
     include_once "init.php";
 
     // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
@@ -167,17 +136,10 @@ function createProduct($productData, $productPageData, $productCategoryData, $ta
         $productPageData["product_id"] = $result;
     }
     else {
+        if ($result->getCode() === 1062) {
+            return "Ilyen termék már létezik az adatbázisban.";    
+        }
         return "Sikertelen feltöltés a product táblába. ($result)";
-    }
-    
-    $result = getLinkSlug($productData['name'], $productCategoryData);
-    if (is_array($result)) {
-        $productPageData["link_slug"] = $result["link_slug"];
-    }
-    
-    $result = uploadProductPageData($productPageData);
-    if (!is_numeric($result)) {
-        return "Sikertelen feltöltés a product_page táblába. ($result)";
     }
 
     $insertIds = uploadProductImages($paths);

@@ -16,8 +16,14 @@ function initializeSearch(search) {
             clickHandler: (user) => itemClickHandler(user, ["id", "name"])
         },
         product: {
-            template: (product) => `
-                <img src='${product.thumbnail_image_horizontal_uri}'><div><b>${product.name}</b> - <i>${product.category} / ${product.subcategory}</i></div>`,
+            template: (product) => {
+                if (!product.category || !product.subcategory) {
+                    return `<img src='${product.thumbnail_image_horizontal_uri}'><div><b>${product.name}</b> - <i>Még nincs kategóriába sorolva.</i></div>`;
+                }
+                else {
+                    return `<img src='${product.thumbnail_image_horizontal_uri}'><div><b>${product.name}</b> - <i>${product.category ? product.category : "#"} / ${product.subcategory ? product.subcategory : "#"}</i></div>`;
+                }
+            },
             clickHandler: (product) => itemClickHandler(product, ["id", "name"])
         }
     };

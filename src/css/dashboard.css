@@ -15,7 +15,7 @@ body {
 }
 
 .popup {
-    position: absolute;
+    position: fixed;
     top: 0;
     bottom: 0;
     left: 0;
@@ -79,6 +79,7 @@ body {
     text-align: center;
     padding-inline: 1rem;
 }
+
 .button-group-wrapper {
     width: 100%;
     height: 35%;
@@ -98,6 +99,7 @@ body {
     height: 2.5rem;
     padding-inline: 1rem;
 }
+
 .button-group > input {
     font-family: Raleway;
     border: 3px solid transparent;
@@ -129,48 +131,62 @@ body {
 
 .back-link {
     display: block;
+
     width: fit-content;
-    text-decoration: none;
+
     border-bottom: 1px solid;
+
+    text-decoration: none;
     transition: all 0.2s ease;
 }
+
 .back-link:hover {
     letter-spacing: 1px;
 }
+
 .back-link:active {
     letter-spacing: 0.5px;
 }
 
 .page-title {
+    width: 100%;
+
     font-size: 50px;
     font-weight: bold;
-    width: 100%;
 }
 
 .pages {
     display: flex;
     flex-direction: row;
     gap: 50px;
-    font-size: 25px;
+
     width: 100%;
+    font-size: 25px;
+
     border-bottom: 2px solid var(--border);
 }
+
 .pages > * {
-    transition: color 0.3s ease, font-weight 0.3s ease, transform 0.3s ease;
-    color: #6c6c6c;
-    user-select: none;
-    cursor: pointer;
-    padding-top: 2rem;
-    padding-bottom: 1rem;
     display: flex;
     flex-direction: row;
     align-items: center;
     gap: 5px;
+
+    padding-top: 2rem;
     padding-right: 4px;
+    padding-bottom: 1rem;
+    
+    color: #6c6c6c;
+
+    cursor: pointer;
+    user-select: none;
+    transition: color 0.3s ease, font-weight 0.3s ease, transform 0.3s ease;
 }
+
 .pages > *:not(.page.active):hover {
     transform: translateY(-0.5rem);
 }
+
 .page > svg {
     flex-shrink: 0;
     transform: rotate(-45deg);
@@ -184,30 +200,37 @@ body {
 .section-group {
     display: none;
 }
+
 .section-group.active {
     display: block;
 }
+
 .group-body:first-child {
     margin-top: 0.5rem;
 }
 
 .form-divider{
-    width: 100%;
     flex-grow: 1;
+
+    width: 100%;
     height: 1px;
-    background-color: #dfdfdf;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
+    
+    background-color: #dfdfdf;
 }
 
 .toggle {
+    position: relative;
+
     width: 50px;
-    min-width: 50px;
     height: 24px;
-    border-radius: 12px;
+    min-width: 50px;
+
     background-color: #666;
     outline: 2px solid transparent;
-    position: relative;
+    border-radius: 12px;
+
     cursor: pointer;
     transition: background-color 0.3s ease, outline 0.3s ease;
 }
@@ -219,6 +242,7 @@ body {
 .toggle.on {
     background-color: #4caf50;
 }
+
 .toggle.on:hover {
     outline: 2px solid #8bde8e;
 }
@@ -233,7 +257,7 @@ body {
     color: #fff;
     user-select: none;
     transition: opacity 0.3s ease;
-    }
+}
 
 .toggle-text.off {
     opacity: 1;
@@ -317,11 +341,10 @@ section {
         display: flex;
         align-items: stretch;
         flex-direction: row;
-        gap: 20px;
+        /* gap: 20px; */
         width: 66%;
         height: 30px;
     }
-
 
     .inline-input > label{
         gap: 5px;
@@ -330,12 +353,13 @@ section {
         position: relative;
         font-weight: 600;
         font-size: 16px;
-        width: 22%;
+        width: 28%;
         flex-grow: 1;
-        max-width: 22%;
+        max-width: 28%;
         min-width: 110px;
         transition: color 0.3s ease;
         flex-shrink: 0;
+        padding-right: 10px;
     }
     .inline-input > label > div:first-child {
         flex-grow: 1;
@@ -343,9 +367,9 @@ section {
         display: flex;
         align-items: center;
     }
-    .inline-input > label > svg {
+    .inline-input > label > div:first-child > svg {
         flex-shrink: 0;
-        padding-left: 5px;
+        margin-left: 10px;
         width: 20px;
     }
 
@@ -378,6 +402,7 @@ section {
         opacity: 1;
     }
 
+    
     .inline-input:has(input) > label > div:first-child:after,
     .inline-input:has(select) > label > div:first-child:after {
         content: '*';
@@ -386,21 +411,70 @@ section {
         font-family:'Courier New', Courier, monospace;
         transition: opacity 0.3s ease;
     }
-
     .inline-input:has(input:required:not(:disabled)) > label > div:first-child:after, 
     .inline-input:has(select:required:not(:disabled)) > label > div:first-child:after {
         opacity: 1;
     }
 
-    .inline-input > div {
+    .inline-input > .input-content {
+        display: flex;
+        align-items: stretch;
+        flex-grow: 1;
+        position: relative;
+        flex-direction: column;
+        height: 30px;
+        overflow: hidden;
+    }
+
+    .inline-input > .input-content > .input-container {
         display: flex;
         flex-direction: row;
         align-items: stretch;
         gap: 10px;
         flex-grow: 1;
+        height: 30px;
     }
 
-    .inline-input > div > input, .inline-input > div > select {
+    .inline-input > .input-content > .input-tooltip {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        font-weight: bold;
+
+        height: 30px;
+        width: 100%;
+
+        color: #666;
+    }
+
+    .inline-input.has-toggle > .input-content > .input-container{
+        position: absolute;
+        /* top: 100%; */
+        transform: translateY(100%);
+        width: 100%;
+        opacity: 0;
+        z-index: -1;
+
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .inline-input.has-toggle > .input-content > .input-tooltip {
+        /* bottom: 0; */
+        z-index: -1;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .inline-input.has-toggle > .input-content:has(input.visible) > .input-tooltip {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    .inline-input.has-toggle > .input-content:has(input.visible) > .input-container {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+
+    .inline-input > .input-content > div > input, .inline-input > .input-content > div > select {
         display: flex;
         align-items: center;
         flex-grow: 1;
@@ -415,48 +489,48 @@ section {
         min-width: 0px;
     }
 
-    .inline-input > div > svg {
+    .inline-input > .input-content > div > svg {
         height: 100%;
         width: 20px;
         flex-shrink: 0;
     }
-    .inline-input > div > svg.valid {
+    .inline-input > .input-content > div > svg.valid {
         color: var(--valid);
     }
-    .inline-input > div > svg.invalid {
+    .inline-input > .input-content > div > svg.invalid {
         color: var(--invalid);
     }
 
-    .inline-input > div > input:valid, .inline-input > div > select:valid {
+    .inline-input > .input-content > div > input:valid, .inline-input > .input-content > div > select:valid {
         border-bottom: 3px solid var(--valid);
     }
-    .inline-input > div > input:invalid, .inline-input > div > select:invalid {
+    .inline-input > .input-content > div > input:invalid, .inline-input > .input-content > div > select:invalid {
         border-bottom: 3px solid var(--invalid);
     }
-    .inline-input > div > input:valid ~ svg.valid, .inline-input > div > select:valid ~ svg.valid {
+    .inline-input > .input-content > div > input:valid ~ svg.valid, .inline-input > .input-content > div > select:valid ~ svg.valid {
         display: block;
     }
-    .inline-input > div > input:invalid ~ svg.valid, .inline-input > div > select:invalid ~ svg.valid  {
+    .inline-input > .input-content > div > input:invalid ~ svg.valid, .inline-input > .input-content > div > select:invalid ~ svg.valid  {
         display: none;
     }
-    .inline-input > div > input:valid ~ svg.invalid, .inline-input > div > select:valid ~ svg.invalid  {
+    .inline-input > .input-content > div > input:valid ~ svg.invalid, .inline-input > .input-content > div > select:valid ~ svg.invalid  {
         display: none;
     }
-    .inline-input > div > input:invalid ~ svg.invalid, .inline-input > div > select:invalid ~ svg.invalid  {
+    .inline-input > .input-content > div > input:invalid ~ svg.invalid, .inline-input > .input-content > div > select:invalid ~ svg.invalid  {
         display: block;
     }
-    .inline-input > div:has(input:disabled) > svg, .inline-input > div:has(select:disabled) > svg {
+    .inline-input > .input-content > div:has(input:disabled) > svg, .inline-input > .input-content > div:has(select:disabled) > svg {
         display: none;
     }
-    .inline-input > div:has(input:disabled) > svg.disabled, .inline-input > div:has(select:disabled) > svg.disabled {
+    .inline-input > .input-content > div:has(input:disabled) > svg.disabled, .inline-input > .input-content > div:has(select:disabled) > svg.disabled {
         display: block;
     }
-    .inline-input > div > input:not(:disabled) ~ svg.disabled, .inline-input > div > select:not(:disabled) ~ svg.disabled {
+    .inline-input > .input-content > div > input:not(:disabled) ~ svg.disabled, .inline-input > .input-content > div > select:not(:disabled) ~ svg.disabled {
         display: none;
     }
 
-    .inline-input > div > input:disabled, 
-    .inline-input > div > select:disabled {
+    .inline-input > .input-content > div > input:disabled, 
+    .inline-input > .input-content > div > select:disabled {
         border-bottom: 3px solid rgb(20, 20, 20) !important;
         color: #6c6c6c;
         background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.5) 75%, transparent 75%, transparent);
@@ -464,16 +538,15 @@ section {
         background-repeat: repeat;
         cursor: not-allowed;
     }
-
     
-    .file-input > div {
+    .file-input > .input-content > div {
         flex-grow: 1;
         display: flex;
         align-items: center;
         gap: 10px;
     }
     
-    .file-input > div > .main-wrapper {
+    .file-input > .input-content > div > .main-wrapper {
         width: 60%;
         height: 100%;
         position: relative;
@@ -481,7 +554,7 @@ section {
         flex-direction: row;
         border: 1px solid var(--text);
     }
-    .file-input > div > .main-wrapper > label.input-wrapper {
+    .file-input > .input-content > div > .main-wrapper > label.input-wrapper {
         width: calc(100%);
         height: 100%;
         display: flex;
@@ -495,41 +568,41 @@ section {
         user-select: none;
     }
     
-    .file-input > div > div.main-wrapper:has(input:disabled) > label {
+    .file-input > .input-content > div > div.main-wrapper:has(input:disabled) > label {
         background-image: linear-gradient(135deg, #f7f7f7 25%, #efefef 25%, #efefef 50%, #f7f7f7 50%, #f7f7f7 75%, #efefef 75%, #efefef);
         background-size: 20px 20px;
         background-repeat: repeat;
         cursor: not-allowed;
         color: #6c6c6c;
     }
-    .file-input > div > div.main-wrapper:has(input:disabled) > label > svg {
+    .file-input > .input-content > div > div.main-wrapper:has(input:disabled) > label > svg {
         fill: #6c6c6c;
     }
 
-    .file-input > div > div.main-wrapper > label > svg {
+    .file-input > .input-content > div > div.main-wrapper > label > svg {
         transition: fill 0.3s ease;
     }
     
-    .file-input:has(input:invalid) > div > svg.valid {
+    .file-input:has(input:invalid) > .input-content > div > svg.valid {
         display: none;
     }
-    .file-input:has(input:invalid) > div > svg.invalid {
+    .file-input:has(input:invalid) > .input-content > div > svg.invalid {
         display: block;
     }
-    .file-input:has(input:valid) > div > svg.valid {
+    .file-input:has(input:valid) > .input-content > div > svg.valid {
         display: block;
     }
-    .file-input:has(input:valid) > div > svg.invalid {
+    .file-input:has(input:valid) > .input-content > div > svg.invalid {
         display: none;
     }
-    .file-input:has(input:disabled) > div > svg.disabled {
+    .file-input:has(input:disabled) > .input-content > div > svg.disabled {
         display: block;
     }
-    .file-input:has(input:not(:disabled)) > div > svg.disabled {
+    .file-input:has(input:not(:disabled)) > .input-content > div > svg.disabled {
         display: none;
     }
 
-    .file-input > div > .main-wrapper > label.input-wrapper > input {
+    .file-input > .input-content > div > .main-wrapper > label.input-wrapper > input {
         position: absolute;
         top: 0;
         left: 50%;
@@ -538,7 +611,7 @@ section {
         opacity: 0;
         z-index: -1;
     }
-    .file-input > div > .main-wrapper > label.input-wrapper:hover:not(:has(input:disabled))    {
+    .file-input > .input-content > div > .main-wrapper > label.input-wrapper:hover:not(:has(input:disabled))    {
         background-color: #e8e8e8;
     }
 
@@ -594,6 +667,78 @@ section.active {
     }
     .section-header > svg {
         transform: rotate(180deg);
+    }
+}
+
+
+@media screen and (max-width: 1100px) {
+    .inline-input {
+        width: 75% !important;
+    }
+}
+
+@media screen and (max-width: 991px) {
+    .page-title {
+        font-size: 40px;
+    }
+    .section-group .group-header {
+        font-size: 24px;
+    }
+    .inline-input {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 767px) {
+    
+    .inline-input {
+        width: 100%;
+    }
+    .section-group .group-header {
+        font-size: 22px;
+    }
+    .form-submit-primary,
+    .form-submit-danger {
+        padding-block: 8px;
+        padding-inline: 18px;
+    }
+    .inline-input {
+        flex-direction: column !important;
+        height: 60px !important;
+        gap: 5px !important;
+    }
+    .inline-input > *:not(label) {
+        width: 100% !important;
+    }
+    .tag-wrapper {
+        height: 100px !important;
+    }
+    .file-input > .input-content > div > .main-wrapper {
+        width: 100% !important;
+    }
+    .pages {
+        margin-top: 2rem;
+        flex-direction: column;
+        gap: 5px;
+        
+    }
+    .pages > * {
+        flex-grow: 1;
+        padding-block: 0.5rem;
+    }
+    .page-title {
+        text-align: center;
+    }
+    .back-link {
+        margin-inline: auto;
+    }
+    .form-submit-wrapper {
+        width:100%; 
+        display:flex; 
+        justify-content:center;
+    }
+    .form-submit-danger, .form-submit-primary {
+        width: 100%;
     }
 }
 
@@ -655,72 +800,6 @@ section.active {
         font-size: 14px !important;
     }
 }
-
-@media screen and (max-width: 767px) {
-
-    .inline-input {
-        width: 100%;
-    }
-    .section-group .group-header {
-        font-size: 22px;
-    }
-    .form-submit-primary,
-    .form-submit-danger {
-        padding-block: 8px;
-        padding-inline: 18px;
-    }
-    .inline-input {
-        flex-direction: column !important;
-        height: 60px !important;
-        gap: 5px !important;
-    }
-    .inline-input > *:not(label) {
-        width: 100% !important;
-    }
-    .tag-wrapper {
-        height: 100px !important;
-    }
-    .file-input > div > .main-wrapper {
-        width: 100% !important;
-    }
-    .pages {
-        margin-top: 2rem;
-        flex-direction: column;
-        gap: 5px;
-
-    }
-    .pages > * {
-        flex-grow: 1;
-        padding-block: 0.5rem;
-    }
-    .page-title {
-        text-align: center;
-    }
-    .back-link {
-        margin-inline: auto;
-    }
-    .form-submit-wrapper {
-        width:100%; 
-        display:flex; 
-        justify-content:center;
-    }
-    .form-submit-danger, .form-submit-primary {
-        width: 100%;
-    }
-}
-
-@media screen and (max-width: 991px) {
-    .page-title {
-        font-size: 40px;
-    }
-    .section-group .group-header {
-        font-size: 24px;
-    }
-    .inline-input {
-        width: 100% !important;
-    }
-}
-
 
 @media screen and (min-width: 1200px) {
     body {

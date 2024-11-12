@@ -122,30 +122,6 @@ function closePopup(popup) {
     }, 300);
 }
 
-// Azok az űrlapok, amelyeknél egy beviteli mező értékétől függ, hogy megjelenjen-e a felugró ablak
-const formExceptions = {
-    "#form-role": { // Az űrlap szelektor értéke
-        "field": "select[name=role]", // Melyik mező értékétől függ
-        "value": "Administrator" // Milyen értéknél kell a felugró ablak
-    }
-}
-
-// Ellenőrizzük, hogy az aktuális űrlap kivétel-e (Tehát nem minden leadáskor kell figyelmeztető üzenet, csak ha megfelel a feltételeknek)
-function isFormException(form) {
-    let selector = Object.keys(formExceptions).find(selector => form.matches(selector)) || null;
-    if (selector) {
-        let field = form.querySelector(formExceptions[selector]["field"]);
-        if (field && field.value == formExceptions[selector]["value"]) {
-            return true; // Az űrlap kivétel, és az értéke megyegyezik a kivételben szereplővel
-        }
-        else {
-            return false; // Az űrlap kivétel, de a kérdéses mező értéke nem egyezik meg a kivételben szereplővel
-        }
-    }
-    else {
-        return null; // Az űrlap nem kivétel
-    }
-}
 
 function getImageOrientation(file) {
     return new Promise((resolve, reject) => {
@@ -190,43 +166,74 @@ function getFileSize(file) {
 }
 
 const toggleButton = document.querySelectorAll('.toggle').forEach(button => {
+    let input = button.closest('.file-input');
+    let fileInput = input.querySelector('input[type=file]');
     button.addEventListener("click", () => {
-    button.classList.toggle("on");
-    if (button.classList.contains("on")) {
-        button.closest('.file-input').querySelector('input[type=file]').removeAttribute("disabled");
-        button.closest('.file-input').querySelector('input[type=file]').setAttribute("required", true);
-    }
-    else {
-        button.closest('.file-input').querySelector('input[type=file]').setAttribute("disabled", true);
-        button.closest('.file-input').querySelector('input[type=file]').removeAttribute("required");
-    }
+        button.classList.toggle("on");
+        if (button.classList.contains("on")) {
+            fileInput.classList.add("visible");
+            fileInput.removeAttribute("disabled");
+            fileInput.setAttribute("required", true);
+        }
+        else {
+            fileInput.classList.remove("visible");
+            setTimeout(()=>{
+                fileInput.setAttribute("disabled", true);
+                fileInput.removeAttribute("required");
+            }, 300);
+        }
     });
 });
 
+// Azok az űrlapok, amelyeknél egy beviteli mező értékétől függ, hogy megjelenjen-e a felugró ablak
+const formExceptions = {
+    "#form-role": { // Az űrlap szelektor értéke
+        "field": "select[name=role]", // Melyik mező értékétől függ
+        "value": "Administrator" // Milyen értéknél kell a felugró ablak
+    }
+}
+
+// Ellenőrizzük, hogy az aktuális űrlap kivétel-e (Tehát nem minden leadáskor kell figyelmeztető üzenet, csak ha megfelel a feltételeknek)
+function isFormException(form) {
+    let selector = Object.keys(formExceptions).find(selector => form.matches(selector)) || null;
+    if (selector) {
+        let field = form.querySelector(formExceptions[selector]["field"]);
+        if (field && field.value == formExceptions[selector]["value"]) {
+            return true; // Az űrlap kivétel, és az értéke megyegyezik a kivételben szereplővel
+        }
+        else {
+            return false; // Az űrlap kivétel, de a kérdéses mező értéke nem egyezik meg a kivételben szereplővel
+        }
+    }
+    else {
+        return null; // Az űrlap nem kivétel
+    }
+}
+
 window.addEventListener("load", () => {
     let sectionHeaders = document.querySelectorAll(".section-header");
-
+    
     for (let header of sectionHeaders) {
         header.addEventListener("click", expandGroup);
         header.addEventListener("keydown", (e) => { if (e.code=="Space" || e.code=="Enter") expandGroup(e) });
     }
-
+    
     for (let page of pageLinks) {
         page.addEventListener("click", ()=>{ togglePage(page.dataset.pageid); });
         page.addEventListener("keydown", (e) => { if (e.code=="Space" || e.code=="Enter") togglePage(page.dataset.pageid) });
     }
-
+    
     document.querySelectorAll("input[data-type]").forEach((input) => {
 
         let orientation = input.dataset.orientation;
         let inputCount = input.dataset.count;
         let acceptedType = input.dataset.type;
-
+        
         input.addEventListener("input", async () => {
             if (inputCount == "singular") {
-
+                
                 let file = input.files[0] || null;
-
+                
                 if (!file) { // Ha nem töltött fel fájlt
                     input.setCustomValidity('Kérjük adjon meg egy képet!');
                     input.value = "";
