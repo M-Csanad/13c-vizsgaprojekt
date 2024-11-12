@@ -105,8 +105,8 @@ function initializeSearch(search) {
         if (item.role) {
             disableRoleOption(item.role);
             selectFirstValidOption();
+            enableDisabledInputs();
         }
-        enableDisabledInputs();
     }
 
     function disableRoleOption(role) {
