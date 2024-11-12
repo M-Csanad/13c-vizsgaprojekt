@@ -17,7 +17,7 @@ $footerData = [
         ], */
         'Our Team' => [
             /* ['name' => 'ScalyShop', 'url' => 'https://www.instagram.com/scaly_san/', 'icon' => 'logo-instagram'], */
-            ['name' => 'Migu', 'url' => '#', 'icon' => 'text-outline'],
+
             ['name' => 'Csanad', 'url' => '#', 'icon' => 'construct-outline'],
             ['name' => 'Máté', 'url' => '#', 'icon' => 'construct-outline'],
         ],

@@ -103,6 +103,33 @@
 @media (max-width: 600px) {
   /* Stílusok nagyobb mobilokhoz */
 
+  #BGDT01 {
+    display: none;
+    font-size: clamp(3rem, calc(6rem + 0.39vw), 15rem);
+    left: 0rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    display: none;
+    font-size: clamp(2rem, calc(4rem + 0.39vw), 10rem);
+    right: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT03 {
+    display: none;
+    font-size: clamp(3rem, calc(5rem + 0.39vw), 10rem);
+    right: 0rem;
+    transform: translateY(-260%);
+  }
+  #BGDT04 {
+    display: none;
+    font-size: clamp(2rem, calc(4rem + 0.39vw), 10rem);
+    left: 12rem;
+    transform: translateY(-300%);
+  }
+  #brand-philosophy {
+  }
+
   /*
  =============================
     welcome video
@@ -233,6 +260,7 @@
  */
   #brand-philosophy {
     padding: 0;
+    margin: 0 auto 10em auto;
   }
   .brand-philosophy_wrapper {
     width: 72vw;
@@ -336,6 +364,30 @@
 /* Fekvő tájolású tabletek */
 @media (min-width: 601px) and (max-width: 767px) and (orientation: landscape) {
   /* Stílusok fekvő tájolású tabletekhez */
+
+  #BGDT01 {
+    font-size: clamp(3rem, calc(7rem + 0.39vw), 25rem);
+    left: 0rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    font-size: clamp(5rem, calc(5rem + 0.39vw), 20rem);
+    right: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT03 {
+    font-size: clamp(3rem, calc(6rem + 0.39vw), 20rem);
+    right: 0rem;
+    transform: translateY(-260%);
+  }
+  #BGDT04 {
+    font-size: clamp(5rem, calc(5rem + 0.39vw), 20rem);
+    left: 12rem;
+    transform: translateY(-300%);
+  }
+  #brand-philosophy {
+    margin: 0em auto 18em auto;
+  }
 
   /*
  =============================
@@ -565,6 +617,30 @@
 /* Álló tájolású tabletek */
 @media (min-width: 601px) and (max-width: 767px) and (orientation: portrait) {
   /* Stílusok álló tájolású tabletekhez */
+
+  #BGDT01 {
+    font-size: clamp(5rem, calc(10rem + 0.39vw), 25rem);
+    left: 0rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    right: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT03 {
+    font-size: clamp(5rem, calc(7rem + 0.39vw), 20rem);
+    right: 2rem;
+    transform: translateY(-260%);
+  }
+  #BGDT04 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    left: 12rem;
+    transform: translateY(-300%);
+  }
+  #brand-philosophy {
+    margin: 28em auto 18em auto;
+  }
 
   /*
  =============================
@@ -797,6 +873,29 @@
 @media (min-width: 767px) and (max-width: 1024px) and (orientation: landscape) {
   /* Stílusok fekvő tájolású tabletekhez */
 
+  #BGDT01 {
+    font-size: clamp(5rem, calc(10rem + 0.39vw), 25rem);
+    left: 0rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    right: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT03 {
+    font-size: clamp(5rem, calc(7rem + 0.39vw), 20rem);
+    right: 2rem;
+    transform: translateY(-260%);
+  }
+  #BGDT04 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    left: 12rem;
+    transform: translateY(-300%);
+  }
+  #brand-philosophy {
+    margin: 28em auto 18em auto;
+  }
   /*
  =============================
     welcome video
@@ -956,6 +1055,30 @@
 @media (min-width: 767px) and (max-width: 1024px) and (orientation: portrait) {
   /* Stílusok fekvő tájolású tabletekhez */
 
+  #BGDT01 {
+    font-size: clamp(5rem, calc(10rem + 0.39vw), 25rem);
+    left: 3rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    right: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT03 {
+    font-size: clamp(5rem, calc(7rem + 0.39vw), 20rem);
+    right: 2rem;
+    transform: translateY(-260%);
+  }
+  #BGDT04 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    left: 12rem;
+    transform: translateY(-300%);
+  }
+  #brand-philosophy {
+    margin: 28em auto 18em auto;
+  }
+
   /*
  =============================
     welcome video
@@ -1107,6 +1230,27 @@
 /* Kisebb laptopok */
 @media (min-width: 1025px) and (max-width: 1280px) {
   /* Stílusok kisebb laptopokhoz */
+
+  #BGDT01 {
+    font-size: clamp(10rem, calc(14rem + 0.39vw), 25rem);
+    left: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    font-size: clamp(8rem, calc(7rem + 0.39vw), 20rem);
+    right: 5rem;
+    transform: translateY(130%);
+  }
+  #BGDT03 {
+    font-size: clamp(10rem, calc(9rem + 0.39vw), 20rem);
+    right: 2rem;
+    transform: translateY(-280%);
+  }
+  #BGDT04 {
+    font-size: clamp(8rem, calc(7rem + 0.39vw), 20rem);
+    left: 12rem;
+    transform: translateY(-350%);
+  }
 
   /*
  =============================
