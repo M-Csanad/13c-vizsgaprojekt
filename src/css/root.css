@@ -13,9 +13,9 @@
 }
 
 @font-face {
-    font-family: Raleway;
+    font-family: "Raleway";
     font-display: swap;
-    src: url("../fonts/Raleway.ttf");
+    src: url("../fonts/Raleway.woff2") format("woff2");
     font-weight: 100 900;
 }
 
@@ -23,28 +23,26 @@
     border: 1px solid red !important;
 }
 
-.error {
-    width: 100%;
-    background-color: rgb(159, 29, 29);
-    font-family: 'Courier New', Courier, monospace;
+.error, .success {
+    font-family: 'Raleway', Courier, monospace;
     font-size: 18px;
-    border: 3px solid rgb(250, 75, 75);
+    font-weight: bold;
     color: white;
     padding: 10px;
     box-sizing: border-box;
     transition: opacity 1s ease;
     cursor: pointer;
+    position: relative;
+}
+
+.error {
+    background-color: rgb(159, 21, 21);
+    border: 5px solid rgb(202, 67, 67);
+    box-shadow: 0px 0px 5px rgb(250, 75, 75);
 }
 
 .success {
-    width: 100%;
-    background-color: rgb(18, 155, 0);
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 18px;
-    border: 3px solid rgb(23, 235, 34);
-    color: white;
-    padding: 10px;
-    box-sizing: border-box;
-    transition: opacity 1s ease;
-    cursor: pointer;
+    background-color: rgb(32, 113, 21);
+    border: 5px solid rgb(63, 169, 69);
+    box-shadow: 0px 0px 5px rgb(23, 235, 34);
 }

@@ -24,15 +24,19 @@ function togglePage(id) {
     pages[id].classList.add("active");
 }
 
+function timerCountdown(timer, progress) {
+    timer.style.width = progress + "%";
+}
+
 function hideDisplayMessages() {
-    let error = document.querySelector(".error");
-    let success = document.querySelector(".success");
+    const error = document.querySelector(".error");
+    const success = document.querySelector(".success");
 
     if (error) {
         error.addEventListener("click", ()=>{
             error.style.opacity = "0";
             setTimeout(() => {
-                document.body.removeChild(error);
+                error.remove();
             }, 1000);
         });
     }
@@ -41,18 +45,9 @@ function hideDisplayMessages() {
         success.addEventListener("click", ()=>{
             success.style.opacity = "0";
             setTimeout(() => {
-                document.body.removeChild(success);
+                success.remove();
             }, 1000);
         });
-    }
-
-    if (success) {
-        setTimeout(() => {
-            success.style.opacity = "0";
-            setTimeout(() => {
-                document.body.removeChild(success);
-            }, 1000);
-        }, 5000);
     }
 }
 
@@ -171,6 +166,7 @@ const toggleButton = document.querySelectorAll('.toggle').forEach(button => {
     button.addEventListener("click", () => {
         button.classList.toggle("on");
         if (button.classList.contains("on")) {
+            console.log("asd")
             fileInput.classList.add("visible");
             fileInput.removeAttribute("disabled");
             fileInput.setAttribute("required", true);
@@ -178,8 +174,10 @@ const toggleButton = document.querySelectorAll('.toggle').forEach(button => {
         else {
             fileInput.classList.remove("visible");
             setTimeout(()=>{
-                fileInput.setAttribute("disabled", true);
-                fileInput.removeAttribute("required");
+                if (!button.classList.contains("on")) {
+                    fileInput.setAttribute("disabled", true);
+                    fileInput.removeAttribute("required");
+                }
             }, 300);
         }
     });

@@ -1,6 +1,7 @@
 // Segédfüggvény egy keresőmező inicializálásához
 function initializeSearch(search) {
     const searchInput = search.querySelector("input");
+    const parentForm = search.closest('form');
     const searchItemsContainer = search.closest(".section-body").querySelector('.items');
     const searchType = search.dataset.searchType; // Pl. 'category' vagy 'user'
     const searchConfig = {
@@ -8,7 +9,15 @@ function initializeSearch(search) {
             template: (item) => `
                 <img src='${item.thumbnail_image_horizontal_uri}'><div><b>${item.name}</b> - 
                 ${(item.type === "category") ? "Főkategória" : `Alkategória <i>(${item.parent_category})</i>`}</div>`,
-            clickHandler: (item) => itemClickHandler(item, ["id", "type", "name"])
+            clickHandler: (item) => itemClickHandler(item, ["id", "type", "name"], {
+                fields: [
+                    { field: "name", value: item.name },
+                    { field: "subname", value: item.subname },
+                    { field: "description", value: item.description },
+                    { field: "type", value: item.parent_category ? "sub" : "main" },
+                    { field: "parent_category", value: item.parent_category ? item.parent_category : null }
+                ]
+            })
         },
         user: {
             template: (user) => `
@@ -92,12 +101,26 @@ function initializeSearch(search) {
         }
     }
     // A keresési találatra történő kattintás kezelése
-    function itemClickHandler(item, fields) {
+    function itemClickHandler(item, fields, outputData = {}) { // Módosításkor a kitöltendő mezők az outputData alapján töltődnek ki
 
         fields.forEach(field => {
             const input = search.querySelector(`input[name=${searchType}_${field}]`);
             if (input) input.value = item[field];
         });
+
+        if (outputData.fields) {
+            outputData.fields.forEach(({ field, value }) => {
+                const input = parentForm.querySelector(`[name=${field}]`);
+                if (input) {
+                    if (value) {
+                        console.log(input, value, input.value)
+                        input.value = value;
+                        
+                        input.dispatchEvent(new Event('change'));
+                    }
+                }
+            });
+        }
 
         searchInput.value = item.name;
         toggleDropdown(false);
