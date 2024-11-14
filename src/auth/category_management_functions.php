@@ -8,8 +8,6 @@ function createCategory($categoryData) {
         return "Hiba merült fel a feltöltés során.";
     }
 
-    $db = createConnection();
-    
     $categoryType = $categoryData['type'];
     unset($categoryData['type']);
 
@@ -85,7 +83,6 @@ function uploadCategoryData($categoryData, $categoryType) {
     return updateData($query, $values);
 }
 
-
 function removeCategory($categoryData) {
     include_once 'init.php';
 
@@ -141,5 +138,43 @@ function removeCategoryDirectory($categoryData) {
     $successfulDelete = deleteFolder($categoryDirURI);
 
     return $successfulDelete;
+}
+
+function updateCategoryDirectory($categoryData, $categoryType, $images) {
+    return true;
+}
+
+function updateCategory($categoryData) {
+    include_once "init.php";
+    var_dump($categoryData);
+
+    if (hasUploadError()) {
+        return "Hiba merült fel a feltöltés során.";
+    }
+
+    $categoryType = $categoryData['type'];
+    unset($categoryData['type']);
+
+    $modifiedColumns = array();
+    $images = array();
+
+    if (isset($_FILES['thumbnail_video'])) {
+        array_push($images, 'thumbnail_image_vertical');
+        array_push($modifiedColumns, 'thumbnail_image_vertical');
+    }
+    if (isset($_FILES['thumbnail_video'])) {
+        array_push($images, 'thumbnail_image_horizontal');
+        array_push($modifiedColumns, 'thumbnail_image_horizontal');
+    }
+    if (isset($_FILES['thumbnail_video'])) {
+        array_push($images, 'thumbnail_video');
+        array_push($modifiedColumns, 'thumbnail_video');
+    }
+
+    $paths = updateCategoryDirectory($categoryData, $categoryType, $images);
+    if (!is_array($paths)) return $paths;
+    if (hasError($paths)) return false;
+
+    return true;
 }
 ?>

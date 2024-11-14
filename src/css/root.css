@@ -33,6 +33,7 @@
     transition: opacity 1s ease;
     cursor: pointer;
     position: relative;
+    margin-top: 1rem;
 }
 
 .error {

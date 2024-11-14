@@ -4,20 +4,27 @@ function initializeSearch(search) {
     const parentForm = search.closest('form');
     const searchItemsContainer = search.closest(".section-body").querySelector('.items');
     const searchType = search.dataset.searchType; // Pl. 'category' vagy 'user'
+    const autofill = search.dataset.autofillFields ?? null;
     const searchConfig = {
         category: {
+            autofillFields: ["name", "subname", "description", "type", "parent_category"],
             template: (item) => `
                 <img src='${item.thumbnail_image_horizontal_uri}'><div><b>${item.name}</b> - 
                 ${(item.type === "category") ? "Főkategória" : `Alkategória <i>(${item.parent_category})</i>`}</div>`,
-            clickHandler: (item) => itemClickHandler(item, ["id", "type", "name"], {
-                fields: [
-                    { field: "name", value: item.name },
-                    { field: "subname", value: item.subname },
-                    { field: "description", value: item.description },
-                    { field: "type", value: item.parent_category ? "sub" : "main" },
-                    { field: "parent_category", value: item.parent_category ? item.parent_category : null }
-                ]
-            })
+            clickHandler: (item) => {
+                if (!autofill) {
+                    itemClickHandler(item, ["id", "type", "name"]);
+                }
+                else {
+                    itemClickHandler(item, ["id", "type", "name"], { fields: [
+                        { field: "name", value: item.name },
+                        { field: "subname", value: item.subname },
+                        { field: "description", value: item.description },
+                        { field: "type", value: item.parent_category ? "sub" : "main" },
+                        { field: "parent_category", value: item.parent_category ? item.parent_category : null }
+                    ]});
+                }
+            }
         },
         user: {
             template: (user) => `
@@ -102,7 +109,6 @@ function initializeSearch(search) {
     }
     // A keresési találatra történő kattintás kezelése
     function itemClickHandler(item, fields, outputData = {}) { // Módosításkor a kitöltendő mezők az outputData alapján töltődnek ki
-
         fields.forEach(field => {
             const input = search.querySelector(`input[name=${searchType}_${field}]`);
             if (input) input.value = item[field];
@@ -113,7 +119,6 @@ function initializeSearch(search) {
                 const input = parentForm.querySelector(`[name=${field}]`);
                 if (input) {
                     if (value) {
-                        console.log(input, value, input.value)
                         input.value = value;
                         
                         input.dispatchEvent(new Event('change'));
@@ -127,7 +132,7 @@ function initializeSearch(search) {
         validateSearchInput();
         if (item.role) {
             disableRoleOption(item.role);
-            selectFirstValidOption();
+            selectFirstValidOption(search.closest('.input-grid').querySelector("select"));
             enableDisabledInputs();
         }
     }
@@ -140,9 +145,11 @@ function initializeSearch(search) {
         currentRoleOption.setAttribute('disabled', true);
     }
 
-    function selectFirstValidOption() {
-        search.closest('.input-grid').querySelector('option:checked').removeAttribute("selected");
-        search.closest('.input-grid').querySelector('option:enabled').setAttribute('selected', true);
+    function selectFirstValidOption(element) {
+        if (element.value) {
+            element.querySelector('option:checked').selected = false;
+        }
+        element.querySelector('option:enabled').selected = true;
     }
     
     // A rejtett mezők értékének visszaállítása
@@ -173,6 +180,24 @@ function initializeSearch(search) {
         }
     });
 
+    function clearAutofillFields() {
+        const fields = searchConfig[searchType].autofillFields;
+        for (let field of fields) {
+            let element = parentForm.querySelector(`[name=${field}]`);
+            if (element) {
+                
+                if (element.nodeName == "SELECT") {
+                    selectFirstValidOption(element);
+                    element.dispatchEvent(new Event("change"));
+                }
+                else if (element.value != "") {
+                    element.value = "";
+                }
+                
+            }
+        }
+    }
+
     // A képernyő átméretezésekor a legördülő menű pozícióját frissítjük
     window.addEventListener("resize", positionDropdown);
     window.addEventListener("load", validateSearchInput);
@@ -190,6 +215,7 @@ function initializeSearch(search) {
         positionDropdown();
         await searchHandler();
         validateSearchInput();
+        if (autofill && !searchInput.checkValidity()) clearAutofillFields();
     });
 }
 

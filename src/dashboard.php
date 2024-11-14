@@ -340,7 +340,7 @@
                     <form method="POST" data-needs-confirm="true" data-confirm-message="A kategória módosítása nem visszavonható művelet!">
                         <div class="input-grid">
                             <div class="search-wrapper">
-                                <div class="search" data-search-type="category" data-id-input="category_id_modify" data-type-input="category_type_modify">
+                                <div class="search" data-autofill-fields="true" data-search-type="category" data-id-input="category_id_modify" data-type-input="category_type_modify">
                                     <input type="text" name="category_name" id="category_name_modify_search" placeholder="Kategória keresése" required autocomplete="off">
                                     <label for="category_name_modify_search" class="search-button">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -581,7 +581,7 @@
                                 </div>
                             </div>
                             <div class="form-submit-wrapper">
-                                <input type="submit" value="Módosítás" class="form-submit-primary" name='create_category'>
+                                <input type="submit" value="Módosítás" class="form-submit-primary" name='modify_category'>
                             </div>
                         </div>
                     </form>
@@ -1168,18 +1168,19 @@
                 $categoryData['parent_category_id'] = $_POST['parent_category_id'];
             }
 
-            $successfulOperation = createCategory($categoryData);
+            $result = createCategory($categoryData);
 
-            if (is_numeric($successfulOperation)) {
+            if (is_numeric($result)) {
                 echo "<div class='success'>Kategória sikeresen létrehozva!</div></div>";
             }
             else {
-                echo "<div class='error'>A kategória létrehozása sikertelen! $successfulOperation</div></div>";
+                echo "<div class='error'>A kategória létrehozása sikertelen! $result</div></div>";
             }
         }
 
         // Kategória törlése
         if (isset($_POST['delete_category'])) {
+
             if ($_POST['category_type'] == 'null' || $_POST['category_id'] == 'null') {
                 echo "<div class='error'>A kategória törlése sikertelen! Ez a kategória nem létezik!</div></div>"; 
             }
@@ -1189,19 +1190,39 @@
                     "type" => $_POST['category_type'],
                     "id" => $_POST['category_id']
                 );
-                $successfulOperation = removeCategory($categoryData);
+                $result = removeCategory($categoryData);
 
-                if ($successfulOperation === true) {
+                if ($result === true) {
                     echo "<div class='success'>A kategória sikeresen törölve.</div></div>";
                 }
                 else {
-                    echo "<div class='error'>A kategória törlése sikertelen! $successfulOperation</div></div>";
+                    echo "<div class='error'>A kategória törlése sikertelen! $result</div></div>";
                 }
             }
         }
 
+        // Kategória módosítása
         if (isset($_POST['modify_category'])) {
 
+            $categoryData = array(
+                "name" => $_POST['category_name'],
+                "subname" => $_POST['subname'],
+                "type" => $_POST['type'],
+                "description" => $_POST['description']);
+
+            if (isset($_POST['parent_category'])) {
+                $categoryData['parent_category'] = $_POST['parent_category'];
+                $categoryData['parent_category_id'] = $_POST['parent_category_id'];
+            }
+
+            $result = updateCategory($categoryData);
+
+            if ($result === true) {
+                echo "<div class='success'>A kategória sikeresen módosítva.</div></div>";
+            }
+            else {
+                echo "<div class='error'>A kategória módosítása sikertelen! $result</div></div>";
+            }
         }
 
         // Termék létrehozása
@@ -1215,13 +1236,13 @@
 
             $tags = $_POST['tags'];
 
-            $successfulOperation = createProduct($productData, $tags);
+            $result = createProduct($productData, $tags);
 
-            if ($successfulOperation === true) {
+            if ($result === true) {
                 echo "<div class='success'>Termék sikeresen létrehozva!</div></div>";
             }
             else {
-                echo "<div class='error'>A termék létrehozása sikertelen! $successfulOperation</div></div>";
+                echo "<div class='error'>A termék létrehozása sikertelen! $result</div></div>";
             }
         }
 
@@ -1247,12 +1268,12 @@
                 "subcategory" => $_POST['subcategory'],
             );
 
-            $successfulOperation = createProductPage($productData, $productPageData, $productCategoryData);
-            if ($successfulOperation === true) {
+            $result = createProductPage($productData, $productPageData, $productCategoryData);
+            if ($result === true) {
                 echo "<div class='success'>Termék oldal sikeresen létrehozva!</div>";
             }
             else {
-                echo "<div class='error'>A termék oldal létrehozása sikertelen! $successfulOperation</div>";
+                echo "<div class='error'>A termék oldal létrehozása sikertelen! $result</div>";
             }
         }
 
@@ -1263,13 +1284,13 @@
                 "name" => $_POST['product_name']
             );
 
-            $successfulOperation = removeProduct($productData);
+            $result = removeProduct($productData);
 
-            if ($successfulOperation === true) {
+            if ($result === true) {
                 echo "<div class='success'>A termék sikeresen törölve.</div>";
             }
             else {
-                echo "<div class='error'>A termék törlése sikertelen! $successfulOperation</div>";
+                echo "<div class='error'>A termék törlése sikertelen! $result</div>";
             }
         }
         
