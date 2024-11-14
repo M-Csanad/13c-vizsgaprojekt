@@ -10,6 +10,14 @@ body {
     padding: 50px;
 }
 
+
+.page-title {
+    width: 100%;
+
+    font-size: 50px;
+    font-weight: bold;
+}
+
 .popup {
     position: fixed;
     top: 0;
@@ -142,13 +150,6 @@ body {
 
 .back-link:active {
     letter-spacing: 0.5px;
-}
-
-.page-title {
-    width: 100%;
-
-    font-size: 50px;
-    font-weight: bold;
 }
 
 .pages {
@@ -468,6 +469,7 @@ section {
     .inline-input.has-toggle > .input-content:has(input.visible) > .input-container {
         transform: translateY(0%);
         opacity: 1;
+        z-index: 1;
     }
 
     .inline-input > .input-content > div > input, .inline-input > .input-content > div > select {

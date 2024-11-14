@@ -1154,7 +1154,6 @@
         </div>
     </div>
     <?php
-        echo "<div class='success'>Termék sikeresen létrehozva!</div></div>";
         // Kategória létrehozása
         if (isset($_POST['create_category'])) {
 

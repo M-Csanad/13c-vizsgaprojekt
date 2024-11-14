@@ -14,7 +14,6 @@ if ($searchTerm) {
                            LEFT JOIN product_image ON product.id = product_image.product_id 
                            LEFT JOIN image ON product_image.image_id = image.id 
                            WHERE product.name LIKE ? 
-                           AND image.orientation = 'horizontal' 
                            AND image.media_type = 'image'
                            GROUP BY product.id;", 
                            [$searchTerm]);
