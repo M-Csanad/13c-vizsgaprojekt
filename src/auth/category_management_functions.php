@@ -141,7 +141,17 @@ function removeCategoryDirectory($categoryData) {
 }
 
 function updateCategoryDirectory($categoryData, $categoryType, $images) {
-    return true;
+    $baseDirectory = './images/categories/'.($categoryType === 'sub' ? format_str($categoryData['parent_category']) . "/" : "");
+    $categoryDirURI = $baseDirectory . format_str($categoryData['name'])."/";
+    
+    $paths = array();
+
+    foreach ($images as $image) {
+        $imagePath = $categoryDirURI.$image;
+    }
+
+    var_dump($images);
+    return $paths;
 }
 
 function updateCategory($categoryData) {
@@ -171,9 +181,14 @@ function updateCategory($categoryData) {
         array_push($modifiedColumns, 'thumbnail_video');
     }
 
-    $paths = updateCategoryDirectory($categoryData, $categoryType, $images);
-    if (!is_array($paths)) return $paths;
-    if (hasError($paths)) return false;
+    if (count($images) > 0) {
+        $paths = updateCategoryDirectory($categoryData, $categoryType, $images);
+        if (!is_array($paths)) return $paths;
+        if (hasError($paths)) return false;
+    }
+    else {
+        echo "No iamg";
+    }
 
     return true;
 }

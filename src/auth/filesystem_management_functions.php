@@ -70,6 +70,18 @@ function moveFile($tmp, $name, $basename, $dir) {
     return $filePath;
 }
 
+function replaceFile($fileURI, $tmp, $name, $basename) {
+    $dirURI = pathinfo($fileURI, PATHINFO_DIRNAME);
+    var_dump($name, $tmp, $basename, $dirURI);
+
+    // if (is_file($fileURI)) {
+    //     unlink($fileURI);
+    //     if (moveFile($tmp, $name, $basename, $dirURI)) return $fileURI;
+    //     else return false;
+    // }
+    // else return false;
+}
+
 function hasError($paths) {
     return count(array_filter($paths, function ($e) {return $e === false; })) > 0;
 }

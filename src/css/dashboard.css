@@ -478,7 +478,7 @@ section {
         flex-grow: 1;
         outline: none;
         border: none;
-        padding-left: 5px;
+        padding-inline: 5px;
         background-color: #eaeaea;
         border-bottom: 3px solid black; 
         font-size: 16px;
