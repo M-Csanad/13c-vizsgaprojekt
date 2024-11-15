@@ -1,0 +1,1590 @@
+/* Kis képernyőjű mobilok */
+@media (max-width: 320px) {
+  /* Stílusok kis képernyőjű mobilokhoz */
+
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+  .videoContent_scrollable .videoContent_card-content {
+    width: 60vw;
+    margin: 25vh 0;
+  }
+  .videoContent_scrollable .videoContent_card-content img {
+    width: 90vw;
+  }
+}
+
+/* Átlagos mobilok */
+@media (max-width: 480px) {
+  /* Stílusok átlagos mobilokhoz */
+
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+  .videoContent_scrollable .videoContent_card-content {
+    width: 60vw;
+    margin: 25vh 0;
+  }
+  .videoContent_scrollable .videoContent_card-content img {
+    width: 90vw;
+  }
+
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+  .bg_slider-thumbs {
+    width: 90%;
+    transform: translateY(80%) !important;
+  }
+  .bg_slider-thumbs .thumbs-container {
+    height: auto;
+  }
+
+  .bg_slider-thumbs .swiper-slide .contentImg {
+    display: none;
+  }
+
+  .bg_slider-thumbs .swiper-slide .circleImg {
+    height: 60px !important;
+    width: 60px !important;
+  }
+  .bg_slider-thumbs .swiper-slide img {
+    max-width: calc(24vw + 1.7vh);
+    cursor: pointer;
+  }
+  .swiper-slide .img-wrapper .content_wrapper {
+    top: 8% !important;
+  }
+
+  .swiper-slide .img-wrapper .text-main h1 {
+    font-size: clamp(1.5rem, calc(2.1rem + 1.39vw), 3.8rem) !important;
+    letter-spacing: clamp(
+      calc(3px * 5 / 1),
+      0.1em,
+      calc(3.5px * 5 / 1)
+    ) !important;
+    line-height: clamp(0.8, 1, 1.2);
+  }
+  .swiper-slide .img-wrapper .text-overlay {
+    width: 80vw;
+  }
+  /* Halo styling */
+  .bg_slider-thumbs .halo {
+    display: none !important;
+  }
+
+  .bg_slider-thumbs .halo .point {
+    display: none !important;
+  }
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  #brand-philosophy {
+    padding: 0;
+  }
+  .brand-philosophy_wrapper {
+    width: 72vw;
+  }
+  #brand-philosophy .brand-philosophy_wrapper p {
+    padding: 12px 0 12px 0;
+  }
+}
+
+/* Nagyobb mobilok */
+@media (max-width: 600px) {
+  /* Stílusok nagyobb mobilokhoz */
+
+  #BGDT01 {
+    display: none;
+    font-size: clamp(3rem, calc(6rem + 0.39vw), 15rem);
+    left: 0rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    display: none;
+    font-size: clamp(2rem, calc(4rem + 0.39vw), 10rem);
+    right: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT03 {
+    display: none;
+    font-size: clamp(3rem, calc(5rem + 0.39vw), 10rem);
+    right: 0rem;
+    transform: translateY(-260%);
+  }
+  #BGDT04 {
+    display: none;
+    font-size: clamp(2rem, calc(4rem + 0.39vw), 10rem);
+    left: 12rem;
+    transform: translateY(-300%);
+  }
+  #brand-philosophy {
+  }
+
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+
+  .videoContent_scrollable .videoContent_card-content {
+    width: 60vw;
+    margin: 25vh 0;
+  }
+  .videoContent_scrollable .videoContent_card-content img {
+    width: 70vw;
+  }
+
+  /*
+ =============================
+    swiper top products
+ =============================
+ */
+  .swiper-slide .swiper-card_wrapper {
+    width: 75vw;
+  }
+
+  .swiper-slide .card-image {
+    display: none;
+    width: 100%;
+    height: 65vh;
+    top: 0;
+    right: 0; /*calc(((.swiper-card_wrapper width - .swiper-card width) / 2) + (.swiper-card width / 1.2 / .card-image width))*/
+  }
+  .swiper-slide .swiper-card {
+    width: auto;
+    height: auto;
+  }
+  .swiper-slide .swiper-card .text-overlay {
+    margin-inline: auto;
+    width: 95%;
+  }
+  .swiper-slide .swiper-card .text-overlay .card-footer .cast img {
+    width: 36px;
+    height: 36px;
+  }
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+  .bg_slider-thumbs {
+    width: 90%;
+    transform: translateY(120%);
+  }
+  .bg_slider-thumbs .thumbs-container {
+    height: auto;
+  }
+  .bg_slider-thumbs .swiper-slide {
+    flex-flow: column !important;
+  }
+
+  .bg_slider-thumbs .swiper-slide .contentImg h2 {
+    display: none;
+  }
+  .bg_slider-thumbs .swiper-slide .contentImg {
+    margin-top: 12px;
+    text-align: center;
+  }
+  .bg_slider-thumbs .swiper-slide .circleImg {
+    height: 80px;
+    width: 80px;
+  }
+  .bg_slider-thumbs .swiper-slide img {
+    max-width: calc(24vw + 1.7vh);
+    cursor: pointer;
+  }
+  .swiper-slide .img-wrapper .text-overlay {
+    width: 80vw;
+  }
+  .swiper-slide .img-wrapper .text-main h1 {
+    font-size: clamp(2.5rem, calc(3.1rem + 1.39vw), 4.8rem);
+    letter-spacing: clamp(calc(7px * 5 / 1), 0.1em, calc(7.5px * 5 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .swiper-slide .img-wrapper .content_wrapper {
+    top: 20%;
+  }
+
+  .swiper-slide .img-wrapper .underline {
+    display: none;
+  }
+
+  .bg_slider .swiper-button-prev:after,
+  .bg_slider .swiper-button-next:after {
+    display: none;
+  }
+  .bg_slider .swiper-button-next,
+  .bg_slider .swiper-button-prev {
+    display: none;
+  }
+
+  /* Halo styling */
+  .bg_slider-thumbs .halo {
+    width: 97px;
+    height: 97px;
+    transform: translate(0%, -10%);
+    margin-inline: auto;
+    left: auto;
+    right: auto;
+  }
+
+  .bg_slider-thumbs .halo .point {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Keyframes halo animation */
+  @keyframes rotatePoint {
+    0% {
+      transform: rotate(0deg) translateX(48px); /* Véletlen kezdőpont */
+    }
+    100% {
+      transform: rotate(360deg) translateX(48px);
+    }
+  }
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  #brand-philosophy {
+    padding: 0;
+    margin: 0 auto 10em auto;
+  }
+  .brand-philosophy_wrapper {
+    width: 72vw;
+  }
+  #brand-philosophy .brand-philosophy_wrapper p {
+    padding: 12px 0 12px 0;
+  }
+
+  #brand-description {
+    margin: 0;
+    padding: 24px;
+    width: 94vw;
+  }
+  #brand-description .brandImages {
+    top: 25%;
+  }
+  #brand-description .brandContent {
+    width: 72vw !important;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  #brand-description .brandContent h1 {
+    top: 0rem;
+    width: auto;
+    white-space: wrap;
+    position: relative;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    padding: 12px 0 12px 0;
+  }
+  #brand-description .brandContent .brandContentParagraph {
+    margin-top: 3.6rem;
+    position: relative;
+
+    width: 100%;
+  }
+  #brand-description .brandImages {
+    display: none !important;
+  }
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 18vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 18vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 18vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 18vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 18vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
+  }
+}
+
+/* Fekvő tájolású tabletek */
+@media (min-width: 601px) and (max-width: 767px) and (orientation: landscape) {
+  /* Stílusok fekvő tájolású tabletekhez */
+
+  #BGDT01 {
+    font-size: clamp(3rem, calc(7rem + 0.39vw), 25rem);
+    left: 0rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    font-size: clamp(5rem, calc(5rem + 0.39vw), 20rem);
+    right: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT03 {
+    font-size: clamp(3rem, calc(6rem + 0.39vw), 20rem);
+    right: 0rem;
+    transform: translateY(-260%);
+  }
+  #BGDT04 {
+    font-size: clamp(5rem, calc(5rem + 0.39vw), 20rem);
+    left: 12rem;
+    transform: translateY(-300%);
+  }
+  #brand-philosophy {
+    margin: 0em auto 18em auto;
+  }
+
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+  .videoContent_scrollable .videoContent_card-content {
+    width: 60vw;
+    margin: 25vh 0;
+  }
+  .videoContent_scrollable .videoContent_card-content img {
+    width: 70vw;
+  }
+  /*
+ =============================
+    swiper top products
+ =============================
+ */
+  .swiper-slide .swiper-card_wrapper {
+    width: 75vw;
+  }
+
+  .swiper-slide .card-image {
+    width: calc(55vw - (1.2rem + 2 * 2.4rem) + 8px);
+    height: 65vh;
+    bottom: calc((1.2rem + 2 * 2.4rem) + 8px);
+    left: calc(
+      ((85vw / 9.6 - 60vw / 2.4) / 2) +
+        (60vw / 1.2 / (55 - (1.2 + 2 * 2.4) + 8))
+    ); /*calc(((.swiper-card_wrapper width - .swiper-card width) / 2) + (.swiper-card width / 1.2 / .card-image width))*/
+  }
+  .swiper-slide .swiper-card {
+    width: auto;
+    height: auto;
+  }
+  .swiper-slide .swiper-card .text-overlay .card-footer .cast img {
+    width: 40px;
+    height: 40px;
+  }
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+
+  .bg_slider-thumbs {
+    width: 90%;
+    transform: translateY(120%);
+  }
+  .bg_slider-thumbs .thumbs-container {
+    height: auto;
+  }
+
+  .bg_slider-thumbs .swiper-slide {
+    flex-flow: column !important;
+  }
+
+  .bg_slider-thumbs .swiper-slide .contentImg h2 {
+    display: none;
+  }
+  .bg_slider-thumbs .swiper-slide .contentImg {
+    text-align: center;
+    margin-top: 12px;
+  }
+  .bg_slider-thumbs .swiper-slide .circleImg {
+    height: 80px;
+    width: 80px;
+  }
+
+  .bg_slider-thumbs .swiper-slide img {
+    max-width: calc(24vw + 1.7vh);
+    cursor: pointer;
+  }
+  .swiper-slide .img-wrapper .text-overlay {
+    width: 60vw;
+  }
+  .swiper-slide .img-wrapper .text-main h1 {
+    font-size: clamp(2.5rem, calc(4.1rem + 1.39vw), 6.2rem);
+    letter-spacing: clamp(calc(7px * 5 / 1), 0.1em, calc(7.5px * 5 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .swiper-slide .img-wrapper .content_wrapper {
+    top: 20%;
+  }
+
+  .swiper-slide .img-wrapper .underline {
+    display: none;
+  }
+
+  .bg_slider .swiper-button-prev:after,
+  .bg_slider .swiper-button-next:after {
+    font-size: 2rem;
+  }
+  .bg_slider .swiper-button-next,
+  .bg_slider .swiper-button-prev {
+    width: 55px;
+    height: 55px;
+  }
+
+  .bg_slider .swiper-button-next {
+    right: 15%;
+    top: 55%;
+  }
+
+  .bg_slider .swiper-button-prev {
+    right: 15%;
+    top: 65%;
+  }
+  /* Halo styling */
+  .bg_slider-thumbs .halo {
+    width: 97px;
+    height: 97px;
+    transform: translate(0%, -10%);
+    margin-inline: auto;
+    left: auto;
+    right: auto;
+  }
+
+  .bg_slider-thumbs .halo .point {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Keyframes halo animation */
+  @keyframes rotatePoint {
+    0% {
+      transform: rotate(0deg) translateX(48px); /* Véletlen kezdőpont */
+    }
+    100% {
+      transform: rotate(360deg) translateX(48px);
+    }
+  }
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 50vw;
+  }
+  #brand-description .brandImages {
+    top: 25%;
+  }
+  #brand-description .brandContent h1 {
+    top: 0rem;
+    width: auto;
+    white-space: wrap;
+    position: relative;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    padding: 12px 0 12px 0;
+  }
+  #brand-description .brandContent .brandContentParagraph {
+    margin-top: auto;
+    margin-bottom: auto;
+    position: relative;
+
+    width: 100%;
+  }
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
+
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 24vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
+  }
+}
+
+/* Álló tájolású tabletek */
+@media (min-width: 601px) and (max-width: 767px) and (orientation: portrait) {
+  /* Stílusok álló tájolású tabletekhez */
+
+  #BGDT01 {
+    font-size: clamp(5rem, calc(10rem + 0.39vw), 25rem);
+    left: 0rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    right: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT03 {
+    font-size: clamp(5rem, calc(7rem + 0.39vw), 20rem);
+    right: 2rem;
+    transform: translateY(-260%);
+  }
+  #BGDT04 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    left: 12rem;
+    transform: translateY(-300%);
+  }
+  #brand-philosophy {
+    margin: 28em auto 18em auto;
+  }
+
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+  .videoContent_scrollable .videoContent_card-content {
+    width: 60vw;
+    margin: 25vh 0;
+  }
+  .videoContent_scrollable .videoContent_card-content img {
+    width: 70vw;
+  }
+  /*
+ =============================
+    swiper top products
+ =============================
+ */
+  .swiper-slide .swiper-card_wrapper {
+    width: 75vw;
+  }
+
+  .swiper-slide .card-image {
+    width: calc(55vw - (1.2rem + 2 * 2.4rem) + 8px);
+    height: 65vh;
+    bottom: calc((1.2rem + 2 * 2.4rem) + 8px);
+    left: calc(
+      ((85vw / 9.6 - 60vw / 2.4) / 2) +
+        (60vw / 1.2 / (55 - (1.2 + 2 * 2.4) + 8))
+    ); /*calc(((.swiper-card_wrapper width - .swiper-card width) / 2) + (.swiper-card width / 1.2 / .card-image width))*/
+  }
+  .swiper-slide .swiper-card {
+    width: auto;
+    height: 65vh;
+  }
+
+  .swiper-slide .swiper-card .text-overlay .card-footer .cast img {
+    width: 40px;
+    height: 40px;
+  }
+
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+
+  .bg_slider-thumbs {
+    width: 90%;
+    transform: translateY(120%);
+  }
+  .bg_slider-thumbs .thumbs-container {
+    height: auto;
+  }
+
+  .bg_slider-thumbs .swiper-slide {
+    flex-flow: column !important;
+  }
+
+  .bg_slider-thumbs .swiper-slide .contentImg h2 {
+    display: none;
+  }
+  .bg_slider-thumbs .swiper-slide .contentImg {
+    text-align: center;
+    margin-top: 12px;
+  }
+  .bg_slider-thumbs .swiper-slide .circleImg {
+    height: 80px;
+    width: 80px;
+  }
+
+  .bg_slider-thumbs .swiper-slide img {
+    max-width: calc(24vw + 1.7vh);
+    cursor: pointer;
+  }
+  .swiper-slide .img-wrapper .text-overlay {
+    width: 60vw;
+  }
+  .swiper-slide .img-wrapper .text-main h1 {
+    font-size: clamp(2.5rem, calc(4.1rem + 1.39vw), 6.2rem);
+    letter-spacing: clamp(calc(7px * 5 / 1), 0.1em, calc(7.5px * 5 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+  }
+  .swiper-slide .img-wrapper .content_wrapper {
+    top: 20%;
+  }
+
+  .bg_slider .swiper-button-prev:after,
+  .bg_slider .swiper-button-next:after {
+    font-size: 2rem;
+  }
+  .bg_slider .swiper-button-next,
+  .bg_slider .swiper-button-prev {
+    width: 55px;
+    height: 55px;
+  }
+
+  .bg_slider .swiper-button-next {
+    right: 15%;
+    top: 55%;
+  }
+
+  .bg_slider .swiper-button-prev {
+    right: 15%;
+    top: 65%;
+  }
+
+  .swiper-slide .img-wrapper .underline {
+    display: none;
+  }
+
+  /* Halo styling */
+  .bg_slider-thumbs .halo {
+    width: 97px;
+    height: 97px;
+    transform: translate(0%, -10%);
+    margin-inline: auto;
+    left: auto;
+    right: auto;
+  }
+
+  .bg_slider-thumbs .halo .point {
+    width: 8px;
+    height: 8px;
+  }
+
+  /* Keyframes halo animation */
+  @keyframes rotatePoint {
+    0% {
+      transform: rotate(0deg) translateX(48px); /* Véletlen kezdőpont */
+    }
+    100% {
+      transform: rotate(360deg) translateX(48px);
+    }
+  }
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 50vw;
+  }
+  #brand-description .brandImages {
+    top: 25%;
+  }
+  #brand-description .brandContent h1 {
+    top: 0rem;
+    width: auto;
+    white-space: wrap;
+    position: relative;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+    padding: 12px 0 12px 0;
+  }
+  #brand-description .brandContent .brandContentParagraph {
+    margin-top: auto;
+    margin-bottom: auto;
+    position: relative;
+
+    width: 100%;
+  }
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 24vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
+  }
+}
+
+/* Fekvő tájolású tabletek */
+@media (min-width: 767px) and (max-width: 1024px) and (orientation: landscape) {
+  /* Stílusok fekvő tájolású tabletekhez */
+
+  #BGDT01 {
+    font-size: clamp(5rem, calc(10rem + 0.39vw), 25rem);
+    left: 0rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    right: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT03 {
+    font-size: clamp(5rem, calc(7rem + 0.39vw), 20rem);
+    right: 2rem;
+    transform: translateY(-260%);
+  }
+  #BGDT04 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    left: 12rem;
+    transform: translateY(-300%);
+  }
+  #brand-philosophy {
+    margin: 28em auto 18em auto;
+  }
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+  .videoContent_scrollable .videoContent_card-content {
+    width: 60vw;
+    margin: 25vh 0;
+  }
+  .videoContent_scrollable .videoContent_card-content img {
+    width: 60vw;
+  }
+
+  /*
+ =============================
+    swiper top products
+ =============================
+ */
+  .swiper-slide .swiper-card_wrapper {
+    width: 75vw;
+  }
+
+  .swiper-slide .card-image {
+    width: calc(34vw - (1.2rem + 2 * 2.4rem) + 8px);
+    height: 65vh;
+    bottom: calc((1.2rem + 2 * 2.4rem) + 8px);
+    left: calc(
+      ((75vw - 60vw) / 2) + (60vw / 1.2 / (34 - (1.2 + 2 * 2.4) + 8))
+    ); /*calc(((.swiper-card_wrapper width - .swiper-card width) / 2) + (.swiper-card width / 1.2 / .card-image width))*/
+  }
+  .swiper-slide .swiper-card {
+    width: 60vw;
+    height: 65vh;
+  }
+
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+  .bg_slider-thumbs {
+    transform: translateY(120%);
+  }
+
+  .bg_slider-thumbs .swiper-slide img {
+    max-width: calc(24vw + 1.7vh);
+    cursor: pointer;
+  }
+  .swiper-slide .img-wrapper .text-overlay {
+    width: 50vw;
+  }
+
+  .bg_slider .swiper-button-next,
+  .bg_slider .swiper-button-prev {
+    top: none;
+  }
+  .bg_slider .swiper-button-next {
+    right: 15%;
+  }
+
+  .bg_slider .swiper-button-prev {
+    right: 30%;
+  }
+
+  .swiper-slide .img-wrapper .underline {
+    display: none;
+  }
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 50vw;
+  }
+  #brand-description .brandImages {
+    top: 25%;
+    margin-right: 7rem;
+  }
+  #brand-description .brandContent h1 {
+    top: 0rem;
+    width: auto;
+    white-space: wrap;
+    position: relative;
+    padding: 12px 0 12px 0;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+  }
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 24vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
+  }
+}
+
+/* Álló tájolású tabletek */
+@media (min-width: 767px) and (max-width: 1024px) and (orientation: portrait) {
+  /* Stílusok fekvő tájolású tabletekhez */
+
+  #BGDT01 {
+    font-size: clamp(5rem, calc(10rem + 0.39vw), 25rem);
+    left: 3rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    right: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT03 {
+    font-size: clamp(5rem, calc(7rem + 0.39vw), 20rem);
+    right: 2rem;
+    transform: translateY(-260%);
+  }
+  #BGDT04 {
+    font-size: clamp(8rem, calc(6rem + 0.39vw), 20rem);
+    left: 12rem;
+    transform: translateY(-300%);
+  }
+  #brand-philosophy {
+    margin: 28em auto 18em auto;
+  }
+
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+  .videoContent_scrollable .videoContent_card-content {
+    width: 60vw;
+    margin: 25vh 0;
+  }
+  .videoContent_scrollable .videoContent_card-content img {
+    width: 60vw;
+  }
+
+  /*
+ =============================
+    swiper top products
+ =============================
+ */
+  .swiper-slide .swiper-card_wrapper {
+    width: 75vw;
+  }
+
+  .swiper-slide .card-image {
+    width: calc(34vw - (1.2rem + 2 * 2.4rem) + 8px);
+    height: 65vh;
+    bottom: calc((1.2rem + 2 * 2.4rem) + 8px);
+    left: calc(
+      ((75vw - 60vw) / 2) + (60vw / 1.2 / (34 - (1.2 + 2 * 2.4) + 8))
+    ); /*calc(((.swiper-card_wrapper width - .swiper-card width) / 2) + (.swiper-card width / 1.2 / .card-image width))*/
+  }
+  .swiper-slide .swiper-card {
+    width: 60vw;
+    height: 65vh;
+  }
+
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+  .bg_slider-thumbs {
+    transform: translateY(120%);
+  }
+  .bg_slider-thumbs .swiper-slide img {
+    max-width: calc(24vw + 1.7vh);
+    cursor: pointer;
+  }
+  .swiper-slide .img-wrapper .text-overlay {
+    width: 50vw;
+  }
+
+  .bg_slider .swiper-button-next {
+    right: 15%;
+  }
+
+  .bg_slider .swiper-button-prev {
+    right: 30%;
+  }
+
+  .swiper-slide .img-wrapper .underline {
+    display: none;
+  }
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 50vw;
+  }
+  #brand-description .brandImages {
+    top: 25%;
+  }
+  #brand-description .brandContent h1 {
+    top: 0rem;
+    width: auto;
+    white-space: wrap;
+    position: relative;
+    padding: 12px 0 12px 0;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+  }
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 24vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
+  }
+}
+
+/* Kisebb laptopok */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  /* Stílusok kisebb laptopokhoz */
+
+  #BGDT01 {
+    font-size: clamp(10rem, calc(14rem + 0.39vw), 25rem);
+    left: 5rem;
+    transform: translateY(100%);
+  }
+  #BGDT02 {
+    font-size: clamp(8rem, calc(7rem + 0.39vw), 20rem);
+    right: 5rem;
+    transform: translateY(130%);
+  }
+  #BGDT03 {
+    font-size: clamp(10rem, calc(9rem + 0.39vw), 20rem);
+    right: 2rem;
+    transform: translateY(-280%);
+  }
+  #BGDT04 {
+    font-size: clamp(8rem, calc(7rem + 0.39vw), 20rem);
+    left: 12rem;
+    transform: translateY(-350%);
+  }
+
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+  .videoContent_scrollable .videoContent_card-content {
+    width: 45vw;
+    margin: 25vh 0;
+  }
+  .videoContent_scrollable .videoContent_card-content img {
+    width: 60vw;
+  }
+
+  /*
+ =============================
+    swiper top products
+ =============================
+ */
+
+  .swiper-slide .swiper-card_wrapper {
+    width: 75vw;
+  }
+
+  .swiper-slide .card-image {
+    width: calc(34vw - (1.2rem + 2 * 2.4rem) + 8px);
+    height: 55vh;
+    bottom: calc((1.2rem + 2 * 2.4rem) + 8px);
+    left: calc(
+      ((75vw - 60vw) / 2) + (60vw / 1.2 / (34 - (1.2 + 2 * 2.4) + 8))
+    ); /*calc(((.swiper-card_wrapper width - .swiper-card width) / 2) + (.swiper-card width / 1.2 / .card-image width))*/
+  }
+  .swiper-slide .swiper-card {
+    width: 60vw;
+    height: 45vh;
+  }
+
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+  .swiper-slide .img-wrapper {
+    height: auto;
+  }
+
+  .bg_slider-thumbs .swiper-slide img {
+    max-width: 18vw;
+    cursor: pointer;
+  }
+  .bg_slider .swiper-button-next,
+  .bg_slider .swiper-button-prev {
+    top: 70%;
+  }
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 50vw;
+  }
+  #brand-description .brandContent h1 {
+    top: 0rem;
+    white-space: wrap;
+    position: relative;
+    padding: 12px 0 12px 0;
+    font-size: clamp(1.15rem, calc(1.8rem + 0.39vw), 3.1rem);
+  }
+  #brand-description .brandContent .brandContentParagraph {
+    margin-top: 0;
+    margin-bottom: 0;
+    width: 80%;
+    padding: 0 8px;
+  }
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
+  /*
+ =============================
+    képgaléria - kategória
+ =============================
+ */
+
+  .ImgGallery_container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    justify-content: center;
+    width: 96vw;
+    height: auto;
+    margin-inline: auto;
+    margin-top: 12rem;
+    padding: 12px;
+  }
+  .ImgGallery_container .media_box:nth-child(5n + 1) {
+    grid-column: auto;
+    grid-row: span 1; /* Első kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 2) {
+    grid-column: auto;
+    grid-row: span 1; /* Második kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 3) {
+    grid-column: auto;
+    grid-row: span 1; /* Harmadik kép, két sor magas */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 4) {
+    grid-column: auto;
+    grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
+    height: 24vh;
+  }
+
+  .ImgGallery_container .media_box:nth-child(5n + 5) {
+    grid-column: auto;
+    grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
+    height: 24vh;
+  }
+  .ImgGallery_container .caption .title_caption {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 0.6rem;
+    font-weight: 300;
+  }
+
+  .ImgGallery_container .caption .subcontent_caption {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
+    padding: 1.2rem;
+    font-weight: 200;
+  }
+}
+
+/* Átlagos laptopok és kisebb monitorok */
+@media (min-width: 1280px) and (max-width: 1440px) {
+  /* Stílusok átlagos laptopokhoz és kisebb monitorokhoz */
+
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+  .videoContent_scrollable .videoContent_card-content {
+    width: 45vw;
+    margin: 25vh 0;
+  }
+
+  /*
+ =============================
+    swiper top products
+ =============================
+ */
+  .swiper-slide .swiper-card_wrapper {
+    width: 75vw;
+  }
+
+  .swiper-slide .card-image {
+    width: calc(34vw - (1.2rem + 2 * 2.4rem) + 8px);
+    height: 55vh;
+    bottom: calc((1.2rem + 2 * 2.4rem) + 8px);
+    left: calc(
+      ((75vw - 60vw) / 2) + (60vw / 1.2 / (34 - (1.2 + 2 * 2.4) + 8))
+    ); /*calc(((.swiper-card_wrapper width - .swiper-card width) / 2) + (.swiper-card width / 1.2 / .card-image width))*/
+  }
+  .swiper-slide .swiper-card {
+    width: 60vw;
+    height: 45vh;
+  }
+
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+
+  .bg_slider-thumbs .swiper-slide .contentImg {
+    margin-left: 12px;
+  }
+
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  .brand-philosophy_wrapper {
+    width: 48vw;
+  }
+  #brand-description .brandContent h1 {
+    top: 0rem;
+    white-space: wrap;
+    position: relative;
+    padding: 12px 0 12px 0;
+    font-size: clamp(1.15rem, calc(2.1rem + 0.39vw), 3.6rem);
+  }
+
+  .brandImages .brandImages_imgHorizontal img {
+    width: 30vw;
+    transform: translate(-50%, 50%);
+  }
+}
+
+/* Nagy monitorok, mint a te monitorod */
+@media (min-width: 1440px) and (max-width: 2194px) {
+  /* Stílusok nagy monitorokhoz, de kisebb mint 2195px */
+  /*
+ =============================
+    brand philosophy + description
+ =============================
+ */
+  #brand-description .brandContent h1 {
+    top: 0rem;
+    white-space: wrap;
+    padding: 12px 0 12px 0;
+    position: relative;
+    font-size: clamp(1.8rem, calc(2.4rem + 1.39vw), 4rem);
+  }
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+
+  .bg_slider-thumbs .swiper-slide .contentImg {
+    margin-left: 12px;
+  }
+}
+
+/* Még nagyobb monitorok, 2195px és felette */
+@media (min-width: 2194px) and (max-width: 2560px) {
+  /* Stílusok a 2195px - 2560px közötti monitorokhoz, pl. szélesvásznú vagy ívelt monitor */
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+
+  .bg_slider-thumbs .swiper-slide .contentImg {
+    margin-left: 12px;
+  }
+}
+
+/* 4K TV-k és monitorok */
+@media (min-width: 2560px) and (max-width: 3840px) {
+  /* Stílusok 4K TV-khez és monitorokhoz */
+
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+  .videoContent_scrollable p {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(2.5rem, calc(1.2rem + 0.39vw), calc(3.2rem + 0.8vw));
+    letter-spacing: clamp(calc(1px * 5 / 1), 0.1em, calc(1.5px * 5 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+    font-weight: 200;
+    font-style: normal;
+  }
+
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+
+  .bg_slider-thumbs .swiper-slide .contentImg {
+    margin-left: 12px;
+  }
+}
+
+/* 8K TV-k és monitorok */
+@media (min-width: 3840px) and (max-width: 7680px) {
+  /* Stílusok 8K TV-khez és monitorokhoz */
+
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+  .videoContent_scrollable p {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(2.5rem, calc(2.3rem + 0.39vw), calc(4.2rem + 0.8vw));
+    letter-spacing: clamp(calc(1px * 5 / 1), 0.1em, calc(1.5px * 5 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+    font-weight: 200;
+    font-style: normal;
+  }
+
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+
+  .bg_slider-thumbs .swiper-slide .contentImg {
+    margin-left: 12px;
+  }
+}
+
+/* 16K kijelzők */
+@media (min-width: 7680px) {
+  /* Stílusok 16K kijelzőkhöz */
+
+  /*
+ =============================
+    welcome video
+ =============================
+ */
+  .videoContent_scrollable p {
+    font-family: "Poppins", sans-serif;
+    font-size: clamp(2.5rem, calc(2.34rem + 0.66vw), calc(4.8rem + 1.26vw));
+    letter-spacing: clamp(calc(1px * 5 / 1), 0.1em, calc(1.5px * 5 / 1));
+    line-height: clamp(1.2, 1.3, 1.4);
+    font-weight: 200;
+    font-style: normal;
+  }
+
+  /*
+ =============================
+    swiper category chooser
+ =============================
+ */
+
+  .bg_slider-thumbs .swiper-slide .contentImg {
+    margin-left: 12px;
+  }
+}
