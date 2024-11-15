@@ -62,8 +62,7 @@ function moveFile($tmp, $name, $basename, $dir) {
     $extension = pathinfo($name, PATHINFO_EXTENSION);
     
     $filePath = $dir."$basename.".$extension;
-    $successfulOperation = move_uploaded_file($tmp, $filePath);
-    if (!$successfulOperation) {
+    if (!move_uploaded_file($tmp, $filePath)) {
         return false;
     }
     
@@ -71,15 +70,14 @@ function moveFile($tmp, $name, $basename, $dir) {
 }
 
 function replaceFile($fileURI, $tmp, $name, $basename) {
-    $dirURI = pathinfo($fileURI, PATHINFO_DIRNAME);
-    var_dump($name, $tmp, $basename, $dirURI);
+    $dirURI = pathinfo($fileURI, PATHINFO_DIRNAME)."/";
 
-    // if (is_file($fileURI)) {
-    //     unlink($fileURI);
-    //     if (moveFile($tmp, $name, $basename, $dirURI)) return $fileURI;
-    //     else return false;
-    // }
-    // else return false;
+    if (is_file($fileURI)) {
+        unlink($fileURI);
+        if (moveFile($tmp, $name, $basename, $dirURI)) return $fileURI;
+        else return false;
+    }
+    else return false;
 }
 
 function hasError($paths) {

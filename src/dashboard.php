@@ -337,7 +337,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" data-needs-confirm="true" data-confirm-message="A kategória módosítása nem visszavonható művelet!">
+                    <form method="POST" enctype="multipart/form-data" data-needs-confirm="true" data-confirm-message="A kategória módosítása nem visszavonható művelet!">
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-autofill-fields="true" data-search-type="category" data-id-input="category_id_modify" data-type-input="category_type_modify">
