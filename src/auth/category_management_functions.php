@@ -207,8 +207,6 @@ function updateCategory($categoryData) {
         for ($i = 0; $i < count($images); $i++) {
             $categoryData[$images[$i]] = $paths[$i];
         }
-
-        
     }
 
     return true;
