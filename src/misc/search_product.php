@@ -14,9 +14,10 @@ if ($searchTerm) {
                            LEFT JOIN product_image ON product.id = product_image.product_id 
                            LEFT JOIN image ON product_image.image_id = image.id 
                            WHERE product.name LIKE ? 
+                           OR category.name LIKE ? OR subcategory.name LIKE ?
                            AND image.media_type = 'image'
                            GROUP BY product.id;", 
-                           [$searchTerm]);
+                           array_fill(0, 3, $searchTerm));
                            
     echo json_encode($matches, JSON_UNESCAPED_UNICODE);
 }
