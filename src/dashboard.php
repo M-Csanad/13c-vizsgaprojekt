@@ -405,24 +405,6 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="type_modify"><div>Típus</div></label>
-                                <div class="input-content">
-                                    <div class="input-container">
-                                        <select name="type" id="type_modify" required>
-                                            <option value="main">Főkategória</option>
-                                            <option value="sub">Alkategória</option>
-                                        </select>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
-                                            <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
-                                            <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
-                                        </svg>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
-                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="inline-input">
                                 <label for="parent_category_modify"><div>Főkategória</div></label>
                                 <div class="input-content">
                                     <div class="input-container">
@@ -1037,13 +1019,16 @@
                                 <label for="category"><div>Kategória</div></label>
                                 <div class="input-content">
                                     <div class="input-container">
-                                        <select name="category" id="product_category_page_create" required data-table="category"></select>
+                                        <select disabled name="category" id="product_category_page_create" required data-table="category"></select>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
                                             <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
                                             <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
                                         </svg>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
                                             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-ban disabled" viewBox="0 0 16 16">
+                                            <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
                                         </svg>
                                         <input type="hidden" name="category_id" value="0">
                                     </div>
@@ -1053,13 +1038,16 @@
                                 <label for="subcategory"><div>Alkategória</div></label>
                                 <div class="input-content">
                                     <div class="input-container">
-                                        <select name="subcategory" id="product_subcategory" required data-table="subcategory"></select>
+                                        <select disabled name="subcategory" id="product_subcategory" required data-table="subcategory"></select>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2-all valid" viewBox="0 0 16 16">
                                             <path d="M12.354 4.354a.5.5 0 0 0-.708-.708L5 10.293 1.854 7.146a.5.5 0 1 0-.708.708l3.5 3.5a.5.5 0 0 0 .708 0zm-4.208 7-.896-.897.707-.707.543.543 6.646-6.647a.5.5 0 0 1 .708.708l-7 7a.5.5 0 0 1-.708 0"/>
                                             <path d="m5.354 7.146.896.897-.707.707-.897-.896a.5.5 0 1 1 .708-.708"/>
                                         </svg>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
                                             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-ban disabled" viewBox="0 0 16 16">
+                                            <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
                                         </svg>
                                         <input type="hidden" name="subcategory_id" value="0">
                                     </div>
@@ -1165,7 +1153,7 @@
 
             if (isset($_POST['parent_category'])) {
                 $categoryData['parent_category'] = $_POST['parent_category'];
-                $categoryData['parent_category_id'] = $_POST['parent_category_id'];
+                $categoryData['parent_category_id'] = intval($_POST['parent_category_id']);
             }
 
             $result = createCategory($categoryData);
@@ -1188,7 +1176,7 @@
                 $categoryData = array(
                     "name" => $_POST['category_name'],
                     "type" => $_POST['category_type'],
-                    "id" => $_POST['category_id']
+                    "id" => intval($_POST['category_id'])
                 );
                 $result = removeCategory($categoryData);
 
@@ -1205,14 +1193,14 @@
         if (isset($_POST['modify_category'])) {
 
             $categoryData = array(
-                "name" => $_POST['category_name'],
+                "id" => intval($_POST['category_id']),
+                "name" => $_POST['name'],
                 "subname" => $_POST['subname'],
-                "type" => $_POST['type'],
                 "description" => $_POST['description']);
 
             if (isset($_POST['parent_category'])) {
                 $categoryData['parent_category'] = $_POST['parent_category'];
-                $categoryData['parent_category_id'] = $_POST['parent_category_id'];
+                $categoryData['parent_category_id'] = intval($_POST['parent_category_id']);
             }
 
             $result = updateCategory($categoryData);
@@ -1229,8 +1217,8 @@
         if (isset($_POST['create_product'])) {
             $productData = array(
                 "name" => $_POST['product_name'],
-                "unit_price" => $_POST['price'],
-                "stock" => $_POST['stock'],
+                "unit_price" => intval($_POST['price']),
+                "stock" => intval($_POST['stock']),
                 "description" => $_POST['description']
             );
 
@@ -1251,14 +1239,14 @@
             
             $productData = array(
                 "name" => $_POST["product_name"],
-                "id" => $_POST["product_id"]
+                "id" => intval($_POST["product_id"])
             );
 
             $productPageData = array(
                 "product_id" => null, // Termékfeltöltés után lesz beállítva
                 "link_slug" => null, // Létrehozáskor meghatározzuk a kategória és alkategória neveiből
-                "category_id" => $_POST['category_id'],
-                "subcategory_id" => $_POST['subcategory_id'],
+                "category_id" => intval($_POST['category_id']),
+                "subcategory_id" => intval($_POST['subcategory_id']),
                 "page_title" => $_POST['product_name'],
                 "page_content" => $_POST['content']
             );
@@ -1280,7 +1268,7 @@
         //Termék törlése
         if (isset($_POST['delete_product'])) {
             $productData = array(
-                "id" => $_POST['product_id'],
+                "id" => intval($_POST['product_id']),
                 "name" => $_POST['product_name']
             );
 
@@ -1296,7 +1284,7 @@
         
         // Jogosultság változtatása
         if (isset($_POST['modify_role'])) {
-            $userId = $_POST['user_id'];
+            $userId = intval($_POST['user_id']);
             $role = $_POST['role'];
             if (modifyRole($userId, $role) === true) {
                 echo "<div class='success'>Sikeres művelet!</div>";

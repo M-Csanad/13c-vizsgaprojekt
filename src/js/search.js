@@ -2,15 +2,24 @@
 function initializeSearch(search) {
     const searchInput = search.querySelector("input");
     const parentForm = search.closest('form');
+    const inputGrid = search.closest('.input-grid');
     const searchItemsContainer = search.closest(".section-body").querySelector('.items');
     const searchType = search.dataset.searchType; // Pl. 'category' vagy 'user'
     const autofill = search.dataset.autofillFields ?? null;
     const searchConfig = {
         category: {
-            autofillFields: ["name", "subname", "description", "type", "parent_category"],
+            autofillFields: [
+                { name: "name"}, 
+                { name: "subname"}, 
+                { name: "description"}, 
+                { name: "type"}, 
+                { name: "parent_category", disabledByDefault: true}
+            ],
+
             template: (item) => `
                 <img src='${item.thumbnail_image_horizontal_uri}'><div><b>${item.name}</b> - 
                 ${(item.type === "category") ? "Főkategória" : `Alkategória <i>(${item.parent_category})</i>`}</div>`,
+
             clickHandler: (item) => {
                 if (!autofill) {
                     itemClickHandler(item, ["id", "type", "name"]);
@@ -120,7 +129,7 @@ function initializeSearch(search) {
                 if (input) {
                     if (value) {
                         input.value = value;
-                        
+                        if (input.disabled) input.disabled = false;
                         input.dispatchEvent(new Event('change'));
                     }
                 }
@@ -132,17 +141,16 @@ function initializeSearch(search) {
         validateSearchInput();
         if (item.role) {
             disableRoleOption(item.role);
-            selectFirstValidOption(search.closest('.input-grid').querySelector("select"));
+            selectFirstValidOption(inputGrid.querySelector("select"));
             enableDisabledInputs();
         }
     }
 
     function disableRoleOption(role) {
-        let inputGrid = search.closest('.input-grid');
         let currentRoleOption = inputGrid.querySelector(`option[value='${role}']`);
 
-        Array.from(inputGrid.querySelectorAll("option")).forEach((e) => {e.removeAttribute('disabled')});
-        currentRoleOption.setAttribute('disabled', true);
+        Array.from(inputGrid.querySelectorAll("option")).forEach((e) => {e.disabled = false;});
+        currentRoleOption.disabled = true;
     }
 
     function selectFirstValidOption(element) {
@@ -164,8 +172,30 @@ function initializeSearch(search) {
     }
 
     function enableDisabledInputs() {
-        let disabledInputs = search.closest('.input-grid').querySelectorAll("input:disabled, select:disabled");
-        Array.from(disabledInputs).forEach((input)=>{input.removeAttribute("disabled")});
+        const disabledInputs = inputGrid.querySelectorAll("input:disabled, select:disabled");
+        disabledInputs.forEach((input)=>{input.disabled = false});
+    }
+
+    function clearAutofillFields() {
+        const fields = searchConfig[searchType].autofillFields;
+        for (let field of fields) {
+            let element = parentForm.querySelector(`[name=${field.name}]`);
+            if (element) {
+                if (field.disabledByDefault) element.disabled = true;
+
+                if (element.nodeName == "SELECT") {
+                    selectFirstValidOption(element);
+                    element.dispatchEvent(new Event("change"));
+                }
+                else if (element.value != "") {
+                    element.value = "";
+                }
+            }
+        }
+    }
+
+    function disableSelectInputs() {
+        inputGrid.querySelectorAll('select').forEach(e => e.disabled = true);
     }
 
     // Eseménykezelés
@@ -179,24 +209,6 @@ function initializeSearch(search) {
             }
         }
     });
-
-    function clearAutofillFields() {
-        const fields = searchConfig[searchType].autofillFields;
-        for (let field of fields) {
-            let element = parentForm.querySelector(`[name=${field}]`);
-            if (element) {
-                
-                if (element.nodeName == "SELECT") {
-                    selectFirstValidOption(element);
-                    element.dispatchEvent(new Event("change"));
-                }
-                else if (element.value != "") {
-                    element.value = "";
-                }
-                
-            }
-        }
-    }
 
     // A képernyő átméretezésekor a legördülő menű pozícióját frissítjük
     window.addEventListener("resize", positionDropdown);
@@ -215,7 +227,10 @@ function initializeSearch(search) {
         positionDropdown();
         await searchHandler();
         validateSearchInput();
-        if (autofill && !searchInput.checkValidity()) clearAutofillFields();
+        if (!searchInput.checkValidity()) {
+            if (autofill) clearAutofillFields();
+            disableSelectInputs();
+        }
     });
 }
 

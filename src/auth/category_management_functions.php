@@ -116,7 +116,6 @@ function removeCategory($categoryData) {
 }
 
 function removeCategoryFromDB($categoryData) {
-    $db = createConnection();
     
     $query = "DELETE FROM x WHERE x.id = ?;";
     $query = str_replace("x", $categoryData["type"], $query);
@@ -172,6 +171,41 @@ function updateCategoryDirectory($categoryData, $categoryType, $images) {
     return $paths;
 }
 
+function updateCategoryData($categoryData, $categoryType, $images) {
+    
+    $isMainCategory = ($categoryType == "main");
+    $table = $isMainCategory ? "category" : "subcategory";
+    
+    $fields = array("name", "subname", "description");
+    $values = array(
+        $categoryData["name"],
+        $categoryData["subname"],
+        $categoryData["description"],
+    );
+
+    foreach ($images as $image) {
+        array_push($fields, $image["name"]."_uri");
+        array_push($values, $categoryData[$image["name"]]);
+    }
+
+    
+    if (!$isMainCategory) {
+        array_push($fields, "category_id");
+        array_push($values, $categoryData["parent_category_id"]);
+    }
+
+    array_push($values, $categoryData["id"]);
+
+    $query = "UPDATE `$table` SET ";
+    for ($i = 0; $i < count($values) - 1; $i++){
+        $query .= "`{$fields[$i]}`=?";
+        if ($i != count($values) - 2) $query .= ", ";
+    }
+    $query .= " WHERE `$table`.`id`=?;";
+
+    return updateData($query, $values);
+}
+
 function updateCategory($categoryData) {
     include_once "init.php";
 
@@ -179,8 +213,7 @@ function updateCategory($categoryData) {
         return "Hiba merült fel a feltöltés során.";
     }
 
-    $categoryType = $categoryData["type"];
-    unset($categoryData["type"]);
+    $categoryType = isset($categoryData["parent_category"]) ? "sub" : "main";
 
     $modifiedColumns = array();
     $images = array();
@@ -205,10 +238,9 @@ function updateCategory($categoryData) {
         if (hasError($paths)) return false;
     
         for ($i = 0; $i < count($images); $i++) {
-            $categoryData[$images[$i]] = $paths[$i];
+            $categoryData[$images[$i]["name"]] = $paths[$i];
         }
     }
 
-    return true;
+    return updateCategoryData($categoryData, $categoryType, $images);
 }
-?>

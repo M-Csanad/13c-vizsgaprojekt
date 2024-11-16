@@ -1,7 +1,7 @@
 const parentCategoryInput = document.querySelector("select#parent_category");
 const parentCategoryModifyInput = document.querySelector("select#parent_category_modify");
 const categoryType = document.getElementById('type');
-const categoryTypeModify = document.getElementById('type_modify');
+// const categoryTypeModify = document.getElementById('type_modify');
 const pageLinks = document.querySelectorAll(".page");
 const pages = document.querySelectorAll(".section-group");
 
@@ -314,16 +314,6 @@ categoryType.addEventListener('change', ()=> {
     }
 });
 
-categoryTypeModify.addEventListener('change', ()=> {
-    let selected = categoryTypeModify.value;
-    
-    if (selected == "sub") {
-        parentCategoryModifyInput.removeAttribute("disabled");
-    }
-    else {
-        parentCategoryModifyInput.setAttribute("disabled", true);
-    }
-});
 
 async function populateOptions(select, category, table) {
 
