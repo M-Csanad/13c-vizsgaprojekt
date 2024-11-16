@@ -117,7 +117,7 @@ function connectProductTags($id, $tags) {
 }
 
 // Termék létrehozása - Fő függvény
-function createProduct($productData, $tags) {
+function createProduct($productData, $tags, $productPageData, $productCategoryData) {
     include_once "init.php";
 
     // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
@@ -157,7 +157,7 @@ function createProduct($productData, $tags) {
         return "Sikertelen feltöltés a product_tag táblába. ($result)";
     }
 
-    return true;
+    return createProductPage($productData, $productPageData, $productCategoryData);
 }
 
 
