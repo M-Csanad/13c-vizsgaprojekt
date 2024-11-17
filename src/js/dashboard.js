@@ -163,13 +163,20 @@ function getFileSize(file) {
 const toggleButton = document.querySelectorAll('.toggle').forEach(button => {
     let input = button.closest('.file-input');
     let fileInput = input.querySelector('input[type=file]');
+    let isTransitioning = false;
+
     button.addEventListener("click", () => {
+        if (isTransitioning) return;
+        isTransitioning = true;
+
         button.classList.toggle("on");
         if (button.classList.contains("on")) {
-            console.log("asd")
             fileInput.classList.add("visible");
             fileInput.removeAttribute("disabled");
             fileInput.setAttribute("required", true);
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 300);
         }
         else {
             fileInput.classList.remove("visible");
@@ -178,6 +185,7 @@ const toggleButton = document.querySelectorAll('.toggle').forEach(button => {
                     fileInput.setAttribute("disabled", true);
                     fileInput.removeAttribute("required");
                 }
+                isTransitioning = false;
             }, 300);
         }
     });

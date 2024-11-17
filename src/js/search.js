@@ -15,7 +15,6 @@ function initializeSearch(search) {
                 { name: "type"}, 
                 { name: "parent_category", disabledByDefault: true}
             ],
-
             template: (item) => `
                 <img src='${item.thumbnail_image_horizontal_uri}'><div><b>${item.name}</b> - 
                 ${(item.type === "category") ? "Főkategória" : `Alkategória <i>(${item.parent_category})</i>`}</div>`,
@@ -41,6 +40,13 @@ function initializeSearch(search) {
             clickHandler: (user) => itemClickHandler(user, ["id", "name"])
         },
         product: {
+            autofillFields: [
+                { name: "name" }, 
+                { name: "description" }, 
+                { name: "price" }, 
+                { name: "stock" },
+                { name: "tags", multiple: true }
+            ],
             template: (product) => {
                 if (!product.category || !product.subcategory) {
                     return `<img src='${product.thumbnail_image_horizontal_uri}'><div><b>${product.name}</b> - <i>Még nincs kategóriába sorolva.</i></div>`;
@@ -49,9 +55,25 @@ function initializeSearch(search) {
                     return `<img src='${product.thumbnail_image_horizontal_uri}'><div><b>${product.name}</b> - <i>${product.category ? product.category : "#"} / ${product.subcategory ? product.subcategory : "#"}</i></div>`;
                 }
             },
-            clickHandler: (product) => itemClickHandler(product, ["id", "name"])
+            clickHandler: (product) => {
+                if (!autofill) {
+                    itemClickHandler(product, ["id", "name"]);
+                }
+                else {
+                    itemClickHandler(product, ["id", "name"], { fields: [
+                        { field: "name", value: product.name },
+                        { field: "description", value: product.description },
+                        { field: "price", value: product.unit_price },
+                        { field: "stock", value: product.stock },
+                        { field: "tags", value: product.tag_ids.split(",") }
+                    ]});
+                }
+            }
         }
     };
+
+    let isSearchEnabled = true;
+    let lastContentfulSearchTerm = "";
 
     // Aszinkron keresés a megfelelő PHP segítségével
     async function searchHandler() {
@@ -66,6 +88,14 @@ function initializeSearch(search) {
 
             if (response.ok) {
                 let data = await response.json();
+
+                if (typeof data == "object") {
+                    lastContentfulSearchTerm = input;
+                }
+                else {
+                    isSearchEnabled = false;
+                }
+
                 populateItemContainer(data);
             }
         } else {
@@ -128,9 +158,16 @@ function initializeSearch(search) {
                 const input = parentForm.querySelector(`[name=${field}]`);
                 if (input) {
                     if (value) {
-                        input.value = value;
-                        if (input.disabled) input.disabled = false;
-                        input.dispatchEvent(new Event('change'));
+                        if (Array.isArray(value)) {
+                            for (let id of value) {
+                                input.querySelector(`input[type="checkbox"][value="${id}"]`).parentElement.click();
+                            }
+                        }
+                        else {
+                            input.value = value;
+                            if (input.disabled) input.disabled = false;
+                            input.dispatchEvent(new Event('change'));
+                        }
                     }
                 }
             });
@@ -181,8 +218,12 @@ function initializeSearch(search) {
         for (let field of fields) {
             let element = parentForm.querySelector(`[name=${field.name}]`);
             if (element) {
+                if (field.multiple) {
+                    element.querySelectorAll("input:checked").forEach(e => e.click());
+                    return;
+                }
+                
                 if (field.disabledByDefault) element.disabled = true;
-
                 if (element.nodeName == "SELECT") {
                     selectFirstValidOption(element);
                     element.dispatchEvent(new Event("change"));
@@ -202,7 +243,9 @@ function initializeSearch(search) {
     // A keresőmezőre kattintáskor jelenjenek meg az aktuális találatok
     searchInput.addEventListener("focusin", async () => {
         if (searchItemsContainer.style.display == "none") {
-            await searchHandler();
+            if (isSearchEnabled) {
+                await searchHandler();
+            }
             if (searchItemsContainer.children.length > 0) {
                 toggleDropdown(true);
                 positionDropdown();
@@ -225,11 +268,25 @@ function initializeSearch(search) {
     searchInput.addEventListener("input", async () => {
         resetInputs();
         positionDropdown();
-        await searchHandler();
-        validateSearchInput();
+
+        // A kereső optimalizálása, hogy ne legyenek felesleges lekérések
+        if (!isSearchEnabled) {
+            let value = searchInput.value;
+            if (lastContentfulSearchTerm.includes(value) || value == "" || lastContentfulSearchTerm == value) {
+                isSearchEnabled = true;
+            }
+        }
+
+        if (isSearchEnabled) {
+            await searchHandler();
+            validateSearchInput();
+        }
+
         if (!searchInput.checkValidity()) {
-            if (autofill) clearAutofillFields();
-            disableSelectInputs();
+            if (autofill) {
+                clearAutofillFields();
+                disableSelectInputs();
+            }
         }
     });
 }

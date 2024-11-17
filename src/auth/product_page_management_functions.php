@@ -51,3 +51,7 @@ function createProductPage($productData, $productPageData, $productCategoryData)
 
     return true;
 }
+
+function removeProductPage($id) {
+    return true;
+}

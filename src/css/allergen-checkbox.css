@@ -22,10 +22,14 @@
     flex-direction: row;
     overflow: hidden;
 }
+.tag-body {
+    max-width: 72%;
+    width: 72%;
+}
 
 .tag-wrapper > .tag-body > .tag-items {
     max-width: 100%;
-    width: max-content;
+    width: 100%;
     flex-grow: 1;
     display: inline-flex;
     align-items: center;
