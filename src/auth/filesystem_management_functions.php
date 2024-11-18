@@ -1,7 +1,14 @@
 <?php
 
 function format_str($s) {
-    return str_replace(" ", "-", mb_strtolower($s));
+    $hungarian_to_english = [
+        'á' => 'a', 'é' => 'e', 'í' => 'i', 
+        'ó' => 'o', 'ö' => 'o', 'ő' => 'o',
+        'ú' => 'u', 'ü' => 'u', 'ű' => 'u'
+    ];
+
+    $temp = trim(str_replace(" ", "-", mb_strtolower($s)));
+    return strtr($temp, $hungarian_to_english);
 }
 
 function getOrientation($image) {
@@ -40,6 +47,7 @@ function deleteFolder($folderPath) {
     if (!is_dir($folderPath)) {
         return false;
     }
+    
     $files = scandir($folderPath);
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
@@ -56,6 +64,37 @@ function deleteFolder($folderPath) {
     }
 
     return rmdir($folderPath);
+}
+
+function renameFolder($folderPath, $newFolderPath) {
+    if (!is_dir($folderPath)) {
+        return false;
+    }
+
+    return rename($folderPath, $newFolderPath);
+}
+
+function deleteFolderFiles($folderPath) {
+    if (!is_dir($folderPath)) {
+        return false;
+    }
+
+    $files = scandir($folderPath);
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') {
+            continue;
+        }
+
+        $filePath = $folderPath . DIRECTORY_SEPARATOR . $file;
+
+        if (is_file($filePath)) {
+            unlink($filePath);
+        } elseif (is_dir($filePath)) {
+            continue;
+        }
+    }
+
+    return true;
 }
 
 function moveFile($tmp, $name, $basename, $dir) {

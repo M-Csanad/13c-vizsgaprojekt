@@ -452,7 +452,7 @@
                                         </svg>
                                     </div>
                                     <div class="input-tooltip">
-                                        Videó feltöltéséhez kapcsolja be az elemet! 
+                                        Függőleges borítókép feltöltéséhez kapcsolja be az elemet! 
                                     </div>
                                 </div>
                             </div>
@@ -497,7 +497,7 @@
                                         </svg>
                                     </div>
                                     <div class="input-tooltip">
-                                        Videó feltöltéséhez kapcsolja be az elemet! 
+                                        Vízszintes borítókép feltöltéséhez kapcsolja be az elemet! 
                                     </div>
                                 </div>
                             </div>
@@ -730,7 +730,7 @@
                                                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                                                     <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
                                                 </svg>
-                                                <input type="file" name="product_images[]" id="product_images_create" multiple required accept="image/png, image/jpeg">
+                                                <input type="file" name="product_images[]" id="product_images_create" multiple required accept="image/png, image/jpeg" data-type="image" data-count="multiple" data-orientation="any">
                                                 Képek kiválasztása
                                             </label>
                                         </div>
@@ -1006,7 +1006,7 @@
                                                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                                                     <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
                                                 </svg>
-                                                <input type="file" disabled name="product_images[]" id="product_images_modify" required accept="image/png, image/jpeg" data-orientation="vertical" data-type="image" data-count="singular" tabindex="-1">
+                                                <input type="file" multiple disabled name="product_images[]" id="product_images_modify" required accept="image/png, image/jpeg"  data-type="image" data-count="multiple" data-orientation="any" tabindex="-1">
                                                 Kép kiválasztása
                                             </label>
                                         </div>
@@ -1286,6 +1286,7 @@
             $categoryData = array(
                 "id" => intval($_POST['category_id']),
                 "name" => $_POST['name'],
+                "original_name" => $_POST['category_name'],
                 "subname" => $_POST['subname'],
                 "description" => $_POST['description']);
 
@@ -1310,7 +1311,8 @@
                 "name" => $_POST['product_name'],
                 "unit_price" => intval($_POST['price']),
                 "stock" => intval($_POST['stock']),
-                "description" => $_POST['description']
+                "description" => $_POST['description'],
+                "tags" => $_POST['tags']
             );
 
             $productPageData = array(
@@ -1329,13 +1331,33 @@
 
             $tags = $_POST['tags'];
 
-            $result = createProduct($productData, $tags, $productPageData, $productCategoryData);
+            $result = createProduct($productData, $productPageData, $productCategoryData);
 
             if ($result === true) {
                 echo "<div class='success'>Termék sikeresen létrehozva!</div></div>";
             }
             else {
                 echo "<div class='error'>A termék létrehozása sikertelen! $result</div></div>";
+            }
+        }
+
+        // Termék módosítása
+        if (isset($_POST['modify_product'])) {
+            $productData = array(
+                "id" => $_POST['product_id'],
+                "original_name" => $_POST['product_name'],
+                "name" => $_POST['name'],
+                "description" => $_POST['description'],
+                "price" => $_POST['price'],
+                "stock" => $_POST['stock'],
+                "tags" => $_POST['tags']
+            );
+
+            if (updateProduct($productData) === true) {
+                echo "<div class='success'>Termék sikeresen módosítva!</div></div>";
+            }
+            else {
+                echo "<div class='error'>A termék módosítása sikertelen! $result</div></div>";
             }
         }
 

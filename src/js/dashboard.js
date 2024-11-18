@@ -273,6 +273,52 @@ window.addEventListener("load", () => {
 
                 input.setCustomValidity('');
             }
+            else {
+                let isValid = true;
+                for (let file of input.files) {
+                
+                    if (!file) { // Ha nem töltött fel fájlt
+                        input.setCustomValidity('Kérjük adjon meg egy képet!');
+                        input.value = "";
+                        input.reportValidity();
+
+                        isValid = false;
+                        return;
+                    }
+
+                    let type = file.type || null;
+
+                    if (!type.includes(acceptedType)) { // Ha nem képet töltött fel
+                        input.setCustomValidity('Kérjük képet adjon meg!');
+                        input.value = "";
+                        input.reportValidity();
+
+                        isValid = false;
+                        return;
+                    }
+
+                    if (getFileSize(file) > maxFileSize) {
+                        input.setCustomValidity('Kérjük maximum 10 MB méretű képet töltsön fel!');
+                        input.value = "";
+                        input.reportValidity();
+
+                        isValid = false;
+                        return;
+                    }
+
+                    let currentOrientation = (type.includes("image")) ? await getImageOrientation(file) : await getVideoOrientation(file);
+                    if (currentOrientation != orientation && orientation != "any") {
+                        input.setCustomValidity(`Kérjük megfelelő tájolású ${(acceptedType=="image") ? "képet" : "videót"} adjon meg!`);
+                        input.value = "";
+                        input.reportValidity();
+
+                        isValid = false;
+                        return;
+                    }
+                }
+
+                if (isValid) input.setCustomValidity('');
+            }
         });
     });
 

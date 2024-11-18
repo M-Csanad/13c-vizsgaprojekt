@@ -117,7 +117,7 @@ function connectProductTags($id, $tags) {
 }
 
 // Termék létrehozása - Fő függvény
-function createProduct($productData, $tags, $productPageData, $productCategoryData) {
+function createProduct($productData, $productPageData, $productCategoryData) {
     include_once "init.php";
 
     // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
@@ -152,7 +152,7 @@ function createProduct($productData, $tags, $productPageData, $productCategoryDa
         return "Sikertelen feltöltés a product_image táblába. ($result)";
     }
 
-    $result = connectProductTags($productData['id'], $tags);
+    $result = connectProductTags($productData['id'], $productData['tags']);
     if (!is_numeric($result)) {
         return "Sikertelen feltöltés a product_tag táblába. ($result)";
     }
@@ -197,4 +197,146 @@ function removeProduct($productData) {
     return $successfulDirectoryDelete;
 }
 
+/* ---------------------------- Termék módosítása --------------------------- */
+
+function updateProductData($productData) {
+    return true;
+}
+
+function renameProductDirectory($name, $original_name) {
+    $baseDirectory = './images/products/';
+
+    $productName = format_str($name);
+    $originalProductName = format_str($original_name);
+
+    $originalProductDirURI = $baseDirectory.$originalProductName."/";
+    $productDirURI = $baseDirectory.$productName."/";
+    
+    var_dump($originalProductDirURI, $productDirURI);
+    if ($productName == $originalProductName) {
+        return $originalProductDirURI;
+    }
+
+    if (renameFolder($originalProductDirURI, $productDirURI)) {
+        return $productDirURI;
+    }
+    else {
+        return null;
+    }
+}
+
+function updateProductDirectory($productData, $images) {
+
+    $productDirURI = renameProductDirectory($productData["name"], $productData["original_name"]);
+
+    if (is_null($productDirURI) || !is_dir($productDirURI."thumbnail/") || !is_dir($productDirURI."gallery/")) {
+        return "Hiányzó mappa.";
+    }
+    
+    $thumbnailImages = array('thumbnail_image');
+    if (isset($_FILES['product_video'])) array_push($thumbnailImages, 'product_video');
+    
+    $paths = array();
+    $galleryCounter = 0;
+
+    foreach ($images as $image) {
+        if ($image["name"] != "product_image") {
+            $dir = $productDirURI."thumbnail/";
+            $tmp = $image["tmp_name"];
+            $name = "thumbnail";
+            $ext = $image["ext"];
+            $path = $dir."$name.".$ext;
+
+            $files = scandir($dir);
+
+            $existingImage = null;
+            foreach ($files as $file) {
+                $path = $dir.$file;
+                if (pathinfo($path, PATHINFO_FILENAME) == $name) {
+                    $existingImage = $path;
+                }
+            }
+    
+            if ($existingImage) {
+                array_push($paths, replaceFile($existingImage, $tmp, "$name.$ext", $name));
+            }
+            else {
+                array_push($paths, moveFile($tmp, "$name.$ext", $name, $dir));
+            }
+        }
+        else {
+            $dir = $productDirURI."gallery/";
+            $tmp = $image["tmp_name"];
+            $name = "image$galleryCounter";
+            $ext = $image["ext"];
+            $path = $dir."$name.".$ext;
+            
+            $files = scandir($dir);
+            
+            $existingImage = null;
+            foreach ($files as $file) {
+                $path = $dir.$file;
+                if (pathinfo($path, PATHINFO_FILENAME) == $name) {
+                    $existingImage = $path;
+                }
+            }
+            
+            if ($existingImage) {
+                array_push($paths, replaceFile($existingImage, $tmp, "$name.$ext", $name));
+            }
+            else {
+                array_push($paths, moveFile($tmp, "$name.$ext", $name, $dir));
+            }
+
+            $galleryCounter++;
+        }
+
+    }
+    return $paths;
+}
+
+function updateProduct($productData) {
+    include_once "init.php";
+
+    if (hasUploadError()) {
+        return "Hiba merült fel a feltöltés során.";
+    }
+
+    $images = array();
+
+    if (isset($_FILES["thumbnail_image"])) {
+        array_push($images, array("name" => "thumbnail_image", "tmp_name" => $_FILES["thumbnail_image"]["tmp_name"], "ext" => pathinfo($_FILES["thumbnail_image"]["name"], PATHINFO_EXTENSION)));
+    }
+    if (isset($_FILES["product_images"])) {
+        $count = count($_FILES["product_images"]["name"]);
+
+        for ($i = 0; $i < $count; $i++) {
+            array_push($images, array("name" => "product_image", "tmp_name" => $_FILES["product_images"]["tmp_name"][$i], "ext" => pathinfo($_FILES["product_images"]["name"][$i], PATHINFO_EXTENSION)));
+        }
+    }
+    if (isset($_FILES["product_video"])) {
+        array_push($images, array("name" => "product_video", "tmp_name" => $_FILES["product_video"]["tmp_name"], "ext" => pathinfo($_FILES["product_video"]["name"], PATHINFO_EXTENSION)));
+    }
+
+    if (count($images) > 0) {
+        $paths = updateProductDirectory($productData, $images);
+    
+        if (!is_array($paths)) return $paths;
+        if (hasError($paths)) return false;
+    
+        for ($i = 0; $i < count($images); $i++) {
+            $productData[$images[$i]["name"]] = $paths[$i];
+        }
+
+        var_dump($paths);
+    }
+    else {
+        $result = renameProductDirectory($productData["name"], $productData["original_name"]);
+        // if (is_null($result)) {
+        //     // return "Sikertelen mappa átnevezés!";
+        // }
+    }
+
+    return true;
+}
 ?>

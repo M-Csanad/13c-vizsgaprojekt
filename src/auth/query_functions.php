@@ -14,7 +14,11 @@ function selectData($query, $parameters) {
             
             $typeString = '';
             foreach ($parameters as $parameter) {
-                $typeString .= gettype($parameter)[0];
+                if (is_null($parameter)) {
+                    $typeString .= 's';
+                } else {
+                    $typeString .= gettype($parameter)[0];
+                }
             }
             
             $statement -> bind_param($typeString, ...$parameters);
@@ -50,7 +54,11 @@ function updateData($query, $parameters) {
         
         $typeString = '';
         foreach ($parameters as $parameter) {
-            $typeString .= gettype($parameter)[0];
+            if (is_null($parameter)) {
+                $typeString .= 's';
+            } else {
+                $typeString .= gettype($parameter)[0];
+            }
         }
         
         $statement -> bind_param($typeString, ...$parameters);
