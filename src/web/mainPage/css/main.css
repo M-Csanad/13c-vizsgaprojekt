@@ -95,35 +95,35 @@ h6 {
   text-transform: uppercase;
   font-family: "Poppins";
   font-weight: 600;
-  left: 5rem;
+  left: 12rem;
   transform: translateY(120%);
 }
 #BGDT02 {
   color: var(--dark_tertiary);
-  font-size: clamp(10rem, calc(12rem + 0.39vw), 20rem);
+  font-size: clamp(10rem, calc(18rem + 0.39vw), 20rem);
   font-weight: 300;
   text-transform: capitalize;
   font-family: "Maitree";
-  right: 5rem;
-  transform: translateY(90%);
+  right: 12rem;
+  transform: translateY(60%);
 }
 #BGDT03 {
   color: var(--dark_secondary);
-  font-size: clamp(12rem, calc(13rem + 0.39vw), 30rem);
-  text-transform: uppercase;
-  font-family: "Poppins";
-  font-weight: 600;
-  right: 2rem;
-  transform: translateY(-170%);
+  font-size: clamp(12rem, calc(18rem + 0.39vw), 30rem);
+  text-transform: capitalize;
+  font-family: "Maitree";
+  font-weight: 300;
+  left: 24rem;
+  transform: translateY(-150%);
   mix-blend-mode: difference;
 }
 #BGDT04 {
   color: var(--dark_tertiary);
-  font-size: clamp(10rem, calc(12rem + 0.39vw), 20rem);
-  font-weight: 300;
-  text-transform: capitalize;
-  font-family: "Maitree";
-  left: 12rem;
+  font-size: clamp(10rem, calc(14rem + 0.39vw), 20rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: "Poppins";
+  right: 12rem;
   transform: translateY(-220%);
   mix-blend-mode: difference;
 }
