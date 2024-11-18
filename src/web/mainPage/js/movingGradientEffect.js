@@ -68,15 +68,6 @@ function isMouseInContainer(event) {
   );
 }
 
-/* // Rendszeres időzítő az egér pozíciójának ellenőrzésére
-setInterval(() => {
-  if (isMouseInContainer(event)) {
-    notifBlob.style.opacity = 1;
-  } else {
-    notifBlob.style.opacity = 0;
-  }
-}, 500); */
-
 // Egér mozgásának figyelése és `notifBlob` pozíciójának frissítése
 window.addEventListener("mousemove", (event) => {
   if (isMouseInContainer(event)) {
