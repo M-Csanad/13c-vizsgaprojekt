@@ -70,6 +70,7 @@ function isMouseInContainer(event) {
 
 // Egér mozgásának figyelése és `notifBlob` pozíciójának frissítése
 window.addEventListener("mousemove", (event) => {
+  notifBlob.style.opacity = 0;
   if (isMouseInContainer(event)) {
     notifBlob.style.left = `${event.clientX + 10}px`;
     notifBlob.style.top = `${event.clientY + 10}px`;
