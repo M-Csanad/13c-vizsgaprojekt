@@ -1,5 +1,5 @@
 <?php
-$base_url = "http://localhost:8080/FlorensBotanica/GIT_REPO/src/web"; //Ez olyan, mintha a domain cím lenne (public_html).
+$base_url = "http://localhost:8080/13c-vizsgaprojekt/src/web"; //Ez olyan, mintha a domain cím lenne (public_html).
 $logo_url = "$base_url/media/img/herbalLogo_mini_white.png";
 
 // Navigációs elemek
