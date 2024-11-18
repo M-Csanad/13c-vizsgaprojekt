@@ -113,7 +113,7 @@ h6 {
   text-transform: capitalize;
   font-family: "Maitree";
   font-weight: 300;
-  left: 24rem;
+  left: 12rem;
   transform: translateY(-150%);
   mix-blend-mode: difference;
 }
@@ -634,6 +634,7 @@ h6 {
 .bg_slider-thumbs .swiper-slide .contentImg {
   position: relative;
   text-transform: capitalize;
+  width: 90%;
   padding: 8px;
 }
 .bg_slider-thumbs .swiper-slide .circleImg {
