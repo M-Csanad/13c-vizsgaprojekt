@@ -27,6 +27,11 @@
     <script defer src="./js/dashboard.js"></script>
     <script defer src="./js/search.js"></script>
     <script defer src="./js/tag-checkbox.js"></script>
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
 </head>
 <body>
     <p>
@@ -316,7 +321,9 @@
                             <input type="submit" value="Törlés" class="form-submit-danger" name='delete_category'>
                         </div>
                     </form>
-                    <div class="items"></div>
+                    <div class="items">
+                        <div class="loader"></div>
+                    </div>
                 </div>
             </section>
 
@@ -551,7 +558,9 @@
                             </div>
                         </div>
                     </form>
-                    <div class="items"></div>
+                    <div class="items">
+                        <div class="loader"></div>
+                    </div>
                 </div>
             </section>
         </div>
@@ -828,7 +837,9 @@
                             </div>
                         </div>
                     </form>
-                    <div class="items"></div>
+                    <div class="items">
+                        <div class="loader"></div>
+                    </div>
                 </div>
             </section>
             <!------------------------------ Termék módosítása ----------------------------->
@@ -1075,7 +1086,9 @@
                             <input type="submit" value="Felvitel" class="form-submit-primary" name='modify_product'>
                         </div>
                     </form>
-                    <div class="items"></div>
+                    <div class="items">
+                        <div class="loader"></div>
+                    </div>
                 </div>
             </section>
         </div>
@@ -1167,7 +1180,9 @@
                             <input type="submit" value="Felvitel" class="form-submit-primary" name='create_product_page'>
                         </div>
                     </form>
-                    <div class="items"></div>
+                    <div class="items">
+                        <div class="loader"></div>
+                    </div>
                 </div>
             </section>
         </div>
@@ -1227,7 +1242,9 @@
                             <input type="submit" value="Módosítás" class="form-submit-primary" name='modify_role'>
                         </div>
                     </form>
-                    <div class="items"></div>
+                    <div class="items">
+                        <div class="loader"></div>
+                    </div>
                 </div>
             </section>
         </div>
@@ -1235,6 +1252,10 @@
     <?php
         // Kategória létrehozása
         if (isset($_POST['create_category'])) {
+
+            if (isset($_SESSION['block_resubmit'])) {
+                return;
+            }
 
             $categoryData = array(
                 "name" => $_POST['category_name'],
@@ -1255,6 +1276,8 @@
             else {
                 echo "<div class='error'>A kategória létrehozása sikertelen! $result</div></div>";
             }
+
+            rememberFormSubmitted();
         }
 
         // Kategória törlése
@@ -1278,6 +1301,7 @@
                     echo "<div class='error'>A kategória törlése sikertelen! $result</div></div>";
                 }
             }
+            rememberFormSubmitted();
         }
 
         // Kategória módosítása
@@ -1303,6 +1327,7 @@
             else {
                 echo "<div class='error'>A kategória módosítása sikertelen! $result</div></div>";
             }
+            rememberFormSubmitted();
         }
 
         // Termék létrehozása
@@ -1339,6 +1364,7 @@
             else {
                 echo "<div class='error'>A termék létrehozása sikertelen! $result</div></div>";
             }
+            rememberFormSubmitted();
         }
 
         // Termék módosítása
@@ -1359,6 +1385,7 @@
             else {
                 echo "<div class='error'>A termék módosítása sikertelen! $result</div></div>";
             }
+            rememberFormSubmitted();
         }
 
         // Termék oldal létrehozása
@@ -1390,10 +1417,12 @@
             else {
                 echo "<div class='error'>A termék oldal létrehozása sikertelen! $result</div>";
             }
+            rememberFormSubmitted();
         }
 
         //Termék törlése
         if (isset($_POST['delete_product'])) {
+            var_dump($_POST);
             $productData = array(
                 "id" => intval($_POST['product_id']),
                 "name" => $_POST['product_name']
@@ -1407,6 +1436,7 @@
             else {
                 echo "<div class='error'>A termék törlése sikertelen! $result</div>";
             }
+            rememberFormSubmitted();
         }
         
         // Jogosultság változtatása
@@ -1419,6 +1449,7 @@
             else {
                 echo "<div class='error'>A művelet sikertelen!</div>";
             }
+            rememberFormSubmitted();
         }
     ?>
 </body>

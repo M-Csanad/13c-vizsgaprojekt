@@ -103,6 +103,16 @@ function initializeSearch(search) {
         }
     }
 
+    function toggleLoader(show) {
+        const loader = searchItemsContainer.querySelector('.loader');
+        if (show) {
+            loader.style.display = "block";
+        }
+        else {
+            loader.style.display = "none";
+        }
+    }
+
     // A legördülömenü feltöltése találatokkal
     function populateItemContainer(items) {
         if (items === "Nincs találat!") {

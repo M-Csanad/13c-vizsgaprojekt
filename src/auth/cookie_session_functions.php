@@ -43,5 +43,4 @@ function setSessionData($user)
     $_SESSION['user_name'] = $user['user_name'];
     $_SESSION['role'] = $user['role'];
 }
-
 ?>
