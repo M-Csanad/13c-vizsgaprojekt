@@ -322,7 +322,18 @@
                         </div>
                     </form>
                     <div class="items">
-                        <div class="loader"></div>
+                        <div class="loader-wrapper">
+                            <div class="loader dot-spinner">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -559,7 +570,18 @@
                         </div>
                     </form>
                     <div class="items">
-                        <div class="loader"></div>
+                        <div class="loader-wrapper">
+                            <div class="loader dot-spinner">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -838,7 +860,18 @@
                         </div>
                     </form>
                     <div class="items">
-                        <div class="loader"></div>
+                        <div class="loader-wrapper">
+                            <div class="loader dot-spinner">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1087,7 +1120,18 @@
                         </div>
                     </form>
                     <div class="items">
-                        <div class="loader"></div>
+                        <div class="loader-wrapper">
+                            <div class="loader dot-spinner">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1181,7 +1225,18 @@
                         </div>
                     </form>
                     <div class="items">
-                        <div class="loader"></div>
+                        <div class="loader-wrapper">
+                            <div class="loader dot-spinner">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1243,7 +1298,18 @@
                         </div>
                     </form>
                     <div class="items">
-                        <div class="loader"></div>
+                        <div class="loader-wrapper">
+                            <div class="loader dot-spinner">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -1277,7 +1343,6 @@
                 echo "<div class='error'>A kategória létrehozása sikertelen! $result</div></div>";
             }
 
-            rememberFormSubmitted();
         }
 
         // Kategória törlése
@@ -1301,7 +1366,6 @@
                     echo "<div class='error'>A kategória törlése sikertelen! $result</div></div>";
                 }
             }
-            rememberFormSubmitted();
         }
 
         // Kategória módosítása
@@ -1327,7 +1391,6 @@
             else {
                 echo "<div class='error'>A kategória módosítása sikertelen! $result</div></div>";
             }
-            rememberFormSubmitted();
         }
 
         // Termék létrehozása
@@ -1364,7 +1427,6 @@
             else {
                 echo "<div class='error'>A termék létrehozása sikertelen! $result</div></div>";
             }
-            rememberFormSubmitted();
         }
 
         // Termék módosítása
@@ -1385,7 +1447,6 @@
             else {
                 echo "<div class='error'>A termék módosítása sikertelen! $result</div></div>";
             }
-            rememberFormSubmitted();
         }
 
         // Termék oldal létrehozása
@@ -1417,7 +1478,6 @@
             else {
                 echo "<div class='error'>A termék oldal létrehozása sikertelen! $result</div>";
             }
-            rememberFormSubmitted();
         }
 
         //Termék törlése
@@ -1436,7 +1496,6 @@
             else {
                 echo "<div class='error'>A termék törlése sikertelen! $result</div>";
             }
-            rememberFormSubmitted();
         }
         
         // Jogosultság változtatása
@@ -1449,7 +1508,6 @@
             else {
                 echo "<div class='error'>A művelet sikertelen!</div>";
             }
-            rememberFormSubmitted();
         }
     ?>
 </body>
