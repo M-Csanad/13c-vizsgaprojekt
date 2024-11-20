@@ -7,7 +7,7 @@ function format_str($s) {
         'ú' => 'u', 'ü' => 'u', 'ű' => 'u'
     ];
 
-    $temp = trim(str_replace(" ", "-", mb_strtolower($s)));
+    $temp = str_replace(" ", "-", trim(mb_strtolower($s)));
     return strtr($temp, $hungarian_to_english);
 }
 
@@ -42,6 +42,39 @@ function createDirectory($paths) {
     
     return true;
 }
+
+function moveFolder($folderPath, $newFolderPath) {
+
+    if (!is_dir($folderPath)) {
+        return false;
+    }
+
+    if (!is_dir($newFolderPath)) {
+        if (!mkdir($newFolderPath, 0777, true)) {
+            return false;
+        }
+    }
+
+    $files = scandir($folderPath);
+
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') {
+            continue;
+        }
+
+        $sourcePath = $folderPath . DIRECTORY_SEPARATOR . $file;
+        $destinationPath = $newFolderPath . DIRECTORY_SEPARATOR . $file;
+
+        if (is_file($sourcePath)) {
+            if (!rename($sourcePath, $destinationPath)) {
+                return false;
+            }
+        }
+    }
+
+    return deleteFolder($folderPath);
+}
+
 
 function deleteFolder($folderPath) {
     if (!is_dir($folderPath)) {

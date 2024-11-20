@@ -142,23 +142,32 @@ function removeCategoryDirectory($categoryData) {
 function renameCategoryDirectory($categoryData, $categoryType) {
 
     $name = $categoryData["name"];
-    $original_name = $categoryData["original_name"];
-
-    $baseDirectory = "./images/categories/".($categoryType === "sub" ? format_str($categoryData["parent_category"]) . "/" : "");
-
+    $originalName = $categoryData["original_name"];
     $categoryName = format_str($name);
-    $originalCategoryName = format_str($original_name);
+    $originalCategoryName = format_str($originalName);
+    
+    $baseDirectory = "./images/categories/";
+    $originalBaseDir = $baseDirectory;
 
-    $originalCategoryDirURI = $baseDirectory.$originalCategoryName."/";
+    if (isset($_POST["parent_category"])) {
+        $parentName = format_str($categoryData["parent_category"]);
+        $originalParentName = format_str($categoryData["original_parent_category"]);
+        $baseDirectory .= $parentName."/";
+        $originalBaseDir .= $originalParentName."/";
+    }
+
+    $originalCategoryDirURI = $originalBaseDir.$originalCategoryName."/";
     $categoryDirURI = $baseDirectory.$categoryName."/";
     
-    if ($name == $original_name) {
+    if ($categoryDirURI == $originalCategoryDirURI) {
         return $originalCategoryDirURI;
     }
 
-    if (renameFolder($originalCategoryDirURI, $categoryDirURI)) {
+
+    if (moveFolder($originalCategoryDirURI, $categoryDirURI)) {
         
         $table = ($categoryType == "main" ? "category" : "subcategory");
+        var_dump($table);
         if ($table == "category") {
             $query = "SELECT category.thumbnail_image_vertical_uri AS 'category_vertical', category.thumbnail_image_horizontal_uri AS 'category_horizontal', category.thumbnail_video_uri AS 'category_video',
                       subcategory.thumbnail_image_vertical_uri AS 'subcategory_vertical', subcategory.thumbnail_image_horizontal_uri AS 'subcategory_horizontal', subcategory.thumbnail_video_uri AS 'subcategory_video' 
@@ -177,11 +186,10 @@ function renameCategoryDirectory($categoryData, $categoryType) {
         
         $uris = array_values($result);
         for ($i = 0; $i < count($uris); $i++) {
-            $original_name = format_str($categoryData["original_name"]);
-            $name = format_str($categoryData["name"]);
             
             // Az elérési útvonalban kicseréljük a régi mappanevet az újra egy speciális karakter segítségével ( | ).
-            $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', $name, str_replace($original_name, '|', $uris[$i]));
+            $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', $name, str_replace($originalName, '|', $uris[$i]));
+            $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', $parentName, str_replace($originalParentName, '|', $uris[$i]));
         }
 
         $query = "UPDATE $table SET $table.thumbnail_image_vertical_uri=?, $table.thumbnail_image_horizontal_uri=?, $table.thumbnail_video_uri=? WHERE $table.id=?";
@@ -197,6 +205,8 @@ function renameCategoryDirectory($categoryData, $categoryType) {
         else {
             $values = [...$uris, $categoryData["id"]];
             updateData($query, $values);
+
+            var_dump(pathinfo($uris[0], PATHINFO_DIRNAME));
         }
 
         return $categoryDirURI;

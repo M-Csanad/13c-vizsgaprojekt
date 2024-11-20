@@ -29,7 +29,8 @@ function initializeSearch(search) {
                         { field: "subname", value: item.subname },
                         { field: "description", value: item.description },
                         { field: "type", value: item.parent_category ? "sub" : "main" },
-                        { field: "parent_category", value: item.parent_category ? item.parent_category : null }
+                        { field: "parent_category", value: item.parent_category ? item.parent_category : null },
+                        { field: "original_parent_category", value: item.parent_category ? item.parent_category : null }
                     ]});
                 }
             }

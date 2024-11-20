@@ -411,7 +411,8 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-ban disabled" viewBox="0 0 16 16">
                                             <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
                                         </svg>
-                                        <input type="hidden" name="parent_category_id" value="0">
+                                        <input type="hidden" name="parent_category_id" value="null">
+                                        <input type="hidden" name="original_parent_category" value="null">
                                     </div>
                                 </div>
                             </div>
@@ -1315,6 +1316,7 @@
 
             if (isset($_POST['parent_category'])) {
                 $categoryData['parent_category'] = $_POST['parent_category'];
+                $categoryData['original_parent_category'] = $_POST['original_parent_category'];
                 $categoryData['parent_category_id'] = intval($_POST['parent_category_id']);
             }
 
