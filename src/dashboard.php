@@ -321,20 +321,7 @@
                             <input type="submit" value="Törlés" class="form-submit-danger" name='delete_category'>
                         </div>
                     </form>
-                    <div class="items">
-                        <div class="loader-wrapper">
-                            <div class="loader dot-spinner">
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="items"></div>
                 </div>
             </section>
 
@@ -569,20 +556,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="items">
-                        <div class="loader-wrapper">
-                            <div class="loader dot-spinner">
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="items"></div>
                 </div>
             </section>
         </div>
@@ -860,7 +834,7 @@
                         </div>
                     </form>
                     <div class="items">
-                        <div class="loader-wrapper">
+                        <!-- <div class="loader-wrapper">
                             <div class="loader dot-spinner">
                                 <div class="dot"></div>
                                 <div class="dot"></div>
@@ -871,7 +845,7 @@
                                 <div class="dot"></div>
                                 <div class="dot"></div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </section>
@@ -1119,20 +1093,7 @@
                             <input type="submit" value="Felvitel" class="form-submit-primary" name='modify_product'>
                         </div>
                     </form>
-                    <div class="items">
-                        <div class="loader-wrapper">
-                            <div class="loader dot-spinner">
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="items"></div>
                 </div>
             </section>
         </div>
@@ -1224,20 +1185,7 @@
                             <input type="submit" value="Felvitel" class="form-submit-primary" name='create_product_page'>
                         </div>
                     </form>
-                    <div class="items">
-                        <div class="loader-wrapper">
-                            <div class="loader dot-spinner">
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="items"></div>
                 </div>
             </section>
         </div>
@@ -1297,20 +1245,7 @@
                             <input type="submit" value="Módosítás" class="form-submit-primary" name='modify_role'>
                         </div>
                     </form>
-                    <div class="items">
-                        <div class="loader-wrapper">
-                            <div class="loader dot-spinner">
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                                <div class="dot"></div>
-                            </div>
-                        </div>
-                    </div>
+                    <div class="items"></div>
                 </div>
             </section>
         </div>
@@ -1437,11 +1372,13 @@
                 "name" => $_POST['name'],
                 "description" => $_POST['description'],
                 "price" => $_POST['price'],
-                "stock" => $_POST['stock'],
-                "tags" => $_POST['tags']
+                "stock" => $_POST['stock']
             );
 
-            if (updateProduct($productData) === true) {
+            if (isset($_POST["tags"])) $productData["tags"] = $_POST['tags'];
+
+            $result = updateProduct($productData);
+            if ($result === true) {
                 echo "<div class='success'>Termék sikeresen módosítva!</div></div>";
             }
             else {
@@ -1482,7 +1419,6 @@
 
         //Termék törlése
         if (isset($_POST['delete_product'])) {
-            var_dump($_POST);
             $productData = array(
                 "id" => intval($_POST['product_id']),
                 "name" => $_POST['product_name']

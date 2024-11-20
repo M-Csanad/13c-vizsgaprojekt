@@ -78,4 +78,12 @@ function updateData($query, $parameters) {
     }
 }
 
+function isError($result) {
+    return $result["type"] == "ERROR";
+}
+
+function isSuccess($result) {
+    return $result["type"] == "SUCCESS";
+}
+
 ?>

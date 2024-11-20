@@ -140,6 +140,7 @@ function removeCategoryDirectory($categoryData) {
 }
 
 function renameCategoryDirectory($categoryData, $categoryType) {
+
     $name = $categoryData["name"];
     $original_name = $categoryData["original_name"];
 
@@ -156,6 +157,48 @@ function renameCategoryDirectory($categoryData, $categoryType) {
     }
 
     if (renameFolder($originalCategoryDirURI, $categoryDirURI)) {
+        
+        $table = ($categoryType == "main" ? "category" : "subcategory");
+        if ($table == "category") {
+            $query = "SELECT category.thumbnail_image_vertical_uri AS 'category_vertical', category.thumbnail_image_horizontal_uri AS 'category_horizontal', category.thumbnail_video_uri AS 'category_video',
+                      subcategory.thumbnail_image_vertical_uri AS 'subcategory_vertical', subcategory.thumbnail_image_horizontal_uri AS 'subcategory_horizontal', subcategory.thumbnail_video_uri AS 'subcategory_video' 
+                      FROM category LEFT JOIN subcategory ON subcategory.category_id=category.id WHERE category.id=?";
+        }
+        else {
+            $query = "SELECT subcategory.thumbnail_image_vertical_uri, subcategory.thumbnail_image_horizontal_uri, subcategory.thumbnail_video_uri 
+                      FROM subcategory WHERE subcategory.id=?";
+        }
+
+        $result = selectData($query, $categoryData["id"]);
+
+        if (!is_array($result)) {
+            return null;
+        }
+        
+        $uris = array_values($result);
+        for ($i = 0; $i < count($uris); $i++) {
+            $original_name = format_str($categoryData["original_name"]);
+            $name = format_str($categoryData["name"]);
+            
+            // Az elérési útvonalban kicseréljük a régi mappanevet az újra egy speciális karakter segítségével ( | ).
+            $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', $name, str_replace($original_name, '|', $uris[$i]));
+        }
+
+        $query = "UPDATE $table SET $table.thumbnail_image_vertical_uri=?, $table.thumbnail_image_horizontal_uri=?, $table.thumbnail_video_uri=? WHERE $table.id=?";
+
+        if ($table == "category") {
+            $values = [...array_slice($uris, 0, 3), $categoryData["id"]];
+            updateData($query, $values);
+
+            $result = updateData("UPDATE subcategory SET subcategory.thumbnail_image_vertical_uri=?, 
+                        subcategory.thumbnail_image_horizontal_uri=?, subcategory.thumbnail_video_uri=? 
+                        WHERE subcategory.category_id=?", [...array_slice($uris, 3), $categoryData["id"]]);
+        }
+        else {
+            $values = [...$uris, $categoryData["id"]];
+            updateData($query, $values);
+        }
+
         return $categoryDirURI;
     }
     else {
@@ -274,54 +317,6 @@ function updateCategory($categoryData) {
 
         if (is_null($categoryDirURI)) {
             return "Sikertelen mappa átnevezés.";
-        }
-        
-        $table = ($categoryType == "main" ? "category" : "subcategory");
-        if ($table == "category") {
-            $query = "SELECT category.thumbnail_image_vertical_uri AS 'category_vertical', category.thumbnail_image_horizontal_uri AS 'category_horizontal', category.thumbnail_video_uri AS 'category_video',
-                      subcategory.thumbnail_image_vertical_uri AS 'subcategory_vertical', subcategory.thumbnail_image_horizontal_uri AS 'subcategory_horizontal', subcategory.thumbnail_video_uri AS 'subcategory_video' 
-                      FROM category LEFT JOIN subcategory ON subcategory.category_id=category.id WHERE category.id=?";
-        }
-        else {
-            $query = "SELECT subcategory.thumbnail_image_vertical_uri, subcategory.thumbnail_image_horizontal_uri, subcategory.thumbnail_video_uri 
-                      FROM subcategory WHERE subcategory.id=?";
-        }
-
-        $result = selectData($query, $categoryData["id"]);
-        if (!is_array($result)) {
-            return "Sikertelen lekérdezés.";
-        }
-
-        $currentUris = array_values($result);
-        
-        for ($i = 0; $i < count($currentUris); $i++) {
-            $original_name = format_str($categoryData["original_name"]);
-            $name = format_str($categoryData["name"]);
-            
-            $temp = str_replace($original_name, '|', $currentUris[$i]);
-            if ($currentUris[$i] != ""){
-                $currentUris[$i] = str_replace('|', $name, $temp);
-            }
-            else {
-                $currentUris[$i] = NULL;
-            }
-        }
-
-        $query = "UPDATE $table SET $table.thumbnail_image_vertical_uri=?, 
-                                    $table.thumbnail_image_horizontal_uri=?,
-                                    $table.thumbnail_video_uri=? WHERE $table.id=?";
-
-        if ($table == "category") {
-            $values = [...array_slice($currentUris, 0, 3), $categoryData["id"]];
-            updateData($query, $values);
-
-            $result = updateData("UPDATE subcategory SET subcategory.thumbnail_image_vertical_uri=?, 
-                        subcategory.thumbnail_image_horizontal_uri=?, subcategory.thumbnail_video_uri=? 
-                        WHERE subcategory.category_id=?", [...array_slice($currentUris, 3), $categoryData["id"]]);
-        }
-        else {
-            $values = [...$currentUris, $categoryData["id"]];
-            updateData($query, $values);
         }
     }
 

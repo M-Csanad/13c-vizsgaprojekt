@@ -18,6 +18,7 @@ if ($searchTerm) {
             WHERE (product.name LIKE ? 
             OR category.name LIKE ? OR subcategory.name LIKE ?)
             AND image.media_type = 'image'
+            AND image.uri LIKE '%thumbnail%'
             GROUP BY product.id
             ORDER BY product.name;";
 

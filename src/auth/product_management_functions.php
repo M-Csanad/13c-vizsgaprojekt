@@ -199,37 +199,168 @@ function removeProduct($productData) {
 
 /* ---------------------------- Termék módosítása --------------------------- */
 
-function updateProductData($productData) {
+function updateProductTags($productData) {
+    
+    $query = "DELETE FROM product_tag WHERE product_tag.product_id=?;";
+    $result = updateData($query, $productData["id"]);
+    if (!is_bool($result)) {
+        return "Sikertelen törlés.";
+    }
+    
+    if (!isset($productData["tags"])) return true;
+
+    $values = array();
+    $placeholders = array();
+    
+    foreach ($productData["tags"] as $tag) {
+        array_push($placeholders, "(?, ?)");
+        array_push($values, $productData["id"]);
+        array_push($values, $tag);
+    }
+    
+    $query = "INSERT INTO product_tag (product_id, tag_id) VALUES " . implode(", ", $placeholders);
+    $result = updateData($query, $values);
+    if ($result !== true && !is_numeric($result)) {
+        var_dump($result);
+        return "Sikertelen felvitel.";
+    }
+
     return true;
 }
 
-function renameProductDirectory($name, $original_name) {
+function updateProductImages($productData, $images, $imageIds, $paths) {
+    // 1: Képek (csak amelyik típusból feltöltött) törlése az image táblából (kaszkádol)
+    // 2: Elérési útvonalak feltöltése az image táblába
+    // 3: connectProductImages függvény használata a képek és a termékek összekötésére
+
+    if (count($paths) > 0 && count($imageIds) > 0) {
+        $deleteIds = array();
+    
+        for ($i = 0; $i < count($imageIds); $i++){
+            $name = $images[$i]["name"];
+            $file = end(explode("/", $paths[$i]));
+    
+            if ( $name == "product_image" && str_contains($file, "image") ) {
+                array_push($deleteIds, $imageIds[$i]);
+            }
+            else if ( str_contains($file, "thumbnail") ) {
+                array_push($deleteIds, $imageIds[$i]);
+            }
+        }
+    
+        $query = "DELETE FROM images WHERE id IN (" . implode(',', array_fill(0, count($deleteIds), '?')) . ")";
+        $result = updateData($query, $deleteIds);
+        if ($result !== true) {
+            return "Sikertelen törlés a product_images táblában.";
+        }
+    }
+
+    return true;
+
+}
+
+function updateProductData($productData, $images, $imageIds, $paths) {
+    
+    $fields = array("name", "unit_price", "stock", "description");
+    $values = array(
+        $productData["name"],
+        $productData["price"],
+        $productData["stock"],
+        $productData["description"],
+        $productData["id"]
+    );
+    
+    $query = "UPDATE `product` SET ";
+    for ($i = 0; $i < count($values) - 1; $i++){
+        $query .= "`{$fields[$i]}`=?";
+        if ($i != count($values) - 2) $query .= ", ";
+    }
+    $query .= " WHERE `product`.`id`=?;";
+    $result = updateData($query, $values);
+    if ($result !== true) {
+        return "Sikertelen frissítés.";
+    }
+    
+    $result = updateProductTags($productData);
+    if ($result !== true) {
+        return $result;
+    }
+
+    return true;
+    // $result = updateProductImages($productData, $images, $imageIds, $paths);
+}
+
+function renameProductDirectory($productData) {
     $baseDirectory = './images/products/';
 
-    $productName = format_str($name);
-    $originalProductName = format_str($original_name);
+    $productName = format_str($productData["name"]);
+    $originalProductName = format_str($productData["original_name"]);
 
     $originalProductDirURI = $baseDirectory.$originalProductName."/";
     $productDirURI = $baseDirectory.$productName."/";
     
-    var_dump($originalProductDirURI, $productDirURI);
     if ($productName == $originalProductName) {
-        return $originalProductDirURI;
+        return [ "message" => $originalProductDirURI, "type" => "NO_CHANGE" ];
     }
 
     if (renameFolder($originalProductDirURI, $productDirURI)) {
-        return $productDirURI;
+        
+        $query = "SELECT image.id, image.uri FROM product_image INNER JOIN image ON product_image.image_id=image.id WHERE product_image.product_id = ?;";
+        $result = selectData($query, $productData["id"]);
+
+        if (!is_array($result)) {
+            if ($result == "Nincs találat!") {
+                return [ "message" => "Nem találhatóak a keresett termékhez képek.", "type" => "EMPTY" ];
+            }
+            else {
+                return [ "message" => $result, "type" => "ERROR" ];
+            }
+        }
+
+        $ids = array_map(function ($e) { return $e["id"]; }, $result);
+        $uris = array_map(function ($e) { return $e["uri"]; }, $result);
+
+        for ($i = 0; $i < count($uris); $i++) {
+            $original_name = format_str($productData["original_name"]);
+            $name = format_str($productData["name"]);
+            
+            // Az elérési útvonalban kicseréljük a régi terméknevet az újra egy speciális karakter segítségével ( | ).
+            $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', $name, str_replace($original_name, '|', $uris[$i]));
+        }
+
+        $caseStatements = [];
+        foreach ($ids as $id) {
+            $caseStatements[] = "WHEN id = {$id} THEN ?";
+        }
+
+        $caseSql = implode(' ', $caseStatements);
+        $values = implode(', ', $ids);
+    
+        $query = "UPDATE image SET uri = CASE {$caseSql} END WHERE id IN (" . $values . ");";
+
+        $result = updateData($query, $uris);
+        if ($result !== true) {
+            return [ "message" => "Sikertelen módosítás.", "type" => "ERROR" ];
+        }
+
+        return [ "message" => [$productDirURI, $ids], "type" => "SUCCESS" ];
     }
     else {
-        return null;
+        return [ "message" => "Sikertelen mappa átnevezés.", "type" => "ERROR" ];
     }
 }
 
 function updateProductDirectory($productData, $images) {
 
-    $productDirURI = renameProductDirectory($productData["name"], $productData["original_name"]);
+    $result = renameProductDirectory($productData);
 
-    if (is_null($productDirURI) || !is_dir($productDirURI."thumbnail/") || !is_dir($productDirURI."gallery/")) {
+    if (!isSuccess($result)) {
+        return $result["message"];
+    }
+
+    [$productDirURI, $ids] = $result["message"];
+
+    if (!is_dir($productDirURI."thumbnail/") || !is_dir($productDirURI."gallery/")) {
         return "Hiányzó mappa.";
     }
     
@@ -292,7 +423,7 @@ function updateProductDirectory($productData, $images) {
         }
 
     }
-    return $paths;
+    return [$paths, $ids];
 }
 
 function updateProduct($productData) {
@@ -303,6 +434,7 @@ function updateProduct($productData) {
     }
 
     $images = array();
+    $paths = array();
 
     if (isset($_FILES["thumbnail_image"])) {
         array_push($images, array("name" => "thumbnail_image", "tmp_name" => $_FILES["thumbnail_image"]["tmp_name"], "ext" => pathinfo($_FILES["thumbnail_image"]["name"], PATHINFO_EXTENSION)));
@@ -319,24 +451,33 @@ function updateProduct($productData) {
     }
 
     if (count($images) > 0) {
-        $paths = updateProductDirectory($productData, $images);
+        $result = updateProductDirectory($productData, $images);
+        if (!is_array($result)) return $result;
     
-        if (!is_array($paths)) return $paths;
+        [$paths, $imageIds] = $result;
         if (hasError($paths)) return false;
     
         for ($i = 0; $i < count($images); $i++) {
             $productData[$images[$i]["name"]] = $paths[$i];
         }
-
-        var_dump($paths);
     }
     else {
-        $result = renameProductDirectory($productData["name"], $productData["original_name"]);
-        // if (is_null($result)) {
-        //     // return "Sikertelen mappa átnevezés!";
-        // }
+        $result = renameProductDirectory($productData);
+
+        if (isError($result)) {
+            var_dump($result);
+            return $result["message"];
+        }
+
+        if ($result["type"] == "NO_CHANGE") {
+            $productDirURI = $result["message"]; 
+            $imageIds = array();
+        }
+        else {
+            [$productDirURI, $imageIds] = $result["message"];
+        }
     }
 
-    return true;
+    return updateProductData($productData, $images, $imageIds, $paths);
 }
 ?>
