@@ -165,7 +165,13 @@ function renameCategoryDirectory($categoryData, $categoryType) {
     
     
     $table = ($categoryType == "main" ? "category" : "subcategory");
-    if (moveFolder($originalCategoryDirURI, $categoryDirURI)) {
+    if ($table == "category") {
+        $operation = renameFolder($originalCategoryDirURI, $categoryDirURI);
+    }
+    else {
+        $operation = moveFolder($originalCategoryDirURI, $categoryDirURI);
+    }
+    if ($operation) {
         
         if ($table == "category") {
             $query = "SELECT category.thumbnail_image_vertical_uri AS 'category_vertical', category.thumbnail_image_horizontal_uri AS 'category_horizontal', category.thumbnail_video_uri AS 'category_video',
@@ -285,7 +291,13 @@ function updateCategoryData($categoryData, $categoryType, $images) {
     }
     $query .= " WHERE `$table`.`id`=?;";
 
-    return updateData($query, $values);
+    $result = updateData($query, $values);
+    if (is_bool($result)) {
+        return true;
+    }
+    else {
+        return $result;
+    }
 }
 
 function updateCategory($categoryData) {
