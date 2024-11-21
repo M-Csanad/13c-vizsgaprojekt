@@ -162,12 +162,11 @@ function renameCategoryDirectory($categoryData, $categoryType) {
     if ($categoryDirURI == $originalCategoryDirURI) {
         return $originalCategoryDirURI;
     }
-
-
+    
+    
+    $table = ($categoryType == "main" ? "category" : "subcategory");
     if (moveFolder($originalCategoryDirURI, $categoryDirURI)) {
         
-        $table = ($categoryType == "main" ? "category" : "subcategory");
-        var_dump($table);
         if ($table == "category") {
             $query = "SELECT category.thumbnail_image_vertical_uri AS 'category_vertical', category.thumbnail_image_horizontal_uri AS 'category_horizontal', category.thumbnail_video_uri AS 'category_video',
                       subcategory.thumbnail_image_vertical_uri AS 'subcategory_vertical', subcategory.thumbnail_image_horizontal_uri AS 'subcategory_horizontal', subcategory.thumbnail_video_uri AS 'subcategory_video' 
@@ -188,8 +187,10 @@ function renameCategoryDirectory($categoryData, $categoryType) {
         for ($i = 0; $i < count($uris); $i++) {
             
             // Az elérési útvonalban kicseréljük a régi mappanevet az újra egy speciális karakter segítségével ( | ).
-            $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', $name, str_replace($originalName, '|', $uris[$i]));
-            $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', $parentName, str_replace($originalParentName, '|', $uris[$i]));
+            $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', format_str($name), str_replace(format_str($originalName), '|', $uris[$i]));
+            if ($table == "subcategory") {
+                $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', format_str($parentName), str_replace(format_str($originalParentName), '|', $uris[$i]));
+            }
         }
 
         $query = "UPDATE $table SET $table.thumbnail_image_vertical_uri=?, $table.thumbnail_image_horizontal_uri=?, $table.thumbnail_video_uri=? WHERE $table.id=?";
