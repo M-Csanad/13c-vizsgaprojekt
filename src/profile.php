@@ -11,14 +11,14 @@
 
         if (isset($_SESSION['user_name'])) {
 
-            $user = getUserData($_SESSION['user_id']);
+            $result = getUserData($_SESSION['user_id']);
             
-            if ($user == "Nincs találat!") { // Ha nincs olyan user, akinek az id-ja megegyezik a SESSION-ben lévővel
-                header("Location: ./");
+            if (typeOf($result, "ERROR")) {
+                echo "<div class='error'>", $result["message"], "</div>";
                 exit();
             }
-            else if (!is_array($user)) {
-                echo "<div class='error'>", $user, "</div>";
+            else if (typeOf($result, "EMPTY")) { // Ha nincs olyan user, akinek az id-ja megegyezik a SESSION-ben lévővel
+                header("Location: ./");
                 exit();
             }
         } 

@@ -638,14 +638,21 @@
                                 <div class="tag-body">
                                     <div class="tag-items">
                                         <?php
-                                            $tags = selectData("SELECT * FROM tag;", null);
-                                            if (is_array($tags)) {
+                                            $result = selectData("SELECT * FROM tag;", null);
+                                            if (typeOf($result, "SUCCESS")) {
+                                                $tags = $result["message"];
+
+                                                if ($result["contentType"] == "ASSOC") $tags = [$tags];
+                                                
                                                 $count = 0;
                                                 for ($i = 0; $i < count($tags); $i++) {
                                                     $tag = $tags[$i];
                                                     $id = "tag".$i;
                                                     echo "<label for='$id' class='tag-checkbox'><img loading='lazy' src='{$tag['icon_uri']}' draggable='false' title='{$tag['name']}' alt='{$tag['name']}'><input type='checkbox' name='tags[]' id='$id' value='{$tag['id']}'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>";
                                                 }
+                                            }
+                                            else if (typeOf($result, "EMPTY")){
+                                                echo "Nincsenek allergének felvéve.";
                                             }
                                         ?>
                                     </div>
@@ -940,14 +947,21 @@
                                 <div class="tag-body">
                                     <div class="tag-items" name="tags">
                                         <?php
-                                            $tags = selectData("SELECT * FROM tag;", null);
-                                            if (is_array($tags)) {
+                                            $result = selectData("SELECT * FROM tag;", null);
+                                            if (typeOf($result, "SUCCESS")) {
+                                                $tags = $result["message"];
+
+                                                if ($result["contentType"] == "ASSOC") $tags = [$tags];
+
                                                 $count = 0;
                                                 for ($i = 0; $i < count($tags); $i++) {
                                                     $tag = $tags[$i];
                                                     $id = "tag".$i;
                                                     echo "<label for='$id-modify' class='tag-checkbox'><img loading='lazy' src='{$tag['icon_uri']}' draggable='false' title='{$tag['name']}' alt='{$tag['name']}'><input type='checkbox' name='tags[]' id='$id-modify' value='{$tag['id']}'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>";
                                                 }
+                                            }
+                                            else if (typeOf($result, "EMPTY")){
+                                                echo "Nincsenek allergének felvéve.";
                                             }
                                         ?>
                                     </div>
@@ -1272,11 +1286,11 @@
 
             $result = createCategory($categoryData);
 
-            if (is_numeric($result)) {
+            if (typeOf($result, "SUCCESS")) {
                 echo "<div class='success'>Kategória sikeresen létrehozva!</div></div>";
             }
             else {
-                echo "<div class='error'>A kategória létrehozása sikertelen! $result</div></div>";
+                echo "<div class='error'>A kategória létrehozása sikertelen! {$result["message"]}</div></div>";
             }
 
         }
@@ -1285,7 +1299,7 @@
         if (isset($_POST['delete_category'])) {
 
             if ($_POST['category_type'] == 'null' || $_POST['category_id'] == 'null') {
-                echo "<div class='error'>A kategória törlése sikertelen! Ez a kategória nem létezik!</div></div>"; 
+                echo "<div class='error'>A kategória törlése sikertelen! Kérjük töltsön ki minden mezőt!</div></div>"; 
             }
             else {
                 $categoryData = array(
@@ -1295,11 +1309,11 @@
                 );
                 $result = removeCategory($categoryData);
 
-                if ($result === true) {
+                if (typeOf($result, "SUCCESS")) {
                     echo "<div class='success'>A kategória sikeresen törölve.</div></div>";
                 }
                 else {
-                    echo "<div class='error'>A kategória törlése sikertelen! $result</div></div>";
+                    echo "<div class='error'>A kategória törlése sikertelen! {$result["message"]}</div></div>";
                 }
             }
         }
@@ -1322,11 +1336,11 @@
 
             $result = updateCategory($categoryData);
 
-            if ($result === true) {
+            if (typeOf($result, "SUCCESS")) {
                 echo "<div class='success'>A kategória sikeresen módosítva.</div></div>";
             }
             else {
-                echo "<div class='error'>A kategória módosítása sikertelen! $result</div></div>";
+                echo "<div class='error'>A kategória módosítása sikertelen! {$result["message"]}</div></div>";
             }
         }
 
@@ -1362,7 +1376,7 @@
                 echo "<div class='success'>Termék sikeresen létrehozva!</div></div>";
             }
             else {
-                echo "<div class='error'>A termék létrehozása sikertelen! $result</div></div>";
+                echo "<div class='error'>A termék létrehozása sikertelen! {$result}</div></div>";
             }
         }
 
@@ -1384,7 +1398,7 @@
                 echo "<div class='success'>Termék sikeresen módosítva!</div></div>";
             }
             else {
-                echo "<div class='error'>A termék módosítása sikertelen! $result</div></div>";
+                echo "<div class='error'>A termék módosítása sikertelen! {$result}</div></div>";
             }
         }
 
@@ -1415,7 +1429,7 @@
                 echo "<div class='success'>Termék oldal sikeresen létrehozva!</div>";
             }
             else {
-                echo "<div class='error'>A termék oldal létrehozása sikertelen! $result</div>";
+                echo "<div class='error'>A termék oldal létrehozása sikertelen! {$result}</div>";
             }
         }
 
@@ -1432,7 +1446,7 @@
                 echo "<div class='success'>A termék sikeresen törölve.</div>";
             }
             else {
-                echo "<div class='error'>A termék törlése sikertelen! $result</div>";
+                echo "<div class='error'>A termék törlése sikertelen! {$result}</div>";
             }
         }
         
@@ -1440,7 +1454,7 @@
         if (isset($_POST['modify_role'])) {
             $userId = intval($_POST['user_id']);
             $role = $_POST['role'];
-            if (modifyRole($userId, $role) === true) {
+            if (typeOf(modifyRole($userId, $role), "SUCCESS")) {
                 echo "<div class='success'>Sikeres művelet!</div>";
             }
             else {

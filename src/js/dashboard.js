@@ -383,12 +383,20 @@ async function populateOptions(select, category, table) {
     if (response.ok) {
         let data = await response.json();
         
-        select.innerHTML = "";
-        if (Array.isArray(data) || typeof data == "object") {
-            if (!Array.isArray(data) && typeof data == "object") data = [data];
-            data.forEach(category => select.innerHTML += `<option value='${category.name}' data-id='${category.id}'>${category.name}</option>`);
+        if (data.type == "ERROR") {
+            console.log("Hiba a kategória kereséskor: " + data.message);
+            return;
+        }
+        else if (data.type == "EMPTY") {
+            console.log("Hiba a kategória kereséskor: " + data.message);
+            return;
         }
 
+        select.innerHTML = "";
+        if (data.contentType == "ASSOC") data.message = [data.message];
+        
+        data = data.message;
+        data.forEach(category => select.innerHTML += `<option value='${category.name}' data-id='${category.id}'>${category.name}</option>`);
     }
 }
 

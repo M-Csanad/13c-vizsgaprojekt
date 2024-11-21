@@ -40,12 +40,12 @@ function createProductPage($productData, $productPageData, $productCategoryData)
     
     $productPageData["product_id"] = $productData["id"];
     $result = uploadProductPageData($productPageData);
-    if (!is_numeric($result)) {
-        if ($result->getCode() === 1062) { // Duplicate entry hiba
+    if (typeOf($result, "ERROR")) {
+        if ($result["message"] -> getCode() === 1062) { // Duplicate entry hiba
             return "Ilyen termék oldal már létezik.";
         }
         else {
-            return "Sikertelen feltöltés a product_page táblába. ($result)";
+            return "Sikertelen feltöltés a product_page táblába. ({$result["message"]})";
         }
     }
 

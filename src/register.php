@@ -104,12 +104,12 @@
                     // Regisztrációs függvény meghívása, amely elmenti az új felhasználót
                     $result = register($username, $password, $email);
                     
-                    if ($result === true) {
+                    if (typeOf($result, "SUCCESS")) {
                         // Ha a regisztráció sikeres, átirányítás a bejelentkezési oldalra
                         header("Location: ./login");
                     }
                     else {
-                        echo $result;
+                        echo $result["message"];
                     }
                 }
             }

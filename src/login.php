@@ -71,12 +71,12 @@
                 $result = login($username, $password, $rememberMe);
                 
                 // Ha a bejelentkezés sikeres, átirányítás a főoldalra
-                if ($result === true) {
+                if (typeOf($result, "SUCCESS")) {
                     header('Location: ./');
                 }
                 // Ha nem sikeres, a hibaüzenet kiírása
                 else {
-                    echo $result;
+                    echo $result["message"];
                 }
             }
             ?>

@@ -146,8 +146,8 @@ function replaceFile($fileURI, $tmp, $name, $basename) {
 
     if (is_file($fileURI)) {
         unlink($fileURI);
-        if (moveFile($tmp, $name, $basename, $dirURI)) return $fileURI;
-        else return false;
+        $result = moveFile($tmp, $name, $basename, $dirURI);
+        return $result;
     }
     else return false;
 }

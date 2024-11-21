@@ -90,14 +90,25 @@ function initializeSearch(search) {
             if (response.ok) {
                 let data = await response.json();
 
-                if (typeof data == "object") {
+                if (data.type == "ERROR") {
+                    console.log("Hiba a kereséskor: " + data.message);
+                }
+
+                if (data.type == "SUCCESS") {
                     lastContentfulSearchTerm = input;
                 }
                 else {
                     isSearchEnabled = false;
                 }
 
-                populateItemContainer(data);
+                if (data.type == "EMPTY") {
+                    toggleDropdown(false);
+                    return;
+                }
+                else {
+                    populateItemContainer(data.message);
+                }
+
             }
         } else {
             toggleDropdown(false);
@@ -116,10 +127,6 @@ function initializeSearch(search) {
 
     // A legördülömenü feltöltése találatokkal
     function populateItemContainer(items) {
-        if (items === "Nincs találat!") {
-            toggleDropdown(false);
-            return;
-        }
 
         searchItemsContainer.innerHTML = "";
         toggleDropdown(true);

@@ -1,24 +1,43 @@
 <?php
 
-function bindCookie($user)
+/**
+  * **Elhelyez egy sütit** a felhasználó számítógépén, és az azonosítót feltölti az adatbázisba.
+  *
+  * A süti elhelyezése után az azonosító és a érvényességi idő feltöltésre kerülnek a megadott *user.id*-vel rendelkező felhasználóhoz.
+  *
+  * @param array $userId A felhasználó, akihez a sütit szeretnénk kapcsolni.
+  *
+  * @return void
+  */
+function bindCookie($userId)
 {
     include_once "init.php";
     $cookieToken = hash('sha256', bin2hex(random_bytes(32)));
-    $expireTime = 5 * 60; // Lejárás ideje másodpercben
+    $expireTime = 7 * 24 * 60 * 60; // Lejárás ideje másodpercben
     $expireUnix = time() + $expireTime;
     $result = updateData("UPDATE user 
                           SET cookie_id = ?, 
                           cookie_expires_at = ? 
-                          WHERE user.id = ?", [$cookieToken, $expireUnix, $user['id']]);
+                          WHERE user.id = ?", [$cookieToken, $expireUnix, $userId]);
 
-    if ($result === true) {
-        setcookie('rememberMe', $cookieToken, $expireUnix, '/', '', false, false); // 5 perces süti létrehozása
+    if (typeOf($result, "SUCCESS")) {
+        setcookie('rememberMe', $cookieToken, $expireUnix, '/', '', false, false); // 1 hétig érvényes süti létrehozása
+        return ["message" => "Sikeres süti felvitel.", "type" => "SUCCESS"];
     }
     else {
-        echo "<div class='error'>$result</div>";
+        return $result;
     }
 }
 
+/**
+  * Kitörli az Emlékezz rám sütit az adatbázisból, illetve a felhasználó gépéről.
+  *
+  * A sütit a hashelt azonosítója alapján kitörli az adatbázisból, majd a felhasználó gépéről.
+  *
+  * @param string $cookieToken A süti egyedi, hashelt azonosítója
+  *
+  * @return void
+  */
 function removeCookie($cookieToken)
 {
     include_once "init.php";
@@ -27,12 +46,13 @@ function removeCookie($cookieToken)
                           cookie_expires_at = NULL 
                           WHERE user.cookie_id = ?", $cookieToken);
     
-    if ($result === true) {
+    if (typeOf($result, "SUCCESS")) {
         unset($_COOKIE['rememberMe']);
         setcookie('rememberMe', '', time() - 3600, '/');
+        return ["message" => "Sikeres süti törlés.", "type" => "SUCCESS"];
     }
     else {
-        echo "<div class='error'>$result</div>";
+        return $result;
     }
 }
 
