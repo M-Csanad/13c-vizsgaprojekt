@@ -60,14 +60,21 @@ function getCategoryContent()
 
             // Kategória URL generálása
             $category_slug = generateSlug($category_name);
+            $category_url = "http://localhost:8080/13c-vizsgaprojekt/src/web/" . $category_slug . "/";
 
             if (!isset($category_content[$category_name])) {
                 $category_content[$category_name] = [
                     'title' => $category_name,
+                    'url' => $category_url,
                     'img' => "../" . $category_image,
                     'subcategories' => []
                 ];
             }
+
+
+
+
+
 
             if ($subcategory_name) {
                 // Alkategória URL generálása
@@ -125,24 +132,26 @@ $menu_items = [
 
 
 <div id="fb-subcontentContainer" class="fb-nav-subcontent-container">
-    <div id="fb-categoryContentWrapper" class="col-8 fb-nav-subcontent-wrapper">
+    <div id="fb-categoryContentWrapper" class="fb-nav-subcontent-wrapper">
         <?php foreach ($category_content as $content): ?>
-            <div class="fb-nav-subcontent-frame">
-                <div class="fb-nav-subcontent-imgblock">
-                    <img src="<?= $content['img'] ?>" alt="<?= $content['title'] ?> image" />
-                    <h3 class="fb-subcontent-imgblock-title"><?= $content['title'] ?></h3>
-                </div>
-                <div class="fb-nav-subcontent-textblock">
-                    <h2 class="fb-textblock-title"><?= $content['title'] ?></h2>
-                    <div class="fb-textblock-listpanel">
-                        <ul>
-                            <?php foreach ($content['subcategories'] as $sub): ?>
-                                <li><a href="<?= $sub['url'] ?>" class="fb-link"><?= $sub['name'] ?></a></li>
-                            <?php endforeach; ?>
-                        </ul>
+            <a href="<?=$content["url"]?>">
+                <div class="fb-nav-subcontent-frame">
+                    <div class="fb-nav-subcontent-imgblock">
+                        <img src="<?= $content['img'] ?>" alt="<?= $content['title'] ?> image" />
+                        <h2 class="fb-subcontent-imgblock-title"><?= $content['title'] ?></h2>
                     </div>
+                    <!-- <div class="fb-nav-subcontent-textblock">
+                        <h4 class="fb-textblock-title"><?= $content['title'] ?></h4>
+                        <div class="fb-textblock-listpanel">
+                            <ul>
+                                <?php foreach ($content['subcategories'] as $sub): ?>
+                                    <li><a href="<?= $sub['url'] ?>" class="fb-link"><?= $sub['name'] ?></a></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div> -->
                 </div>
-            </div>
+            </a>
         <?php endforeach; ?>
     </div>
 </div>
