@@ -168,6 +168,7 @@
 
 .fb-nav-subcontent-container {
   position: absolute;
+  display: flex;
   flex-direction: row;
   left: 0;
   top: 0;
@@ -199,6 +200,7 @@
 .fb-nav-subcontent-wrapper,
 .fb-nav-imgcontent-wrapper {
   display: flex;
+  box-sizing: border-box;
   flex-flow: row wrap;
   justify-content: center;
   text-transform: uppercase;
@@ -218,8 +220,8 @@
 .fb-nav-subcontent-frame {
   position: relative;
   overflow: hidden;
-  width: calc(12rem + 0.8vw);
-  height: calc(18.5rem + 0.8vw);
+  width: calc(11vw - 0.8vh);
+  height: calc(16.5vw - 0.8vh);
   margin: 12px;
 }
 
@@ -500,5 +502,9 @@
   .hamburger-menu-item ul li a {
     color: var(--light-gray);
     text-decoration: none;
+  }
+
+  #fb-subcontentContainer {
+    display: none !important;
   }
 }

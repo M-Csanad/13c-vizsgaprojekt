@@ -543,7 +543,7 @@ h6 {
 .swiper-slide .img-wrapper img {
   position: relative;
   top: 0;
-  filter: grayscale(0.36) brightness(0.84);
+  filter: grayscale(0.22) brightness(0.84) saturate(1);
 
   width: 100vw;
   height: auto;
@@ -553,7 +553,8 @@ h6 {
 }
 
 .swiper-slide .img-wrapper:hover img {
-  filter: grayscale(0) brightness(1);
+  filter: grayscale(0) brightness(1) saturate(1.1);
+
   transition: filter 0.4s ease-in;
 }
 
