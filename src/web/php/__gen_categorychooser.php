@@ -21,6 +21,16 @@ function generateHTML()
             $first_word = $name_parts[0];
             $remaining_words = isset($name_parts[1]) ? $name_parts[1] : '';
 
+            $fileInfo_vertical = pathinfo(htmlspecialchars($row['thumbnail_image_vertical_uri']));
+            $fileInfo_horizontal = pathinfo(htmlspecialchars($row['thumbnail_image_horizontal_uri']));
+
+            $FileName_vertical = $fileInfo_vertical['dirname'] . '/' . $fileInfo_vertical['filename'];
+            $FileName_horizontal = $fileInfo_horizontal['dirname'] . '/' . $fileInfo_horizontal['filename'];
+
+            $resolutions_vertical = array(768, 1024);
+            $resolutions_horizontal = array(3840, 2560, 1920, 1440, 1024);
+
+
             echo '<div class="swiper-slide">
                     <div class="img-wrapper">
                         <div class="content_wrapper">
@@ -34,11 +44,26 @@ function generateHTML()
                                 <p class="__t02-men1">' . htmlspecialchars($row['description']) . '</p>
                             </div>
                         </div>
-                        <picture>
-                            <source media="(min-width: 320px) and (orientation: portrait)" srcset="../' . htmlspecialchars($row['thumbnail_image_vertical_uri']) . '">
-                            <source media="(max-width: 1024px)" srcset="../' . htmlspecialchars($row['thumbnail_image_vertical_uri']) . '">
-                            <img src="../' . htmlspecialchars($row['thumbnail_image_horizontal_uri']) . '" alt="">
-                        </picture>
+                        <picture>';
+            // Vertical képek 1024px alatt
+            foreach ($resolutions_vertical as $resolution) {
+                echo '<source type="image/avif" media="(max-width:' . $resolution . 'px)" srcset="../' . $FileName_vertical . '-' . $resolution . 'px.avif">';
+                echo '<source type="image/webp" media="(max-width:' . $resolution . 'px)" srcset="../' . $FileName_vertical . '-' . $resolution . 'px.webp">';
+                echo '<source type="image/jpeg" media="(max-width:' . $resolution . 'px)" srcset="../' . $FileName_vertical . '-' . $resolution . 'px.jpg">';
+            }
+
+            // Horizontal képek 1024px fölött
+            foreach ($resolutions_horizontal as $resolution) {
+                echo '<source type="image/avif" media="(min-width:' . $resolution . 'px)" srcset="../' . $FileName_horizontal . '-' . $resolution . 'px.avif">';
+                echo '<source type="image/webp" media="(min-width:' . $resolution . 'px)" srcset="../' . $FileName_horizontal . '-' . $resolution . 'px.webp">';
+                echo '<source type="image/jpeg" media="(min-width:' . $resolution . 'px)" srcset="../' . $FileName_horizontal . '-' . $resolution . 'px.jpg">';
+            }
+
+            // Fallback kép
+            echo '<img src="../' . $FileName_horizontal . '-' . $resolutions_horizontal[2] . 'px.jpg"
+                      alt="' . htmlspecialchars($row['name']) . ' ' . htmlspecialchars($row['subname']) . '"
+                      loading="lazy">';
+            echo '</picture>
                     </div>
                     <div class="swiper-button-next frosted-glass"></div>
                     <div class="swiper-button-prev frosted-glass"></div>

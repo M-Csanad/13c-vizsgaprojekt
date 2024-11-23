@@ -326,6 +326,8 @@
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   <!--extras-->
+  <script src="./mainPage/js/testActualLoadedImageInCategorySlider.js"></script>
+
 </body>
 
 </html>
