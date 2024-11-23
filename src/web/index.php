@@ -28,6 +28,22 @@
   <script src="./js/autogenerate__footer.js" defer></script>
   <script src="./js/autogenerate__navbar.js" defer></script>
 
+  <!--swiper bundle-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.0.4/swiper-bundle.min.js"
+    integrity="sha512-0N/5ZOjfsh3niel+5dRD40HQkFOWaxoVzqMVAHnmAO2DC3nY/TFB7OYTaPRAFJ571IRS/XRsXGb2XyiFLFeu1g=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
+  <script type="text/javascript" src="./mainPage/js/swiper.js" defer></script>
+  <script type="text/javascript" src="./mainPage/js/swiperThumbs.js" defer></script>
+
+  <!--video restart-->
+  <script src="./mainPage/js/videoMouseHover.js" defer></script>
+  <script src="./mainPage/js/videoContentScroll.js" defer></script>
+
+  <!--parallax-->
+  <script src="./mainPage/js/parallaxEffect.js" defer></script>
+  <script src="./mainPage/js/imageParallaxGallery.js" defer></script>
+  <script src="./mainPage/js/movingGradientEffect.js" defer></script>
+
   <title>Home - Florens Botanica</title>
 </head>
 
@@ -305,28 +321,14 @@
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
   <script src="./js/lenis.js"></script>
 
-  <!--swiper bundle-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.0.4/swiper-bundle.min.js"
-    integrity="sha512-0N/5ZOjfsh3niel+5dRD40HQkFOWaxoVzqMVAHnmAO2DC3nY/TFB7OYTaPRAFJ571IRS/XRsXGb2XyiFLFeu1g=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script type="text/javascript" src="./mainPage/js/swiper.js"></script>
-  <script type="text/javascript" src="./mainPage/js/swiperThumbs.js"></script>
 
-  <!--video restart-->
-  <script src="./mainPage/js/videoMouseHover.js"></script>
-  <script src="./mainPage/js/videoContentScroll.js"></script>
-
-  <!--parallax-->
-  <script src="./mainPage/js/parallaxEffect.js"></script>
-  <script src="./mainPage/js/imageParallaxGallery.js"></script>
-  <script src="./mainPage/js/movingGradientEffect.js"></script>
 
   <!--ionicons-->
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   <!--extras-->
-  <script src="./mainPage/js/testActualLoadedImageInCategorySlider.js"></script>
+  <!-- <script src="./mainPage/js/testActualLoadedImageInCategorySlider.js"></script> -->
 
 </body>
 

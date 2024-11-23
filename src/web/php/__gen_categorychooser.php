@@ -81,10 +81,12 @@ function generateHTML()
         while ($row = $result->fetch_assoc()) {
             $name_parts = explode(' ', $row['name'], 2);
             $remaining_words = isset($name_parts[1]) ? $name_parts[1] : '';
+            $fileInfo_horizontal = pathinfo(htmlspecialchars($row['thumbnail_image_horizontal_uri']));
+            $FileName_horizontal = $fileInfo_horizontal['dirname'] . '/' . $fileInfo_horizontal['filename'];
 
             echo '<div class="swiper-slide">
                     <div class="circleImg">
-                        <img src="../' . htmlspecialchars($row['thumbnail_image_horizontal_uri']) . '" alt="' . htmlspecialchars($row['name']) . '" />
+                        <img src="../' . $FileName_horizontal . '-768px.jpg" alt=thumbnail_"' . htmlspecialchars($row['name']) . '" />
                         <div class="halo">
                             <div class="point"></div>
                         </div>

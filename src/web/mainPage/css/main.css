@@ -932,6 +932,7 @@ h6 {
 .ImgGallery_container {
   display: grid;
   grid-template-columns: repeat(3, 1fr) 0.5fr; /* 3 nagy oszlop és 1 kisebb */
+  overflow: hidden;
   gap: 6px 12px;
   justify-content: center;
   width: 96vw;
@@ -942,11 +943,11 @@ h6 {
 }
 
 .ImgGallery_container .media_box {
-  width: 100%;
-  height: 100%;
   position: relative;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  height: 100%;
   justify-content: center;
   align-items: center;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
@@ -954,36 +955,43 @@ h6 {
   overflow: hidden;
 }
 
+.ImgGallery_container .media_box:nth-child(5n + 1),
+.ImgGallery_container .media_box:nth-child(5n + 2),
+.ImgGallery_container .media_box:nth-child(5n + 3) {
+  grid-row: span 2; /* Ezek a képek két sor magasak */
+  height: 36vh;
+}
+
+.ImgGallery_container .media_box:nth-child(5n + 4),
+.ImgGallery_container .media_box:nth-child(5n + 5) {
+  grid-row: span 1; /* Ezek a képek egy sor magasak */
+  height: 18vh;
+}
+
 .ImgGallery_container .media_box:nth-child(5n + 1) {
   grid-column: 1;
-  grid-row: span 2; /* Első kép, két sor magas */
-  height: 36vh;
 }
 
 .ImgGallery_container .media_box:nth-child(5n + 2) {
   grid-column: 2;
-  grid-row: span 2; /* Második kép, két sor magas */
-  height: 36vh;
 }
 
 .ImgGallery_container .media_box:nth-child(5n + 3) {
   grid-column: 3;
-  grid-row: span 2; /* Harmadik kép, két sor magas */
-  height: 36vh;
 }
 
 .ImgGallery_container .media_box:nth-child(5n + 4) {
   grid-column: 4;
-  grid-row: span 1; /* Negyedik kép, felső hely a 4. oszlopban */
-  height: 18vh;
 }
 
 .ImgGallery_container .media_box:nth-child(5n + 5) {
   grid-column: 4;
-  grid-row: span 1; /* Ötödik kép ugyanabban a 4. oszlopban, de alsó hely */
-  height: 18vh;
 }
 
+.ImgGallery_container .media_box picture {
+  width: 100%;
+  height: 100%;
+}
 .ImgGallery_container .media_box img {
   width: 100%;
   height: 100%;
