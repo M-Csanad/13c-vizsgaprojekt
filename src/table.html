@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .table-container {
+            overflow-x: auto;
+        }
+        table {
+          overflow-x: auto;
+          width: 100%;
+          border-collapse: collapse;
+        }
+        th, td {
+          padding: 10px;
+          text-align: left;
+          border: 1px solid #ddd;
+        }
+        th {
+          cursor: pointer;
+          background-color: #f2f2f2;
+        }
+        th:hover {
+          background-color: #ddd;
+        }
+        .pagination {
+          display: flex;
+          justify-content: center;
+          margin-top: 10px;
+        }
+        .pagination button {
+          padding: 5px 10px;
+          margin: 0 5px;
+          cursor: pointer;
+          border: 1px solid #ddd;
+          background-color: #f2f2f2;
+        }
+        .pagination button.active {
+          background-color: #007bff;
+          color: white;
+        }
+        .pagination button:hover {
+          background-color: #ddd;
+        }
+      </style>
+</head>
+<body>
+    <h1>Product Pages</h1>
+    <div class="table-container">
+        <table id="productTable">
+            <thead>
+            <tr>
+                <th onclick="sortTable('id')">#</th>
+                <th onclick="sortTable('page_title')">Cím</th>
+                <th onclick="sortTable('product_id')">Terméknév</th>
+                <th onclick="sortTable('link_slug')">Útvonal</th>
+                <th onclick="sortTable('created_at')">Létrehozva</th>
+                <th onclick="sortTable('last_modified')">Módosítva</th>
+            </tr>
+            </thead>
+            <tbody>
+                <td>asd</td>
+                <td>asd</td>
+                <td>asd</td>
+                <td>asd</td>
+                <td>asd</td>
+                <td>asd</td>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

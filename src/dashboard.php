@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="./css/dashboard.css">
     <link rel="stylesheet" href="./css/allergen-checkbox.css">
     <link rel="stylesheet" href="./css/search.css">
+    <link rel="stylesheet" href="./css/table.css">
+    <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
     <?php 
         include_once "./auth/init.php"; 
         session_start();
@@ -1203,6 +1205,41 @@
                     <div class="items"></div>
                 </div>
             </section>
+
+            <section>
+                <div class="section-header" tabindex="0">
+                    <div class="section-title">Termék oldal törlése</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
+                <div class="section-body">
+                <form method="POST" enctype="multipart/form-data" data-needs-confirm="true" data-confirm-message="A termék oldal törlése nem visszavonható művelet!">
+                        <div class="input-grid">
+                            <div class="search-wrapper">
+                                <div class="search" data-search-type="product_page">
+                                    <input type="text" name="product_page_name" id="product_page_name_delete" placeholder="Termék oldal keresése" required autocomplete="off">
+                                    <label for="product_name_page_delete" class="search-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        </svg>
+                                    </label>
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                </svg> 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="form-submit-wrapper">
+                            <input type="submit" value="Törlés" class="form-submit-danger" name='delete_product_page'>
+                        </div>
+                    </form>
+                    <div class="items"></div>
+                </div>
+            </section>
         </div>
     </div>
     <!------------------------------ Jogosultságok kezelése ----------------------------->
@@ -1335,8 +1372,8 @@
             }
 
             $result = updateCategory($categoryData);
-
-            if (typeOf($result, "SUCCESS")) {
+            
+            if (!typeOf($result, "ERROR")) {
                 echo "<div class='success'>A kategória sikeresen módosítva.</div></div>";
             }
             else {

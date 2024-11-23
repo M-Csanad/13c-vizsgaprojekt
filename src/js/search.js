@@ -8,6 +8,7 @@ function initializeSearch(search) {
     const autofill = search.dataset.autofillFields ?? null;
     const searchConfig = {
         category: {
+            type: "regular", // regular, ha az alap működés kell, table, ha a találatokat táblázatban kell megjeleníteni
             autofillFields: [
                 { name: "name"}, 
                 { name: "subname"}, 
@@ -19,7 +20,7 @@ function initializeSearch(search) {
                 <img src='${item.thumbnail_image_horizontal_uri}'><div><b>${item.name}</b> - 
                 ${(item.type === "category") ? "Főkategória" : `Alkategória <i>(${item.parent_category})</i>`}</div>`,
 
-            clickHandler: (item) => {
+            clickHandler: async (item) => {
                 if (!autofill) {
                     itemClickHandler(item, ["id", "type", "name"]);
                 }
@@ -36,11 +37,13 @@ function initializeSearch(search) {
             }
         },
         user: {
+            type: "regular",
             template: (user) => `
                 <div><b>${user.name}</b> - ${user.email} (<i>${user.role}</i>)</div>`,
-            clickHandler: (user) => itemClickHandler(user, ["id", "name"])
+            clickHandler: async (user) => itemClickHandler(user, ["id", "name"])
         },
         product: {
+            type: "regular",
             autofillFields: [
                 { name: "name" }, 
                 { name: "description" }, 
@@ -56,7 +59,7 @@ function initializeSearch(search) {
                     return `<img src='${product.thumbnail_image_horizontal_uri}'><div><b>${product.name}</b> - <i>${product.category ? product.category : "#"} / ${product.subcategory ? product.subcategory : "#"}</i></div>`;
                 }
             },
-            clickHandler: (product) => {
+            clickHandler: async (product) => {
                 if (!autofill) {
                     itemClickHandler(product, ["id", "name"]);
                 }
@@ -70,6 +73,9 @@ function initializeSearch(search) {
                     ]});
                 }
             }
+        },
+        product_page: {
+            type: "table"
         }
     };
 
@@ -128,21 +134,29 @@ function initializeSearch(search) {
     // A legördülömenü feltöltése találatokkal
     function populateItemContainer(items) {
 
-        searchItemsContainer.innerHTML = "";
-        toggleDropdown(true);
-
-        if (!Array.isArray(items)) items = [items];
-
         const config = searchConfig[searchType];
         if (!config) return;
+        
+        if (config.type == "regular") {
 
-        for (let item of items) {
-            let itemDOM = document.createElement("div");
-            itemDOM.className = "search-item";
-            itemDOM.innerHTML = config.template(item);
-            itemDOM.addEventListener("click", () => config.clickHandler(item));
-            searchItemsContainer.appendChild(itemDOM);
+            searchItemsContainer.innerHTML = "";
+            toggleDropdown(true);
+    
+            if (!Array.isArray(items)) items = [items];
+
+            for (let item of items) {
+                let itemDOM = document.createElement("div");
+                itemDOM.className = "search-item";
+                itemDOM.innerHTML = config.template(item);
+                itemDOM.addEventListener("click", () => config.clickHandler(item));
+                searchItemsContainer.appendChild(itemDOM);
+            }
         }
+        else if (config.type == "table") {
+            console.log("tablazat");
+            console.log(items);
+        }
+
     }
 
     // A legördülőmenü elhelyezése a beviteli mező alá (mivel az űrlapon overflow: hidden van, ezért a legördülőmenü kívül kell hogy legyen)
@@ -165,7 +179,7 @@ function initializeSearch(search) {
         }
     }
     // A keresési találatra történő kattintás kezelése
-    function itemClickHandler(item, fields, outputData = {}) { // Módosításkor a kitöltendő mezők az outputData alapján töltődnek ki
+    async function itemClickHandler(item, fields, outputData = {}) { // Módosításkor a kitöltendő mezők az outputData alapján töltődnek ki
         fields.forEach(field => {
             const input = search.querySelector(`input[name=${searchType}_${field}]`);
             if (input) input.value = item[field];

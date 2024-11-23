@@ -209,9 +209,9 @@ function updateProductTags($productData) {
     if (typeOf($result, "ERROR")) {
         return "Sikertelen törlés.";
     }
-    
-    if (!isset($productData["tags"])) return true;
 
+    if (!isset($productData["tags"])) return true;
+    
     $values = array();
     $placeholders = array();
     
@@ -225,6 +225,48 @@ function updateProductTags($productData) {
     $result = updateData($query, $values);
     if (typeOf($result, "ERROR")) {
         return "Sikertelen felvitel.";
+    }
+
+    return true;
+}
+
+function updateProductPage($productData) {
+    $name = format_str($productData["name"]);
+    $originalName = format_str($productData["original_name"]);
+
+    if ($name == $originalName) {
+        return true;
+    }
+
+    $result = selectData("SELECT product_page.id, product_page.link_slug FROM product_page WHERE product_page.product_id=?", $productData["id"]);
+    if (!typeOf($result, "SUCCESS")) {
+        return "Sikertelen lekérdezés: ".$result["message"];
+    }
+
+    $data = $result["message"];
+    if ($result["contentType"] == "ASSOC") $data = [$data];
+    
+    $slugs = array_map(function ($e) {return $e["link_slug"];}, $data);
+    $ids = array_map(function ($e) {return $e["id"];}, $data);
+
+    for ($i = 0; $i < count($data); $i++) {
+        $slug = $slugs[$i];
+        $slugs[$i] = str_replace('|', $name, str_replace($originalName, '|', $slug));
+    }
+
+    $caseStatements = [];
+    foreach ($ids as $id) {
+        $caseStatements[] = "WHEN id = {$id} THEN ?";
+    }
+
+    $caseSql = implode(' ', $caseStatements);
+    $values = implode(', ', $ids);
+    
+    $query = "UPDATE product_page SET link_slug = CASE {$caseSql} END WHERE id IN (" . $values . ");";
+
+    $result = updateData($query, $slugs);
+    if (typeOf($result, "ERROR")) {
+        return "Sikertelen módosítás: ".$result['message'];
     }
 
     return true;
@@ -303,6 +345,11 @@ function updateProductData($productData, $images, $imageIds, $paths) {
     $result = updateData($query, $values);
     if (typeOf($result, "ERROR")) {
         return "Sikertelen frissítés.";
+    }
+
+    $result = updateProductPage($productData);
+    if (!is_bool($result)) {
+        return $result;
     }
     
     $result = updateProductTags($productData);

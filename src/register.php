@@ -6,116 +6,128 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Egyszerű regisztráció</title>
 
-    <!-- Google reCAPTCHA script betöltése -->
-    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-
-    <!-- Külső CSS fájl és Google Fonts betöltése -->
+    <link rel="preload" href="fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/root.css">
     <link rel="stylesheet" href="./css/register.css">
+    <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
+
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
+    <script>
+        if ( window.history.replaceState ) {
+            window.history.replaceState( null, null, window.location.href );
+        }
+    </script>
 </head>
-
 <body>
-    <!-- Regisztrációs űrlap -->
-    <form action="" method="post">
-        <div class="form-header">
-            <!-- Visszalépési link a főoldalra, SVG ikonnal -->
-            <p>
-                <a href="./" class="form-link">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="13" fill="currentColor"
-                        viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8" />
-                    </svg>
-                    Vissza a főoldalra
-                </a>
-            </p>
-            <!-- Űrlap címe -->
-            <h1>Fiók létrehozása</h1>
+    <div class="main">
+        <div class="side-image">
+            <div class="bg visible" style="background-image: url('./images/site/bg0.jpg');"></div>
+            <div class="bg" style="background-image: url('./images/site/bg1.jpg');"></div>
+            <div class="bg" style="background-image: url('./images/site/bg2.jpg');"></div>
+            <div class="bg" style="background-image: url('./images/site/bg3.jpg');"></div>
         </div>
-
-        <!-- Bemeneti mezők a regisztrációhoz -->
-        <div class="input-wrapper">
-            <!-- E-mail cím mező -->
-            <div class="input-group">
-                <label for="email">E-mail</label>
-                <input type="email" name="email" id="email" required placeholder="" autocomplete="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ""; ?>" oninput="validateEmailInput()">
+        <form action="" method="post" id="register">
+            <div class="form-header">
+                <h1>Üdvözöljük!</h1>
+                <div>Töltse ki az űrlapot a regisztráláshoz.</div>
             </div>
-
-            <!-- Felhasználónév mező -->
-            <div class="input-group">
-                <label for="username">Felhasználónév</label>
-                <input type="text" name="username" id="username" required placeholder="" autocomplete="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ""; ?>" oninput="validateUserNameInput()">
-            </div>
-
-            <!-- Jelszó és jelszó megerősítés mezők -->
-            <div class="input-group-inline">
-                <div class="input-group">
-                    <label for="password">Jelszó</label>
-                    <input type="password" name="password" id="password" required oninput="validatePasswordInputs()" autocomplete="new-password" placeholder="">
+            <div class="form-body">
+                <div class="input-wrapper">
+                    <div class="input-group">
+                        <label for="email">E-mail</label>
+                        <input type="email" name="email" id="email" required placeholder="" autocomplete="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ""; ?>" oninput="validateEmailInput()">
+                    </div>
+                    <div class="input-group">
+                        <label for="username">Felhasználónév</label>
+                        <input type="text" name="username" id="username" required placeholder="" autocomplete="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ""; ?>" oninput="validateUserNameInput()">
+                    </div>
+                    <div class="input-group-inline">
+                        <div class="input-group">
+                            <label for="password">Jelszó</label>
+                            <input type="password" name="password" id="password" required oninput="validatePasswordInputs()" autocomplete="new-password" placeholder="">
+                        </div>
+                        <div class="input-group">
+                            <label for="passwordConfirm">Jelszó megerősítése</label>
+                            <input type="password" name="passwordConfirm" id="passwordConfirm" required oninput="validatePasswordInputs()" autocomplete="new-password" placeholder="">
+                        </div>
+                    </div>
+                    <div class="input-group-inline">
+                        <div>
+                            <input type="checkbox" name="agree" id="agree" required>
+                            <label for="agree">Regisztrációmmal elfogadom az <a href="" class="form-link">ÁSZF-et.</a></label>
+                        </div>
+                    </div>
+                    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
                 </div>
-                <div class="input-group">
-                    <label for="passwordConfirm">Jelszó megerősítése</label>
-                    <input type="password" name="passwordConfirm" id="passwordConfirm" required oninput="validatePasswordInputs()" autocomplete="new-password" placeholder="">
+                <div class="form-bottom">
+                    <div class='form-message'>
+                        <?php
+                        
+                        include_once "./auth/init.php";
+                        
+                        if (isset($_POST['register'])) {
+                            
+                            $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
+                            $project_id = 'florens-botanica-1727886723149';
+                            $url = "https://recaptchaenterprise.googleapis.com/v1/projects/$project_id/assessments?key=$recaptcha_secret";
+
+                            $token = $_POST['g-recaptcha-response']; 
+                            $user_action = 'register'; 
+
+                            $data = [
+                                "event" => [
+                                    "token" => $token,
+                                    "expectedAction" => $user_action,
+                                    "siteKey" => "6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"
+                                ]
+                            ];
+
+                            $ch = curl_init();
+                            curl_setopt($ch, CURLOPT_URL, $url);
+                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                            curl_setopt($ch, CURLOPT_POST, 1);
+                            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+                            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                                'Content-Type: application/json'
+                            ]);
+
+                            $response = curl_exec($ch);
+                            curl_close($ch);
+
+                            $response_data = json_decode($response, true);
+
+                            if (!isset($response_data['tokenProperties']['valid']) || !$response_data['tokenProperties']['valid']) {
+                                echo "Hibás reCAPTCHA. Kérjük próbálja újra később.";
+                                return;
+                            }
+
+                            if ($response_data['event']['expectedAction'] === $user_action && $response_data['riskAnalysis']['score'] >= 0.5) {
+                                $username = $_POST['username'];
+                                $password = $_POST['password'];
+                                $email = $_POST['email'];
+                                
+                                $result = register($username, $password, $email);
+                                
+                                if (typeOf($result, "SUCCESS")) {
+                                    
+                                    header("Location: ./login");
+                                }
+                                else {
+                                    echo $result["message"];
+                                }
+                            }
+                            else {
+                                echo "reCAPTCHA ellenőrzés sikertelen. Kérjük próbálja újra.";
+                            }
+                        }
+                        ?>
+                    </div>
+                    <input type="submit" name="register" class="action-button g-recaptcha" value="Profil létrehozása">
+                    <div class="login">Regisztrált már? <a href="./login" class="form-link">Jelentkezzen be!</a></div>
                 </div>
             </div>
-
-            <!-- Általános szerződési feltételek elfogadása checkbox -->
-            <div class="input-group-inline">
-                <input type="checkbox" name="agree" id="agree" required>
-                <label for="agree">Regisztrációmmal elfogadom az <a href="">ÁSZF-et.</a></label>
-            </div>
-
-            <!-- Google reCAPTCHA védelmi mező -->
-            <div class="center">
-                <div class="g-recaptcha" data-sitekey="6LeX3lUqAAAAAIE9E4-N_nbdUNW9BuIbLaI4nJ2v"></div>
-            </div>
-        </div>
-
-        <!-- Regisztráció gomb -->
-        <input type="submit" value="Profil létrehozása" name="register" class="action-button">
-
-        <!-- Hibák vagy sikeres üzenetek megjelenítése -->
-        <div class='form-message'>
-            <?php
-            // Regisztrációs funkciókat tartalmazó fájl beillesztése
-            include_once "./auth/init.php";
-
-            // Ha a regisztrációs űrlapot elküldték (post metódussal), a regisztrációs logika fut le
-            if (isset($_POST['register'])) {
-                // reCAPTCHA ellenőrzés
-                $recaptcha_secret = '6LeX3lUqAAAAADc1EcUrbOb9k_dbElHOgfwQ-lqg';
-                $recaptcha_response = $_POST['g-recaptcha-response'];
-
-                // reCAPTCHA válasz ellenőrzése az API segítségével
-                $response = file_get_contents("https://www.google.com/recaptcha/api/siteverify?secret=$recaptcha_secret&response=$recaptcha_response");
-                $response_keys = json_decode($response, true);
-
-                // Ha a reCAPTCHA ellenőrzés nem sikeres, hibaüzenet
-                if (intval($response_keys["success"]) != 1) {
-                    echo "Kérjük töltse ki a reCAPTCHA ellenőrzést.";
-                }
-                // Ha a reCAPTCHA sikeres, regisztráció feldolgozása
-                else {
-                    // Felhasználónév, jelszó és e-mail cím lekérése a post adatokból
-                    $username = $_POST['username'];
-                    $password = $_POST['password'];
-                    $email = $_POST['email'];
-
-                    // Regisztrációs függvény meghívása, amely elmenti az új felhasználót
-                    $result = register($username, $password, $email);
-                    
-                    if (typeOf($result, "SUCCESS")) {
-                        // Ha a regisztráció sikeres, átirányítás a bejelentkezési oldalra
-                        header("Location: ./login");
-                    }
-                    else {
-                        echo $result["message"];
-                    }
-                }
-            }
-            ?>
-        </div>
-    </form>
+        </form>
+    </div>
     <script src="./js/register.js"></script>
 </body>
 

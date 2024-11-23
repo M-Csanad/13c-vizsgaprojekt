@@ -6,7 +6,7 @@
     box-sizing: border-box;
 }
 body {
-    background-color: var(--background);
+    background-color: #333333;
     display: flex;
     flex-direction: column;
     height: 100vh;
@@ -14,9 +14,10 @@ body {
     align-items: center;
     justify-content: center;
     font-family: Raleway;
-    background-image: url('../images/site/bg1.jpg');
+    background-image: url('../web/media/img/blackSand.jpg');
     background-size: cover;
     font-weight: 500;
+    overflow-y: hidden;
 }
 
 /* input.autofilled {
@@ -27,45 +28,106 @@ body {
 } */
 
 /*Firefox nem támogatja a dvh-t*/
+
+.main {
+    width: 100% !important;
+    height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
 @supports(height: 100dvh) { 
     body {
         height: 100dvh;
     }
+    .main {
+        height: 100dvh;
+    }
+}
+
+.side-image {
+    flex-grow: 1;
+    width: 50%;
+    background-color: #171717;
+    position: relative;
+}
+
+.bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 1;
+  }
+
+.bg.visible {
+    opacity: 1;
 }
 
 form {
+    min-width: 400px;
+    overflow-y: auto;
+    width: 50%;
+    flex-shrink: 0;
+    max-height: 100vh;
+    flex-grow: 1;
     padding: 20px;
-    border: 4px solid var(--border);
-    width: 500px;
-    height: 550px;
-    border-radius: 10px;
+    width: 400px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     position: relative;
     background-color: #FAFAFA;
-    box-shadow: 0px 0px 20px var(--border);
 
     .form-header {
         display: flex;
-        align-items: center;
+        flex-grow: 1;
+        align-items: flex-start;
         justify-content: center;
         flex-direction: column;
-        position: absolute;
-        top: 70px;
         gap: 10px;
+        width: 80%;
         
         h1 {
-            font-size: 40px;
+            font-size: 35px;
+        }
+
+        div {
+            color: #565656;
         }
     }
 
-    .input-wrapper {
-        width: 70%;
+    .form-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .form-bottom {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        flex-grow: 1;
+    }
+
+    .input-wrapper{ 
+        width: 80%;
     }
 
     .input-group {
+        flex-grow: 1;
         margin-block: 25px;
         width: 100%;
         position: relative;
@@ -102,6 +164,7 @@ form {
         color: var(--text-light);
         user-select: none;
         z-index: 2;
+        font-size: 16px !important;
     }
 
     .input-group:has(input:focus) label, 
@@ -122,54 +185,60 @@ form {
         padding-left: 8px;
     }
 
-    .input-group-inline > label {
+    .input-group-inline > div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .input-group-inline > div > label {
         flex-grow: 1;
-        padding-left: 10px;
+        padding-left: 5px;
+        font-size: 14px;
     }
 
     .action-button {
         padding-inline: 10px;
         padding-block: 10px;
-        width: 50%;
-        position: absolute;
-        bottom: 0;
-        bottom: 70px;
-        transition: all 0.2s ease;
+        margin-bottom: 10px;
+        width: 100%;
+        transition: border 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
         color: white;
         box-shadow: 0px 0px 0px var(--border);
         background-color: #565656;
         border: 4px solid #9f9f9f;
         font-size: 18px;
         letter-spacing: 1px;
-        border-radius: 10px;
+        border-radius: 15px;
     }
 
     .action-button:hover {
-        scale: 1.05;
         border: 4px solid #83b680;
         background-color: #3a5b32;
         box-shadow: 0px 0px 10px greenyellow;
     }
-    .action-button:active {
-        scale: 0.95;
-    }
 
     .form-link {
-        text-decoration: none;
-        border-bottom: 1px solid;
+        text-decoration: underline;
         transition: all 0.2s ease;
     }
     .form-link:hover {
-        letter-spacing: 1px;
+        transform: translateY(-5px);
     }
-    .form-link:active {
-        letter-spacing: 0.5px;
+
+    .register {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        font-size: 14px;
     }
 
     #forgotPassword {
-        position: absolute;
-        bottom: 35px;
         font-size: 14px;
+        display: block;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: 5px;
     }
 
     input[type="text"], input[type='password'] {
@@ -182,8 +251,6 @@ form {
     }
 
     .form-message {
-        position: absolute;
-        bottom: 145px;
         font-style: italic;
         margin-top: 20px;
         color: red;
@@ -217,17 +284,35 @@ form {
     }
 }
 
-@media screen and (max-width: 310px) {
+@media screen and (max-width: 500px) {
     form {
+        padding: 0;
+    }
+    .input-group-inline {
+        flex-direction: column-reverse !important;
+        padding-inline: 0 !important;
+    }
 
+    .input-group-inline > a {
+        margin-inline: 0 !important;
+        margin-bottom: 10px !important;
     }
 }
 
-@media screen and (max-width: 479px) {
+@media screen and (max-width: 579px) {
     body {
         display: block;
     }
-    form {
+    .action-button {
+        width: 75% !important;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .side-image {
+        display: none;
+    }
+    .main {
         background-color: rgba(250, 250, 250, 0.85);
         backdrop-filter: blur(5px);
         width: 100%;
@@ -235,10 +320,9 @@ form {
         border: 3px solid transparent;
         border-radius: 0px;
     }
-    .input-wrapper {
-        width: 80% !important;
-    }
-    .action-button {
-        width: 75% !important;
+    .main > form {
+        flex-shrink: 0 !important;
+        min-width: 0 !important;
+        max-width: 100%;
     }
 }
