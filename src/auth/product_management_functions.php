@@ -262,9 +262,9 @@ function updateProductPage($productData) {
     $caseSql = implode(' ', $caseStatements);
     $values = implode(', ', $ids);
     
-    $query = "UPDATE product_page SET link_slug = CASE {$caseSql} END WHERE id IN (" . $values . ");";
+    $query = "UPDATE product_page SET link_slug = CASE {$caseSql} END, page_title=? WHERE id IN (" . $values . ");";
 
-    $result = updateData($query, $slugs);
+    $result = updateData($query, [...$slugs, $productData["name"]]);
     if (typeOf($result, "ERROR")) {
         return "Sikertelen módosítás: ".$result['message'];
     }
@@ -272,11 +272,7 @@ function updateProductPage($productData) {
     return true;
 }
 
-function updateProductImages($productData, $images, $imageIds, $paths) {
-    // 1: Képek (csak amelyik típusból feltöltött) törlése az image táblából (kaszkádol)
-    // 2: Elérési útvonalak feltöltése az image táblába
-    // 3: connectProductImages függvény használata a képek és a termékek összekötésére
-
+function updateProductImages($productData, $images, $paths) {
     if (count($paths) == 0) return false;
 
     if (count(array_filter($images, function ($e) {return $e["name"]=="product_image";})) > 0) {
@@ -357,7 +353,7 @@ function updateProductData($productData, $images, $imageIds, $paths) {
         return $result;
     }
 
-    $result = updateProductImages($productData, $images, $imageIds, $paths);
+    $result = updateProductImages($productData, $images, $paths);
     return true;
 }
 
