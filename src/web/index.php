@@ -48,276 +48,280 @@
 </head>
 
 <body>
-  <div id="bg"></div>
-  <div id="content">
-    <header>
-      <section id="StickyNavbar_container">
-        <?php include './php/navbar.php'; ?>
-      </section>
-    </header>
 
-    <main>
-      <section id="__main_head ">
-        <div id="headScroller_container flex-block">
-          <div class="videoScene_wrapper col-12">
-            <video id="welcomeVideo" preload="auto" loading="lazy" autoplay muted loop>
-              <!-- WebM formátum -->
-              <source src="./media/video/1920x1080_30Fps_VP9.webm" type="video/webm" media="(min-width: 1920px)">
-              <source src="./media/video/1920x1080_30Fps_VP9.webm" type="video/webm" media="(min-width: 1280px)">
-              <source src="./media/video/640x360_30Fps_VP9.webm" type="video/webm" media="(min-width: 640px)">
-              <!-- MP4 formátum -->
-              <source src="./media/video/1920x1080_30Fps_H264.mp4" type="video/mp4" media="(min-width: 1920px)">
-              <source src="./media/video/1280x720_30Fps_H264.mp4" type="video/mp4" media="(min-width: 1280px)">
-              <source src="./media/video/640x360_30Fps_H264.mp4" type="video/mp4" media="(min-width: 640px)">
 
-            </video>
-          </div>
-          <div class="videoContent_wrapper">
-            <div class="videoContent_scrollable">
-              <div class="videoContent_card-content">
-                <img src="./media/img//herbalLogo_white.png" alt="Florens Botanica Logo" />
-              </div>
-              <div class="videoContent_card-content">
-                <p class="__t03-law1">
-                  Üdvözlünk a természet kincseinek világában, ahol a
-                  gyógynövények ereje és a harmónia találkozik.
-                </p>
-              </div>
-              <div class="videoContent_card-content">
-                <p class="__t03-law1">
-                  Nálunk minden termék gondosan válogatott, hogy támogassa
-                  egészséged és harmóniád.
-                </p>
-              </div>
-              <div class="videoContent_card-content">
-                <p class="__t03-law1">
-                  Lépj be a Florens Botanica világába, és hagyd, hogy a
-                  természet ereje magával ragadjon!
-                </p>
-              </div>
+  <header>
+    <section id="StickyNavbar_container">
+      <?php include './php/navbar.php'; ?>
+    </section>
+  </header>
+
+  <main>
+    <section id="__main_head ">
+      <div id="headScroller_container flex-block">
+        <div class="videoScene_wrapper col-12">
+          <video id="welcomeVideo" preload="auto" loading="lazy" autoplay muted loop>
+            <!-- WebM formátum -->
+            <source src="./media/video/1920x1080_30Fps_VP9.webm" type="video/webm" media="(min-width: 1920px)">
+            <source src="./media/video/1920x1080_30Fps_VP9.webm" type="video/webm" media="(min-width: 1280px)">
+            <source src="./media/video/640x360_30Fps_VP9.webm" type="video/webm" media="(min-width: 640px)">
+            <!-- MP4 formátum -->
+            <source src="./media/video/1920x1080_30Fps_H264.mp4" type="video/mp4" media="(min-width: 1920px)">
+            <source src="./media/video/1280x720_30Fps_H264.mp4" type="video/mp4" media="(min-width: 1280px)">
+            <source src="./media/video/640x360_30Fps_H264.mp4" type="video/mp4" media="(min-width: 640px)">
+
+          </video>
+        </div>
+        <div class="videoContent_wrapper">
+          <div class="videoContent_scrollable">
+            <div class="videoContent_card-content">
+              <img src="./media/img//herbalLogo_white.png" alt="Florens Botanica Logo" />
+            </div>
+            <div class="videoContent_card-content">
+              <p class="__t03-law1">
+                Üdvözlünk a természet kincseinek világában, ahol a
+                gyógynövények ereje és a harmónia találkozik.
+              </p>
+            </div>
+            <div class="videoContent_card-content">
+              <p class="__t03-law1">
+                Nálunk minden termék gondosan válogatott, hogy támogassa
+                egészséged és harmóniád.
+              </p>
+            </div>
+            <div class="videoContent_card-content">
+              <p class="__t03-law1">
+                Lépj be a Florens Botanica világába, és hagyd, hogy a
+                természet ereje magával ragadjon!
+              </p>
             </div>
           </div>
         </div>
+      </div>
 
-        <div id="topProducts_container">
-          <div class="swiper topProduct_slider">
-            <div class="swiper-wrapper">
-              <div class="swiper-slide">
-                <div class="swiper-card_wrapper">
-                  <div class="card-image">
-                    <img src="./media/img/testImg/testProduct01.jpg" alt="" />
-                    <button class="book-now">Kosárba</button>
-                  </div>
-                  <div class="swiper-card">
-                    <div class="text-overlay">
-                      <h1 class="__t03-law1 title">Termék Név Ide Jön</h1>
-                      <div class="rating">
-                        <span>⭐️⭐️⭐️⭐️⭐️</span>
-                        <span>180k értékelés</span>
-                      </div>
-                      <div class="text">
-                        <p class="__t02-men1 description">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Est ut pariatur totam facilis, id facere
-                          dolores eos maiores quaerat iste assumenda, amet
-                          recusandae sunt molestias.
-                        </p>
-
-                      </div>
-
-                      <div class="card-footer">
-                        <div class="cast">
-                          <img src="./media/img/icons/vegan.png" alt="#" />
-                          <img src="./media/img/icons/bpa-free.png" alt="#" />
-                          <img src="./media/img/icons/serum.png" alt="#" />
-                          <img src="./media/img/icons/gluten-free.png" alt="#" />
-                        </div>
-                        <div class="actions">
-                          <button class="more-info">Bővebb információ</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+      <div id="topProducts_container">
+        <div class="swiper topProduct_slider">
+          <div class="swiper-wrapper">
+            <div class="swiper-slide">
+              <div class="swiper-card_wrapper">
+                <div class="card-image">
+                  <img src="./media/img/testImg/testProduct01.jpg" alt="" />
+                  <button class="book-now">Kosárba</button>
                 </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="swiper-card_wrapper">
-                  <div class="card-image">
-                    <img src="./media/img/testImg/testProduct02.jpg" alt="" />
-                    <button class="book-now">Kosárba</button>
-                  </div>
-                  <div class="swiper-card">
-                    <div class="text-overlay">
-                      <h1 class="__t03-law1 title">Termék Név Ide Jön</h1>
-                      <div class="rating">
-                        <span>⭐️⭐️⭐️⭐️⭐️</span>
-                        <span>97k értékelés</span>
-                      </div>
-                      <div class="text">
-                        <p class="__t02-men1 description">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Est ut pariatur totam facilis, id facere
-                          dolores eos maiores quaerat iste assumenda, amet
-                          recusandae sunt molestias.
-                        </p>
-                      </div>
-
-                      <div class="card-footer">
-                        <div class="cast">
-                          <img src="./media/img/icons/vegan.png" alt="#" />
-                          <img src="./media/img/icons/bpa-free.png" alt="#" />
-                          <img src="./media/img/icons/serum.png" alt="#" />
-                          <img src="./media/img/icons/pollen.png" alt="#" />
-                          <img src="./media/img/icons/peanut-free.png" alt="#" />
-                          <img src="./media/img/icons/honeycomb.png" alt="#" />
-                        </div>
-                        <div class="actions">
-                          <button class="more-info">Bővebb információ</button>
-                        </div>
-                      </div>
+                <div class="swiper-card">
+                  <div class="text-overlay">
+                    <h1 class="__t03-law1 title">Termék Név Ide Jön</h1>
+                    <div class="rating">
+                      <span>⭐️⭐️⭐️⭐️⭐️</span>
+                      <span>180k értékelés</span>
                     </div>
-                  </div>
-                </div>
-              </div>
-              <div class="swiper-slide">
-                <div class="swiper-card_wrapper">
-                  <div class="card-image">
-                    <img src="./media/img/testImg/testProduct03.jpg" alt="" />
-                    <button class="book-now">Kosárba</button>
-                  </div>
-                  <div class="swiper-card">
-                    <div class="text-overlay">
-                      <h1 class="__t03-law1 title">Termék Név Ide Jön</h1>
-                      <div class="rating">
-                        <span>⭐️⭐️⭐️⭐️⭐️</span>
-                        <span>120k értékelés</span>
-                      </div>
-                      <div class="text">
-                        <p class="__t02-men1 description">
-                          Lorem ipsum dolor sit amet, consectetur adipisicing
-                          elit. Est ut pariatur totam facilis, id facere
-                          dolores eos maiores quaerat iste assumenda, amet
-                          recusandae sunt molestias.
-                        </p>
-                      </div>
+                    <div class="text">
+                      <p class="__t02-men1 description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. Est ut pariatur totam facilis, id facere
+                        dolores eos maiores quaerat iste assumenda, amet
+                        recusandae sunt molestias.
+                      </p>
 
-                      <div class="card-footer">
-                        <div class="cast">
-                          <img src="./media/img/icons/vegan.png" alt="#" />
-                          <img src="./media/img/icons/bpa-free.png" alt="#" />
-                          <img src="./media/img/icons/serum.png" alt="#" />
-                        </div>
-                        <div class="actions">
-                          <button class="more-info">Bővebb információ</button>
-                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                      <div class="cast">
+                        <img src="./media/img/icons/vegan.png" alt="#" />
+                        <img src="./media/img/icons/bpa-free.png" alt="#" />
+                        <img src="./media/img/icons/serum.png" alt="#" />
+                        <img src="./media/img/icons/gluten-free.png" alt="#" />
+                      </div>
+                      <div class="actions">
+                        <button class="more-info">Bővebb információ</button>
                       </div>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-      <section id="__main_body">
+            <div class="swiper-slide">
+              <div class="swiper-card_wrapper">
+                <div class="card-image">
+                  <img src="./media/img/testImg/testProduct02.jpg" alt="" />
+                  <button class="book-now">Kosárba</button>
+                </div>
+                <div class="swiper-card">
+                  <div class="text-overlay">
+                    <h1 class="__t03-law1 title">Termék Név Ide Jön</h1>
+                    <div class="rating">
+                      <span>⭐️⭐️⭐️⭐️⭐️</span>
+                      <span>97k értékelés</span>
+                    </div>
+                    <div class="text">
+                      <p class="__t02-men1 description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. Est ut pariatur totam facilis, id facere
+                        dolores eos maiores quaerat iste assumenda, amet
+                        recusandae sunt molestias.
+                      </p>
+                    </div>
 
-        <div id="categorychooser">
-          <?php include './php/__gen_categorychooser.php'; ?>
-        </div>
-
-        <div id="brand-philosophy_container">
-          <div class="Parallax_container">
-            <div class="Parallax_box z2" data-speed="0.3">
-              <div id="BGDT01" class="__BG-designText">Florens</div>
-            </div>
-            <div class="Parallax_box z2" data-speed="0.1">
-              <div id="BGDT02" class="__BG-designText">Botanica</div>
-            </div>
-          </div>
-          <div id="brand-philosophy">
-            <div class="brand-philosophy_wrapper">
-              <h1 class="__t01-lan1">Ősi Harmónia</h1>
-              <p class="__t03-men1">
-                A Florens Botanica nem csupán egy márka – a természet
-                tisztelete és a belső béke közötti híd. Minden termékünk
-                gondosan válogatott alapanyagokból készül, hogy a föld és a
-                növények gyógyító energiáját közvetítse számodra.
-              </p>
-              <p class="__t03-men1">
-                Fedezd fel a ritka növényi kivonatokból és ősi receptekből
-                született formulákat, melyek célja az elme, a test és a lélek
-                egyensúlyának megteremtése. Termékeinkkel lehetőséged van
-                arra, hogy természetes módon tápláld és újítsd meg önmagad.
-              </p>
-              <p class="__t03-men1">
-                Minden, amit kínálunk, a természet iránti tiszteletből fakad,
-                és arra hivatott, hogy harmóniát hozzon az életedbe. Engedd,
-                hogy termékeinkkel a tiszta, természetes energiák
-                mindennapjaid részévé váljanak, megteremtve az egyensúlyt és a
-                békét benned és körülötted.
-              </p>
-            </div>
-          </div>
-          <div class="Parallax_container">
-            <div class="Parallax_box" data-speed="0.1">
-              <div id="BGDT03" class="__BG-designText">természet</div>
-            </div>
-            <div class="Parallax_box" data-speed="0.3">
-              <div id="BGDT04" class="__BG-designText">ereje</div>
-            </div>
-          </div>
-          <div id="brand-description" class="flex-block">
-            <div class="brandContent col-5">
-              <h1 class="__t01-lan1">
-                A Gyógyító Múlt és a Fenntartható Jövő
-              </h1>
-              <div class="brandContentParagraph">
-                <p class="__t02-men1">
-                  A Florens Botanica termékei ősi gyökerekből merítik
-                  erejüket. Az idők során felhalmozott növényi tudás és
-                  gyógyító szándék évszázadokon átívelve jutott el hozzánk,
-                  hogy mai világunkban újra életre keljen.
-                </p>
-                <p class="__t02-men1">
-                  Az ősi gyógyászat bölcsessége szorosan összefonódik a
-                  természet legősibb összetevőivel. Az akkori gyógyítók által
-                  használt gyógynövények ereje most korszerű formában, modern
-                  felhasználásra készen várja, hogy segítse a
-                  mindennapjainkat.
-                </p>
-
-                <p class="__t02-men1">
-                  Ezt a hagyomány és fejlődés közötti hidat arra építettük,
-                  hogy azok is megtapasztalhassák a természet valódi erejét,
-                  akik a mai, rohanó világban keresik a természetes
-                  megoldásokat.
-                </p>
-                <p class="__t02-men1">
-                  A Florens Botanica küldetése, hogy ezeket a bölcsességeket
-                  és energiákat új formában, könnyedén elérhetővé tegye – az
-                  egészségesebb test, elme és lélek érdekében.
-                </p>
+                    <div class="card-footer">
+                      <div class="cast">
+                        <img src="./media/img/icons/vegan.png" alt="#" />
+                        <img src="./media/img/icons/bpa-free.png" alt="#" />
+                        <img src="./media/img/icons/serum.png" alt="#" />
+                        <img src="./media/img/icons/pollen.png" alt="#" />
+                        <img src="./media/img/icons/peanut-free.png" alt="#" />
+                        <img src="./media/img/icons/honeycomb.png" alt="#" />
+                      </div>
+                      <div class="actions">
+                        <button class="more-info">Bővebb információ</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
-            <div class="brandImages col-6">
-              <div class="brandImages_imgVertical">
-                <img src="./media/img/HerbsOnDesk.jpg" alt="Gyógynövények asztalon kis üvekcsékben" />
-              </div>
-              <div class="brandImages_imgHorizontal">
-                <img src="./media/img/HerbsInHands.jpg" alt="Gyógynövények hölgy kezében" />
+            <div class="swiper-slide">
+              <div class="swiper-card_wrapper">
+                <div class="card-image">
+                  <img src="./media/img/testImg/testProduct03.jpg" alt="" />
+                  <button class="book-now">Kosárba</button>
+                </div>
+                <div class="swiper-card">
+                  <div class="text-overlay">
+                    <h1 class="__t03-law1 title">Termék Név Ide Jön</h1>
+                    <div class="rating">
+                      <span>⭐️⭐️⭐️⭐️⭐️</span>
+                      <span>120k értékelés</span>
+                    </div>
+                    <div class="text">
+                      <p class="__t02-men1 description">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. Est ut pariatur totam facilis, id facere
+                        dolores eos maiores quaerat iste assumenda, amet
+                        recusandae sunt molestias.
+                      </p>
+                    </div>
+
+                    <div class="card-footer">
+                      <div class="cast">
+                        <img src="./media/img/icons/vegan.png" alt="#" />
+                        <img src="./media/img/icons/bpa-free.png" alt="#" />
+                        <img src="./media/img/icons/serum.png" alt="#" />
+                      </div>
+                      <div class="actions">
+                        <button class="more-info">Bővebb információ</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-          <div id="notifBlob">Mozgasd</div>
         </div>
+      </div>
+    </section>
+    <section id="__main_body">
 
-        <div id="categoryGallery" class="ImgGallery_container"><?php include './php/__gen_imageGallery.php'; ?></div>
+      <div id="categorychooser">
+        <?php include './php/__gen_categorychooser.php'; ?>
+      </div>
 
-        <div id="break"></div>
-      </section>
-    </main>
-    <footer id="fb-footer"></footer>
-  </div>
+
+      <div id="brand-philosophy_container">
+
+
+        <div class="Parallax_container">
+          <div class="Parallax_box z2" data-speed="0.3">
+            <div id="BGDT01" class="__BG-designText">Florens</div>
+          </div>
+          <div class="Parallax_box z2" data-speed="0.1">
+            <div id="BGDT02" class="__BG-designText">Botanica</div>
+          </div>
+        </div>
+        <div id="brand-philosophy">
+          <div class="brand-philosophy_wrapper">
+            <h1 class="__t01-lan1">Ősi Harmónia</h1>
+            <p class="__t03-men1">
+              A Florens Botanica nem csupán egy márka – a természet
+              tisztelete és a belső béke közötti híd. Minden termékünk
+              gondosan válogatott alapanyagokból készül, hogy a föld és a
+              növények gyógyító energiáját közvetítse számodra.
+            </p>
+            <p class="__t03-men1">
+              Fedezd fel a ritka növényi kivonatokból és ősi receptekből
+              született formulákat, melyek célja az elme, a test és a lélek
+              egyensúlyának megteremtése. Termékeinkkel lehetőséged van
+              arra, hogy természetes módon tápláld és újítsd meg önmagad.
+            </p>
+            <p class="__t03-men1">
+              Minden, amit kínálunk, a természet iránti tiszteletből fakad,
+              és arra hivatott, hogy harmóniát hozzon az életedbe. Engedd,
+              hogy termékeinkkel a tiszta, természetes energiák
+              mindennapjaid részévé váljanak, megteremtve az egyensúlyt és a
+              békét benned és körülötted.
+            </p>
+          </div>
+        </div>
+        <div class="Parallax_container">
+          <div class="Parallax_box" data-speed="0.1">
+            <div id="BGDT03" class="__BG-designText">természet</div>
+          </div>
+          <div class="Parallax_box" data-speed="0.3">
+            <div id="BGDT04" class="__BG-designText">ereje</div>
+          </div>
+        </div>
+        <div id="brand-description" class="flex-block">
+          <div class="brandContent col-5">
+            <h1 class="__t01-lan1">
+              A Gyógyító Múlt és a Fenntartható Jövő
+            </h1>
+            <div class="brandContentParagraph">
+              <p class="__t02-men1">
+                A Florens Botanica termékei ősi gyökerekből merítik
+                erejüket. Az idők során felhalmozott növényi tudás és
+                gyógyító szándék évszázadokon átívelve jutott el hozzánk,
+                hogy mai világunkban újra életre keljen.
+              </p>
+              <p class="__t02-men1">
+                Az ősi gyógyászat bölcsessége szorosan összefonódik a
+                természet legősibb összetevőivel. Az akkori gyógyítók által
+                használt gyógynövények ereje most korszerű formában, modern
+                felhasználásra készen várja, hogy segítse a
+                mindennapjainkat.
+              </p>
+
+              <p class="__t02-men1">
+                Ezt a hagyomány és fejlődés közötti hidat arra építettük,
+                hogy azok is megtapasztalhassák a természet valódi erejét,
+                akik a mai, rohanó világban keresik a természetes
+                megoldásokat.
+              </p>
+              <p class="__t02-men1">
+                A Florens Botanica küldetése, hogy ezeket a bölcsességeket
+                és energiákat új formában, könnyedén elérhetővé tegye – az
+                egészségesebb test, elme és lélek érdekében.
+              </p>
+            </div>
+          </div>
+          <div class="brandImages col-6">
+            <div class="brandImages_imgVertical">
+              <img src="./media/img/HerbsOnDesk.jpg" alt="Gyógynövények asztalon kis üvekcsékben" />
+            </div>
+            <div class="brandImages_imgHorizontal">
+              <img src="./media/img/HerbsInHands.jpg" alt="Gyógynövények hölgy kezében" />
+            </div>
+          </div>
+        </div>
+        <div id="notifBlob">Mozgasd</div>
+      </div>
+      </div>
+
+      <div id="categoryGallery" class="ImgGallery_container"><?php include './php/__gen_imageGallery.php'; ?></div>
+
+      <div id="break"></div>
+    </section>
+  </main>
+  <footer id="fb-footer"></footer>
+
 
   <!--jQuery-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"

@@ -37,45 +37,6 @@ h6 {
   margin: 0;
   padding: 0;
 }
-#bg {
-  position: fixed;
-  z-index: -1;
-  left: 0;
-  right: 0;
-  width: 100vw !important;
-  height: 100vh !important;
-  -webkit-filter: brightness(0.5) grayscale(1);
-  -moz-filter: brightness(0.5) grayscale(1);
-  -o-filter: brightness(0.5) grayscale(1);
-  -ms-filter: brightness(0.5) grayscale(1);
-  filter: brightness(0.5) grayscale(1);
-  background-image: url("../../media/img/blackSand_768x512.jpg");
-  background-color: rgba(12, 12, 12, 0.5);
-  background-blend-mode: multiply;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-attachment: fixed;
-  background-size: 100vw 100vh;
-}
-/* 1440px széles képernyő felett */
-@media (min-width: 1440px) {
-  #bg {
-    background-image: url("../../media/img/blackSand_1440x960.jpg");
-  }
-}
-
-/* 2160px széles képernyő felett */
-@media (min-width: 2160px) {
-  #bg {
-    background-image: url("../../media/img/blackSand_2160x1440.jpg");
-  }
-}
-
-#content {
-  position: relative;
-  z-index: 9999;
-  width: 100vw !important;
-}
 /*
  =============================
     parallax effect under video
