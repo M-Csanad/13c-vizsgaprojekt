@@ -86,7 +86,7 @@ function generateHTML()
 
             echo '<div class="swiper-slide">
                     <div class="circleImg">
-                        <img src="../' . $FileName_horizontal . '-768px.jpg" alt=thumbnail_"' . htmlspecialchars($row['name']) . '" />
+                        <img src="../' . $FileName_horizontal . '-768px.avif" alt=thumbnail_"' . htmlspecialchars($row['name']) . '" />
                         <div class="halo">
                             <div class="point"></div>
                         </div>

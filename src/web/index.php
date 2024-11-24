@@ -1,12 +1,252 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hu">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Home - Florens Botanica</title>
+
+  <style>
+    body {
+      background: var(--dark_primary);
+      color: var(--light_main);
+      margin: 0 !important;
+      padding: 0 !important;
+      font-family: "Karla", sans-serif;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    html,
+    main {
+      scroll-behavior: smooth;
+      scrollbar-width: none;
+    }
+
+    body::-webkit-scrollbar,
+    main::-webkit-scrollbar,
+    .videoContent_wrapper::-webkit-scrollbar,
+    .videoContent_scrollable::-webkit-scrollbar {
+      display: none;
+    }
+
+    p,
+    a,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      margin: 0;
+      padding: 0;
+    }
+
+    /*
+ =============================
+    parallax effect under video
+ =============================
+ */
+
+    .Parallax_container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      width: 100vw;
+    }
+
+    .Parallax_box {
+      width: 100vw;
+      height: auto;
+      position: absolute;
+      will-change: transform;
+    }
+
+    .z2 {
+      z-index: 2;
+    }
+
+    .__BG-designText {
+      position: absolute;
+      padding: 12px;
+      z-index: 2;
+    }
+
+    #BGDT01 {
+      color: var(--dark_secondary);
+      font-size: clamp(12rem, calc(18rem + 0.39vw), 35rem);
+      text-transform: uppercase;
+      font-family: "Poppins";
+      font-weight: 600;
+      left: 12rem;
+      transform: translateY(120%);
+    }
+
+    #BGDT02 {
+      color: var(--dark_tertiary);
+      font-size: clamp(10rem, calc(18rem + 0.39vw), 20rem);
+      font-weight: 300;
+      text-transform: capitalize;
+      font-family: "Maitree";
+      right: 12rem;
+      transform: translateY(60%);
+    }
+
+    #BGDT03 {
+      color: var(--dark_secondary);
+      font-size: clamp(12rem, calc(18rem + 0.39vw), 30rem);
+      text-transform: capitalize;
+      font-family: "Maitree";
+      font-weight: 300;
+      left: 12rem;
+      transform: translateY(-150%);
+      mix-blend-mode: difference;
+    }
+
+    #BGDT04 {
+      color: var(--dark_tertiary);
+      font-size: clamp(10rem, calc(14rem + 0.39vw), 20rem);
+      font-weight: 600;
+      text-transform: uppercase;
+      font-family: "Poppins";
+      right: 12rem;
+      transform: translateY(-220%);
+      mix-blend-mode: difference;
+    }
+
+    /*
+ =============================
+    welcome video
+ =============================
+ */
+
+    .headScroller_container {
+      position: relative;
+      display: flex;
+      flex-direction: row;
+      position: relative;
+      height: 100vh;
+      z-index: 1;
+    }
+
+    .videoScene_wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      left: 0;
+      overflow: hidden;
+      perspective: 1000px;
+      height: 100vh;
+      background: radial-gradient(circle, rgba(0, 0, 0, 0) 100%, rgb(0, 0, 0) 100%);
+    }
+
+    .videoScene_wrapper::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, rgba(0, 0, 0, 0) 70%, rgb(0, 0, 0) 100%);
+      opacity: 0;
+      transition: opacity 2s ease-in-out;
+      z-index: 2;
+    }
+
+    /* Trigger the vignette */
+    .videoScene_wrapper:hover::before {
+      opacity: 1;
+    }
+
+    #welcomeVideo {
+      pointer-events: none;
+      filter: brightness(1);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: translate(0%, 0%) scale(1.3);
+      /* Kezdeti állapot */
+      transition: transform 1s ease-out;
+    }
+
+    .videoContent_wrapper {
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      position: sticky;
+      top: 0;
+      right: 0;
+      transform: translateY(-100vh);
+      width: 100%;
+      height: 280vh;
+      pointer-events: none;
+      margin-left: auto;
+      margin-right: 0;
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    .videoContent_scrollable {
+      display: flex;
+      position: relative;
+      align-items: center;
+      text-align: justify;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 20px;
+      height: 280vh;
+    }
+
+    .videoContent_scrollable .videoContent_card-content {
+      display: flex;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      width: 25vw;
+      margin: 25vh 0;
+      text-shadow: 1px 0px 10px var(--dark_primary), 0 0 20px var(--light_main),
+        0 0 40px var(--light_main-op5);
+    }
+
+    .videoContent_scrollable .videoContent_card-content img {
+      width: 50vw;
+      height: auto;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .videoContent_scrollable p {
+      font-family: "Poppins", sans-serif;
+      font-weight: 200;
+      font-style: normal;
+    }
+
+    /* Alapértelmezett állapot: homályos és láthatatlan */
+    .videoContent_HIDE {
+      opacity: 0;
+      filter: var(--blur8);
+      transition: opacity 0.4s ease-out, filter 0.8s ease-out;
+    }
+
+    /* Amikor megjelenik: tiszta és látható */
+    .videoContent_SHOW {
+      opacity: 1;
+      filter: blur(0);
+      transition: opacity 0.4s ease-out, filter 0.8s ease-out;
+    }
+  </style>
+
 
   <!--lenis stylesheet-->
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.14/dist/lenis.css" />
+
+
+
 
   <!--swiper stylesheet-->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.0.4/swiper-bundle.css"
@@ -22,9 +262,9 @@
 
   <!--main stylesheet-->
   <link rel="stylesheet" href="./mainPage/css/main.css" />
-  <link rel="stylesheet" href="./mainPage/css/main_media.css" />
-  <link rel="stylesheet" href="./css/footer.css" />
-  <link rel="stylesheet" href="./css/navbar.css" />
+  <link rel="stylesheet" href="./mainPage/css/main_media.css" media="all" />
+  <link rel="stylesheet" href="./css/footer.css" media="all" />
+  <link rel="stylesheet" href="./css/navbar.css" media="all" />
   <script src="./js/autogenerate__footer.js" defer></script>
   <script src="./js/autogenerate__navbar.js" defer></script>
 
@@ -44,7 +284,7 @@
   <script src="./mainPage/js/imageParallaxGallery.js" defer></script>
   <script src="./mainPage/js/movingGradientEffect.js" defer></script>
 
-  <title>Home - Florens Botanica</title>
+
 </head>
 
 <body>
@@ -60,22 +300,27 @@
     <section id="__main_head ">
       <div id="headScroller_container flex-block">
         <div class="videoScene_wrapper col-12">
+
           <video id="welcomeVideo" preload="auto" loading="lazy" autoplay muted loop>
-            <!-- WebM formátum -->
+            <!-- WebM formátum (VP9 kodek) -->
             <source src="./media/video/1920x1080_30Fps_VP9.webm" type="video/webm" media="(min-width: 1920px)">
-            <source src="./media/video/1920x1080_30Fps_VP9.webm" type="video/webm" media="(min-width: 1280px)">
-            <source src="./media/video/640x360_30Fps_VP9.webm" type="video/webm" media="(min-width: 640px)">
-            <!-- MP4 formátum -->
+            <source src="./media/video/1280x720_30Fps_VP9.webm" type="video/webm" media="(min-width: 1280px)">
+            <source src="./media/video/640x360_30Fps_VP9.webm" type="video/webm">
+
+            <!-- MP4 formátum (H.264 kodek) -->
             <source src="./media/video/1920x1080_30Fps_H264.mp4" type="video/mp4" media="(min-width: 1920px)">
             <source src="./media/video/1280x720_30Fps_H264.mp4" type="video/mp4" media="(min-width: 1280px)">
-            <source src="./media/video/640x360_30Fps_H264.mp4" type="video/mp4" media="(min-width: 640px)">
+            <source src="./media/video/640x360_30Fps_H264.mp4" type="video/mp4">
 
+            Az Ön böngészője nem támogatja a videó lejátszást.
           </video>
+
+
         </div>
         <div class="videoContent_wrapper">
           <div class="videoContent_scrollable">
             <div class="videoContent_card-content">
-              <img src="./media/img//herbalLogo_white.png" alt="Florens Botanica Logo" />
+              <img src="./media/img/herbalLogo_white.png" alt="Florens Botanica Logo" loading="lazy" />
             </div>
             <div class="videoContent_card-content">
               <p class="__t03-law1">
@@ -99,13 +344,13 @@
         </div>
       </div>
 
-      <div id="topProducts_container">
+      <!-- <div id="topProducts_container">
         <div class="swiper topProduct_slider">
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <div class="swiper-card_wrapper">
                 <div class="card-image">
-                  <img src="./media/img/testImg/testProduct01.jpg" alt="" />
+                  <img src="./media/img/testImg/testProduct01.jpg" alt="" loading="lazy"/>
                   <button class="book-now">Kosárba</button>
                 </div>
                 <div class="swiper-card">
@@ -127,10 +372,10 @@
 
                     <div class="card-footer">
                       <div class="cast">
-                        <img src="./media/img/icons/vegan.png" alt="#" />
-                        <img src="./media/img/icons/bpa-free.png" alt="#" />
-                        <img src="./media/img/icons/serum.png" alt="#" />
-                        <img src="./media/img/icons/gluten-free.png" alt="#" />
+                        <img src="./media/img/icons/vegan.png" alt="#" loading="lazy" />
+                        <img src="./media/img/icons/bpa-free.png" alt="#" loading="lazy" />
+                        <img src="./media/img/icons/serum.png" alt="#" loading="lazy" />
+                        <img src="./media/img/icons/gluten-free.png" alt="#" loading="lazy" />
                       </div>
                       <div class="actions">
                         <button class="more-info">Bővebb információ</button>
@@ -217,7 +462,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
     </section>
     <section id="__main_body">
 
@@ -304,10 +549,57 @@
           </div>
           <div class="brandImages col-6">
             <div class="brandImages_imgVertical">
-              <img src="./media/img/HerbsOnDesk.jpg" alt="Gyógynövények asztalon kis üvekcsékben" />
+              <picture>
+                <!-- AVIF formátum -->
+                <source type="image/avif" srcset="
+        ./media/img/HerbsOnDesk-3840px.avif 3840w,
+        ./media/img/HerbsOnDesk-2560px.avif 2560w,
+        ./media/img/HerbsOnDesk-1920px.avif 1920w,
+        ./media/img/HerbsOnDesk-1024px.avif 1024w
+      " sizes="(max-width: 1024px) 1024px,
+             (max-width: 1920px) 1920px,
+             (max-width: 2560px) 2560px,
+             3840px" />
+                <!-- WebP formátum -->
+                <source type="image/webp" srcset="
+        ./media/img/HerbsOnDesk-3840px.webp 3840w,
+        ./media/img/HerbsOnDesk-2560px.webp 2560w,
+        ./media/img/HerbsOnDesk-1920px.webp 1920w,
+        ./media/img/HerbsOnDesk-1024px.webp 1024w
+      " sizes="(max-width: 1024px) 1024px,
+             (max-width: 1920px) 1920px,
+             (max-width: 2560px) 2560px,
+             3840px" />
+                <!-- Alapértelmezett JPG -->
+                <img src="./media/img/HerbsOnDesk-1024px.jpg" alt="Gyógynövények asztalon kis üvegcsékben"
+                  loading="lazy" />
+              </picture>
             </div>
             <div class="brandImages_imgHorizontal">
-              <img src="./media/img/HerbsInHands.jpg" alt="Gyógynövények hölgy kezében" />
+              <picture>
+                <!-- AVIF formátum -->
+                <source type="image/avif" srcset="
+        ./media/img/HerbsInHands-3840px.avif 3840w,
+        ./media/img/HerbsInHands-2560px.avif 2560w,
+        ./media/img/HerbsInHands-1920px.avif 1920w,
+        ./media/img/HerbsInHands-1024px.avif 1024w
+      " sizes="(max-width: 1024px) 1024px,
+             (max-width: 1920px) 1920px,
+             (max-width: 2560px) 2560px,
+             3840px" />
+                <!-- WebP formátum -->
+                <source type="image/webp" srcset="
+        ./media/img/HerbsInHands-3840px.webp 3840w,
+        ./media/img/HerbsInHands-2560px.webp 2560w,
+        ./media/img/HerbsInHands-1920px.webp 1920w,
+        ./media/img/HerbsInHands-1024px.webp 1024w
+      " sizes="(max-width: 1024px) 1024px,
+             (max-width: 1920px) 1920px,
+             (max-width: 2560px) 2560px,
+             3840px" />
+                <!-- Alapértelmezett JPG -->
+                <img src="./media/img/HerbsInHands-1024px.jpg" alt="Gyógynövények hölgy kezében" loading="lazy" />
+              </picture>
             </div>
           </div>
         </div>
