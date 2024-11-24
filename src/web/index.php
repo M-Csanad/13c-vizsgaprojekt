@@ -60,9 +60,16 @@
       <section id="__main_head ">
         <div id="headScroller_container flex-block">
           <div class="videoScene_wrapper col-12">
-            <video id="welcomeVideo" autoplay muted loop>
-              <source src="./media/video/mainpageWelcome02.webm" type="video/webm" />
-              <source src="./media/video/mainpageWelcome02.mp4" type="video/mp4" />
+            <video id="welcomeVideo" preload="auto" loading="lazy" autoplay muted loop>
+              <!-- WebM formátum -->
+              <source src="./media/video/1920x1080_30Fps_VP9.webm" type="video/webm" media="(min-width: 1920px)">
+              <source src="./media/video/1920x1080_30Fps_VP9.webm" type="video/webm" media="(min-width: 1280px)">
+              <source src="./media/video/640x360_30Fps_VP9.webm" type="video/webm" media="(min-width: 640px)">
+              <!-- MP4 formátum -->
+              <source src="./media/video/1920x1080_30Fps_H264.mp4" type="video/mp4" media="(min-width: 1920px)">
+              <source src="./media/video/1280x720_30Fps_H264.mp4" type="video/mp4" media="(min-width: 1280px)">
+              <source src="./media/video/640x360_30Fps_H264.mp4" type="video/mp4" media="(min-width: 640px)">
+
             </video>
           </div>
           <div class="videoContent_wrapper">

@@ -32,3 +32,4 @@ debug/
 # Külső függőségek
 /node_modules/
 /.npm/
+bin/*
