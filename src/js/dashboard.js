@@ -384,10 +384,12 @@ async function populateOptions(select, category, table) {
         let data = await response.json();
         
         if (data.type == "ERROR") {
+            select.innerHTML = "";
             console.log("Hiba a kategória kereséskor: " + data.message);
             return;
         }
         else if (data.type == "EMPTY") {
+            select.innerHTML = "";
             console.log("Hiba a kategória kereséskor: " + data.message);
             return;
         }

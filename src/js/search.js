@@ -8,7 +8,6 @@ function initializeSearch(search) {
     const autofill = search.dataset.autofillFields ?? null;
     const searchConfig = {
         category: {
-            type: "regular", // regular, ha az alap működés kell, table, ha a találatokat táblázatban kell megjeleníteni
             autofillFields: [
                 { name: "name"}, 
                 { name: "subname"}, 
@@ -37,13 +36,11 @@ function initializeSearch(search) {
             }
         },
         user: {
-            type: "regular",
             template: (user) => `
                 <div><b>${user.name}</b> - ${user.email} (<i>${user.role}</i>)</div>`,
             clickHandler: async (user) => itemClickHandler(user, ["id", "name"])
         },
         product: {
-            type: "regular",
             autofillFields: [
                 { name: "name" }, 
                 { name: "description" }, 
@@ -75,7 +72,19 @@ function initializeSearch(search) {
             }
         },
         product_page: {
-            type: "table"
+            template: (page) => {
+                return `<img src='${page.uri}'><div><b>${page.name}</b> - <i>${page.category_name ? page.category_name : "#"} / ${page.subcategory_name ? page.subcategory_name : "#"}</i> (${page.content_preview}...)</div>`;
+            },
+            clickHandler: async (page) => {
+                if (!autofill) {
+                    itemClickHandler(page, ["id", "name"]);
+                }
+                else {
+                    itemClickHandler(page, ["id", "name"], { fields: [
+                        { field: "title", value: page.name },
+                    ]});
+                }
+            }
         }
     };
 
@@ -137,27 +146,19 @@ function initializeSearch(search) {
         const config = searchConfig[searchType];
         if (!config) return;
         
-        if (config.type == "regular") {
+        searchItemsContainer.innerHTML = "";
+        toggleDropdown(true);
 
-            searchItemsContainer.innerHTML = "";
-            toggleDropdown(true);
-    
-            if (!Array.isArray(items)) items = [items];
+        if (!Array.isArray(items)) items = [items];
 
-            for (let item of items) {
-                let itemDOM = document.createElement("div");
-                itemDOM.className = "search-item";
-                itemDOM.innerHTML = config.template(item);
-                itemDOM.addEventListener("click", () => config.clickHandler(item));
-                searchItemsContainer.appendChild(itemDOM);
-            }
+        for (let item of items) {
+            let itemDOM = document.createElement("div");
+            itemDOM.className = "search-item";
+            itemDOM.innerHTML = config.template(item);
+            itemDOM.addEventListener("click", () => config.clickHandler(item));
+            searchItemsContainer.appendChild(itemDOM);
         }
-        else if (config.type == "table") {
-            console.log("tablazat");
-            console.log(items);
-        }
-
-    }
+}
 
     // A legördülőmenü elhelyezése a beviteli mező alá (mivel az űrlapon overflow: hidden van, ezért a legördülőmenü kívül kell hogy legyen)
     function positionDropdown() {

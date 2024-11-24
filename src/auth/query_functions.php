@@ -38,7 +38,7 @@ function selectData($query, $parameters) {
         }
     }
     catch(Exception $e) {
-        return ["message" => $e, "type" => "ERROR"];
+        return ["message" => $e -> getMessage(), "code" => $e -> getCode(), "type" => "ERROR"];
     }
 }
 
@@ -74,7 +74,7 @@ function updateData($query, $parameters) {
         else return ["message" => false, "type" => "NO_AFFECT"];
     }
     catch(Exception $e) {
-        return ["message" => $e, "type" => "ERROR"];
+        return ["message" => $e -> getMessage(), "code" => $e -> getCode(), "type" => "ERROR"];
     }
 }
 

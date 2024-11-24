@@ -1107,7 +1107,7 @@
                             </div>
                         </div>
                         <div class="form-submit-wrapper">
-                            <input type="submit" value="Felvitel" class="form-submit-primary" name='modify_product'>
+                            <input type="submit" value="Módosítás" class="form-submit-primary" name='modify_product'>
                         </div>
                     </form>
                     <div class="items"></div>
@@ -1206,6 +1206,7 @@
                 </div>
             </section>
 
+            <!---------------------------- Termék oldal törlése ---------------------------->
             <section>
                 <div class="section-header" tabindex="0">
                     <div class="section-title">Termék oldal törlése</div>
@@ -1214,7 +1215,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                <form method="POST" enctype="multipart/form-data" data-needs-confirm="true" data-confirm-message="A termék oldal törlése nem visszavonható művelet!">
+                    <form method="POST" enctype="multipart/form-data" data-needs-confirm="true" data-confirm-message="A termék oldal törlése nem visszavonható művelet!">
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-search-type="product_page">
@@ -1224,6 +1225,7 @@
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                                         </svg>
                                     </label>
+                                    <input type="hidden" name="product_page_id" id="product_page_id_delete" value="null">
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
                                     <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
@@ -1235,6 +1237,94 @@
                         </div>
                         <div class="form-submit-wrapper">
                             <input type="submit" value="Törlés" class="form-submit-danger" name='delete_product_page'>
+                        </div>
+                    </form>
+                    <div class="items"></div>
+                </div>
+            </section>
+
+            <!--------------------------- Termék oldal módosítása -------------------------->
+            <section>
+                <div class="section-header" tabindex="0">
+                    <div class="section-title">Termék oldal módosítása</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
+                <div class="section-body">
+                    <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="A termék oldal módosítása nem visszavonható művelet!">
+                        <div class="input-grid">
+                            <div class="search-wrapper">
+                                <div class="search" data-search-type="product_page">
+                                    <input type="text" name="product_page_name" id="product_page_name_modify" placeholder="Termék oldal keresése" required autocomplete="off">
+                                    <label for="product_name_page_delete" class="search-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        </svg>
+                                    </label>
+                                    <input type="hidden" name="product_page_id" id="product_page_id_modify" value="null">
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                </svg> 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                </svg>
+                            </div>
+                            <div class="form-divider">Termék oldal adatai</div>
+                            <div class="inline-input">
+                                <label for="category"><div>Kategória</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <select name="category" id="product_category_page_modify" required data-table="category"></select>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-ban disabled" viewBox="0 0 16 16">
+                                            <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+                                        </svg>
+                                        <input type="hidden" name="category_id" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inline-input">
+                                <label for="subcategory"><div>Alkategória</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <select name="subcategory" id="product_subcategory_page_modify" required data-table="subcategory"></select>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-ban disabled" viewBox="0 0 16 16">
+                                            <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+                                        </svg>
+                                        <input type="hidden" name="subcategory_id" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inline-input">
+                                <label for="content"><div>Tartalom</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <input type="text" name="content" id="content_modify" required>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-submit-wrapper">
+                            <input type="submit" value="Módosítás" class="form-submit-primary" name='modify_product_page'>
                         </div>
                     </form>
                     <div class="items"></div>
@@ -1438,6 +1528,23 @@
                 echo "<div class='error'>A termék módosítása sikertelen! {$result}</div></div>";
             }
         }
+        
+        //Termék törlése
+        if (isset($_POST['delete_product'])) {
+            $productData = array(
+                "id" => intval($_POST['product_id']),
+                "name" => $_POST['product_name']
+            );
+
+            $result = removeProduct($productData);
+
+            if ($result === true) {
+                echo "<div class='success'>A termék sikeresen törölve.</div>";
+            }
+            else {
+                echo "<div class='error'>A termék törlése sikertelen! {$result}</div>";
+            }
+        }
 
         // Termék oldal létrehozása
         if (isset($_POST['create_product_page'])) {
@@ -1470,20 +1577,39 @@
             }
         }
 
-        //Termék törlése
-        if (isset($_POST['delete_product'])) {
-            $productData = array(
-                "id" => intval($_POST['product_id']),
-                "name" => $_POST['product_name']
-            );
+        // Termék oldal törlése
+        if (isset($_POST['delete_product_page'])) {
+            $result = removeProductPage(intval($_POST['product_page_id']));
 
-            $result = removeProduct($productData);
-
-            if ($result === true) {
-                echo "<div class='success'>A termék sikeresen törölve.</div>";
+            if (!isError($result)) {
+                echo "<div class='success'>A termék oldal sikeresen törölve.</div>";
             }
             else {
-                echo "<div class='error'>A termék törlése sikertelen! {$result}</div>";
+                echo "<div class='error'>A termék oldal törlése sikertelen! {$result['message']}</div>";
+            }
+        }
+
+        // Termék oldal módosítása
+        if (isset($_POST['modify_product_page'])) {
+            $productPageData = array(
+                "id" => intval($_POST['product_page_id']),
+                "page_title" => $_POST['product_page_name'],
+                "page_content" => $_POST['content'],
+                "category_id" => intval($_POST['category_id']),
+                "subcategory_id" => intval($_POST['subcategory_id'])
+            );
+
+            $categoryData = array(
+                "category" => $_POST['category'],
+                "subcategory" => $_POST['subcategory'],
+            );
+
+            $result = modifyProductPage($productPageData, $categoryData);
+            if (!isError($result)) {
+                echo "<div class='success'>A termék oldal módosítva.</div>";
+            }
+            else {
+                echo "<div class='error'>A termék oldal módosítása sikertelen! {$result['message']}</div>";
             }
         }
         

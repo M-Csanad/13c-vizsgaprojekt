@@ -136,13 +136,16 @@ function createProduct($productData, $productPageData, $productCategoryData) {
         $productData["id"] = $result["message"];
         $productPageData["product_id"] = $result["message"];
     }
-    else {
-        if ($result["message"] -> getCode() === 1062) {
+    else if (isError($result)){
+        if ($result["code"] === 1062) {
             return "Ilyen termék már létezik az adatbázisban.";    
         }
         else {
             return "Sikertelen feltöltés a product táblába. ({$result["message"]})";
         }
+    }
+    else {
+        return "Sikertelen feltöltés az adatbázisba: {$result['message']}";
     }
 
     $insertIds = uploadProductImages($paths);
@@ -321,7 +324,7 @@ function updateProductImages($productData, $images, $paths) {
     return connectProductImages($ids, $productData["id"]);
 }
 
-function updateProductData($productData, $images, $imageIds, $paths) {
+function updateProductData($productData, $images, $paths) {
     
     $fields = array("name", "unit_price", "stock", "description");
     $values = array(
@@ -526,6 +529,6 @@ function updateProduct($productData) {
         $imageIds = typeOf($result, "NO_CHANGE") ? $result["message"][1] : array();
     }
 
-    return updateProductData($productData, $images, $imageIds, $paths);
+    return updateProductData($productData, $images, $paths);
 }
 ?>
