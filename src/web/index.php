@@ -261,7 +261,7 @@
   <link rel="stylesheet" href="./css/font.css" />
 
   <!--main stylesheet-->
-  <link rel="stylesheet" href="./mainPage/css/main.css" />
+  <link rel="stylesheet" href="./mainPage/css/main.css" media="print" onload="this.media='all'" />
   <link rel="stylesheet" href="./mainPage/css/main_media.css" media="all" />
   <link rel="stylesheet" href="./css/footer.css" media="all" />
   <link rel="stylesheet" href="./css/navbar.css" media="all" />
@@ -320,7 +320,7 @@
         <div class="videoContent_wrapper">
           <div class="videoContent_scrollable">
             <div class="videoContent_card-content">
-              <img src="./media/img/herbalLogo_white.png" alt="Florens Botanica Logo" loading="lazy" />
+              <img src="./media/img/herbalLogo_white.png" alt="Florens Botanica Logo" />
             </div>
             <div class="videoContent_card-content">
               <p class="__t03-law1">
