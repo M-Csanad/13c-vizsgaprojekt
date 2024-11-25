@@ -303,9 +303,6 @@ form {
     body {
         display: block;
     }
-    .action-button {
-        width: 75% !important;
-    }
 }
 
 @media screen and (max-width: 900px) {
