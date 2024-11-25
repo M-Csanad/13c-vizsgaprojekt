@@ -1,23 +1,17 @@
 <?php
+$base_url = "http://localhost:8080/13c-vizsgaprojekt/src/web"; //Ez olyan, mintha a domain cím lenne
 $footerData = [
-    'logo' => '	http://localhost:8080/FlorensBotanica/GIT_REPO/src/web/media/img/herbalLogo_white.png',
+    'logo' => "$base_url/media/img/herbalLogo_white.png",
     'description' => 'We bring the healing power of nature into modern wellness, offering pure, Ayurveda-inspired products for balanced health and well-being.',
     'sections' => [
         'Website' => [
-            ['text' => 'Home', 'url' => 'http://localhost:8080/FlorensBotanica/GIT_REPO/src/web/mainPage/main.html'],
-            ['text' => 'Categories', 'url' => 'http://localhost:8080/FlorensBotanica/GIT_REPO/src/web/mainPage/main.html#categoryGallery'],
+            ['text' => 'Home', 'url' => "$base_url"],
+            ['text' => 'Categories', 'url' => "$base_url#categoryGallery"],
             ['text' => 'Privacy Policy', 'url' => '#'],
             ['text' => 'About us', 'url' => '#'],
             ['text' => 'Copyright', 'url' => '#'],
         ],
-        /* 'Category' => [
-            ['text' => 'Travel', 'url' => 'https://blogmarket.shop/homepage/category-travel'],
-            ['text' => 'Nippon', 'url' => 'https://blogmarket.shop/homepage/category-japan'],
-            ['text' => 'Perfume', 'url' => 'https://blogmarket.shop/homepage/category-perfume'],
-        ], */
         'Our Team' => [
-            /* ['name' => 'ScalyShop', 'url' => 'https://www.instagram.com/scaly_san/', 'icon' => 'logo-instagram'], */
-
             ['name' => 'Csanad', 'url' => '#', 'icon' => 'construct-outline'],
             ['name' => 'Máté', 'url' => '#', 'icon' => 'construct-outline'],
         ],

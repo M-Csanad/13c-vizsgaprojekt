@@ -1,32 +1,106 @@
 <?php
-$base_url = "http://localhost:8080/FlorensBotanica/GIT_REPO/src/web"; //Ez olyan, mintha a domain cím lenne (public_html).
-$logo_url = "$base_url/media/img/herbalLogo_mini_white.png";
+include_once $_SERVER['DOCUMENT_ROOT'] . '/13c-vizsgaprojekt/src/auth/db_connect.php';
 
+
+
+function generateSlug($string)
+{
+    $unwanted_chars = [
+        'á' => 'a',
+        'é' => 'e',
+        'í' => 'i',
+        'ó' => 'o',
+        'ö' => 'o',
+        'ő' => 'o',
+        'ú' => 'u',
+        'ü' => 'u',
+        'ű' => 'u',
+        'Á' => 'A',
+        'É' => 'E',
+        'Í' => 'I',
+        'Ó' => 'O',
+        'Ö' => 'O',
+        'Ő' => 'O',
+        'Ú' => 'U',
+        'Ü' => 'U',
+        'Ű' => 'U'
+    ];
+    $string = strtr($string, $unwanted_chars); // Ékezetek eltávolítása
+    $string = strtolower($string); // Kisbetűsítés
+    $string = preg_replace('/[^a-z0-9\s-]/', '', $string); // Speciális karakterek eltávolítása
+    $string = preg_replace('/\s+/', '-', $string); // Szóközök helyettesítése kötőjellel
+    return trim($string, '-'); // Végéről kötőjelek eltávolítása
+}
+
+function getCategoryContent()
+{
+    $conn = createConnection();
+
+    if ($conn->connect_error) {
+        die("Kapcsolódási hiba: " . $conn->connect_error);
+    }
+
+    $sql = "SELECT
+                category.name AS category_name,
+                category.thumbnail_image_vertical_uri AS category_image,
+                subcategory.name AS subcategory_name,
+                subcategory.category_id AS category_id
+            FROM category
+            LEFT JOIN subcategory ON category.id = subcategory.category_id";
+
+    $result = $conn->query($sql);
+    $category_content = [];
+
+    if ($result->num_rows > 0) {
+        // Az adatok feldolgozása
+        while ($row = $result->fetch_assoc()) {
+            $category_name = $row['category_name'];
+            $subcategory_name = $row['subcategory_name'];
+            $category_image = $row['category_image'];
+
+            // Kategória URL generálása
+            $category_slug = generateSlug($category_name);
+            $category_url = "http://localhost:8080/13c-vizsgaprojekt/src/web/" . $category_slug . "/";
+
+            if (!isset($category_content[$category_name])) {
+                $category_content[$category_name] = [
+                    'title' => $category_name,
+                    'url' => $category_url,
+                    'img' => "../" . $category_image,
+                    'subcategories' => []
+                ];
+            }
+
+
+
+
+
+
+            if ($subcategory_name) {
+                // Alkategória URL generálása
+                $subcategory_slug = generateSlug($subcategory_name);
+                $subcategory_url = "http://localhost:8080/13c-vizsgaprojekt/src/web/" . $category_slug . "/" . $subcategory_slug;
+
+                $category_content[$category_name]['subcategories'][] = [
+                    'name' => $subcategory_name,
+                    'url' => $subcategory_url
+                ];
+            }
+        }
+    }
+
+    $conn->close();
+
+    return array_values($category_content); // Az asszociatív indexeket numerikusra váltja
+}
+$category_content = getCategoryContent();
+$base_url = "http://localhost:8080/13c-vizsgaprojekt/src/web";
+$logo_url = "$base_url/media/img/herbalLogo_mini_white.png";
 // Navigációs elemek
 $menu_items = [
     ['name' => 'Categories', 'id' => 'fb-navlink-category', 'url' => '#'],
     ['name' => 'About us', 'url' => "$base_url/about-us/"],
     ['name' => 'Privacy Policy', 'url' => "$base_url/privacy-policy/"]
-];
-
-// Kategória tartalom
-$category_content = [
-    [
-        'title' => 'Travel',
-        'img' => "https://images.unsplash.com/photo-1511207538754-e8555f2bc187?q=80&w=2412&auto=format&fit=crop",
-        'subcategories' => [
-            ['name' => 'backpack', 'url' => "$base_url/C:/category-travel/subcategory-backpack/"],
-            ['name' => 'tent', 'url' => "$base_url/C:/category-travel/subcategory-tent/"]
-        ]
-    ],
-    [
-        'title' => 'Perfume',
-        'img' => "https://images.unsplash.com/photo-1533603208986-24fd819e718a?q=80&w=3774&auto=format&fit=crop",
-        'subcategories' => [
-            ['name' => 'pheromone', 'url' => "$base_url/C:/category-perfume/subcategory-pheromone/"],
-            ['name' => 'edp', 'url' => "$base_url/C:/category-perfume/subcategory-edp/"]
-        ]
-    ]
 ];
 ?>
 
@@ -58,24 +132,26 @@ $category_content = [
 
 
 <div id="fb-subcontentContainer" class="fb-nav-subcontent-container">
-    <div id="fb-categoryContentWrapper" class="col-8 fb-nav-subcontent-wrapper">
+    <div id="fb-categoryContentWrapper" class="fb-nav-subcontent-wrapper">
         <?php foreach ($category_content as $content): ?>
-            <div class="fb-nav-subcontent-frame">
-                <div class="fb-nav-subcontent-imgblock">
-                    <img src="<?= $content['img'] ?>" alt="<?= $content['title'] ?> image" />
-                    <h3 class="fb-subcontent-imgblock-title"><?= $content['title'] ?></h3>
-                </div>
-                <div class="fb-nav-subcontent-textblock">
-                    <h2 class="fb-textblock-title"><?= $content['title'] ?></h2>
-                    <div class="fb-textblock-listpanel">
-                        <ul>
-                            <?php foreach ($content['subcategories'] as $sub): ?>
-                                <li><a href="<?= $sub['url'] ?>" class="fb-link"><?= $sub['name'] ?></a></li>
-                            <?php endforeach; ?>
-                        </ul>
+            <a href="<?=$content["url"]?>">
+                <div class="fb-nav-subcontent-frame">
+                    <div class="fb-nav-subcontent-imgblock">
+                        <img src="<?= $content['img'] ?>" alt="<?= $content['title'] ?> image" />
+                        <h2 class="fb-subcontent-imgblock-title"><?= $content['title'] ?></h2>
                     </div>
+                    <!-- <div class="fb-nav-subcontent-textblock">
+                        <h4 class="fb-textblock-title"><?= $content['title'] ?></h4>
+                        <div class="fb-textblock-listpanel">
+                            <ul>
+                                <?php foreach ($content['subcategories'] as $sub): ?>
+                                    <li><a href="<?= $sub['url'] ?>" class="fb-link"><?= $sub['name'] ?></a></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    </div> -->
                 </div>
-            </div>
+            </a>
         <?php endforeach; ?>
     </div>
 </div>

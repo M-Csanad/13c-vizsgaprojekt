@@ -127,8 +127,6 @@
     left: 12rem;
     transform: translateY(-300%);
   }
-  #brand-philosophy {
-  }
 
   /*
  =============================
@@ -217,6 +215,18 @@
 
   .swiper-slide .img-wrapper .underline {
     display: none;
+  }
+
+  .swiper-slide .img-wrapper .text-main h1,
+  .swiper-slide .img-wrapper .text-main h2 {
+    white-space: normal;
+  }
+  .__t00-law5-custom01 {
+    letter-spacing: clamp(
+      calc(4px * 5 / 1),
+      0.1em,
+      calc(4.5px * 5 / 1)
+    ) !important;
   }
 
   .bg_slider .swiper-button-prev:after,
@@ -433,6 +443,14 @@
  =============================
  */
 
+  .__t00-law5-custom01 {
+    letter-spacing: clamp(
+      calc(4px * 5 / 1),
+      0.1em,
+      calc(4.5px * 5 / 1)
+    ) !important;
+  }
+
   .bg_slider-thumbs {
     width: 90%;
     transform: translateY(120%);
@@ -475,6 +493,11 @@
 
   .swiper-slide .img-wrapper .underline {
     display: none;
+  }
+
+  .swiper-slide .img-wrapper .text-main h1,
+  .swiper-slide .img-wrapper .text-main h2 {
+    white-space: normal;
   }
 
   .bg_slider .swiper-button-prev:after,
@@ -687,7 +710,13 @@
     swiper category chooser
  =============================
  */
-
+  .__t00-law5-custom01 {
+    letter-spacing: clamp(
+      calc(4px * 5 / 1),
+      0.1em,
+      calc(4.5px * 5 / 1)
+    ) !important;
+  }
   .bg_slider-thumbs {
     width: 90%;
     transform: translateY(120%);
@@ -703,6 +732,7 @@
   .bg_slider-thumbs .swiper-slide .contentImg h2 {
     display: none;
   }
+
   .bg_slider-thumbs .swiper-slide .contentImg {
     text-align: center;
     margin-top: 12px;
@@ -726,6 +756,11 @@
   }
   .swiper-slide .img-wrapper .content_wrapper {
     top: 20%;
+  }
+
+  .swiper-slide .img-wrapper .text-main h1,
+  .swiper-slide .img-wrapper .text-main h2 {
+    white-space: normal;
   }
 
   .bg_slider .swiper-button-prev:after,
@@ -936,6 +971,13 @@
     swiper category chooser
  =============================
  */
+  .__t00-law5-custom01 {
+    letter-spacing: clamp(
+      calc(4px * 5 / 1),
+      0.1em,
+      calc(4.5px * 5 / 1)
+    ) !important;
+  }
   .bg_slider-thumbs {
     transform: translateY(120%);
   }
@@ -1119,6 +1161,13 @@
     swiper category chooser
  =============================
  */
+  .__t00-law5-custom01 {
+    letter-spacing: clamp(
+      calc(4px * 5 / 1),
+      0.1em,
+      calc(4.5px * 5 / 1)
+    ) !important;
+  }
   .bg_slider-thumbs {
     transform: translateY(120%);
   }
@@ -1303,7 +1352,7 @@
   }
   .bg_slider .swiper-button-next,
   .bg_slider .swiper-button-prev {
-    top: 70%;
+    top: none;
   }
 
   /*
