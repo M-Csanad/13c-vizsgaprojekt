@@ -22,14 +22,14 @@
                             FROM user 
                             WHERE user.cookie_id = ?", $cookieToken);
         
-        if (is_array($result)) {
-            $user = $result;
+        if (typeOf($result, "SUCCESS")) {
+            $user = $result["message"];
             if (time() < $user['cookie_expires_at']) {
                 setSessionData($user);
             }
         }
         else {
-            echo "<div class='error'>", $result, "</div>";
+            echo "<div class='error'>", $result["message"], "</div>";
             exit();
         }
     }

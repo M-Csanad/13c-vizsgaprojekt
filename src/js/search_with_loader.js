@@ -19,7 +19,7 @@ function initializeSearch(search) {
                 <img src='${item.thumbnail_image_horizontal_uri}'><div><b>${item.name}</b> - 
                 ${(item.type === "category") ? "Főkategória" : `Alkategória <i>(${item.parent_category})</i>`}</div>`,
 
-            clickHandler: async (item) => {
+            clickHandler: (item) => {
                 if (!autofill) {
                     itemClickHandler(item, ["id", "type", "name"]);
                 }
@@ -29,8 +29,7 @@ function initializeSearch(search) {
                         { field: "subname", value: item.subname },
                         { field: "description", value: item.description },
                         { field: "type", value: item.parent_category ? "sub" : "main" },
-                        { field: "parent_category", value: item.parent_category ? item.parent_category : null },
-                        { field: "original_parent_category", value: item.parent_category ? item.parent_category : null }
+                        { field: "parent_category", value: item.parent_category ? item.parent_category : null }
                     ]});
                 }
             }
@@ -38,7 +37,7 @@ function initializeSearch(search) {
         user: {
             template: (user) => `
                 <div><b>${user.name}</b> - ${user.email} (<i>${user.role}</i>)</div>`,
-            clickHandler: async (user) => itemClickHandler(user, ["id", "name"])
+            clickHandler: (user) => itemClickHandler(user, ["id", "name"])
         },
         product: {
             autofillFields: [
@@ -56,7 +55,7 @@ function initializeSearch(search) {
                     return `<img src='${product.thumbnail_image_horizontal_uri}'><div><b>${product.name}</b> - <i>${product.category ? product.category : "#"} / ${product.subcategory ? product.subcategory : "#"}</i></div>`;
                 }
             },
-            clickHandler: async (product) => {
+            clickHandler: (product) => {
                 if (!autofill) {
                     itemClickHandler(product, ["id", "name"]);
                 }
@@ -66,22 +65,7 @@ function initializeSearch(search) {
                         { field: "description", value: product.description },
                         { field: "price", value: product.unit_price },
                         { field: "stock", value: product.stock },
-                        { field: "tags", value: (product.tag_ids) ? product.tag_ids.split(",") : null }
-                    ]});
-                }
-            }
-        },
-        product_page: {
-            template: (page) => {
-                return `<img src='${page.uri}'><div><b>${page.name}</b> - <i>${page.category_name ? page.category_name : "#"} / ${page.subcategory_name ? page.subcategory_name : "#"}</i> (${page.content_preview}...)</div>`;
-            },
-            clickHandler: async (page) => {
-                if (!autofill) {
-                    itemClickHandler(page, ["id", "name"]);
-                }
-                else {
-                    itemClickHandler(page, ["id", "name"], { fields: [
-                        { field: "title", value: page.name },
+                        { field: "tags", value: product.tag_ids.split(",") }
                     ]});
                 }
             }
@@ -90,6 +74,7 @@ function initializeSearch(search) {
 
     let isSearchEnabled = true;
     let lastContentfulSearchTerm = "";
+    let isAnimating = false;
 
     // Aszinkron keresés a megfelelő PHP segítségével
     async function searchHandler() {
@@ -97,68 +82,111 @@ function initializeSearch(search) {
         let data = new FormData();
         data.append('search_term', input);
         if (input.length > 0) {
-            const response = await fetch(`./misc/search_${searchType}.php`, {
-                method: "POST",
-                body: data
-            });
+            clearItems();
+            toggleLoader(true);
 
-            if (response.ok) {
-                let data = await response.json();
+            try {
+                const response = await fetch(`./misc/search_${searchType}.php`, {
+                    method: "POST",
+                    body: data
+                });
+    
+                if (response.ok) {
+                    let data = await response.json();
+    
+                    if (typeof data == "object") {
+                        lastContentfulSearchTerm = input;
+                    }
+                    else {
+                        isSearchEnabled = false;
+                    }
 
-                if (data.type == "ERROR") {
-                    console.log("Hiba a kereséskor: " + data.message);
+                    await populateItemContainer(data);
+                    setTimeout(()=>{
+                        toggleLoader(false);
+                    }, 300);
                 }
-
-                if (data.type == "SUCCESS") {
-                    lastContentfulSearchTerm = input;
-                }
-                else {
-                    isSearchEnabled = false;
-                }
-
-                if (data.type == "EMPTY") {
-                    toggleDropdown(false);
-                    return;
-                }
-                else {
-                    populateItemContainer(data.message);
-                }
-
+            }
+            catch(e) {
+                console.log("Nem sikerült a keresés. Hiba: " + e);
             }
         } else {
             toggleDropdown(false);
+            toggleLoader(false);
         }
     }
 
     function toggleLoader(show) {
-        const loader = searchItemsContainer.querySelector('.loader');
+        const loader = searchItemsContainer.querySelector('.loader-wrapper');
+        if (!loader || isAnimating) return;
+
         if (show) {
-            loader.style.display = "block";
+            toggleDropdown(true);
+
+            isAnimating = true;
+
+            searchItemsContainer.style.overflowY = "hidden";
+            searchItemsContainer.style.maxHeight = "100px";
+            loader.style.display = "flex";
+            loader.style.opacity = 1;
+
+            setTimeout(()=>{
+                isAnimating = false;
+            }, 300);
         }
         else {
-            loader.style.display = "none";
+            isAnimating = true;
+            loader.style.opacity = 0;
+            
+            setTimeout(() => {
+                searchItemsContainer.style.maxHeight = "301px";
+                loader.style.display = "none";
+                isAnimating = false;
+                searchItemsContainer.style.overflowY = "auto";
+            }, 300);
         }
     }
 
-    // A legördülömenü feltöltése találatokkal
-    function populateItemContainer(items) {
+    function clearItems() {
+        searchItemsContainer.querySelectorAll("div.search-item").forEach(e => e.remove());
+    }
 
-        const config = searchConfig[searchType];
-        if (!config) return;
-        
-        searchItemsContainer.innerHTML = "";
+    // A legördülömenü feltöltése találatokkal
+    async function populateItemContainer(items) {
+        if (items === "Nincs találat!") {
+            toggleDropdown(false);
+            return;
+        }
+
+        clearItems();
         toggleDropdown(true);
 
         if (!Array.isArray(items)) items = [items];
 
+        const config = searchConfig[searchType];
+        if (!config) return;
+
+        let loadPromises = [];
         for (let item of items) {
             let itemDOM = document.createElement("div");
             itemDOM.className = "search-item";
             itemDOM.innerHTML = config.template(item);
+
+            const image = itemDOM.querySelector('img');
+            if (image) {
+                const loadPromise = new Promise((resolve) => {
+                    image.onload = resolve;
+                    image.onerror = resolve;
+                });
+                loadPromises.push(loadPromise);
+            }
+
             itemDOM.addEventListener("click", () => config.clickHandler(item));
             searchItemsContainer.appendChild(itemDOM);
         }
-}
+
+        await Promise.all(loadPromises);
+    }
 
     // A legördülőmenü elhelyezése a beviteli mező alá (mivel az űrlapon overflow: hidden van, ezért a legördülőmenü kívül kell hogy legyen)
     function positionDropdown() {
@@ -175,12 +203,12 @@ function initializeSearch(search) {
             searchItemsContainer.style.display = "block";
         } else {
             searchItemsContainer.style.display = "none";
-            searchItemsContainer.innerHTML = "";
+            clearItems();
             search.style.borderRadius = "5px 5px 5px 5px";
         }
     }
     // A keresési találatra történő kattintás kezelése
-    async function itemClickHandler(item, fields, outputData = {}) { // Módosításkor a kitöltendő mezők az outputData alapján töltődnek ki
+    function itemClickHandler(item, fields, outputData = {}) { // Módosításkor a kitöltendő mezők az outputData alapján töltődnek ki
         fields.forEach(field => {
             const input = search.querySelector(`input[name=${searchType}_${field}]`);
             if (input) input.value = item[field];
@@ -279,7 +307,7 @@ function initializeSearch(search) {
             if (isSearchEnabled) {
                 await searchHandler();
             }
-            if (searchItemsContainer.children.length > 0) {
+            if (searchItemsContainer.children.length > 1) { // A loader-t nem számoljuk bele
                 toggleDropdown(true);
                 positionDropdown();
             }

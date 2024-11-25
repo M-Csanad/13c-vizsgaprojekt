@@ -13,11 +13,13 @@ if ($searchTerm) {
             LEFT JOIN category ON product_page.category_id = category.id 
             LEFT JOIN subcategory ON product_page.subcategory_id = subcategory.id 
             LEFT JOIN product_image ON product.id = product_image.product_id 
-            LEFT JOIN product_tag ON product.id = product_tag.product_id 
             LEFT JOIN image ON product_image.image_id = image.id 
+            LEFT JOIN product_tag ON product.id = product_tag.product_id 
             WHERE (product.name LIKE ? 
             OR category.name LIKE ? OR subcategory.name LIKE ?)
             AND image.media_type = 'image'
+            AND image.orientation = 'horizontal'
+            AND image.uri LIKE '%thumbnail%'
             GROUP BY product.id
             ORDER BY product.name;";
 

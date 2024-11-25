@@ -14,7 +14,11 @@ function selectData($query, $parameters) {
             
             $typeString = '';
             foreach ($parameters as $parameter) {
-                $typeString .= gettype($parameter)[0];
+                if (is_null($parameter)) {
+                    $typeString .= 's';
+                } else {
+                    $typeString .= gettype($parameter)[0];
+                }
             }
             
             $statement -> bind_param($typeString, ...$parameters);
@@ -24,17 +28,17 @@ function selectData($query, $parameters) {
         $db -> close();
 
         if ($result -> num_rows == 1) {
-            return $result -> fetch_assoc();
+            return ["message" => $result -> fetch_assoc(), "type" => "SUCCESS", "contentType" => "ASSOC"];
         }
         if ($result -> num_rows > 0) {
-            return $result -> fetch_all(MYSQLI_ASSOC);
+            return ["message" => $result -> fetch_all(MYSQLI_ASSOC), "type" => "SUCCESS", "contentType" => "ARRAY"];
         }
         else {
-            return "Nincs találat!";
+            return ["message" => "Nincs találat!", "type" => "EMPTY"];
         }
     }
     catch(Exception $e) {
-        return $e;
+        return ["message" => $e -> getMessage(), "code" => $e -> getCode(), "type" => "ERROR"];
     }
 }
 
@@ -50,7 +54,11 @@ function updateData($query, $parameters) {
         
         $typeString = '';
         foreach ($parameters as $parameter) {
-            $typeString .= gettype($parameter)[0];
+            if (is_null($parameter)) {
+                $typeString .= 's';
+            } else {
+                $typeString .= gettype($parameter)[0];
+            }
         }
         
         $statement -> bind_param($typeString, ...$parameters);
@@ -59,15 +67,27 @@ function updateData($query, $parameters) {
         $db -> close();
         if ($statement -> affected_rows > 0) {
             if (str_contains($query, "INSERT")) {
-                return $statement -> insert_id;
+                return ["message" => $statement -> insert_id, "type" => "SUCCESS", "contentType" => "INT"];
             }
-            else return true;
+            else return ["message" => true, "type" => "SUCCESS"];
         }
-        else return false;
+        else return ["message" => false, "type" => "NO_AFFECT"];
     }
     catch(Exception $e) {
-        return $e;
+        return ["message" => $e -> getMessage(), "code" => $e -> getCode(), "type" => "ERROR"];
     }
 }
 
+function isError($result) {
+    return $result["type"] == "ERROR";
+}
+
+function isSuccess($result) {
+    return $result["type"] == "SUCCESS";
+}
+
+function typeOf($result, $resultType) {
+    if (!isset($result["type"])) return false;
+    return $result["type"] === $resultType;
+}
 ?>

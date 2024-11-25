@@ -1,7 +1,14 @@
 <?php
 
 function format_str($s) {
-    return str_replace(" ", "-", mb_strtolower($s));
+    $hungarian_to_english = [
+        'á' => 'a', 'é' => 'e', 'í' => 'i', 
+        'ó' => 'o', 'ö' => 'o', 'ő' => 'o',
+        'ú' => 'u', 'ü' => 'u', 'ű' => 'u'
+    ];
+
+    $temp = str_replace(" ", "-", trim(mb_strtolower($s)));
+    return strtr($temp, $hungarian_to_english);
 }
 
 function getOrientation($image) {
@@ -36,10 +43,44 @@ function createDirectory($paths) {
     return true;
 }
 
+function moveFolder($folderPath, $newFolderPath) {
+
+    if (!is_dir($folderPath)) {
+        return false;
+    }
+
+    if (!is_dir($newFolderPath)) {
+        if (!mkdir($newFolderPath, 0777, true)) {
+            return false;
+        }
+    }
+
+    $files = scandir($folderPath);
+
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') {
+            continue;
+        }
+
+        $sourcePath = $folderPath . DIRECTORY_SEPARATOR . $file;
+        $destinationPath = $newFolderPath . DIRECTORY_SEPARATOR . $file;
+
+        if (is_file($sourcePath)) {
+            if (!rename($sourcePath, $destinationPath)) {
+                return false;
+            }
+        }
+    }
+
+    return deleteFolder($folderPath);
+}
+
+
 function deleteFolder($folderPath) {
     if (!is_dir($folderPath)) {
         return false;
     }
+    
     $files = scandir($folderPath);
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
@@ -58,6 +99,37 @@ function deleteFolder($folderPath) {
     return rmdir($folderPath);
 }
 
+function renameFolder($folderPath, $newFolderPath) {
+    if (!is_dir($folderPath)) {
+        return false;
+    }
+
+    return rename($folderPath, $newFolderPath);
+}
+
+function deleteFolderFiles($folderPath) {
+    if (!is_dir($folderPath)) {
+        return false;
+    }
+
+    $files = scandir($folderPath);
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') {
+            continue;
+        }
+
+        $filePath = $folderPath . DIRECTORY_SEPARATOR . $file;
+
+        if (is_file($filePath)) {
+            unlink($filePath);
+        } elseif (is_dir($filePath)) {
+            continue;
+        }
+    }
+
+    return true;
+}
+
 function moveFile($tmp, $name, $basename, $dir) {
     $extension = pathinfo($name, PATHINFO_EXTENSION);
     
@@ -74,8 +146,8 @@ function replaceFile($fileURI, $tmp, $name, $basename) {
 
     if (is_file($fileURI)) {
         unlink($fileURI);
-        if (moveFile($tmp, $name, $basename, $dirURI)) return $fileURI;
-        else return false;
+        $result = moveFile($tmp, $name, $basename, $dirURI);
+        return $result;
     }
     else return false;
 }

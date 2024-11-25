@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="./css/dashboard.css">
     <link rel="stylesheet" href="./css/allergen-checkbox.css">
     <link rel="stylesheet" href="./css/search.css">
+    <link rel="stylesheet" href="./css/table.css">
+    <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
     <?php 
         include_once "./auth/init.php"; 
         session_start();
@@ -406,7 +408,8 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-ban disabled" viewBox="0 0 16 16">
                                             <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
                                         </svg>
-                                        <input type="hidden" name="parent_category_id" value="0">
+                                        <input type="hidden" name="parent_category_id" value="null">
+                                        <input type="hidden" name="original_parent_category" value="null">
                                     </div>
                                 </div>
                             </div>
@@ -452,7 +455,7 @@
                                         </svg>
                                     </div>
                                     <div class="input-tooltip">
-                                        Videó feltöltéséhez kapcsolja be az elemet! 
+                                        Függőleges borítókép feltöltéséhez kapcsolja be az elemet! 
                                     </div>
                                 </div>
                             </div>
@@ -497,7 +500,7 @@
                                         </svg>
                                     </div>
                                     <div class="input-tooltip">
-                                        Videó feltöltéséhez kapcsolja be az elemet! 
+                                        Vízszintes borítókép feltöltéséhez kapcsolja be az elemet! 
                                     </div>
                                 </div>
                             </div>
@@ -632,14 +635,21 @@
                                 <div class="tag-body">
                                     <div class="tag-items">
                                         <?php
-                                            $tags = selectData("SELECT * FROM tag;", null);
-                                            if (is_array($tags)) {
+                                            $result = selectData("SELECT * FROM tag;", null);
+                                            if (typeOf($result, "SUCCESS")) {
+                                                $tags = $result["message"];
+
+                                                if ($result["contentType"] == "ASSOC") $tags = [$tags];
+                                                
                                                 $count = 0;
                                                 for ($i = 0; $i < count($tags); $i++) {
                                                     $tag = $tags[$i];
                                                     $id = "tag".$i;
                                                     echo "<label for='$id' class='tag-checkbox'><img loading='lazy' src='{$tag['icon_uri']}' draggable='false' title='{$tag['name']}' alt='{$tag['name']}'><input type='checkbox' name='tags[]' id='$id' value='{$tag['id']}'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>";
                                                 }
+                                            }
+                                            else if (typeOf($result, "EMPTY")){
+                                                echo "Nincsenek allergének felvéve.";
                                             }
                                         ?>
                                     </div>
@@ -730,7 +740,7 @@
                                                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                                                     <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
                                                 </svg>
-                                                <input type="file" name="product_images[]" id="product_images_create" multiple required accept="image/png, image/jpeg">
+                                                <input type="file" name="product_images[]" id="product_images_create" multiple required accept="image/png, image/jpeg" data-type="image" data-count="multiple" data-orientation="any">
                                                 Képek kiválasztása
                                             </label>
                                         </div>
@@ -828,7 +838,20 @@
                             </div>
                         </div>
                     </form>
-                    <div class="items"></div>
+                    <div class="items">
+                        <!-- <div class="loader-wrapper">
+                            <div class="loader dot-spinner">
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                                <div class="dot"></div>
+                            </div>
+                        </div> -->
+                    </div>
                 </div>
             </section>
             <!------------------------------ Termék módosítása ----------------------------->
@@ -921,14 +944,21 @@
                                 <div class="tag-body">
                                     <div class="tag-items" name="tags">
                                         <?php
-                                            $tags = selectData("SELECT * FROM tag;", null);
-                                            if (is_array($tags)) {
+                                            $result = selectData("SELECT * FROM tag;", null);
+                                            if (typeOf($result, "SUCCESS")) {
+                                                $tags = $result["message"];
+
+                                                if ($result["contentType"] == "ASSOC") $tags = [$tags];
+
                                                 $count = 0;
                                                 for ($i = 0; $i < count($tags); $i++) {
                                                     $tag = $tags[$i];
                                                     $id = "tag".$i;
                                                     echo "<label for='$id-modify' class='tag-checkbox'><img loading='lazy' src='{$tag['icon_uri']}' draggable='false' title='{$tag['name']}' alt='{$tag['name']}'><input type='checkbox' name='tags[]' id='$id-modify' value='{$tag['id']}'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>";
                                                 }
+                                            }
+                                            else if (typeOf($result, "EMPTY")){
+                                                echo "Nincsenek allergének felvéve.";
                                             }
                                         ?>
                                     </div>
@@ -1006,7 +1036,7 @@
                                                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                                                     <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
                                                 </svg>
-                                                <input type="file" disabled name="product_images[]" id="product_images_modify" required accept="image/png, image/jpeg" data-orientation="vertical" data-type="image" data-count="singular" tabindex="-1">
+                                                <input type="file" multiple disabled name="product_images[]" id="product_images_modify" required accept="image/png, image/jpeg"  data-type="image" data-count="multiple" data-orientation="any" tabindex="-1">
                                                 Kép kiválasztása
                                             </label>
                                         </div>
@@ -1072,7 +1102,7 @@
                             </div>
                         </div>
                         <div class="form-submit-wrapper">
-                            <input type="submit" value="Felvitel" class="form-submit-primary" name='modify_product'>
+                            <input type="submit" value="Módosítás" class="form-submit-primary" name='modify_product'>
                         </div>
                     </form>
                     <div class="items"></div>
@@ -1170,6 +1200,131 @@
                     <div class="items"></div>
                 </div>
             </section>
+
+            <!---------------------------- Termék oldal törlése ---------------------------->
+            <section>
+                <div class="section-header" tabindex="0">
+                    <div class="section-title">Termék oldal törlése</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
+                <div class="section-body">
+                    <form method="POST" enctype="multipart/form-data" data-needs-confirm="true" data-confirm-message="A termék oldal törlése nem visszavonható művelet!">
+                        <div class="input-grid">
+                            <div class="search-wrapper">
+                                <div class="search" data-search-type="product_page">
+                                    <input type="text" name="product_page_name" id="product_page_name_delete" placeholder="Termék oldal keresése" required autocomplete="off">
+                                    <label for="product_name_page_delete" class="search-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        </svg>
+                                    </label>
+                                    <input type="hidden" name="product_page_id" id="product_page_id_delete" value="null">
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                </svg> 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="form-submit-wrapper">
+                            <input type="submit" value="Törlés" class="form-submit-danger" name='delete_product_page'>
+                        </div>
+                    </form>
+                    <div class="items"></div>
+                </div>
+            </section>
+
+            <!--------------------------- Termék oldal módosítása -------------------------->
+            <section>
+                <div class="section-header" tabindex="0">
+                    <div class="section-title">Termék oldal módosítása</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
+                <div class="section-body">
+                    <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="A termék oldal módosítása nem visszavonható művelet!">
+                        <div class="input-grid">
+                            <div class="search-wrapper">
+                                <div class="search" data-search-type="product_page">
+                                    <input type="text" name="product_page_name" id="product_page_name_modify" placeholder="Termék oldal keresése" required autocomplete="off">
+                                    <label for="product_name_page_delete" class="search-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        </svg>
+                                    </label>
+                                    <input type="hidden" name="product_page_id" id="product_page_id_modify" value="null">
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                </svg> 
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                </svg>
+                            </div>
+                            <div class="form-divider">Termék oldal adatai</div>
+                            <div class="inline-input">
+                                <label for="category"><div>Kategória</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <select name="category" id="product_category_page_modify" required data-table="category"></select>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-ban disabled" viewBox="0 0 16 16">
+                                            <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+                                        </svg>
+                                        <input type="hidden" name="category_id" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inline-input">
+                                <label for="subcategory"><div>Alkategória</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <select name="subcategory" id="product_subcategory_page_modify" required data-table="subcategory"></select>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-ban disabled" viewBox="0 0 16 16">
+                                            <path d="M15 8a6.97 6.97 0 0 0-1.71-4.584l-9.874 9.875A7 7 0 0 0 15 8M2.71 12.584l9.874-9.875a7 7 0 0 0-9.874 9.874ZM16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0"/>
+                                        </svg>
+                                        <input type="hidden" name="subcategory_id" value="0">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inline-input">
+                                <label for="content"><div>Tartalom</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <input type="text" name="content" id="content_modify" required>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-submit-wrapper">
+                            <input type="submit" value="Módosítás" class="form-submit-primary" name='modify_product_page'>
+                        </div>
+                    </form>
+                    <div class="items"></div>
+                </div>
+            </section>
         </div>
     </div>
     <!------------------------------ Jogosultságok kezelése ----------------------------->
@@ -1236,6 +1391,10 @@
         // Kategória létrehozása
         if (isset($_POST['create_category'])) {
 
+            if (isset($_SESSION['block_resubmit'])) {
+                return;
+            }
+
             $categoryData = array(
                 "name" => $_POST['category_name'],
                 "subname" => $_POST['category_subname'],
@@ -1249,19 +1408,20 @@
 
             $result = createCategory($categoryData);
 
-            if (is_numeric($result)) {
+            if (typeOf($result, "SUCCESS")) {
                 echo "<div class='success'>Kategória sikeresen létrehozva!</div></div>";
             }
             else {
-                echo "<div class='error'>A kategória létrehozása sikertelen! $result</div></div>";
+                echo "<div class='error'>A kategória létrehozása sikertelen! {$result["message"]}</div></div>";
             }
+
         }
 
         // Kategória törlése
         if (isset($_POST['delete_category'])) {
 
             if ($_POST['category_type'] == 'null' || $_POST['category_id'] == 'null') {
-                echo "<div class='error'>A kategória törlése sikertelen! Ez a kategória nem létezik!</div></div>"; 
+                echo "<div class='error'>A kategória törlése sikertelen! Kérjük töltsön ki minden mezőt!</div></div>"; 
             }
             else {
                 $categoryData = array(
@@ -1271,11 +1431,11 @@
                 );
                 $result = removeCategory($categoryData);
 
-                if ($result === true) {
+                if (typeOf($result, "SUCCESS")) {
                     echo "<div class='success'>A kategória sikeresen törölve.</div></div>";
                 }
                 else {
-                    echo "<div class='error'>A kategória törlése sikertelen! $result</div></div>";
+                    echo "<div class='error'>A kategória törlése sikertelen! {$result["message"]}</div></div>";
                 }
             }
         }
@@ -1286,21 +1446,23 @@
             $categoryData = array(
                 "id" => intval($_POST['category_id']),
                 "name" => $_POST['name'],
+                "original_name" => $_POST['category_name'],
                 "subname" => $_POST['subname'],
                 "description" => $_POST['description']);
 
             if (isset($_POST['parent_category'])) {
                 $categoryData['parent_category'] = $_POST['parent_category'];
+                $categoryData['original_parent_category'] = $_POST['original_parent_category'];
                 $categoryData['parent_category_id'] = intval($_POST['parent_category_id']);
             }
 
             $result = updateCategory($categoryData);
-
-            if ($result === true) {
+            
+            if (!typeOf($result, "ERROR")) {
                 echo "<div class='success'>A kategória sikeresen módosítva.</div></div>";
             }
             else {
-                echo "<div class='error'>A kategória módosítása sikertelen! $result</div></div>";
+                echo "<div class='error'>A kategória módosítása sikertelen! {$result["message"]}</div></div>";
             }
         }
 
@@ -1310,7 +1472,8 @@
                 "name" => $_POST['product_name'],
                 "unit_price" => intval($_POST['price']),
                 "stock" => intval($_POST['stock']),
-                "description" => $_POST['description']
+                "description" => $_POST['description'],
+                "tags" => $_POST['tags']
             );
 
             $productPageData = array(
@@ -1329,13 +1492,52 @@
 
             $tags = $_POST['tags'];
 
-            $result = createProduct($productData, $tags, $productPageData, $productCategoryData);
+            $result = createProduct($productData, $productPageData, $productCategoryData);
 
             if ($result === true) {
                 echo "<div class='success'>Termék sikeresen létrehozva!</div></div>";
             }
             else {
-                echo "<div class='error'>A termék létrehozása sikertelen! $result</div></div>";
+                echo "<div class='error'>A termék létrehozása sikertelen! {$result}</div></div>";
+            }
+        }
+
+        // Termék módosítása
+        if (isset($_POST['modify_product'])) {
+            $productData = array(
+                "id" => $_POST['product_id'],
+                "original_name" => $_POST['product_name'],
+                "name" => $_POST['name'],
+                "description" => $_POST['description'],
+                "price" => $_POST['price'],
+                "stock" => $_POST['stock']
+            );
+
+            if (isset($_POST["tags"])) $productData["tags"] = $_POST['tags'];
+
+            $result = updateProduct($productData);
+            if ($result === true) {
+                echo "<div class='success'>Termék sikeresen módosítva!</div></div>";
+            }
+            else {
+                echo "<div class='error'>A termék módosítása sikertelen! {$result}</div></div>";
+            }
+        }
+        
+        //Termék törlése
+        if (isset($_POST['delete_product'])) {
+            $productData = array(
+                "id" => intval($_POST['product_id']),
+                "name" => $_POST['product_name']
+            );
+
+            $result = removeProduct($productData);
+
+            if ($result === true) {
+                echo "<div class='success'>A termék sikeresen törölve.</div>";
+            }
+            else {
+                echo "<div class='error'>A termék törlése sikertelen! {$result}</div>";
             }
         }
 
@@ -1366,24 +1568,43 @@
                 echo "<div class='success'>Termék oldal sikeresen létrehozva!</div>";
             }
             else {
-                echo "<div class='error'>A termék oldal létrehozása sikertelen! $result</div>";
+                echo "<div class='error'>A termék oldal létrehozása sikertelen! {$result}</div>";
             }
         }
 
-        //Termék törlése
-        if (isset($_POST['delete_product'])) {
-            $productData = array(
-                "id" => intval($_POST['product_id']),
-                "name" => $_POST['product_name']
-            );
+        // Termék oldal törlése
+        if (isset($_POST['delete_product_page'])) {
+            $result = removeProductPage(intval($_POST['product_page_id']));
 
-            $result = removeProduct($productData);
-
-            if ($result === true) {
-                echo "<div class='success'>A termék sikeresen törölve.</div>";
+            if (!isError($result)) {
+                echo "<div class='success'>A termék oldal sikeresen törölve.</div>";
             }
             else {
-                echo "<div class='error'>A termék törlése sikertelen! $result</div>";
+                echo "<div class='error'>A termék oldal törlése sikertelen! {$result['message']}</div>";
+            }
+        }
+
+        // Termék oldal módosítása
+        if (isset($_POST['modify_product_page'])) {
+            $productPageData = array(
+                "id" => intval($_POST['product_page_id']),
+                "page_title" => $_POST['product_page_name'],
+                "page_content" => $_POST['content'],
+                "category_id" => intval($_POST['category_id']),
+                "subcategory_id" => intval($_POST['subcategory_id'])
+            );
+
+            $categoryData = array(
+                "category" => $_POST['category'],
+                "subcategory" => $_POST['subcategory'],
+            );
+
+            $result = modifyProductPage($productPageData, $categoryData);
+            if (!isError($result)) {
+                echo "<div class='success'>A termék oldal módosítva.</div>";
+            }
+            else {
+                echo "<div class='error'>A termék oldal módosítása sikertelen! {$result['message']}</div>";
             }
         }
         
@@ -1391,7 +1612,7 @@
         if (isset($_POST['modify_role'])) {
             $userId = intval($_POST['user_id']);
             $role = $_POST['role'];
-            if (modifyRole($userId, $role) === true) {
+            if (typeOf(modifyRole($userId, $role), "SUCCESS")) {
                 echo "<div class='success'>Sikeres művelet!</div>";
             }
             else {

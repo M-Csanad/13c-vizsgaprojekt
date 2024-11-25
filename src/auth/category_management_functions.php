@@ -5,7 +5,7 @@ function createCategory($categoryData) {
 
     // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
     if (hasUploadError()) {
-        return "Hiba merült fel a feltöltés során.";
+        return ["message" => "Hiba merült fel a feltöltés során.", "type" => "ERROR"];
     }
 
     $categoryType = $categoryData["type"];
@@ -14,10 +14,14 @@ function createCategory($categoryData) {
     $images = array("thumbnail_image_vertical", "thumbnail_image_horizontal");
     if (isset($_FILES["thumbnail_video"])) array_push($images, "thumbnail_video");
     
-    $paths = createCategoryDirectory($categoryData, $categoryType, $images);
+    $result = createCategoryDirectory($categoryData, $categoryType, $images);
 
-    if (!is_array($paths)) return $paths;
-    if (hasError($paths)) return false;
+    if (typeOf($result, "ERROR")) {
+        return $result;
+    }
+    
+    $paths = $result["message"];
+    if (hasError($paths)) return ["message" => "Hiba a fájlok mozgatásakor.", "type" => "ERROR"];
 
     for ($i = 0; $i < count($images); $i++) {
         $categoryData[$images[$i]] = $paths[$i];
@@ -31,7 +35,7 @@ function createCategoryDirectory($categoryData, $categoryType, $images) {
     $categoryDirURI = $baseDirectory . format_str($categoryData["name"])."/";
     
     if (!createDirectory($categoryDirURI)) {
-        return "Ilyen nevű kategória már létezik.";
+        return ["message" => "Ilyen nevű kategória már létezik.", "type" => "ERROR"];
     }
 
     $paths = array();
@@ -46,11 +50,11 @@ function createCategoryDirectory($categoryData, $categoryType, $images) {
             array_push($paths, null);
         }
         else {
-            return false;
+            return ["message" => "Hiba a fájl mozgatásakor ($name).", "type" => "ERROR"];
         }
     }
 
-    return $paths;
+    return ["message" => $paths, "type" => "SUCCESS"];
 }
 
 function uploadCategoryData($categoryData, $categoryType) {
@@ -95,38 +99,43 @@ function removeCategory($categoryData) {
                                 WHERE subcategory.id = ?", $categoryData["id"]);
 
         // Ha nincs főkategóriája, akkor nincs olyan alkategória, mivel kötelező a category_id
-        if ($result == "Nincs találat!") {
-            return "Ez a kategória nem létezik!";
+        if (typeOf($result, "ERROR")) {
+            return $result;
+        }
+        else if (typeOf($result, "EMPTY")) {
+            return ["message" => "Ez a kategória nem létezik az adatbázisban!", "type" => "ERROR"];
         }
 
-        $categoryData["parent_category"] = format_str($result["name"]);
+        $categoryData["parent_category"] = format_str($result["message"]["name"]);
     }
 
     // A kategória törlése az adatbázisból
-    $successfulDelete = removeCategoryFromDB($categoryData);
-    if ($successfulDelete === false) return "Ez a kategória nem létezik!";
-
-    else if ($successfulDelete !== true) return $successfulDelete;
+    $result = removeCategoryFromDB($categoryData);
+    if (typeOf($result, "ERROR")) {
+        return $result;
+    }
+    else if (typeOf($result, "NO_AFFECT")) {
+        return ["message" => "A törlendő kategória nem létezik az adatbázisban!", "type" => "ERROR"];
+    }
 
     // A kategória mappájának törlése
-    $successfulDirectoryDelete = removeCategoryDirectory($categoryData);
-    if (!$successfulDirectoryDelete) return "A mappa törlése sikertelen! (A mappát manuálisan kell törölni).";
-
-    return $successfulDirectoryDelete;
+    $result = removeCategoryDirectory($categoryData);
+    if (!$result) {
+        return ["message" => "A mappa törlése sikertelen volt!.", "type" => "ERROR"];
+    }
+    else {
+        return ["message" => $result, "type" => "SUCCESS"];
+    }
 }
 
 function removeCategoryFromDB($categoryData) {
-    
-    $query = "DELETE FROM x WHERE x.id = ?;";
-    $query = str_replace("x", $categoryData["type"], $query);
-    $successfulDelete = updateData($query, $categoryData["id"]);
-
-    return $successfulDelete;
+    $query = "DELETE FROM {$categoryData["type"]} WHERE {$categoryData["type"]}.id = ?;";
+    return updateData($query, $categoryData["id"]);
 }
 
 function removeCategoryDirectory($categoryData) {
     $baseDir = "./images/categories/";
-    $categoryName = str_replace(" ", "-", strtolower($categoryData["name"]));
+    $categoryName = format_str($categoryData["name"]);
 
     if ($categoryData["type"] == "subcategory") {
         $baseDir .= $categoryData["parent_category"]."/";
@@ -134,15 +143,111 @@ function removeCategoryDirectory($categoryData) {
 
     $categoryDirURI = $baseDir.$categoryName."/";
 
-    $successfulDelete = deleteFolder($categoryDirURI);
+    return deleteFolder($categoryDirURI);
+}
 
-    return $successfulDelete;
+function renameCategoryDirectory($categoryData, $categoryType) {
+
+    $name = $categoryData["name"];
+    $originalName = $categoryData["original_name"];
+    $categoryName = format_str($name);
+    $originalCategoryName = format_str($originalName);
+    
+    $baseDirectory = "./images/categories/";
+    $originalBaseDir = $baseDirectory;
+
+    if (isset($_POST["parent_category"])) {
+        $parentName = format_str($categoryData["parent_category"]);
+        $originalParentName = format_str($categoryData["original_parent_category"]);
+        $baseDirectory .= $parentName."/";
+        $originalBaseDir .= $originalParentName."/";
+    }
+
+    $originalCategoryDirURI = $originalBaseDir.$originalCategoryName."/";
+    $categoryDirURI = $baseDirectory.$categoryName."/";
+    
+    if ($categoryDirURI == $originalCategoryDirURI) {
+        return ["message" => $originalCategoryDirURI, "type" => "SUCCESS"];
+    }
+    
+    
+    $table = ($categoryType == "main" ? "category" : "subcategory");
+    if ($table == "category") {
+        $operation = renameFolder($originalCategoryDirURI, $categoryDirURI);
+    }
+    else {
+        $operation = moveFolder($originalCategoryDirURI, $categoryDirURI);
+    }
+    if ($operation) {
+        
+        if ($table == "category") {
+            $query = "SELECT category.thumbnail_image_vertical_uri AS 'category_vertical', category.thumbnail_image_horizontal_uri AS 'category_horizontal', category.thumbnail_video_uri AS 'category_video',
+                      subcategory.thumbnail_image_vertical_uri AS 'subcategory_vertical', subcategory.thumbnail_image_horizontal_uri AS 'subcategory_horizontal', subcategory.thumbnail_video_uri AS 'subcategory_video' 
+                      FROM category LEFT JOIN subcategory ON subcategory.category_id=category.id WHERE category.id=?";
+        }
+        else {
+            $query = "SELECT subcategory.thumbnail_image_vertical_uri, subcategory.thumbnail_image_horizontal_uri, subcategory.thumbnail_video_uri 
+                      FROM subcategory WHERE subcategory.id=?";
+        }
+
+        $result = selectData($query, $categoryData["id"]);
+
+        if (!typeOf($result, "SUCCESS")) {
+            return $result;
+        }
+        
+        $uris = array_values($result["message"]);
+        for ($i = 0; $i < count($uris); $i++) {
+            
+            // Az elérési útvonalban kicseréljük a régi mappanevet az újra egy speciális karakter segítségével ( | ).
+            $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', format_str($name), str_replace(format_str($originalName), '|', $uris[$i]));
+            if ($table == "subcategory") {
+                $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', format_str($parentName), str_replace(format_str($originalParentName), '|', $uris[$i]));
+            }
+        }
+
+        $query = "UPDATE $table SET $table.thumbnail_image_vertical_uri=?, $table.thumbnail_image_horizontal_uri=?, $table.thumbnail_video_uri=? WHERE $table.id=?";
+
+        if ($table == "category") {
+
+            $values = [...array_slice($uris, 0, 3), $categoryData["id"]];
+            $result = updateData($query, $values);
+            if (typeOf($result, "ERROR")) {
+                return $result;
+            }
+
+
+            $result = updateData("UPDATE subcategory SET subcategory.thumbnail_image_vertical_uri=?, 
+                        subcategory.thumbnail_image_horizontal_uri=?, subcategory.thumbnail_video_uri=? 
+                        WHERE subcategory.category_id=?", [...array_slice($uris, 3), $categoryData["id"]]);
+            if (typeOf($result, "ERROR")) {
+                return $result;
+            }         
+        }
+        else {
+            $values = [...$uris, $categoryData["id"]];
+            $result = updateData($query, $values);
+            if (typeOf($result, "ERROR")) {
+                return $result;
+            }
+        }
+
+        return ["message" => $categoryDirURI, "type" => "SUCCESS"];
+    }
+    else {
+        return ["message" => "A mappa átnevezése / áthelyezése nem sikerült.", "type" => "ERROR"];
+    }
 }
 
 function updateCategoryDirectory($categoryData, $categoryType, $images) {
-    $baseDirectory = "./images/categories/".($categoryType === "sub" ? format_str($categoryData["parent_category"]) . "/" : "");
-    $categoryDirURI = $baseDirectory . format_str($categoryData["name"])."/";
+
+    $result = renameCategoryDirectory($categoryData, $categoryType);
+
+    if (typeOf($result, "ERROR")) {
+        return ["message" => "Sikertelen mappa átnevezés.", "type" => "ERROR"];
+    }
     
+    $categoryDirURI = $result["message"];
     $paths = array();
 
     foreach ($images as $image) {
@@ -168,7 +273,7 @@ function updateCategoryDirectory($categoryData, $categoryType, $images) {
         }
     }
 
-    return $paths;
+    return ["message" => $paths, "type" => "SUCCESS"];
 }
 
 function updateCategoryData($categoryData, $categoryType, $images) {
@@ -232,13 +337,26 @@ function updateCategory($categoryData) {
     }
     
     if (count($images) > 0) {
-        $paths = updateCategoryDirectory($categoryData, $categoryType, $images);
+        $result = updateCategoryDirectory($categoryData, $categoryType, $images);
     
-        if (!is_array($paths)) return $paths;
-        if (hasError($paths)) return false;
-    
+        if (typeOf($result, "ERROR")) {
+            return $result;
+        }
+        
+        $paths = $result["message"];
+        if (hasError($paths)) {
+            return ["message" => "A képek mozgatásakor hiba merült fel.", "type" => "ERROR"];
+        }
+        
         for ($i = 0; $i < count($images); $i++) {
             $categoryData[$images[$i]["name"]] = $paths[$i];
+        }
+    }
+    else {
+        $result = renameCategoryDirectory($categoryData, $categoryType);
+
+        if (typeOf($result, "ERROR")) {
+            return ["message" => "Sikertelen mappa átnevezés. ({$result["message"]})", "type" => "ERROR"];
         }
     }
 

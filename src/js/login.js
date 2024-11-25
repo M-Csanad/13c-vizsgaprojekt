@@ -1,3 +1,20 @@
+const form = document.getElementById("login");
+let submitted = false;
+
+form.addEventListener('submit', function (event) {
+  if (submitted) return;
+  event.preventDefault();
+
+  grecaptcha.enterprise.ready(function () {
+      grecaptcha.enterprise.execute('6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj', { action: 'login' }).then(function (token) {
+          document.getElementById('g-recaptcha-response').value = token;
+          submitted = true;
+          form.querySelector("input[type=submit]").click();
+      });
+  });
+});
+
+
 function validateUserNameInput() {
     const username = document.querySelector('input[name=username]');
     const usernameRegex = /^[\w-]{3,20}$/;
@@ -20,20 +37,14 @@ window.addEventListener("DOMContentLoaded", ()=>{
   });
 });
 
-// // Ha az egérrel megyünk vissza a bejelentkezésre, akkor nem kerül rá a username beviteli mezőre az autofill (nem tudom miért)
-// document.addEventListener("DOMContentLoaded", function() {
-//   // Valamiért ez ide kell
-//   setTimeout(()=>{
-//     const inputs = document.querySelectorAll("input[type='text'], input[type='password']");
-  
-//     inputs.forEach(input => {
-//         if (input.value) {
-//             input.classList.add("autofilled");
-//         }
-//         let listener = input.addEventListener("input", () => {
-//             input.classList.remove("autofilled");
-//             input.removeEventListener("input", listener);
-//         });
-//     });
-//   }, 0);
-// });
+const images = document.querySelectorAll('.bg');
+let currentIndex = 0;
+
+function cycleImages() {
+  if (document.body.clientWidth <= 900) return;
+  images[currentIndex].classList.remove('visible');
+  currentIndex = (currentIndex + 1) % images.length;
+  images[currentIndex].classList.add('visible');
+}
+
+setInterval(cycleImages, 5000);

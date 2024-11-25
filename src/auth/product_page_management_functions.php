@@ -1,6 +1,4 @@
 <?php
-    
-
 // Link Slug (pl. www.oldalam.hu << /aloldalam >>) létrehozása
 function getLinkSlug($name, $categoryData) {
 
@@ -40,12 +38,12 @@ function createProductPage($productData, $productPageData, $productCategoryData)
     
     $productPageData["product_id"] = $productData["id"];
     $result = uploadProductPageData($productPageData);
-    if (!is_numeric($result)) {
-        if ($result->getCode() === 1062) { // Duplicate entry hiba
+    if (typeOf($result, "ERROR")) {
+        if ($result["code"] === 1062) { // Duplicate entry hiba
             return "Ilyen termék oldal már létezik.";
         }
         else {
-            return "Sikertelen feltöltés a product_page táblába. ($result)";
+            return "Sikertelen feltöltés a product_page táblába. ({$result["message"]})";
         }
     }
 
@@ -53,5 +51,11 @@ function createProductPage($productData, $productPageData, $productCategoryData)
 }
 
 function removeProductPage($id) {
-    return true;
+    return updateData("DELETE FROM product_page WHERE product_page.id=?;", $id);
+}
+
+function modifyProductPage($pageData, $categoryData) {
+    $newSlug = getLinkSlug($pageData["page_title"], $categoryData);
+    $data = array($newSlug["link_slug"], $pageData["category_id"], $pageData["subcategory_id"], $pageData["page_content"], $pageData["id"]);
+    return updateData("UPDATE product_page SET link_slug=?, category_id=?, subcategory_id=?, page_content=? WHERE product_page.id=?", $data);
 }
