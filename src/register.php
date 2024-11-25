@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="hu">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Egyszerű regisztráció</title>
+    <title>Florens Botanica - Regisztráció</title>
 
     <link rel="preload" href="fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/root.css">
@@ -12,11 +11,7 @@
     <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
 
     <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
-    <script>
-        if ( window.history.replaceState ) {
-            window.history.replaceState( null, null, window.location.href );
-        }
-    </script>
+    <script src="./js/prevent-resubmit.js"></script>
 </head>
 <body>
     <div class="main">
@@ -35,36 +30,47 @@
                 <div class="input-wrapper">
                     <div class="input-group">
                         <label for="email">E-mail</label>
-                        <input type="email" name="email" id="email" required placeholder="" autocomplete="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ""; ?>" oninput="validateEmailInput()">
+                        <input type="email" name="email" id="email" required placeholder="" autocomplete="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ""; ?>" class="empty">
                     </div>
                     <div class="input-group">
                         <label for="username">Felhasználónév</label>
-                        <input type="text" name="username" id="username" required placeholder="" autocomplete="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ""; ?>" oninput="validateUserNameInput()">
+                        <input type="text" name="username" id="username" required placeholder="" autocomplete="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ""; ?>" class="empty">
                     </div>
                     <div class="input-group-inline">
                         <div class="input-group">
+                            <label for="lastname">Vezetéknév</label>
+                            <input type="text" name="lastname" id="lastname" required placeholder="" class="empty">
+                        </div>
+                        <div class="input-group">
+                            <label for="firstname">Keresztnév</label>
+                            <input type="text" name="firstname" id="firstname" required placeholder="" class="empty">
+                        </div>
+                    </div>
+                    <div class="form-divider"></div>
+                    <div class="input-group-inline">
+                        <div class="input-group">
                             <label for="password">Jelszó</label>
-                            <input type="password" name="password" id="password" required oninput="validatePasswordInputs()" autocomplete="new-password" placeholder="">
+                            <input type="password" name="password" id="password" required autocomplete="new-password" placeholder="" class="empty">
                         </div>
                         <div class="input-group">
                             <label for="passwordConfirm">Jelszó megerősítése</label>
-                            <input type="password" name="passwordConfirm" id="passwordConfirm" required oninput="validatePasswordInputs()" autocomplete="new-password" placeholder="">
+                            <input type="password" name="passwordConfirm" id="passwordConfirm" required autocomplete="new-password" placeholder="" class="empty">
                         </div>
                     </div>
                     <div class="input-group-inline">
                         <div>
-                            <input type="checkbox" name="agree" id="agree" required>
+                            <input type="checkbox" name="agree" id="agree" required class="empty">
                             <label for="agree">Regisztrációmmal elfogadom az <a href="" class="form-link">ÁSZF-et.</a></label>
                         </div>
                     </div>
-                    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+                    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" class="empty">
                 </div>
                 <div class="form-bottom">
                     <div class='form-message'>
                         <?php
-                        
+
                         include_once "./auth/init.php";
-                        
+
                         if (isset($_POST['register'])) {
                             
                             $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
@@ -105,11 +111,11 @@
                                 $username = $_POST['username'];
                                 $password = $_POST['password'];
                                 $email = $_POST['email'];
+                                $firstname = $_POST['firstname'];
+                                $lastname = $_POST['lastname'];
                                 
-                                $result = register($username, $password, $email);
-                                
+                                $result = register($username, $password, $email, $firstname, $lastname);
                                 if (typeOf($result, "SUCCESS")) {
-                                    
                                     header("Location: ./login");
                                 }
                                 else {
@@ -122,7 +128,7 @@
                         }
                         ?>
                     </div>
-                    <input type="submit" name="register" class="action-button g-recaptcha" value="Profil létrehozása">
+                    <input type="submit" name="register" class="action-button g-recaptcha" value="Profil létrehozása" class="empty">
                     <div class="login">Regisztrált már? <a href="./login" class="form-link">Jelentkezzen be!</a></div>
                 </div>
             </div>
@@ -130,5 +136,4 @@
     </div>
     <script src="./js/register.js"></script>
 </body>
-
 </html>

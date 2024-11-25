@@ -1,6 +1,4 @@
 <?php
-    
-
 // Link Slug (pl. www.oldalam.hu << /aloldalam >>) létrehozása
 function getLinkSlug($name, $categoryData) {
 

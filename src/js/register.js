@@ -46,6 +46,22 @@ function validateUserNameInput() {
   }
 }
 
+window.addEventListener("load", ()=>{
+  document.getElementById("email").addEventListener("input", validateEmailInput);
+  document.getElementById("username").addEventListener("input", validateUserNameInput);
+  document.getElementById("password").addEventListener("input", validatePasswordInputs);
+  document.getElementById("passwordConfirm").addEventListener("input", validatePasswordInputs);
+
+  document.querySelectorAll(".empty").forEach((input)=>{
+    if (input.value) input.classList.remove("empty")
+    else input.classList.add("empty")
+    input.addEventListener("input", ()=>{
+      if (input.value) input.classList.remove("empty")
+      else input.classList.add("empty")
+    });
+  });
+});
+
 const images = document.querySelectorAll('.bg');
 let currentIndex = 0;
 

@@ -1,16 +1,15 @@
 <?php
-function register($username, $password, $email) {
-    if (!$username || !$password || !$email) {
+function register($username, $password, $email, $firstname, $lastname) {
+    include_once "init.php";
+
+    if (!$username || !$password || !$email || !$firstname || !$lastname) {
         return ["message" => "Kérjük töltse ki az összes mezőt!", "type" => "ERROR"];
     }
     
-    include_once "init.php";
-    session_start();
-
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-    $result = updateData("INSERT INTO user (user_name, email, password_hash) 
-                          VALUES (?, ?, ?)", [$username, $email, $passwordHash]);
+    $result = updateData("INSERT INTO user (user_name, email, password_hash, first_name, last_name) 
+                          VALUES (?, ?, ?, ?, ?)", [$username, $email, $passwordHash, $firstname, $lastname]);
                           
     if (typeOf($result, "ERROR")) {
         $error = $result["message"];
@@ -28,12 +27,13 @@ function register($username, $password, $email) {
 }
 
 function login($username, $password, $rememberMe) {
+    
     if (!$username || !$password) {
         return ["message" => "Kérjük töltse ki az összes mezőt!", "type" => "ERROR"];
     }
     
-    include_once "init.php";
     session_start();
+    include_once "init.php";
 
     $result = authenticate_user($username, $password);
     if (!typeOf($result, "SUCCESS")) {

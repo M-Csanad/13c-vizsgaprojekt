@@ -29,11 +29,6 @@
     <script defer src="./js/dashboard.js"></script>
     <script defer src="./js/search.js"></script>
     <script defer src="./js/tag-checkbox.js"></script>
-    <script>
-        if ( window.history.replaceState ) {
-            window.history.replaceState( null, null, window.location.href );
-        }
-    </script>
 </head>
 <body>
     <p>

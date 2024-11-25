@@ -85,7 +85,6 @@ form {
     width: 400px;
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
     position: relative;
     background-color: #FAFAFA;
@@ -106,6 +105,19 @@ form {
         div {
             color: #565656;
         }
+    }
+    .form-divider{
+        flex-grow: 1;
+    
+        width: 100%;
+        color: #747474;
+    
+        padding-bottom: 0.2rem;
+        font-weight: 400;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        
+        border-bottom: 1px solid #dfdfdf;
     }
 
     .form-body {
@@ -140,12 +152,12 @@ form {
         border-bottom: 3px solid var(--text-light);
     }
 
-    .input-group:has(input:not(:placeholder-shown)):has(input:valid), 
+    .input-group:has(input:not(.empty)):has(input:valid), 
     /* .input-group:has(input.autofilled),  */
     .input-group:has(input:-webkit-autofill) {
         border-bottom: 3px solid var(--valid) !important;
     }
-    .input-group:has(input:not(:placeholder-shown)):has(input:invalid) {
+    .input-group:has(input:not(.empty)):has(input:invalid) {
         border-bottom: 3px solid var(--invalid) !important;
     }
     
@@ -175,7 +187,7 @@ form {
     .input-group:has(input:focus) label, 
     .input-group:has(input:valid) label, 
     .input-group:has(input:-webkit-autofill) label, 
-    .input-group:has(input:not(:placeholder-shown)) label
+    .input-group:has(input:not(.empty)) label
     {
         transform: translateY(-25px);
         font-size: 14px;
@@ -296,7 +308,7 @@ form {
         padding: 0;
     }
     .input-group-inline {
-        flex-direction: column-reverse !important;
+        flex-direction: column !important;
         padding-inline: 0 !important;
         gap: 25px !important;
     }

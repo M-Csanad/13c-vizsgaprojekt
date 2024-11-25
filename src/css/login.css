@@ -27,7 +27,6 @@ body {
     color: fieldtext !important;
 } */
 
-/*Firefox nem támogatja a dvh-t*/
 
 .main {
     width: 100% !important;
@@ -36,6 +35,7 @@ body {
     display: flex;
     flex-direction: row;
 }
+/*Firefox nem támogatja a dvh-t*/
 @supports(height: 100dvh) { 
     body {
         height: 100dvh;
@@ -80,7 +80,6 @@ form {
     width: 400px;
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
     position: relative;
     background-color: #FAFAFA;
@@ -170,8 +169,8 @@ form {
     .input-group:has(input:focus) label, 
     .input-group:has(input:valid) label, 
     .input-group:has(input:-webkit-autofill) label, 
-    /* .input-group:has(input.autofilled) label, */
-    .input-group:has(input:not(.empty)) label {
+    .input-group:has(input:not(.empty)) label 
+    {
         transform: translateY(-25px);
         font-size: 14px;
         color: rgb(118, 118, 118);
@@ -302,9 +301,6 @@ form {
 @media screen and (max-width: 579px) {
     body {
         display: block;
-    }
-    .action-button {
-        width: 75% !important;
     }
 }
 
