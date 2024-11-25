@@ -54,9 +54,9 @@ let blobScrollTimeout = null;
 let mouseMoveTimeout = null;
 
 // Funkció az egér pozíciójának ellenőrzésére a containeren belül
-function isMouseInContainer() {
+function isMouseInContainer(event) {
   const containerRect = brandPhilosophyContainer.getBoundingClientRect();
-  if (!event) return;
+  if (!event) return false;
   const mouseX = event.clientX;
   const mouseY = event.clientY;
 
@@ -68,20 +68,10 @@ function isMouseInContainer() {
   );
 }
 
-// Rendszeres időzítő az egér pozíciójának ellenőrzésére
-setInterval(() => {
-  if (isMouseInContainer()) {
-    notifBlob.style.opacity = 1;
-  } else {
-    notifBlob.style.opacity = 0;
-  }
-}, 500);
-
 // Egér mozgásának figyelése és `notifBlob` pozíciójának frissítése
 window.addEventListener("mousemove", (event) => {
   notifBlob.style.opacity = 0;
-
-  if (isMouseInContainer()) {
+  if (isMouseInContainer(event)) {
     notifBlob.style.left = `${event.clientX + 10}px`;
     notifBlob.style.top = `${event.clientY + 10}px`;
 
@@ -107,8 +97,8 @@ window.addEventListener("scroll", () => {
 
   blobScrollTimeout = setTimeout(() => {
     const containerRect = brandPhilosophyContainer.getBoundingClientRect();
-    const mouseX = parseInt(notifBlob.style.left, 10) - 10;
-    const mouseY = parseInt(notifBlob.style.top, 10) - 10;
+    const mouseX = parseInt(notifBlob.style.left || "0", 10) - 10;
+    const mouseY = parseInt(notifBlob.style.top || "0", 10) - 10;
 
     if (
       mouseX >= containerRect.left &&
