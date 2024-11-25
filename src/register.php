@@ -11,7 +11,6 @@
     <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
 
     <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
-    <script src="./js/prevent-resubmit.js"></script>
 </head>
 <body>
     <div class="main">
@@ -135,5 +134,6 @@
         </form>
     </div>
     <script src="./js/register.js"></script>
+    <script src="./js/prevent-resubmit.js"></script>
 </body>
 </html>
