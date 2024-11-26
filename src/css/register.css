@@ -14,8 +14,6 @@ body {
     align-items: center;
     justify-content: center;
     font-family: Raleway;
-    background-image: url('../web/media/img/blackSand.jpg');
-    background-size: cover;
     font-weight: 500;
     overflow-y: hidden;
 }
