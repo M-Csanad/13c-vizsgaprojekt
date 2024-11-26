@@ -1,0 +1,152 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+:root {
+    --bg: #050505;
+    --bg-light: #1d1d1d;
+    --text: #ffffff;
+    --border: #2b2b2b;
+}
+
+body {
+    background-color: var(--bg);
+    height: 100vh;
+    width: 100%;
+    font-family: Raleway;
+    color: var(--text);
+}
+
+.main {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 1rem;
+    gap: 1rem;
+}
+
+.dynamic-border {
+    background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgb(75, 75, 75), var(--border) var(--radius, 0px));
+    padding: 5px;
+    border-radius: 20px;
+}
+
+.sidebar-wrapper {
+    width: 400px;
+    min-width: calc(min(400px, 100%));
+}
+
+.sidebar {
+    width: 100%;
+    height: 100%;
+    border-radius: 15px;
+    background-color: var(--bg-light);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0px 0px 10px var(--border);
+    gap: 1rem;
+}
+
+.profile-general {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    padding-top: 2rem;
+    
+    .profile-picture {
+        margin-block: 1rem;
+        width: 130px;
+        height: 130px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 50%;
+        border: 5px solid white;
+        box-shadow: 0px 0px 5px grey;
+        overflow: hidden;
+    }
+    
+    .name {
+        font-size: 22pt;
+        font-weight: 600;
+        letter-spacing: 0px;
+    }
+
+    .username {
+        font-style: italic;
+        color: grey;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    
+}
+.pages {
+    flex-grow: 1;
+    padding: 1rem; 
+}
+
+.pages-header {
+    font-weight: 600;
+    font-size: 22pt;
+}
+
+.sidebar-bottom {
+    padding: 1rem;
+}
+
+.content-wrapper {
+    flex-grow: 1;
+}
+
+.content {
+    background-color: #1d1d1d;
+    border-radius: 15px;
+    padding: 20px;
+    height: 100%;
+    width: 100%;
+}
+
+@media screen and (max-width: 1100px) {
+}
+
+@media screen and (max-width: 991px) {
+
+}
+
+@media screen and (max-width: 767px) {
+    .main {
+        flex-direction: column;
+    }
+    .sidebar-wrapper {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 285px) {
+
+}
+
+@media screen and (max-width: 310px) {
+
+}
+
+@media screen and (max-width: 479px) {
+
+}
+
+@media screen and (min-width: 1200px) {
+
+}
+
+@media screen and (min-width: 1400px) {
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}

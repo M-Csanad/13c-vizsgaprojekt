@@ -7,11 +7,9 @@
                                      user.role, 
                                      user.first_name, 
                                      user.last_name, 
-                                     user.created_at, 
-                                     delivery_info.* 
+                                     user.pfp_uri,
+                                     user.created_at 
                                      FROM user 
-                                     LEFT JOIN delivery_info 
-                                        ON delivery_info.user_id = user.id 
                                      WHERE user.id = ?", $userId);
         return $result;
     }

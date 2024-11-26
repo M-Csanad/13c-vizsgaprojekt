@@ -1,3 +1,64 @@
+<?php
+include_once "./auth/init.php";
+
+if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
+    $message = "";
+
+    $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
+    $project_id = 'florens-botanica-1727886723149';
+    $url = "https://recaptchaenterprise.googleapis.com/v1/projects/$project_id/assessments?key=$recaptcha_secret";
+
+    $token = $_POST['g-recaptcha-response']; 
+    $user_action = 'register'; 
+
+    $data = [
+        "event" => [
+            "token" => $token,
+            "expectedAction" => $user_action,
+            "siteKey" => "6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"
+        ]
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json'
+    ]);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $response_data = json_decode($response, true);
+    if (!isset($response_data['tokenProperties']['valid']) || !$response_data['tokenProperties']['valid']) {
+        $message = "Hibás reCAPTCHA. Kérjük próbálja újra később.";
+    }
+    else if ($response_data['event']['expectedAction'] === $user_action && $response_data['riskAnalysis']['score'] >= 0.5) {
+
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+        $email = $_POST['email'];
+        $firstname = $_POST['firstname'];
+        $lastname = $_POST['lastname'];
+
+        $result = register($username, $password, $email, $firstname, $lastname);
+
+        if (typeOf($result, "SUCCESS")) {
+            $message = "Sikeres regisztráció!";
+            header("Location: ./login");
+            exit();
+        }
+        else {
+           $message = $result["message"];
+        }
+    }
+    else {
+        $message = "reCAPTCHA ellenőrzés sikertelen. Kérjük próbálja újra.";
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -11,6 +72,8 @@
     <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
 
     <script async defer src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
+    <script defer src="./js/register.js"></script>
+    <script defer src="./js/prevent-resubmit.js"></script>
 </head>
 <body>
     <div class="main">
@@ -66,66 +129,7 @@
                 </div>
                 <div class="form-bottom">
                     <div class='form-message'>
-                        <?php
-
-                        include_once "./auth/init.php";
-
-                        if (isset($_POST['register'])) {
-                            
-                            $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
-                            $project_id = 'florens-botanica-1727886723149';
-                            $url = "https://recaptchaenterprise.googleapis.com/v1/projects/$project_id/assessments?key=$recaptcha_secret";
-
-                            $token = $_POST['g-recaptcha-response']; 
-                            $user_action = 'register'; 
-
-                            $data = [
-                                "event" => [
-                                    "token" => $token,
-                                    "expectedAction" => $user_action,
-                                    "siteKey" => "6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"
-                                ]
-                            ];
-
-                            $ch = curl_init();
-                            curl_setopt($ch, CURLOPT_URL, $url);
-                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                            curl_setopt($ch, CURLOPT_POST, 1);
-                            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-                            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                                'Content-Type: application/json'
-                            ]);
-
-                            $response = curl_exec($ch);
-                            curl_close($ch);
-
-                            $response_data = json_decode($response, true);
-
-                            if (!isset($response_data['tokenProperties']['valid']) || !$response_data['tokenProperties']['valid']) {
-                                echo "Hibás reCAPTCHA. Kérjük próbálja újra később.";
-                                return;
-                            }
-
-                            if ($response_data['event']['expectedAction'] === $user_action && $response_data['riskAnalysis']['score'] >= 0.5) {
-                                $username = $_POST['username'];
-                                $password = $_POST['password'];
-                                $email = $_POST['email'];
-                                $firstname = $_POST['firstname'];
-                                $lastname = $_POST['lastname'];
-                                
-                                $result = register($username, $password, $email, $firstname, $lastname);
-                                if (typeOf($result, "SUCCESS")) {
-                                    header("Location: ./login");
-                                }
-                                else {
-                                    echo $result["message"];
-                                }
-                            }
-                            else {
-                                echo "reCAPTCHA ellenőrzés sikertelen. Kérjük próbálja újra.";
-                            }
-                        }
-                        ?>
+                        <?php if (isset($message) && !empty($message)) echo $message; ?>
                     </div>
                     <input type="submit" name="register" class="action-button g-recaptcha" value="Profil létrehozása" class="empty">
                     <div class="login">Regisztrált már? <a href="./login" class="form-link">Jelentkezzen be!</a></div>
@@ -133,7 +137,5 @@
             </div>
         </form>
     </div>
-    <script src="./js/register.js"></script>
-    <script src="./js/prevent-resubmit.js"></script>
 </body>
 </html>

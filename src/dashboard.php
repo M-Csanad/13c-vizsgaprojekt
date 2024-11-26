@@ -1,3 +1,17 @@
+<?php 
+    include_once "./auth/init.php"; 
+    session_start();
+    if (isset($_SESSION['role'])) {
+        if ($_SESSION['role'] != "Administrator") {
+            header("Location: ./");
+            exit();
+        }
+    }
+    else {
+        header("Location: ./");
+        exit();
+    }
+?>
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -12,20 +26,6 @@
     <link rel="stylesheet" href="./css/search.css">
     <link rel="stylesheet" href="./css/table.css">
     <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
-    <?php 
-        include_once "./auth/init.php"; 
-        session_start();
-        if (isset($_SESSION['role'])) {
-            if ($_SESSION['role'] != "Administrator") {
-                header("Location: ./");
-                exit();
-            }
-        }
-        else {
-            header("Location: ./");
-            exit();
-        }
-    ?>
     <script defer src="./js/dashboard.js"></script>
     <script defer src="./js/search.js"></script>
     <script defer src="./js/tag-checkbox.js"></script>
