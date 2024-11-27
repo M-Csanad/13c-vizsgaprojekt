@@ -1391,10 +1391,6 @@
         // Kategória létrehozása
         if (isset($_POST['create_category'])) {
 
-            if (isset($_SESSION['block_resubmit'])) {
-                return;
-            }
-
             $categoryData = array(
                 "name" => $_POST['category_name'],
                 "subname" => $_POST['category_subname'],

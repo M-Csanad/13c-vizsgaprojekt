@@ -31,7 +31,7 @@ body {
 }
 
 .dynamic-border {
-    background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), rgb(77, 77, 77), var(--border) var(--radius, 0px));
+    background: radial-gradient(circle at var(--mouse-x) var(--mouse-y), var(--color), var(--border) var(--radius, 0px));
     padding: 5px;
     border-radius: 20px;
     box-shadow: 0px 0px 10px var(--border);
@@ -103,7 +103,7 @@ body {
     border: 3px solid var(--border);
     border-radius: 10px;
     padding: 0.7rem 1rem;
-    transition: border 0.3s ease, background-color 0.3s ease, font-weight 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    transition: scale 0.3s ease, border 0.3s ease, background-color 0.3s ease, font-weight 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 0 2px rgb(32, 32, 32);
     user-select: none;
     display: flex;
@@ -118,6 +118,10 @@ body {
     color: var(--text);
 }
 
+.page:active, .logout:active {
+    scale: 0.95;
+}
+
 .page.active {
     color: var(--text);
     border: 3px solid #8f8f8f;
@@ -128,6 +132,33 @@ body {
 
 .sidebar-bottom {
     padding: 1rem;
+}
+
+.logout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    background-color: var(--page);
+    border: 3px solid var(--border);
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgb(32, 32, 32);
+    user-select: none;
+    text-decoration: none;
+    color: #aaaaaa;
+    transition: scale 0.3s ease, border 0.3s ease, background-color 0.3s ease, font-weight 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.logout:hover {
+    background-color: #8d0101;
+    border: 3px solid #b92424;
+    box-shadow: 0 0 5px rgb(126, 16, 16);
+    color: var(--text);
+}
+
+.logout > * {
+    pointer-events: none;
 }
 
 .content-wrapper {
