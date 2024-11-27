@@ -29,6 +29,7 @@
     <script defer src="./js/dashboard.js"></script>
     <script defer src="./js/search.js"></script>
     <script defer src="./js/tag-checkbox.js"></script>
+    <!-- <script src="./js/prevent-resubmit.js"></script> -->
 </head>
 <body>
     <p>
@@ -1394,7 +1395,7 @@
             $categoryData = array(
                 "name" => $_POST['category_name'],
                 "subname" => $_POST['category_subname'],
-                "type" => $_POST['type'],
+                "type" => ($_POST['type'] == "sub") ? "subcategory" : "category",
                 "description" => $_POST['description']);
 
             if (isset($_POST['parent_category'])) {
@@ -1443,6 +1444,7 @@
                 "id" => intval($_POST['category_id']),
                 "name" => $_POST['name'],
                 "original_name" => $_POST['category_name'],
+                "type" => isset($_POST['parent_category']) ? "subcategory" : "category",
                 "subname" => $_POST['subname'],
                 "description" => $_POST['description']);
 
