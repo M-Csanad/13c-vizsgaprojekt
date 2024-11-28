@@ -2,20 +2,21 @@ let pageLinks;
 
 function togglePage(id) {
     console.log(id);
-    for (let i=0; i < pageLinks.length; i++) {
+    for (let i = 0; i < pageLinks.length; i++) {
         pageLinks[i].classList.remove("active");
-        // pages[i].classList.remove("active");
     }
     pageLinks[id].classList.add("active");
-    // pages[id].classList.add("active");
 }
-
 
 window.addEventListener("load", () => {
     pageLinks = document.querySelectorAll(".page");
     for (let page of pageLinks) {
-        page.addEventListener("click", ()=>{ togglePage(page.dataset.pageid); });
-        page.addEventListener("keydown", (e) => { if (e.code=="Space" || e.code=="Enter") togglePage(page.dataset.pageid) });
+        page.addEventListener("click", () => {
+            togglePage(page.dataset.pageid);
+        });
+        page.addEventListener("keydown", (e) => {
+            if (e.code === "Space" || e.code === "Enter") togglePage(page.dataset.pageid);
+        });
     }
 
     let main = document.querySelector(".main");
@@ -23,27 +24,44 @@ window.addEventListener("load", () => {
     let borderElements = document.querySelectorAll(".dynamic-border");
     let logout = document.querySelector(".logout");
 
-    function animateRadius(element, start, end, duration) {
-        const startTime = performance.now();
+    const radiusAnimationTokens = new WeakMap();
+    const colorAnimationTokens = new WeakMap();
 
+    function startRadiusAnimation(element, animationFunction) {
+        const token = Symbol();
+        radiusAnimationTokens.set(element, token);
+
+        animationFunction(() => radiusAnimationTokens.get(element) === token)
+    }
+
+    function startColorAnimation(element, animationFunction) {
+        const token = Symbol();
+        colorAnimationTokens.set(element, token);
+
+        animationFunction(() => colorAnimationTokens.get(element) === token)
+    }
+
+    function animateRadius(element, start, end, duration, isValid) {
+        const startTime = performance.now();
+    
         function step(currentTime) {
             const elapsed = currentTime - startTime;
-            const progress = Math.min(elapsed / duration, 1);
+            const progress = Math.min(Math.max(elapsed / duration, 0), 1);
             const currentRadius = start + (end - start) * progress;
-
+    
             element.style.setProperty("--radius", `${currentRadius}px`);
-
-            if (progress < 1) {
+    
+            if (progress < 1 && isValid()) {
                 requestAnimationFrame(step);
             }
         }
-
+    
         requestAnimationFrame(step);
     }
-
-    function animateColor(element, startColor, endColor, duration) {
+    
+    function animateColor(element, startColor, endColor, duration, isValid) {
         const startTime = performance.now();
-
+    
         function parseColor(color) {
             const hex = color.replace("#", "");
             return {
@@ -52,7 +70,7 @@ window.addEventListener("load", () => {
                 b: parseInt(hex.substring(4, 6), 16),
             };
         }
-
+    
         function interpolateColor(start, end, t) {
             return {
                 r: Math.round(start.r + (end.r - start.r) * t),
@@ -60,30 +78,24 @@ window.addEventListener("load", () => {
                 b: Math.round(start.b + (end.b - start.b) * t),
             };
         }
-
+    
         const startRGB = parseColor(startColor);
         const endRGB = parseColor(endColor);
-
+    
         function step(currentTime) {
             const elapsed = currentTime - startTime;
             const progress = Math.min(elapsed / duration, 1);
             const currentColor = interpolateColor(startRGB, endRGB, progress);
-
-            if (typeof element == "object") {
-                console.log("asd")
-                element.forEach(e => e.style.setProperty("--color", `rgb(${currentColor.r}, ${currentColor.g}, ${currentColor.b})`));
-            }
-            else {
-                element.style.setProperty("--color", `rgb(${currentColor.r}, ${currentColor.g}, ${currentColor.b})`);
-            }
-
-            if (progress < 1) {
+    
+            element.style.setProperty("--color", `rgb(${currentColor.r}, ${currentColor.g}, ${currentColor.b})`);
+    
+            if (progress < 1 && isValid()) {
                 requestAnimationFrame(step);
             }
         }
-
+    
         requestAnimationFrame(step);
-    }
+    } 
 
     if (main) {
         main.addEventListener("mousemove", (e) => {
@@ -105,26 +117,38 @@ window.addEventListener("load", () => {
     }
 
     logout.addEventListener("mouseover", () => {
-        animateColor(borderElements, "#4d4d4d", "#b92424", 500);
+        borderElements.forEach(element => {
+            startColorAnimation(element, (isValid) =>
+                animateColor(element, "#4d4d4d", "#b92424", 500, isValid)
+            );
+        });
     });
 
     logout.addEventListener("mouseleave", () => {
-        animateColor(borderElements, "#b92424", "#4d4d4d", 500);
+        borderElements.forEach(element => {
+            startColorAnimation(element, (isValid) =>
+                animateColor(element, "#b92424", "#4d4d4d", 500, isValid)
+            );
+        });
     });
 
+
     document.documentElement.addEventListener("mouseleave", () => {
-        borderElements.forEach(e => {
-            let start = Number(e.style.getPropertyValue("--radius").replace("px", ""));
-            let progress = (start-400) / 400;
-            animateRadius(e, start, 0, (500 - 500*progress));
+        borderElements.forEach(element => {
+            const start = Number(element.style.getPropertyValue("--radius").replace("px", "") || 0);
+
+            startRadiusAnimation(element, (isValid) => 
+                animateRadius(element, start, 0, 500, isValid)
+            );
         });
     });
 
     document.documentElement.addEventListener("mouseenter", () => {
-        borderElements.forEach(e => {
-            let start = Number(e.style.getPropertyValue("--radius").replace("px", ""));
-            let progress = start / 400;
-            animateRadius(e, start, 400, (500 - 500*progress));
+        borderElements.forEach(element => {
+            const start = Number(element.style.getPropertyValue("--radius").replace("px", "") || 0);
+            startRadiusAnimation(element, (isValid) =>
+                animateRadius(element, start, 400, 500, isValid)
+            );
         });
-    });
+    });    
 });
