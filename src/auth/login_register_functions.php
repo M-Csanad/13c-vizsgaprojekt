@@ -33,7 +33,6 @@ function login($username, $password, $rememberMe) {
         return ["message" => "Kérjük töltse ki az összes mezőt!", "type" => "ERROR"];
     }
     
-    session_start();
     include_once "init.php";
 
     $result = authenticate_user($username, $password);

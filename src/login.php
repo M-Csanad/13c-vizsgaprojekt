@@ -93,6 +93,7 @@
                                 $rememberMe = isset($_POST['rememberMe']); // Emlékezz rám opció lekérése
 
                                 // Bejelentkezési függvény meghívása, amely visszaadja a siker vagy hiba állapotát
+                                session_start();
                                 $result = login($username, $password, $rememberMe);
 
                                 if (typeOf($result, "SUCCESS")) {

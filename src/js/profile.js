@@ -1,7 +1,6 @@
 let pageLinks;
 
 function togglePage(id) {
-    console.log(id);
     for (let i = 0; i < pageLinks.length; i++) {
         pageLinks[i].classList.remove("active");
     }
@@ -23,6 +22,7 @@ window.addEventListener("load", () => {
     let animating = false;
     let borderElements = document.querySelectorAll(".dynamic-border");
     let logout = document.querySelector(".logout");
+    let dashboard = document.querySelector(".dashboard");
 
     const radiusAnimationTokens = new WeakMap();
     const colorAnimationTokens = new WeakMap();
@@ -95,10 +95,59 @@ window.addEventListener("load", () => {
         }
     
         requestAnimationFrame(step);
-    } 
+    }
+
+    function rgbToHex(rgb) {
+        const result = rgb.match(/\d+/g).map((num) => {
+            const hex = parseInt(num).toString(16);
+            return hex.length === 1 ? "0" + hex : hex;
+        });
+        return `#${result.join("")}`;
+    }
+
+    // A függvény segítségével az elemre hover eseményt csatolunk, 
+    // ami a dinamikus keretek színét animálja meg a kívánt színre.
+    function setHoverStyle(element, color = null) {
+
+        if (!element || !color) return;
+
+        // Ha a szín nem hex-színként van megadva, akkor kilépünk.
+        if (!/^#[A-Fa-f0-9]{6}$/.test(color)) return;
+        
+        element.addEventListener("mouseover", () => {
+            borderElements.forEach(e => {
+                const start = getComputedStyle(e).getPropertyValue("--color").trim();
+                const startHex = rgbToHex(start);
+    
+                startColorAnimation(e, (isValid) =>
+                    animateColor(e, startHex, color, 500, isValid)
+                );
+            });
+        });
+    
+        element.addEventListener("mouseleave", () => {
+            borderElements.forEach(e => {
+                const start = getComputedStyle(e).getPropertyValue("--color").trim();
+                const startHex = rgbToHex(start);
+    
+                startColorAnimation(e, (isValid) =>
+                    animateColor(e, startHex, "#4d4d4d", 500, isValid)
+                );
+            });
+        });
+    }
+    
 
     if (main) {
         main.addEventListener("mousemove", (e) => {
+            if (borderElements[0].style.getPropertyValue("--radius") == "0px") {
+                borderElements.forEach(element => {
+                    startRadiusAnimation(element, (isValid) =>
+                        animateRadius(element, 0, 400, 500, isValid)
+                    );
+                });
+            }
+
             if (!animating) {
                 animating = true;
                 requestAnimationFrame(() => {
@@ -116,24 +165,10 @@ window.addEventListener("load", () => {
         });
     }
 
-    logout.addEventListener("mouseover", () => {
-        borderElements.forEach(element => {
-            startColorAnimation(element, (isValid) =>
-                animateColor(element, "#4d4d4d", "#b92424", 500, isValid)
-            );
-        });
-    });
+    setHoverStyle(logout, "#b92424");
+    setHoverStyle(dashboard, "#2797ca");
 
-    logout.addEventListener("mouseleave", () => {
-        borderElements.forEach(element => {
-            startColorAnimation(element, (isValid) =>
-                animateColor(element, "#b92424", "#4d4d4d", 500, isValid)
-            );
-        });
-    });
-
-
-    document.documentElement.addEventListener("mouseleave", () => {
+    main.addEventListener("mouseleave", () => {
         borderElements.forEach(element => {
             const start = Number(element.style.getPropertyValue("--radius").replace("px", "") || 0);
 
@@ -143,7 +178,7 @@ window.addEventListener("load", () => {
         });
     });
 
-    document.documentElement.addEventListener("mouseenter", () => {
+    main.addEventListener("mouseenter", () => {
         borderElements.forEach(element => {
             const start = Number(element.style.getPropertyValue("--radius").replace("px", "") || 0);
             startRadiusAnimation(element, (isValid) =>

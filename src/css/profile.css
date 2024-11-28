@@ -132,6 +132,9 @@ body {
 
 .sidebar-bottom {
     padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .logout {
@@ -158,6 +161,33 @@ body {
 }
 
 .logout > * {
+    pointer-events: none;
+}
+
+.dashboard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    background-color: var(--page);
+    border: 3px solid var(--border);
+    padding: 0.7rem 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgb(32, 32, 32);
+    user-select: none;
+    text-decoration: none;
+    color: #aaaaaa;
+    transition: scale 0.3s ease, border 0.3s ease, background-color 0.3s ease, font-weight 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard:hover {
+    background-color: #01558d;
+    border: 3px solid #2797ca;
+    box-shadow: 0 0 5px rgb(16, 73, 126);
+    color: var(--text);
+}
+
+.dashboard > * {
     pointer-events: none;
 }
 
