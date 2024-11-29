@@ -119,6 +119,7 @@ window.addEventListener("load", () => {
                 const start = getComputedStyle(e).getPropertyValue("--color").trim();
                 const startHex = rgbToHex(start);
     
+                console.log(color);
                 startColorAnimation(e, (isValid) =>
                     animateColor(e, startHex, color, 500, isValid)
                 );
@@ -144,6 +145,14 @@ window.addEventListener("load", () => {
                 borderElements.forEach(element => {
                     startRadiusAnimation(element, (isValid) =>
                         animateRadius(element, 0, 400, 500, isValid)
+                    );
+
+                    console.log("move");
+                    const start = getComputedStyle(element).getPropertyValue("--color").trim();
+                    const startHex = rgbToHex(start);
+        
+                    startColorAnimation(element, (isValid) =>
+                        animateColor(element, startHex, "#4d4d4d", 500, isValid)
                     );
                 });
             }
@@ -185,5 +194,5 @@ window.addEventListener("load", () => {
                 animateRadius(element, start, 400, 500, isValid)
             );
         });
-    });    
+    });   
 });

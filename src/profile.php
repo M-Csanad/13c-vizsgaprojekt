@@ -39,7 +39,7 @@
 </head>
 <body>
     <div class="main">
-        <div class="sidebar-wrapper dynamic-border" style="--mouse-x: 50%; --mouse-y: 50%; --radius:0px; --color: rgb(77, 77, 77)">
+        <div class="sidebar-wrapper dynamic-border" style="--mouse-x: 50%; --mouse-y: 50%; --radius:0px; --color: rgb(43, 43, 43)">
             <div class="sidebar">
                 <div class="profile-general">
                     <div class="profile-picture">
@@ -100,7 +100,7 @@
                 </div>
             </div>
         </div>
-        <div class="content-wrapper dynamic-border"  style="--mouse-x: 50%; --mouse-y: 50%; --radius: 0px; --color:  rgb(77, 77, 77)">
+        <div class="content-wrapper dynamic-border"  style="--mouse-x: 50%; --mouse-y: 50%; --radius: 0px; --color:  rgb(43, 43, 43)">
             <div class="content">
                 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Enim mollitia incidunt harum vero ullam illo laboriosam magni, iure iste repellat laudantium, eligendi vitae blanditiis dicta molestias provident nisi voluptates eveniet?
             </div>
