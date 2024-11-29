@@ -118,7 +118,7 @@ body {
     color: var(--text);
 }
 
-.page:active, .logout:active {
+.page:active, .logout:active, .dashboard:active {
     scale: 0.95;
 }
 
@@ -202,6 +202,15 @@ body {
     height: 100%;
     width: 100%;
 }
+
+.content-page {
+    display: none;
+}
+
+.content-page.active {
+    display: block;
+}
+
 
 @media screen and (max-width: 1100px) {
 }
