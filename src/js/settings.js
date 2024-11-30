@@ -21,11 +21,23 @@ window.addEventListener("load", () => {
             if (e.code === "Space" || e.code === "Enter") togglePage(page.dataset.pageid);
         });
     }
-
+    
     let main = document.querySelector(".main");
     let borderElements = document.querySelectorAll(".dynamic-border");
     let logout = document.querySelector(".logout");
     let dashboard = document.querySelector(".dashboard");
+    let saveButtons = document.querySelectorAll(".save");
+    let editButtons = document.querySelectorAll(".edit");
+    let dyk = document.querySelector(".didyouknow");
+
+    saveButtons.forEach(e => e.addEventListener("click", () => {
+        e.closest(".field-body").querySelector("input").disabled = true;
+    }));
+
+    editButtons.forEach(e => e.addEventListener("click", () => {
+        e.closest(".field-body").querySelector("input").disabled = false;
+    }));
+
     let animating = false;
     let insideCustomStyleElement = false;
 
@@ -179,6 +191,26 @@ window.addEventListener("load", () => {
         }
     });
 
+    main.addEventListener("mouseleave", () => {
+        borderElements.forEach(element => {
+            const start = Number(element.style.getPropertyValue("--radius").replace("px", "") || 0);
+
+            startRadiusAnimation(element, (isValid) => 
+                animateRadius(element, start, 0, 500, isValid)
+            );
+        });
+    });
+
+    main.addEventListener("mouseenter", () => {
+        borderElements.forEach(element => {
+            const start = Number(element.style.getPropertyValue("--radius").replace("px", "") || 0);
+            startRadiusAnimation(element, (isValid) =>
+                animateRadius(element, start, 400, 500, isValid)
+            );
+        });
+    }); 
+
     setHoverStyle(logout, "#b92424");
     setHoverStyle(dashboard, "#2797ca");
+    setHoverStyle(dyk, "#5dbc55");
 });

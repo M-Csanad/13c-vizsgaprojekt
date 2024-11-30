@@ -23,7 +23,8 @@ body {
 
 .main {
     width: 100%;
-    height: 100%;
+    height: fit-content;
+    min-height: 100%;
     display: flex;
     flex-direction: row;
     padding: 1rem;
@@ -198,19 +199,195 @@ body {
 .content {
     background-color: #1d1d1d;
     border-radius: 15px;
-    padding: 20px;
+    padding-block: 2rem;
+    padding-inline: 3rem;
     height: 100%;
     width: 100%;
 }
 
 .content-page {
+    height: 100%;
     display: none;
 }
 
 .content-page.active {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
+.page-title {
+    font-size: 40px;
+    font-weight: bold;
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+}
+
+.divider {
+    color: #c4c4c4;
+    font-size: 25px;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #868686;
+    margin-bottom: 2rem;
+}
+
+.inline-field {
+    display: flex;
+    flex-direction: row;
+    padding-block: 1rem;
+    width: 50%;
+}
+
+.picture-field > .field-body {
+    flex-grow: 0;
+    border-bottom: none;
+}
+
+.field-label {
+    font-weight: 600;
+    width: 30%;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+}
+
+.field-body {
+    border-bottom: 3px solid transparent;
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    transition: border-color 0.3s ease;
+}
+
+.field-body > input {
+    background: none;
+    outline: none;
+    border: none;
+    color: white;
+    flex-grow: 1;
+    font-size: 18px;
+    padding: 0.5rem;
+    height: 35px;
+}
+
+.field-body > .svg-group {
+    position: relative;
+    width: 35px;
+    height: 100%;
+}
+
+.field-body > .svg-group > svg {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    fill: #616161;
+    transition: fill 0.3s ease, scale 0.3s ease, opacity 0.3s ease, scale 0.3s ease, rotate 0.3s ease;
+    cursor: pointer;
+}
+
+.field-body:has(input:enabled) {
+    border-color: var(--page);
+}
+
+.field-body:has(input:disabled) > .svg-group > svg.edit {
+    z-index: 10;
+    opacity: 1;
+    scale: 1;
+}
+
+.field-body:has(input:disabled) > .svg-group > svg.save {
+    z-index: 1;
+    opacity: 0;
+    scale: 0 !important;
+}
+
+.field-body:has(input:enabled) > .svg-group > svg.edit {
+    z-index: 1;
+    opacity: 0;
+    scale: 0 !important;
+}
+
+.field-body:has(input:enabled) > .svg-group > svg.save {
+    z-index: 10;
+    opacity: 1;
+    scale: 1;
+}
+
+.field-body > .svg-group > svg:hover {
+    fill: white;
+    scale: 1.2 !important;
+    rotate: 10deg;
+}
+
+.field-body > .svg-group > svg:active {
+    scale: 1 ;
+}
+
+
+.picture-field > .field-body > label {
+    cursor: pointer;
+    position: relative;
+}
+
+.picture-field > .field-body > label > input {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    height: 0;
+}
+
+.didyouknow {
+    border: 4px solid #2c5227;
+    padding-inline: 3rem;
+    padding-block: 3rem;
+    text-align: center;
+    border-radius: 20px;
+    position: relative;
+    background-image: url("../images/site/didyouknow2.jpg");
+    box-shadow: 0 0 10px #192e16;
+    background-position: 0px -400px;
+    background-size: cover;
+    overflow: hidden;
+
+    transition: border 0.5s ease, box-shadow 0.5s ease;
+}
+
+.dyk-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: brightness(0.5) grayscale(0.7) blur(3px);
+
+    letter-spacing: 1px;
+    font-size: 20px;
+    text-shadow: 0px 0px 10px rgb(0, 0, 0);
+    
+    transition: backdrop-filter 0.5s ease;
+}
+
+.didyouknow:has(.dyk-text:hover) {
+    border-color: #6ee064;
+    box-shadow: 0 0 10px #5dbc55;
+}
+
+.dyk-text:hover {
+    backdrop-filter: brightness(0.7) grayscale(0) blur(3px);
+}
 
 @media screen and (max-width: 1100px) {
 }

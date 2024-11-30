@@ -16,6 +16,9 @@
         }
 
         $user = $result["message"];
+        $curDate = new DateTime();
+        $createDate = new DateTime($user["created_at"]);
+        $accountAge = $curDate -> diff($createDate) -> days;
     } 
     else {
         header("Location: ./");
@@ -32,10 +35,10 @@
 
     <link rel="preload" href="fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="./css/root.css">
-    <link rel="stylesheet" href="./css/profile.css">
+    <link rel="stylesheet" href="./css/settings.css">
     <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
 
-    <script src="./js/profile.js"></script>
+    <script src="./js/settings.js"></script>
 </head>
 <body>
     <div class="main">
@@ -102,10 +105,61 @@
         </div>
         <div class="content-wrapper dynamic-border"  style="--mouse-x: 50%; --mouse-y: 50%; --radius: 0px; --color:  rgb(43, 43, 43)">
             <div class="content">
-                <div class="content-page active"></div>
-                <div class="content-page"></div>
-                <div class="content-page"></div>
-                <div class="content-page"></div>
+                <div class="content-page active"> <!-- Személyes adatok -->
+                    <div class="content-main">
+                        <div class="page-title">
+                            Személyes adatok
+                        </div>
+                        <div class="divider">Általános adatok</div>
+                        <form name="basic-info">
+                            <div class="inline-field">
+                                <div class="field-label">Név</div>
+                                <div class="field-body">
+                                    <input type="text" name="" id="" value="<?php echo $user["last_name"]." ".$user["first_name"] ?>" disabled>
+                                    <div class="svg-group">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy2-fill save" viewBox="0 0 16 16">
+                                            <path d="M12 2h-2v3h2z"/>
+                                            <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0zM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1zM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inline-field">
+                                <div class="field-label">E-mail cím</div>
+                                <div class="field-body">
+                                    <input type="email" value="<?php echo $user["email"] ?>" disabled>
+                                    <div class="svg-group">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy2-fill save" viewBox="0 0 16 16">
+                                            <path d="M12 2h-2v3h2z"/>
+                                            <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0zM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1zM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inline-field picture-field">
+                                <div class="field-label">Profilkép</div>
+                                <div class="field-body">
+                                    <label for="pfp">
+                                        <img src="<?php echo $user['pfp_uri'] ?>" alt="A profilképed">
+                                        <input type="file" name="pfp" id="pfp">
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="didyouknow">
+                        <div class="dyk-text">Ön <b><?php echo $accountAge ?></b> napja a Florens Botanica tagja! Köszönjük, hogy minket választott.</div>
+                    </div>
+                </div>
+                <div class="content-page"></div> <!-- Automatikus kitöltés -->
+                <div class="content-page"></div> <!-- Rendeléseim -->
+                <div class="content-page"></div> <!-- Jelszó -->
             </div>
         </div>
     </div>

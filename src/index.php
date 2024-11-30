@@ -59,7 +59,7 @@
         ?>
     </p>
     <p><a href="./register">Regisztráció</a></p>
-    <p><a href="./profile">Profil</a></p>
+    <p><a href="./settings">Profil</a></p>
     <p><a href="./dashboard">Vezérlőpult</a></p>
     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates ipsa aperiam excepturi pariatur, sapiente
         dolorem, quis iure ratione veritatis autem fugit eius tempore. Minus hic suscipit omnis explicabo illo nulla.
