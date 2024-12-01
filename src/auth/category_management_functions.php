@@ -45,6 +45,7 @@ function createCategory($categoryData) {
     // Add file paths to categoryData
     foreach ($images as $i => $image) {
         $categoryData[$image] = $paths[$i];
+        optimizeImage($paths[$i]);
     }
 
     $result = uploadCategoryImages($categoryData);
@@ -290,6 +291,7 @@ function updateCategory($categoryData) {
          
         for ($i = 0; $i < count($images); $i++) {
             $categoryData[$images[$i]["name"]] = $paths[$i];
+            optimizeImage($paths[$i]);
         }
 
         $result = updateURIs($categoryData);

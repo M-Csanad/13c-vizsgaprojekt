@@ -51,7 +51,6 @@ function hideDisplayMessages() {
     }
 }
 
-
 function createConfirmPopup(message) {
     isPopupVisible = true;
 
@@ -217,6 +216,13 @@ function isFormException(form) {
 }
 
 window.addEventListener("load", () => {
+    let loaderForms = document.querySelectorAll("form[data-show-loader=true]");
+    loaderForms.forEach(el => {
+        el.addEventListener("submit", () => {
+            toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
+        });
+    })
+
     let sectionHeaders = document.querySelectorAll(".section-header");
     
     for (let header of sectionHeaders) {

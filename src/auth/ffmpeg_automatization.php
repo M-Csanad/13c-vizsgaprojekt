@@ -99,7 +99,7 @@ function optimizeImage($inputFile, $sizes = [3840, 2560, 1920, 1440, 1024, 768],
  */
 function convertWithGD($inputFile, $width, $outputFile)
 {
-    $image = @imagecreatefromjpeg($inputFile);
+    $image = imagecreatefromjpeg($inputFile);
     if (!$image) {
         logError("GD nem tudta betölteni a képet: $inputFile", "image_optimization.log");
         return;
@@ -127,12 +127,3 @@ function convertWithGD($inputFile, $width, $outputFile)
     imagedestroy($image);
     imagedestroy($resizedImage);
 }
-
-// Használat - teszt
-try {
-    optimizeImage('C:/xampp/htdocs/13c-vizsgaprojekt/src/images/categories/TEST_FOLDER/thumbnail_image_horizontal.jpg');
-} catch (Exception $e) {
-    logError("Exception: " . $e->getMessage(), "image_optimization.log");
-}
-?>
-

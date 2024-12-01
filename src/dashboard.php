@@ -25,11 +25,13 @@
     <link rel="stylesheet" href="./css/allergen-checkbox.css">
     <link rel="stylesheet" href="./css/search.css">
     <link rel="stylesheet" href="./css/table.css">
+    <link rel="stylesheet" href="./css/loader.css">
     <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
     <script defer src="./js/dashboard.js"></script>
     <script defer src="./js/search.js"></script>
     <script defer src="./js/tag-checkbox.js"></script>
-    <!-- <script src="./js/prevent-resubmit.js"></script> -->
+    <script defer src="./js/loader.js"></script>
+    <script src="./js/prevent-resubmit.js"></script>
 </head>
 <body>
     <p>
@@ -83,7 +85,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="">
+                    <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="" data-show-loader="true">
                         <div class="input-grid">
                             <div class="form-divider">Általános adatok</div>
                             <div class="inline-input">
