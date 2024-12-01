@@ -18,12 +18,11 @@ if ($searchTerm) {
             WHERE (product.name LIKE ? 
             OR category.name LIKE ? OR subcategory.name LIKE ?)
             AND image.media_type = 'image'
-            AND image.orientation = 'horizontal'
             AND image.uri LIKE '%thumbnail%'
             GROUP BY product.id
             ORDER BY product.name;";
 
-    $matches = selectData($query, array_fill(0, 3, $searchTerm));
+    $matches = selectData($query, array_fill(0, 3, $searchTerm), "sss");
                            
     echo json_encode($matches, JSON_UNESCAPED_UNICODE);
 }

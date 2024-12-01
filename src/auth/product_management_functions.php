@@ -1,54 +1,57 @@
 <?php
 /* --------------------------- Termék létrehozása --------------------------- */
 
-// Termékképek számára mappa létrehozása
-function createProductDirectory($productData) {
-
-    // A képek végső elérési útvonalait gyűjtjük
-    $paths = array();
-    $baseDirectory = './images/products/';
-
-    $productName = format_str($productData['name']);
-    $productDirURI = $baseDirectory.$productName."/";
-    
-    if (!createDirectory([$productDirURI,$productDirURI.'thumbnail/', $productDirURI.'gallery/'])) {
-        return "Ilyen nevű termék már létezik a fájlrendszerben.";
-    }
-    
-    // A termékképek feltöltése
-    $thumbnailImages = array('thumbnail_image');
-    if (isset($_FILES['product_video'])) array_push($thumbnailImages, 'product_video');
-
-    foreach ($thumbnailImages as $image) {
-        $tmp = $_FILES[$image]['tmp_name'];
-        $name = $_FILES[$image]['name'];
-        $extension = pathinfo($name, PATHINFO_EXTENSION);
-        $path = $productDirURI."thumbnail/thumbnail." . $extension;
-
-        if (!move_uploaded_file($tmp, $path)) {
-            return false;
-        }
-    
-        array_push($paths, $path);
-    }
-    
-    $fileCount = count($_FILES['product_images']['name']);
-    for ($i = 0; $i < $fileCount; $i++) {
-
-        $productImageTmp = $_FILES['product_images']['tmp_name'][$i];
-        $productImage = $_FILES['product_images']['name'][$i];
-        $extension = pathinfo($productImage, PATHINFO_EXTENSION);
-        $path = $productDirURI."gallery/image" . $i . "." . $extension;
-
-        if (!move_uploaded_file($productImageTmp, $productDirURI."gallery/image" . $i . "." . $extension)) {
-            return false;
-        }
-
-        array_push($paths, $path);
-    }
-
-    return $paths;
+function getProductDir($productData) {
+    $baseDir = "./images/products/";
+    $dirName = "product-".$productData["id"]."/";
+    return $baseDir.$dirName;
 }
+
+function createProductDirectory($productData) {
+    $paths = [];
+    $productDirURI = getProductDir($productData);
+
+    if (!createDirectory($productDirURI)) {
+        return ["message" => "Ilyen nevű termék már létezik a fájlrendszerben.", "type" => "ERROR"];
+    }
+
+    $images = ['thumbnail_image'];
+    if (isset($_FILES['product_video'])) {
+        $images[] = 'product_video';
+    }
+
+    foreach ($images as $image) {
+        if (isset($_FILES[$image])) {
+            $path = saveFile($_FILES[$image], $productDirURI, "thumbnail");
+            if (!$path) return ["message" => "Sikertelen kép mentés.", "type" => "ERROR"];
+            $paths[] = $path;
+        }
+    }
+
+    if (!empty($_FILES['product_images']['name'])) {
+        foreach ($_FILES['product_images']['name'] as $index => $name) {
+            $path = saveFile(
+                [
+                    'tmp_name' => $_FILES['product_images']['tmp_name'][$index],
+                    'name' => $name
+                ],
+                $productDirURI,
+                "image{$index}"
+            );
+            if (!$path) return ["message" => "Sikertelen kép mentés.", "type" => "ERROR"];
+            $paths[] = $path;
+        }
+    }
+
+    return ["message" => $paths, "type" => "SUCCESS"];
+}
+
+function saveFile($file, $directory, $filename) {
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $path = $directory . $filename . "." . $extension;
+    return move_uploaded_file($file['tmp_name'], $path) ? $path : false;
+}
+
 
 // A termékadatok feltöltése a `product` táblába
 function uploadProductData($data) {
@@ -65,7 +68,7 @@ function uploadProductData($data) {
     $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
     $query = "INSERT INTO `product`($fieldList) VALUES ($placeholderList);";
     
-    return updateData($query, $values);
+    return updateData($query, $values, "siis");
 }
 
 // A termék képeinek feltöltése az `image` táblába
@@ -83,38 +86,40 @@ function uploadProductImages($paths) {
             $orientation = getOrientation($path);
         }
         
-        $result = updateData("INSERT INTO `image`(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, $orientation, $mediaType]);
+        $result = updateData("INSERT INTO `image`(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, $orientation, $mediaType], "sss");
         if (!typeOf($result, "SUCCESS")) {
-            return false;
+            return $result;
         }
 
         array_push($insertIds, $result["message"]);
     }
 
-    return $insertIds;
+    return ["message" => $insertIds, "type" => "SUCCESS"];
 }
 
 // A A termékképek és a termék összekapcsolása `product_image` táblába való feltöltéssel
 function connectProductImages($insertIds, $productId) {
     foreach ($insertIds as $image) {
-        $result = updateData("INSERT INTO `product_image`(image_id, product_id) VALUES (?, ?);", [$image, $productId]);
+        $result = updateData("INSERT INTO `product_image`(image_id, product_id) VALUES (?, ?);", [$image, $productId], "ii");
 
         if (!typeOf($result, "SUCCESS")) {
-            return false;
+            return $result;
         }
     }
-    return true;
+    return ["message" => "A termékképek feltöltése sikeres volt.", "type" => "SUCCESS"];
 }
 
 function connectProductTags($id, $tags) {
-    $placeholderList = implode(", ", array_fill(0, count($tags), "(?, ?)"));;
+    $placeholderList = implode(", ", array_fill(0, count($tags), "(?, ?)"));
     $values = array();
+    $typeString = "";
 
     foreach ($tags as $tag) {
         array_push($values, $tag, $id);
+        $typeString .= "ii";
     }
 
-    return updateData("INSERT INTO product_tag (tag_id, product_id) VALUES $placeholderList;", $values);
+    return updateData("INSERT INTO product_tag (tag_id, product_id) VALUES $placeholderList;", $values, $typeString);
 }
 
 // Termék létrehozása - Fő függvény
@@ -123,14 +128,9 @@ function createProduct($productData, $productPageData, $productCategoryData) {
 
     // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
     if (hasUploadError()) {
-        return "Hiba merült fel a feltöltés során.";
+        return ["message" => "Hiba merült fel a feltöltés során.", "type" => "ERROR"];
     }
-
-    $paths = createProductDirectory($productData);
-    if (!is_array($paths)) {
-        return "Sikertelen képfeltöltés. ($paths)";
-    }
-
+    
     $result = uploadProductData($productData);
     if (typeOf($result, "SUCCESS")) {
         $productData["id"] = $result["message"];
@@ -138,29 +138,37 @@ function createProduct($productData, $productPageData, $productCategoryData) {
     }
     else if (isError($result)){
         if ($result["code"] === 1062) {
-            return "Ilyen termék már létezik az adatbázisban.";    
+            return ["message" => "Ilyen termék már létezik az adatbázisban.", "type" => "ERROR"];    
         }
         else {
-            return "Sikertelen feltöltés a product táblába. ({$result["message"]})";
+            return ["message" => "Sikertelen feltöltés a product táblába. ({$result["message"]})", "type" => "ERROR"];
         }
     }
     else {
-        return "Sikertelen feltöltés az adatbázisba: {$result['message']}";
+        return ["message" => "Sikertelen feltöltés az adatbázisba: {$result['message']}", "type" => "ERROR"];
     }
 
-    $insertIds = uploadProductImages($paths);
-    if (!is_array($insertIds)) {
-        return "Sikertelen feltöltés az image táblába. ($insertIds)";
+    $result = createProductDirectory($productData);
+    if (!typeOf($result, "SUCCESS")) {
+        return ["message" => "Sikertelen képfeltöltés. ($result)", "type" => "ERROR"];
     }
-    
+    $paths = $result["message"];
+
+    var_dump($paths);
+    $result = uploadProductImages($paths);
+    if (!typeOf($result, "SUCCESS")) {
+        return ["message" => "Sikertelen feltöltés az image táblába. ({$result['message']})", "type" => "ERROR"];
+    }
+    $insertIds = $result["message"];
+
     $result = connectProductImages($insertIds, $productData['id']);
-    if ($result !== true) {
-        return "Sikertelen feltöltés a product_image táblába. ({$result["message"]})";
+    if (!typeOf($result, "SUCCESS")) {
+        return ["message" => "Sikertelen feltöltés a product_image táblába. ({$result["message"]})", "type" => "ERROR"];
     }
 
     $result = connectProductTags($productData['id'], $productData['tags']);
     if (!typeOf($result, "SUCCESS")) {
-        return "Sikertelen feltöltés a product_tag táblába. ({$result["message"]})";
+        return ["message" => "Sikertelen feltöltés a product_tag táblába. ({$result["message"]})", "type" => "ERROR"];
     }
 
     return createProductPage($productData, $productPageData, $productCategoryData);
@@ -171,20 +179,15 @@ function createProduct($productData, $productPageData, $productCategoryData) {
 
 // Termék törlése az adatbázisból
 function removeProductFromDB($productData) {
-    $result = updateData("DELETE `image` FROM `image` INNER JOIN product_image ON image.id=product_image.image_id WHERE product_image.product_id=?;", $productData['id']);
+    $result = updateData("DELETE `image` FROM `image` INNER JOIN product_image ON image.id=product_image.image_id WHERE product_image.product_id=?;", $productData['id'], "i");
     if (typeOf($result, "ERROR")) return $result;
     
-    return updateData("DELETE FROM product WHERE product.id = ?;", $productData['id']);
+    return updateData("DELETE FROM product WHERE product.id = ?;", $productData['id'], "i");
 }
 
 // Termék mappájának törlése
 function removeProductDirectory($productData) {
-
-    $baseDir = "./images/products/";
-    $productName = format_str($productData['name']);
-    $productDirURI = $baseDir.$productName."/";
-
-    return deleteFolder($productDirURI);
+    return deleteFolder(getProductDir($productData));
 }
 
 // Termék törlése - Fő függvény
@@ -193,14 +196,14 @@ function removeProduct($productData) {
 
     // A kategória törlése az adatbázisból
     $result = removeProductFromDB($productData);
-    if (typeOf($result, "NO_AFFECT")) return "Ez a termék nem létezik!";
-    else if (typeOf($result, "ERROR")) return $result["message"];
+    if (typeOf($result, "NO_AFFECT")) return ["message" => "Ez a termék nem létezik!", "type" => "ERROR"];
+    else if (typeOf($result, "ERROR")) return $result;
 
     // A kategória mappájának törlése
     $successfulDirectoryDelete = removeProductDirectory($productData);
-    if (!$successfulDirectoryDelete) return "A mappa törlése sikertelen! (A mappát manuálisan kell törölni).";
+    if (!$successfulDirectoryDelete) return ["message" => "A mappa törlése sikertelen! (A mappát manuálisan kell törölni).", "type" => "ERROR"];
 
-    return $successfulDirectoryDelete;
+    return ["message" => "A termék sikeresen törölve lett.", "type" => "SUCCESS"];
 }
 
 /* ---------------------------- Termék módosítása --------------------------- */
@@ -208,51 +211,55 @@ function removeProduct($productData) {
 function updateProductTags($productData) {
     
     $query = "DELETE FROM product_tag WHERE product_tag.product_id=?;";
-    $result = updateData($query, $productData["id"]);
+    $result = updateData($query, $productData["id"], "i");
     if (typeOf($result, "ERROR")) {
-        return "Sikertelen törlés.";
+        return ["message" => "Sikertelen törlés.", "type" => "ERROR"];
     }
 
-    if (!isset($productData["tags"])) return true;
+    if (!isset($productData["tags"])) return ["message" => "Nincs változás.", "type" => "SUCCESS"];
     
     $values = array();
     $placeholders = array();
+    $typeString = "";
     
     foreach ($productData["tags"] as $tag) {
         array_push($placeholders, "(?, ?)");
-        array_push($values, $productData["id"]);
-        array_push($values, $tag);
+        array_push($values, $productData["id"], $tag);
+        $typeString .= "ii";
     }
     
     $query = "INSERT INTO product_tag (product_id, tag_id) VALUES " . implode(", ", $placeholders);
-    $result = updateData($query, $values);
+    $result = updateData($query, $values, $typeString);
     if (typeOf($result, "ERROR")) {
-        return "Sikertelen felvitel.";
+        return ["message" => "Sikertelen felvitel.", "type" => "ERROR"];
     }
 
-    return true;
+    return ["message" => "Sikeres törlés.", "type" => "SUCCESS"];
 }
 
-function updateProductPage($productData) {
-    $name = format_str($productData["name"]);
-    $originalName = format_str($productData["original_name"]);
+function updateProductPage($data, $table = null) {
+    if (!$table) return ["message" => "Hiányzó táblázat paraméter.", "type" => "ERROR"];
+
+    $name = format_str($data["name"]);
+    $originalName = format_str($data["original_name"]);
 
     if ($name == $originalName) {
-        return true;
+        return ["message" => "A termékoldal nem változott.", "type" => "SUCCESS"];
     }
 
-    $result = selectData("SELECT product_page.id, product_page.link_slug FROM product_page WHERE product_page.product_id=?", $productData["id"]);
+    $result = selectData("SELECT product_page.id, product_page.link_slug FROM product_page WHERE product_page.{$table}_id=?", $data["id"], "i");
     if (!typeOf($result, "SUCCESS")) {
-        return "Sikertelen lekérdezés: ".$result["message"];
+        return ["message" => "Sikertelen lekérdezés: ".$result["message"], "type" => "ERROR"];
     }
 
-    $data = $result["message"];
-    if ($result["contentType"] == "ASSOC") $data = [$data];
+    $pages = $result["message"];
+    if ($result["contentType"] == "ASSOC") $pages = [$pages];
     
-    $slugs = array_map(function ($e) {return $e["link_slug"];}, $data);
-    $ids = array_map(function ($e) {return $e["id"];}, $data);
-
-    for ($i = 0; $i < count($data); $i++) {
+    $slugs = array_map(function ($e) {return $e["link_slug"];}, $pages);
+    $ids = array_map(function ($e) {return $e["id"];}, $pages);
+    $typeString = "";
+    
+    for ($i = 0; $i < count($pages); $i++) {
         $slug = $slugs[$i];
         $slugs[$i] = str_replace('|', $name, str_replace($originalName, '|', $slug));
     }
@@ -260,40 +267,41 @@ function updateProductPage($productData) {
     $caseStatements = [];
     foreach ($ids as $id) {
         $caseStatements[] = "WHEN id = {$id} THEN ?";
+        $typeString .= "s";
     }
-
+    
     $caseSql = implode(' ', $caseStatements);
     $values = implode(', ', $ids);
     
     $query = "UPDATE product_page SET link_slug = CASE {$caseSql} END, page_title=? WHERE id IN (" . $values . ");";
+    $result = updateData($query, [...$slugs, $data["name"]], $typeString."s");
 
-    $result = updateData($query, [...$slugs, $productData["name"]]);
     if (typeOf($result, "ERROR")) {
-        return "Sikertelen módosítás: ".$result['message'];
+        return ["message" => "Sikertelen módosítás: ".$result['message'], "type" => "ERROR"];
     }
 
-    return true;
+    return ["message" => "Sikeres módosítás.", "type" => "SUCCESS"];
 }
 
 function updateProductImages($productData, $images, $paths) {
     if (count($paths) == 0) return false;
 
     if (count(array_filter($images, function ($e) {return $e["name"]=="product_image";})) > 0) {
-        $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%/gallery/image%' AND product_image.product_id=?;", $productData["id"]);
+        $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%image%' AND product_image.product_id=?;", $productData["id"], "i");
         if (typeOf($result, "ERROR")) {
-            return false;
+            return $result;
         }
     }
     if (count(array_filter($images, function ($e) {return $e["name"]=="thumbnail_image";})) > 0) {
-        $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%/thumbnail/thumbnail%' AND image.media_type='image' AND product_image.product_id=?;", $productData["id"]);
+        $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%thumbnail%' AND image.media_type='image' AND product_image.product_id=?;", $productData["id"], "i");
         if (typeOf($result, "ERROR")) {
-            return false;
+            return $result;
         }
     }
     if (count(array_filter($images, function ($e) {return $e["name"]=="product_video";})) > 0) {
-        $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%/thumbnail/thumbnail%' AND image.media_type='video' AND product_image.product_id=?;", $productData["id"]);
+        $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%thumbnail%' AND image.media_type='video' AND product_image.product_id=?;", $productData["id"], "i");
         if (typeOf($result, "ERROR")) {
-            return false;
+            return $result;
         }
     }
     $ids = array();
@@ -303,18 +311,18 @@ function updateProductImages($productData, $images, $paths) {
 
         if ($image["name"] == "thumbnail_image" || $image["name"] == "product_image") {
 
-            $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, getOrientation($path), "image"]);
+            $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, getOrientation($path), "image"], "sss");
             if (typeOf($result, "ERROR") || $result["contentType"] != "INT") {
-                return false;
+                return $result;
             }
 
             array_push($ids, $result["message"]);
         }
         else if ($image["name"] == "product_video") {
 
-            $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, "horizontal", "video"]);
+            $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, "horizontal", "video"], "sss");
             if (typeOf($result, "ERROR") || $result["contentType"] != "INT") {
-                return false;
+                return $result;
             }
 
             array_push($ids, $result["message"]);
@@ -341,95 +349,30 @@ function updateProductData($productData, $images, $paths) {
         if ($i != count($values) - 2) $query .= ", ";
     }
     $query .= " WHERE `product`.`id`=?;";
-    $result = updateData($query, $values);
+
+    $result = updateData($query, $values, "siisi");
     if (typeOf($result, "ERROR")) {
-        return "Sikertelen frissítés.";
+        return ["message" => "Sikertelen frissítés.", "type" => "ERROR"];
     }
 
-    $result = updateProductPage($productData);
-    if (!is_bool($result)) {
+    $result = updateProductPage($productData, "product");
+    if (!typeOf($result, "SUCCESS")) {
         return $result;
     }
     
     $result = updateProductTags($productData);
-    if (!is_bool($result)) {
+    if (!typeOf($result, "SUCCESS")) {
         return $result;
     }
 
-    $result = updateProductImages($productData, $images, $paths);
-    return true;
-}
-
-function renameProductDirectory($productData) {
-    $baseDirectory = './images/products/';
-
-    $productName = format_str($productData["name"]);
-    $originalProductName = format_str($productData["original_name"]);
-
-    $originalProductDirURI = $baseDirectory.$originalProductName."/";
-    $productDirURI = $baseDirectory.$productName."/";
-    
-    if ($productName == $originalProductName) {
-        return [ "message" => [$originalProductDirURI, array()], "type" => "NO_CHANGE" ];
-    }
-
-    if (renameFolder($originalProductDirURI, $productDirURI)) {
-        
-        $query = "SELECT image.id, image.uri FROM product_image INNER JOIN image ON product_image.image_id=image.id WHERE product_image.product_id = ?;";
-        $result = selectData($query, $productData["id"]);
-
-        if (typeOf($result, "ERROR")) {
-            return [ "message" => $result, "type" => "ERROR" ];
-        }
-        else if (typeOf($result, "EMPTY")) {
-            return [ "message" => "Nem találhatóak a keresett termékhez képek.", "type" => "EMPTY" ];
-        }
-
-
-        $ids = array_map(function ($e) { return $e["id"]; }, $result["message"]);
-        $uris = array_map(function ($e) { return $e["uri"]; }, $result["message"]);
-
-        for ($i = 0; $i < count($uris); $i++) {
-            $original_name = format_str($productData["original_name"]);
-            $name = format_str($productData["name"]);
-            
-            // Az elérési útvonalban kicseréljük a régi terméknevet az újra egy speciális karakter segítségével ( | ).
-            $uris[$i] = ($uris[$i] == "") ? null : str_replace('|', $name, str_replace($original_name, '|', $uris[$i]));
-        }
-
-        $caseStatements = [];
-        foreach ($ids as $id) {
-            $caseStatements[] = "WHEN id = {$id} THEN ?";
-        }
-
-        $caseSql = implode(' ', $caseStatements);
-        $values = implode(', ', $ids);
-        
-        $query = "UPDATE image SET uri = CASE {$caseSql} END WHERE id IN (" . $values . ");";
-
-        $result = updateData($query, $uris);
-        if (!typeOf($result, "SUCCESS")) {
-            return [ "message" => "Sikertelen módosítás.", "type" => "ERROR" ];
-        }
-
-        return [ "message" => [$productDirURI, $ids], "type" => "SUCCESS" ];
-    }
-    else {
-        return [ "message" => "Sikertelen mappa átnevezés.", "type" => "ERROR" ];
-    }
+    return updateProductImages($productData, $images, $paths);
 }
 
 function updateProductDirectory($productData, $images) {
 
-    $result = renameProductDirectory($productData);
+    $productDirURI = getProductDir($productData);
 
-    if (isError($result)) {
-        return $result["message"];
-    }
-
-    [$productDirURI, $ids] = $result["message"];
-
-    if (!is_dir($productDirURI."thumbnail/") || !is_dir($productDirURI."gallery/")) {
+    if (!is_dir($productDirURI)) {
         return ["message" => "Hiányzó mappa.", "type" => "ERROR"];
     }
     
@@ -440,18 +383,17 @@ function updateProductDirectory($productData, $images) {
     $galleryCounter = 0;
 
     foreach ($images as $image) {
+        $files = scandir($productDirURI);
+
         if ($image["name"] != "product_image") {
-            $dir = $productDirURI."thumbnail/";
             $tmp = $image["tmp_name"];
             $name = "thumbnail";
             $ext = $image["ext"];
-            $path = $dir."$name.".$ext;
-
-            $files = scandir($dir);
+            $path = $productDirURI."$name.".$ext;
 
             $existingImage = null;
             foreach ($files as $file) {
-                $path = $dir.$file;
+                $path = $productDirURI.$file;
                 if (pathinfo($path, PATHINFO_FILENAME) == $name && str_contains($image["name"], explode("/", mime_content_type($path))[0])) {
                     $existingImage = $path;
                 }
@@ -461,32 +403,36 @@ function updateProductDirectory($productData, $images) {
                 array_push($paths, replaceFile($existingImage, $tmp, "$name.$ext", $name));
             }
             else {
-                array_push($paths, moveFile($tmp, "$name.$ext", $name, $dir));
+                array_push($paths, moveFile($tmp, "$name.$ext", $name, $productDirURI));
             }
         }
         else {
-            $dir = $productDirURI."gallery/";
             $tmp = $image["tmp_name"];
             $name = "image$galleryCounter";
             $ext = $image["ext"];
-            $path = $dir."$name.".$ext;
+            $path = $productDirURI."$name.".$ext;
             
             if ($galleryCounter == 0) {
-                deleteFolderFiles($dir);
+                foreach ($files as $file) {
+                    if (preg_match('/^image\d+\.\w+$/', $file)) {
+                        unlink($productDirURI . $file);
+                    }
+                }
             }
-            array_push($paths, moveFile($tmp, "$name.$ext", $name, $dir));
+
+            array_push($paths, moveFile($tmp, "$name.$ext", $name, $productDirURI));
             $galleryCounter++;
         }
 
     }
-    return [$paths, $ids];
+    return ["message" => $paths, "type" => "SUCCESS"];
 }
 
 function updateProduct($productData) {
     include_once "init.php";
 
     if (hasUploadError()) {
-        return "Hiba merült fel a feltöltés során.";
+        return ["message" => "Hiba merült fel a feltöltés során.", "type" => "ERROR"];
     }
 
     $images = array();
@@ -509,26 +455,16 @@ function updateProduct($productData) {
     if (count($images) > 0) {
         $result = updateProductDirectory($productData, $images);
         if (typeOf($result, "ERROR")) {
-            return $result["message"];
+            return $result;
         }
-        [$paths, $imageIds] = $result;
+        $paths = $result["message"];
 
-        if (hasError($paths)) return false;
+        if (hasError($paths)) return ["message" => "A képek mozgatása sikertelen volt.", "type" => "ERROR"];
     
         for ($i = 0; $i < count($images); $i++) {
             $productData[$images[$i]["name"]] = $paths[$i];
         }
     }
-    else {
-        $result = renameProductDirectory($productData);
-
-        if (isError($result)) {
-            return $result["message"];
-        }
-
-        $imageIds = typeOf($result, "NO_CHANGE") ? $result["message"][1] : array();
-    }
 
     return updateProductData($productData, $images, $paths);
 }
-?>

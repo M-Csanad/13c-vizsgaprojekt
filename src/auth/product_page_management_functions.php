@@ -27,7 +27,7 @@ function uploadProductPageData($data) {
     $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
     $query = "INSERT INTO `product_page`($fieldList) VALUES ($placeholderList);";
     
-    return updateData($query, $values);
+    return updateData($query, $values, "isiiss");
 }
 
 function createProductPage($productData, $productPageData, $productCategoryData) {
@@ -40,10 +40,10 @@ function createProductPage($productData, $productPageData, $productCategoryData)
     $result = uploadProductPageData($productPageData);
     if (typeOf($result, "ERROR")) {
         if ($result["code"] === 1062) { // Duplicate entry hiba
-            return "Ilyen termék oldal már létezik.";
+            return ["message" => "Ilyen termék oldal már létezik.", "type" => "ERROR"];
         }
         else {
-            return "Sikertelen feltöltés a product_page táblába. ({$result["message"]})";
+            return ["message" => "Sikertelen feltöltés a product_page táblába. ({$result["message"]})", "type" => "ERROR"];
         }
     }
 
@@ -51,11 +51,11 @@ function createProductPage($productData, $productPageData, $productCategoryData)
 }
 
 function removeProductPage($id) {
-    return updateData("DELETE FROM product_page WHERE product_page.id=?;", $id);
+    return updateData("DELETE FROM product_page WHERE product_page.id=?;", $id, "i");
 }
 
 function modifyProductPage($pageData, $categoryData) {
     $newSlug = getLinkSlug($pageData["page_title"], $categoryData);
     $data = array($newSlug["link_slug"], $pageData["category_id"], $pageData["subcategory_id"], $pageData["page_content"], $pageData["id"]);
-    return updateData("UPDATE product_page SET link_slug=?, category_id=?, subcategory_id=?, page_content=? WHERE product_page.id=?", $data);
+    return updateData("UPDATE product_page SET link_slug=?, category_id=?, subcategory_id=?, page_content=? WHERE product_page.id=?", $data, "siis");
 }

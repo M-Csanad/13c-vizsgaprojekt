@@ -10,7 +10,7 @@ function register($username, $password, $email, $firstname, $lastname) {
 
     $pfp = "https://ui-avatars.com/api/?name=$lastname+$firstname&background=9CB5A6&bold=true&format=svg";
     $result = updateData("INSERT INTO user (user_name, email, password_hash, first_name, last_name, pfp_uri) 
-                          VALUES (?, ?, ?, ?, ?, ?)", [$username, $email, $passwordHash, $firstname, $lastname, $pfp]);
+                          VALUES (?, ?, ?, ?, ?, ?)", [$username, $email, $passwordHash, $firstname, $lastname, $pfp], "ssssss");
                           
     if (typeOf($result, "ERROR")) {
         $error = $result["message"];
@@ -57,7 +57,7 @@ function authenticate_user($username, $password) {
                           user.role, user.id, 
                           user.user_name
                           FROM user 
-                          WHERE user.user_name = ?", $username);
+                          WHERE user.user_name = ?", $username, "s");
 
     if (typeOf($result, "SUCCESS")) {
         $user = $result["message"];

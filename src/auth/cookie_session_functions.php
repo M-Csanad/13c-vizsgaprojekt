@@ -18,7 +18,7 @@ function bindCookie($userId)
     $result = updateData("UPDATE user 
                           SET cookie_id = ?, 
                           cookie_expires_at = ? 
-                          WHERE user.id = ?", [$cookieToken, $expireUnix, $userId]);
+                          WHERE user.id = ?", [$cookieToken, $expireUnix, $userId], "sii");
 
     if (typeOf($result, "SUCCESS")) {
         setcookie('rememberMe', $cookieToken, $expireUnix, '/', '', false, false); // 1 hétig érvényes süti létrehozása
@@ -44,7 +44,7 @@ function removeCookie($cookieToken)
     $result = updateData("UPDATE user 
                           SET cookie_id = NULL, 
                           cookie_expires_at = NULL 
-                          WHERE user.cookie_id = ?", $cookieToken);
+                          WHERE user.cookie_id = ?", $cookieToken, "s");
     
     if (typeOf($result, "SUCCESS")) {
         unset($_COOKIE['rememberMe']);

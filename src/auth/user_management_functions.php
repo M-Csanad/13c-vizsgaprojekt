@@ -10,7 +10,7 @@
                                      user.pfp_uri,
                                      user.created_at 
                                      FROM user 
-                                     WHERE user.id = ?", $userId);
+                                     WHERE user.id = ?", $userId, "i");
         return $result;
     }
 
@@ -21,7 +21,7 @@
 
     function modifyRole($userId, $role) {
         include_once "init.php";
-        $result = updateData("UPDATE user SET user.role = ? WHERE user.id = ?", [$role, $userId]);
+        $result = updateData("UPDATE user SET user.role = ? WHERE user.id = ?", [$role, $userId], "si");
 
         return $result;
     }

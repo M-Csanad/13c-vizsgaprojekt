@@ -1,82 +1,124 @@
 <?php
 
-function selectData($query, $parameters) {
+function selectData($query, $parameters = null, $typeString = null) {
     try {
+        if (!$query) {
+            return ["message" => "Üres paraméter(ek).", "type" => "ERROR"];
+        }
+
         include_once "init.php";
         $db = createConnection();
 
-        $statement = $db -> prepare($query);
-
         if ($parameters) {
+
+            if (!$typeString) {
+                return ["message" => "Előkészített lekérdezéshez adja meg a paramétertípusokat.", "type" => "ERROR"];
+            }
+
             if (!is_array($parameters)) {
                 $parameters = [$parameters];
             }
-            
-            $typeString = '';
-            foreach ($parameters as $parameter) {
-                if (is_null($parameter)) {
-                    $typeString .= 's';
-                } else {
-                    $typeString .= gettype($parameter)[0];
-                }
-            }
-            
-            $statement -> bind_param($typeString, ...$parameters);
-        }
-        $statement -> execute();
-        $result = $statement -> get_result();
-        $db -> close();
 
-        if ($result -> num_rows == 1) {
-            return ["message" => $result -> fetch_assoc(), "type" => "SUCCESS", "contentType" => "ASSOC"];
+            $statement = $db->prepare($query);
+            if (!$statement) {
+                return ["message" => $db->error, "type" => "ERROR"];
+            }
+
+            $types = '';
+            foreach ($parameters as $parameter) {
+                $types .= is_null($parameter) ? 's' : gettype($parameter)[0];
+            }
+
+            if ($types != $typeString) {
+                return ["message" => "A típus string nem egyezik meg a tényleges típusokkal.".$query, "type" => "ERROR"];
+            }
+
+            $statement->bind_param($typeString, ...$parameters);
+            $statement->execute();
+            $result = $statement->get_result();
+            $statement->close();
+        } else {
+            $result = $db->query($query);
+            if ($db->errno) {
+                return ["message" => $db->error, "type" => "ERROR"];
+            }
         }
-        if ($result -> num_rows > 0) {
-            return ["message" => $result -> fetch_all(MYSQLI_ASSOC), "type" => "SUCCESS", "contentType" => "ARRAY"];
+
+        $db->close();
+
+        if ($result->num_rows === 1) {
+            return ["message" => $result->fetch_assoc(), "type" => "SUCCESS", "contentType" => "ASSOC"];
         }
-        else {
-            return ["message" => "Nincs találat!", "type" => "EMPTY"];
+
+        if ($result->num_rows > 0) {
+            return ["message" => $result->fetch_all(MYSQLI_ASSOC), "type" => "SUCCESS", "contentType" => "ARRAY"];
         }
-    }
-    catch(Exception $e) {
-        return ["message" => $e -> getMessage(), "code" => $e -> getCode(), "type" => "ERROR"];
+
+        return ["message" => "Nincs találat!", "type" => "EMPTY"];
+    } catch (Exception $e) {
+        return ["message" => $e->getMessage(), "code" => $e->getCode(), "type" => "ERROR"];
     }
 }
 
-function updateData($query, $parameters) {
+
+function updateData($query, $parameters = null, $typeString = null) {
     try {
+        if (!$query || !$typeString) return ["message" => "Üres paraméter(ek).", "type" => "ERROR"];
+
         include_once "init.php";
         $db = createConnection();
-        if (!is_array($parameters)) {
-            $parameters = [$parameters];
-        }
-        
-        $statement = $db -> prepare($query);
-        
-        $typeString = '';
-        foreach ($parameters as $parameter) {
-            if (is_null($parameter)) {
-                $typeString .= 's';
-            } else {
-                $typeString .= gettype($parameter)[0];
-            }
-        }
-        
-        $statement -> bind_param($typeString, ...$parameters);
-        $statement -> execute();
 
-        $db -> close();
-        if ($statement -> affected_rows > 0) {
-            if (str_contains($query, "INSERT")) {
-                return ["message" => $statement -> insert_id, "type" => "SUCCESS", "contentType" => "INT"];
+        if ($parameters) {
+            if (!$typeString) {
+                return ["message" => "Előkészített lekérdezéshez adja meg a paramétertípusokat.", "type" => "ERROR"];
             }
-            else return ["message" => true, "type" => "SUCCESS"];
+
+            if (!is_array($parameters)) {
+                $parameters = [$parameters];
+            }
+
+            $statement = $db->prepare($query);
+
+            if (!$statement) {
+                return ["message" => $db->error, "type" => "ERROR"];
+            }
+
+            $typeString = '';
+            foreach ($parameters as $parameter) {
+                $typeString .= is_null($parameter) ? 's' : gettype($parameter)[0];
+            }
+
+            $statement->bind_param($typeString, ...$parameters);
+            $statement->execute();
+            $affectedRows = $statement->affected_rows;
+            $insertId = $statement->insert_id;
+
+            $statement->close();
+        } else {
+            $db->query($query);
+
+            if ($db->errno) {
+                return ["message" => $db->error, "type" => "ERROR"];
+            }
+
+            $affectedRows = $db->affected_rows;
+            $insertId = $db->insert_id;
         }
-        else return ["message" => false, "type" => "NO_AFFECT"];
-    }
-    catch(Exception $e) {
-        return ["message" => $e -> getMessage(), "code" => $e -> getCode(), "type" => "ERROR"];
+
+        $db->close();
+
+        if ($affectedRows > 0) {
+            if (str_contains($query, "INSERT")) {
+                return ["message" => $insertId, "type" => "SUCCESS", "contentType" => "INT"];
+            }
+            return ["message" => true, "type" => "SUCCESS"];
+        }
+        return ["message" => false, "type" => "NO_AFFECT"];
+    } catch (Exception $e) {
+        return ["message" => $e->getMessage(), "code" => $e->getCode(), "type" => "ERROR"];
     }
 }
+
 
 function isError($result) {
     return $result["type"] == "ERROR";

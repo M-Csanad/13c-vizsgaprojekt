@@ -636,7 +636,7 @@
                                 <div class="tag-body">
                                     <div class="tag-items">
                                         <?php
-                                            $result = selectData("SELECT * FROM tag;", null);
+                                            $result = selectData("SELECT * FROM tag;");
                                             if (typeOf($result, "SUCCESS")) {
                                                 $tags = $result["message"];
 
@@ -945,7 +945,7 @@
                                 <div class="tag-body">
                                     <div class="tag-items" name="tags">
                                         <?php
-                                            $result = selectData("SELECT * FROM tag;", null);
+                                            $result = selectData("SELECT * FROM tag;");
                                             if (typeOf($result, "SUCCESS")) {
                                                 $tags = $result["message"];
 
@@ -1492,18 +1492,18 @@
 
             $result = createProduct($productData, $productPageData, $productCategoryData);
 
-            if ($result === true) {
+            if (!typeOf($result, "ERROR")) {
                 echo "<div class='success'>Termék sikeresen létrehozva!</div></div>";
             }
             else {
-                echo "<div class='error'>A termék létrehozása sikertelen! {$result}</div></div>";
+                echo "<div class='error'>A termék létrehozása sikertelen! {$result["message"]}</div></div>";
             }
         }
 
         // Termék módosítása
         if (isset($_POST['modify_product'])) {
             $productData = array(
-                "id" => $_POST['product_id'],
+                "id" => intval($_POST['product_id']),
                 "original_name" => $_POST['product_name'],
                 "name" => $_POST['name'],
                 "description" => $_POST['description'],
@@ -1514,11 +1514,11 @@
             if (isset($_POST["tags"])) $productData["tags"] = $_POST['tags'];
 
             $result = updateProduct($productData);
-            if ($result === true) {
+            if (!typeOf($result, "ERROR")) {
                 echo "<div class='success'>Termék sikeresen módosítva!</div></div>";
             }
             else {
-                echo "<div class='error'>A termék módosítása sikertelen! {$result}</div></div>";
+                echo "<div class='error'>A termék módosítása sikertelen! {$result["message"]}</div></div>";
             }
         }
         
@@ -1531,11 +1531,11 @@
 
             $result = removeProduct($productData);
 
-            if ($result === true) {
+            if (!typeOf($result, "ERROR")) {
                 echo "<div class='success'>A termék sikeresen törölve.</div>";
             }
             else {
-                echo "<div class='error'>A termék törlése sikertelen! {$result}</div>";
+                echo "<div class='error'>A termék törlése sikertelen! {$result["message"]}</div>";
             }
         }
 
@@ -1562,7 +1562,7 @@
             );
 
             $result = createProductPage($productData, $productPageData, $productCategoryData);
-            if ($result === true) {
+            if (!typeOf($result, "ERROR")) {
                 echo "<div class='success'>Termék oldal sikeresen létrehozva!</div>";
             }
             else {

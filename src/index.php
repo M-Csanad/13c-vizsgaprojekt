@@ -20,7 +20,7 @@
                             user.user_name, 
                             user.cookie_expires_at 
                             FROM user 
-                            WHERE user.cookie_id = ?", $cookieToken);
+                            WHERE user.cookie_id = ?", $cookieToken, "s");
         
         if (typeOf($result, "SUCCESS")) {
             $user = $result["message"];

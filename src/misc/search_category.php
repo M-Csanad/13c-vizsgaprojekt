@@ -19,7 +19,7 @@ if ($searchTerm) {
               WHERE subcategory.name LIKE ? 
               ORDER BY type, name;";
                            
-    $matches = selectData($query, array_fill(0, 2, $searchTerm));
+    $matches = selectData($query, array_fill(0, 2, $searchTerm), "ss");
                            
     echo json_encode($matches, JSON_UNESCAPED_UNICODE);
 }

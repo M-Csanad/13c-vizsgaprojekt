@@ -30,7 +30,7 @@ $matches = selectData("SELECT product_page.id, product_page.page_title AS name, 
                         OR product_page.link_slug LIKE ? )
                         GROUP BY product_page.id
                         ORDER BY product_page.page_title;", 
-                        array_fill(0, 3, $searchTerm));
+                        array_fill(0, 3, $searchTerm), "sss");
 
 echo json_encode($matches, JSON_UNESCAPED_UNICODE);
 
