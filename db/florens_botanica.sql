@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2024. Nov 04. 20:52
+-- Létrehozás ideje: 2024. Dec 01. 16:05
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -22,18 +22,6 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `florens_botanica` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
 USE `florens_botanica`;
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `allergy`
---
-
-CREATE TABLE `allergy` (
-  `id` int(11) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  `icon_uri` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
 
@@ -58,7 +46,7 @@ CREATE TABLE `category` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
   `subname` varchar(255) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL,
+  `description` varchar(500) DEFAULT NULL,
   `thumbnail_image_vertical_uri` varchar(255) DEFAULT NULL,
   `thumbnail_image_horizontal_uri` varchar(255) DEFAULT NULL,
   `thumbnail_video_uri` varchar(255) DEFAULT NULL
@@ -69,10 +57,21 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `name`, `subname`, `description`, `thumbnail_image_vertical_uri`, `thumbnail_image_horizontal_uri`, `thumbnail_video_uri`) VALUES
-(2, 'Immunerősítés', 'Természetes megoldások az immunrendszer támogatására', 'Olyan termékek, amelyek segíthetnek az immunrendszer erősítésében és a szervezet védekezőképességének fokozásában.', './images/categories/immunerősítés/thumbnail_image_vertical.jpg', './images/categories/immunerősítés/thumbnail_image_horizontal.jpg', NULL),
-(3, 'Emésztés és Bélrendszer', 'Gyógynövények az emésztőrendszer egészségéért', 'Termékek, amelyek hozzájárulhatnak az emésztési folyamatok javításához és a bélflóra egyensúlyának fenntartásához.', './images/categories/emésztés-és-bélrendszer/thumbnail_image_vertical.jpg', './images/categories/emésztés-és-bélrendszer/thumbnail_image_horizontal.jpg', NULL),
-(4, 'Stressz és Alvás', 'Nyugalmat és pihentető alvást támogató gyógynövények', 'Nyugtató és alvást segítő készítmények, amelyek hozzájárulhatnak a mindennapi stressz enyhítéséhez.', './images/categories/stressz-és-alvás/thumbnail_image_vertical.jpg', './images/categories/stressz-és-alvás/thumbnail_image_horizontal.jpg', NULL),
-(5, 'Szív és Keringés', 'A szív és az érrendszer támogatása gyógynövényekkel', 'Termékek, amelyek hozzájárulhatnak a szív- és érrendszer egészségének fenntartásához.', './images/categories/szív-és-keringés/thumbnail_image_vertical.jpg', './images/categories/szív-és-keringés/thumbnail_image_horizontal.jpg', NULL);
+(24, 'A Tiszta Egészség', 'A Természet Esszenciája', 'Támogasd szervezetedet a természet legjavával! Vitaminok, ásványi anyagok, és növényi kivonatok gondoskodnak az energikus mindennapokról, miközben természetes forrásokból származó kiegészítők segítenek megőrizni egészséged harmóniáját. Válaszd a természet', './images/categories/category-24/thumbnail_image_vertical.jpg', './images/categories/category-24/thumbnail_image_horizontal.jpg', NULL),
+(25, 'A Nyugodt Elme ', 'A Nyugalom Forrása', 'Találd meg a belső békédet természetes megoldásokkal! Ebben a kategóriában mindent megtalálsz, ami támogatja a relaxációt, csökkenti a stresszt és segít az éjszakai pihenésben, hogy minden nap energikusan és kiegyensúlyozottan induljon. Fedezd fel a nyuga', './images/categories/category-25/thumbnail_image_vertical.jpg', './images/categories/category-25/thumbnail_image_horizontal.jpg', NULL),
+(26, 'A Detox Ereje', 'Méregtelenítés', 'Adj új lendületet testednek természetes méregtelenítő megoldásokkal! Ebben a kategóriában hatékony, természetes eszközöket találsz, amelyek segítenek a belső tisztulásban, támogatják a májat, vesét és az emésztőrendszert, hogy szervezeted felfrissüljön és', './images/categories/category-26/thumbnail_image_vertical.jpg', './images/categories/category-26/thumbnail_image_horizontal.jpg', NULL),
+(27, 'A Könnyed Emésztés', 'Az Anyagcsere', 'Támogasd tested természetes egyensúlyát! Ebben a kategóriában hatékony megoldásokat találsz, amelyek serkentik az anyagcserét, javítják az emésztést, és hozzájárulnak a megfelelő rostbevitelhez, hogy energikus és kiegyensúlyozott lehess minden nap.', './images/categories/category-27/thumbnail_image_vertical.jpg', './images/categories/category-27/thumbnail_image_horizontal.jpg', NULL),
+(28, 'A Mozgás Ereje', 'A Mozgás Forrása', 'Turbózd fel teljesítményed természetes, erőt adó megoldásokkal! Ebben a kategóriában megtalálod mindazt, ami támogatja az aktív életmódot, növeli az energiát és segíti a regenerációt – természetes alapanyagokból, hogy minden mozdulat könnyed legyen és hat', './images/categories/category-28/thumbnail_image_vertical.jpg', './images/categories/category-28/thumbnail_image_horizontal.jpg', NULL),
+(29, 'A Pillanat Lángja', 'A Szenvedély Ereje', 'Ébreszd fel a belső tüzed a természet erejével! Ebben a kategóriában olyan különleges gyógynövények, aromaterápiás esszenciák és tápláló kiegészítők várnak rád, amelyek támogatják az érzelmi harmóniát, fokozzák az energiát és új lendületet adnak a mindennapoknak.', './images/categories/category-29/thumbnail_image_vertical.jpg', './images/categories/category-29/thumbnail_image_horizontal.jpg', NULL),
+(30, 'A Szépség Titka', 'Az Fiatalos Szépség', 'Fedezd fel a ragyogó megjelenés titkát! Ebben a kategóriában bőrápoló, hajápoló és anti-aging megoldások várnak, amelyek természetes összetevőikkel támogatják a fiatalos szépséget és az egészséges ragyogást. Érd el a szépség új dimenzióját!', './images/categories/category-30/thumbnail_image_vertical.jpg', './images/categories/category-30/thumbnail_image_horizontal.jpg', NULL),
+(31, 'Az Energia Alapjai', 'A Vitalitás Forrásai', 'Töltsd fel szervezeted a legfontosabb tápanyagokkal! Ebben a kategóriában vitaminok, aminosavak és enzimek kínálnak természetes támogatást az energiád fenntartásához és a mindennapi vitalitás eléréséhez. Érezd a különbséget, amit a természet ereje adhat!', './images/categories/category-31/thumbnail_image_vertical.jpg', './images/categories/category-31/thumbnail_image_horizontal.jpg', NULL),
+(32, 'A Frissítő Élmény', 'A Frissesség Titka', 'Élvezd a természetesen frissítő italok és ízek világát! Ebben a kategóriában teák, kávék és gyümölcs alapú italok kínálnak energiát, vitalitást és egy kis kényeztetést, hogy felfrissülve nézhess szembe a nap kihívásaival.', './images/categories/category-32/thumbnail_image_vertical.jpg', './images/categories/category-32/thumbnail_image_horizontal.jpg', NULL),
+(33, 'A Természet Elixirjei', 'Az Egészség Esszenciája', 'Ismerd meg a természet rejtett kincseit! Ebben a kategóriában egzotikus gyógynövények, tinktúrák és különleges elixírek segítenek támogatni a vitalitást és a belső harmóniát, hogy a mindennapjaid energikusabbak és kiegyensúlyozottabbak legyenek.', './images/categories/category-33/thumbnail_image_vertical.jpg', './images/categories/category-33/thumbnail_image_horizontal.jpg', NULL),
+(34, 'A Tengerek Kincsei', 'Az Óceán Ereje', 'Meríts erőt a tengerek gazdagságából! Ebben a kategóriában tengeri algák, ásványok, halolajok és kollagén alapú kiegészítők várnak rád, hogy természetes támogatást nyújtsanak az egészséghez és a vitalitáshoz. Fedezd fel az óceán erejét!', './images/categories/category-34/thumbnail_image_vertical.jpg', './images/categories/category-34/thumbnail_image_horizontal.jpg', NULL),
+(35, 'A Természet Illatai', 'A Lélek Illatai', 'Engedd, hogy a természet illatai harmóniát és nyugalmat hozzanak az életedbe! Ebben a kategóriában illóolajok, füstölők és illatgyertyák segítenek a relaxációban, a stresszoldásban és a tér energiájának megújításában. Fedezd fel a lélek illatainak erejét!', './images/categories/category-35/thumbnail_image_vertical.jpg', './images/categories/category-35/thumbnail_image_horizontal.jpg', NULL),
+(36, 'A Konyha Ízei', 'Az Ízek Harmóniája', 'Hozd ki a legtöbbet a konyhából természetes fűszerekkel és gyógyhatású kiegészítőkkel! Ebben a kategóriában ízletes és egészséges megoldások várnak, amelyek nemcsak ételeidet teszik különlegessé, hanem az egészségedet is támogatják.', './images/categories/category-36/thumbnail_image_vertical.jpg', './images/categories/category-36/thumbnail_image_horizontal.jpg', NULL),
+(37, 'A Szív Egészsége', 'A Szív Ereje', 'Támogasd szíved egészségét természetes megoldásokkal! Ebben a kategóriában olyan kiegészítőket találsz, amelyek segítik a keringést, erősítik az érrendszert és hozzájárulnak a szív optimális működéséhez. Adj lendületet az élet ritmusának!', './images/categories/category-37/thumbnail_image_vertical.jpg', './images/categories/category-37/thumbnail_image_horizontal.jpg', NULL),
+(38, 'Az Erdő Ajándéka', 'Az Erdő Kincsei', 'Fedezd fel az erdő gazdagságát! Ebben a kategóriában erdei gombák, gyógynövények, gyümölcsök, mézek és aromaterápiás termékek várnak, hogy természetes módon támogassák egészségedet és kényeztessék érzékeidet. Hozd el otthonodba az erdő ajándékait!', './images/categories/category-38/thumbnail_image_vertical.jpg', './images/categories/category-38/thumbnail_image_horizontal.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -145,18 +144,6 @@ CREATE TABLE `product` (
 -- --------------------------------------------------------
 
 --
--- Tábla szerkezet ehhez a táblához `product_allergy`
---
-
-CREATE TABLE `product_allergy` (
-  `id` int(11) NOT NULL,
-  `allergy_id` int(11) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
--- --------------------------------------------------------
-
---
 -- Tábla szerkezet ehhez a táblához `product_image`
 --
 
@@ -174,14 +161,26 @@ CREATE TABLE `product_image` (
 
 CREATE TABLE `product_page` (
   `id` int(11) NOT NULL,
-  `created_at` datetime DEFAULT NULL,
-  `last_modified` datetime DEFAULT NULL,
+  `created_at` datetime DEFAULT current_timestamp(),
+  `last_modified` datetime DEFAULT current_timestamp(),
   `product_id` int(11) DEFAULT NULL,
   `link_slug` varchar(255) DEFAULT NULL,
   `category_id` int(11) DEFAULT NULL COMMENT 'On delete: SET NULL',
   `subcategory_id` int(11) DEFAULT NULL COMMENT 'On delete: SET NULL',
   `page_title` varchar(255) DEFAULT NULL,
   `page_content` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `product_tag`
+--
+
+CREATE TABLE `product_tag` (
+  `id` int(11) NOT NULL,
+  `tag_id` int(11) DEFAULT NULL,
+  `product_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
@@ -218,6 +217,34 @@ CREATE TABLE `subcategory` (
 -- --------------------------------------------------------
 
 --
+-- Tábla szerkezet ehhez a táblához `tag`
+--
+
+CREATE TABLE `tag` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `icon_uri` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `tag`
+--
+
+INSERT INTO `tag` (`id`, `name`, `icon_uri`) VALUES
+(2, 'BPA-mentes', './images/tags/bpa-free.png'),
+(3, 'Gluténmentes', './images/tags/gluten-free.png'),
+(4, 'Méz', './images/tags/honeycomb.png'),
+(5, 'Halmentes', './images/tags/no-fish.png'),
+(6, 'GMO-mentes', './images/tags/non-gmo.png'),
+(7, 'Mogyoró mentes', './images/tags/peanut-free.png'),
+(8, 'Pollen', './images/tags/pollen.png'),
+(9, 'Tinktúra', './images/tags/serum.png'),
+(10, 'Cukormentes', './images/tags/sugar-free.png'),
+(11, 'Vegán', './images/tags/vegan.png');
+
+-- --------------------------------------------------------
+
+--
 -- Tábla szerkezet ehhez a táblához `user`
 --
 
@@ -231,6 +258,7 @@ CREATE TABLE `user` (
   `cookie_expires_at` int(11) DEFAULT NULL,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
+  `pfp_uri` varchar(255) DEFAULT NULL COMMENT 'Profilkép',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
@@ -238,19 +266,13 @@ CREATE TABLE `user` (
 -- A tábla adatainak kiíratása `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `user_name`, `password_hash`, `role`, `cookie_id`, `cookie_expires_at`, `first_name`, `last_name`, `created_at`) VALUES
-(1, '13c-blank@ipari.vein.hu', 'admin', '$2y$10$ZkZHsn0wcwOPzVBBFXfqTe0tjYFoUyLWc2OS/3L5t.fD1ag.FJFrm', 'Administrator', NULL, NULL, NULL, NULL, '2024-11-02 13:27:24'),
-(2, 'teszt.elek@gmail.com', 'teszt-elek', '$2y$10$UVG8PY.3iPVbbTZzaYFtHePxgt2u2fu53oXPEuZ3sBXNaO3eGNzGe', 'Guest', NULL, NULL, NULL, NULL, '2024-11-02 19:55:36');
+INSERT INTO `user` (`id`, `email`, `user_name`, `password_hash`, `role`, `cookie_id`, `cookie_expires_at`, `first_name`, `last_name`, `pfp_uri`, `created_at`) VALUES
+(1, '13c-blank@ipari.vein.hu', 'admin', '$2y$10$ZkZHsn0wcwOPzVBBFXfqTe0tjYFoUyLWc2OS/3L5t.fD1ag.FJFrm', 'Administrator', NULL, NULL, 'Máté', 'Blank', 'https://ui-avatars.com/api/?name=Blank+Máté&background=9CB5A6&bold=true&format=svg', '2024-11-02 13:27:24'),
+(2, 'teszt-elek@gmail.com', 'teszt-elek', '$2y$10$.BZLWK4qrkNB7jVCWxpkyeCpo/wRGMA/7QmSb7j4MnSZc/Ez4huMa', 'Guest', NULL, NULL, 'Elek', 'Teszt', 'https://ui-avatars.com/api/?name=Teszt+Elek&background=9CB5A6&bold=true&format=svg', '2024-11-26 17:24:56');
 
 --
 -- Indexek a kiírt táblákhoz
 --
-
---
--- A tábla indexei `allergy`
---
-ALTER TABLE `allergy`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- A tábla indexei `cart`
@@ -293,14 +315,6 @@ ALTER TABLE `product`
   ADD PRIMARY KEY (`id`);
 
 --
--- A tábla indexei `product_allergy`
---
-ALTER TABLE `product_allergy`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `allergy_id` (`allergy_id`),
-  ADD KEY `product_id` (`product_id`);
-
---
 -- A tábla indexei `product_image`
 --
 ALTER TABLE `product_image`
@@ -313,9 +327,18 @@ ALTER TABLE `product_image`
 --
 ALTER TABLE `product_page`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `link_slug` (`link_slug`),
   ADD KEY `product_page_ibfk_1` (`product_id`),
   ADD KEY `product_page_ibfk_2` (`category_id`),
   ADD KEY `product_page_ibfk_3` (`subcategory_id`);
+
+--
+-- A tábla indexei `product_tag`
+--
+ALTER TABLE `product_tag`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `allergy_id` (`tag_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- A tábla indexei `review`
@@ -333,6 +356,12 @@ ALTER TABLE `subcategory`
   ADD KEY `subcategory_ibfk_1` (`category_id`);
 
 --
+-- A tábla indexei `tag`
+--
+ALTER TABLE `tag`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- A tábla indexei `user`
 --
 ALTER TABLE `user`
@@ -345,12 +374,6 @@ ALTER TABLE `user`
 --
 
 --
--- AUTO_INCREMENT a táblához `allergy`
---
-ALTER TABLE `allergy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT a táblához `cart`
 --
 ALTER TABLE `cart`
@@ -360,7 +383,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT a táblához `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT a táblához `delivery_info`
@@ -372,31 +395,31 @@ ALTER TABLE `delivery_info`
 -- AUTO_INCREMENT a táblához `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
 
 --
 -- AUTO_INCREMENT a táblához `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT a táblához `product_allergy`
---
-ALTER TABLE `product_allergy`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
 
 --
 -- AUTO_INCREMENT a táblához `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
 
 --
 -- AUTO_INCREMENT a táblához `product_page`
 --
 ALTER TABLE `product_page`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+
+--
+-- AUTO_INCREMENT a táblához `product_tag`
+--
+ALTER TABLE `product_tag`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=316;
 
 --
 -- AUTO_INCREMENT a táblához `review`
@@ -408,13 +431,19 @@ ALTER TABLE `review`
 -- AUTO_INCREMENT a táblához `subcategory`
 --
 ALTER TABLE `subcategory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+
+--
+-- AUTO_INCREMENT a táblához `tag`
+--
+ALTER TABLE `tag`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Megkötések a kiírt táblákhoz
@@ -440,13 +469,6 @@ ALTER TABLE `order`
   ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
--- Megkötések a táblához `product_allergy`
---
-ALTER TABLE `product_allergy`
-  ADD CONSTRAINT `product_allergy_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`),
-  ADD CONSTRAINT `product_allergy_ibfk_2` FOREIGN KEY (`allergy_id`) REFERENCES `allergy` (`id`);
-
---
 -- Megkötések a táblához `product_image`
 --
 ALTER TABLE `product_image`
@@ -460,6 +482,13 @@ ALTER TABLE `product_page`
   ADD CONSTRAINT `product_page_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `product_page_ibfk_2` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `product_page_ibfk_3` FOREIGN KEY (`subcategory_id`) REFERENCES `subcategory` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `product_tag`
+--
+ALTER TABLE `product_tag`
+  ADD CONSTRAINT `product_tag_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_tag_ibfk_2` FOREIGN KEY (`tag_id`) REFERENCES `tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `review`
