@@ -3,13 +3,12 @@
  * Hibaüzenet naplózása egy megadott nevű naplófájlba.
  *
  * @param string $message A naplózandó hibaüzenet.
- * @param string $logFileName A naplófájl neve (pl. 'error.log').
- * @param string $logDirectory A naplófájl mappájának elérési útja. Alapértelmezett: 'logs'.
+ * @param string $logFileName A naplófájl egyedi neve (pl. 'myfile_error.log').
+ * @param string $logDirectory A naplófájl mappájának elérési útja. Alapértelmezett: 'log'.
  * @return void
  */
-function logError($message, $logFileName)
+function logError($message, $logFileName, $logDirectory = '../../log')
 {
-    $logDirectory = '../../log';
     $fallbackLog = "$logDirectory/fallback_error.log";
 
     $logFilePath = rtrim($logDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $logFileName;
