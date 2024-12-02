@@ -300,7 +300,7 @@ function updateCategory($categoryData) {
     }
 
     $result = updateCategoryData($categoryData, $images);
-    if (!typeOf($result, "SUCCESS")) {
+    if (typeOf($result, "ERROR")) {
         return $result;
     }
 

@@ -248,6 +248,10 @@ function updateProductTags($productData) {
 function updateProductPage($data, $table = null) {
     if (!$table) return ["message" => "Hiányzó táblázat paraméter.", "type" => "ERROR"];
 
+    if (typeOf(selectData("SELECT product_page.id FROM product_page WHERE product_page.{$table}_id=?;", $data["id"], "i"), "EMPTY")) {
+        return ["message" => "Nincsenek ez alá a kategória alá tartozó termékoldalak.", "type" => "SUCCESS"];
+    }
+
     $name = format_str($data["name"]);
     $originalName = format_str($data["original_name"]);
 

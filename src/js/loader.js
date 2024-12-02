@@ -1,4 +1,5 @@
 function toggleLoader(message) {
+  document.body.style.overflow = "hidden";
   if (document.querySelector(".loader-SuperOverlay")) return;
 
   const loaderOverlay = document.createElement("div");
@@ -29,7 +30,6 @@ function toggleLoader(message) {
   loaderOverlay.focus();
 
   setTimeout(() => loaderOverlay.classList.add("active"), 500);
-  document.body.style.overflow = "hidden";
 
   const disableSpaceKey = (event) => {
     const activeElement = document.activeElement;

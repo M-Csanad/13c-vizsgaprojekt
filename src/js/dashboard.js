@@ -116,6 +116,17 @@ function closePopup(popup) {
     }, 300);
 }
 
+function hasImage(form) {
+    let fileInputs = form.querySelectorAll('input[type="file"]');
+    
+    for (let fileInput of fileInputs) {
+        if (fileInput.files && fileInput.files.length > 0) {
+            return true;
+        }
+    }
+
+    return false;
+}
 
 function getImageOrientation(file) {
     return new Promise((resolve, reject) => {
@@ -219,7 +230,9 @@ window.addEventListener("load", () => {
     let loaderForms = document.querySelectorAll("form[data-show-loader=true]");
     loaderForms.forEach(el => {
         el.addEventListener("submit", (e) => {
-            toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
+            if (el.dataset.needsConfirm == "false") {
+                toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
+            }
         });
     })
 
@@ -348,6 +361,7 @@ window.addEventListener("load", () => {
             popup.querySelector("input.confirm").addEventListener("click", ()=>{
                 closePopup(popup);
                 setTimeout(() => {
+                    if (hasImage(form)) toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
                     formSubmitter.click();
                     isPopupVisible = false;
                 }, 300);
