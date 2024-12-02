@@ -218,7 +218,7 @@ function isFormException(form) {
 window.addEventListener("load", () => {
     let loaderForms = document.querySelectorAll("form[data-show-loader=true]");
     loaderForms.forEach(el => {
-        el.addEventListener("submit", () => {
+        el.addEventListener("submit", (e) => {
             toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
         });
     })

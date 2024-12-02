@@ -47,7 +47,7 @@ function createProductPage($productData, $productPageData, $productCategoryData)
         }
     }
 
-    return true;
+    return ["message" => "Sikeres termék oldal létrehozás.", "type" => "SUCCESS"];
 }
 
 function removeProductPage($id) {

@@ -154,7 +154,6 @@ function createProduct($productData, $productPageData, $productCategoryData) {
     }
     $paths = $result["message"];
 
-    var_dump($paths);
     $result = uploadProductImages($paths);
     if (!typeOf($result, "SUCCESS")) {
         return ["message" => "Sikertelen feltöltés az image táblába. ({$result['message']})", "type" => "ERROR"];
@@ -170,8 +169,17 @@ function createProduct($productData, $productPageData, $productCategoryData) {
     if (!typeOf($result, "SUCCESS")) {
         return ["message" => "Sikertelen feltöltés a product_tag táblába. ({$result["message"]})", "type" => "ERROR"];
     }
+    
+    $result = createProductPage($productData, $productPageData, $productCategoryData);
+    if (!typeOf($result, "SUCCESS")) {
+        return $result;
+    }
 
-    return createProductPage($productData, $productPageData, $productCategoryData);
+    foreach ($paths as $path) {
+        optimizeImage($path);
+    }
+
+    return ["message" => "Sikeres termék létrehozás!", "type" => "SUCCESS"];
 }
 
 
@@ -466,5 +474,16 @@ function updateProduct($productData) {
         }
     }
 
-    return updateProductData($productData, $images, $paths);
+    $result = updateProductData($productData, $images, $paths);
+    if (!typeOf($result, "SUCCESS")) {
+        return $result;
+    }
+
+    if (count($images) > 0) {
+        foreach ($paths as $path) {
+            optimizeImage($path);
+        }
+    }
+
+    return ["message" => "Sikeres termék létrehozás!", "type" => "SUCCESS"];
 }

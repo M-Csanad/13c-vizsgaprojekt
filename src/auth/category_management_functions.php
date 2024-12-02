@@ -29,8 +29,7 @@ function createCategory($categoryData) {
         return $result;
     }
 
-    // Get the generated ID
-    $categoryID = $result["message"]; // Assuming uploadCategoryData returns an "id" in success response
+    $categoryID = $result["message"];
     $categoryData["id"] = $categoryID;
 
     $result = createCategoryDirectory($categoryData, $images);
@@ -42,15 +41,17 @@ function createCategory($categoryData) {
     $paths = $result["message"];
     if (hasError($paths)) return ["message" => "Hiba a fájlok mozgatásakor.", "type" => "ERROR"];
 
-    // Add file paths to categoryData
     foreach ($images as $i => $image) {
         $categoryData[$image] = $paths[$i];
-        optimizeImage($paths[$i]);
     }
-
+    
     $result = uploadCategoryImages($categoryData);
     if (typeOf($result, "ERROR")) {
         return $result;
+    }
+
+    foreach ($images as $i => $image) {
+        optimizeImage($paths[$i]);
     }
 
     return ["message" => "Kategória sikeresen létrehozva!", "type" => "SUCCESS"];
@@ -58,7 +59,6 @@ function createCategory($categoryData) {
 
 
 function createCategoryDirectory($categoryData, $images) {
-    // Use the database ID to create the directory
     $categoryDirURI = getCategoryDir($categoryData);
 
     if (!createDirectory($categoryDirURI)) {
@@ -291,7 +291,6 @@ function updateCategory($categoryData) {
          
         for ($i = 0; $i < count($images); $i++) {
             $categoryData[$images[$i]["name"]] = $paths[$i];
-            optimizeImage($paths[$i]);
         }
 
         $result = updateURIs($categoryData);
@@ -305,5 +304,16 @@ function updateCategory($categoryData) {
         return $result;
     }
 
-    return updateProductPage($categoryData, $categoryData["type"]);
+    $result = updateProductPage($categoryData, $categoryData["type"]);
+    if (!typeOf($result, "SUCCESS")) {
+        return $result;
+    }
+
+    if (count($images) > 0) {
+        foreach ($paths as $path) {
+            optimizeImage($path);
+        }
+    }
+
+    return ["message" => "Sikeres módosítás!", "type" => "SUCCESS"];
 }
