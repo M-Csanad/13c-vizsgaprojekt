@@ -58,7 +58,29 @@ body {
     align-items: center;
     flex-direction: column;
     padding-top: 2rem;
+    position: relative;
     
+    .back {
+        position: absolute;
+        top: 0;
+        left: 0;
+        margin: 1rem;
+        border-radius: 10px;
+        height: 50px;
+        width: 50px;
+        padding: 10px;
+        background-color: var(--page);
+        border: 3px solid var(--border);
+        fill: #aaaaaa;
+
+        transition: border 0.3s ease, fill 0.3s ease;
+    }
+
+    .back:hover {
+        border-color: #868686;
+        fill: var(--text);
+    }
+
     .profile-picture {
         margin-block: 1rem;
         width: 130px;
@@ -238,6 +260,10 @@ body {
     width: 50%;
 }
 
+.picture-field {
+    height: 100px;
+}
+
 .picture-field > .field-body {
     flex-grow: 0;
     border-bottom: none;
@@ -286,7 +312,7 @@ body {
     display: flex;
     align-items: center;
     height: 100%;
-    fill: #616161;
+    fill: #949494;
     transition: fill 0.3s ease, scale 0.3s ease, opacity 0.3s ease, scale 0.3s ease, rotate 0.3s ease;
     cursor: pointer;
 }

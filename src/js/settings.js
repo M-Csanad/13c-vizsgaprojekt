@@ -207,10 +207,34 @@ window.addEventListener("load", () => {
             startRadiusAnimation(element, (isValid) =>
                 animateRadius(element, start, 400, 500, isValid)
             );
+
+            if (!insideCustomStyleElement) {
+                const start = getComputedStyle(element).getPropertyValue("--color").trim();
+                const startHex = rgbToHex(start);
+    
+                startColorAnimation(element, (isValid) =>
+                    animateColor(element, startHex, "#4d4d4d", 500, isValid)
+                );
+            }
         });
     }); 
+
+    window.addEventListener("mouseenter", () => {
+        console.log("window enter");
+    })
 
     setHoverStyle(logout, "#b92424");
     setHoverStyle(dashboard, "#2797ca");
     setHoverStyle(dyk, "#5dbc55");
+
+    document.getElementById("back-button").addEventListener("click", ()=>{
+        const referrer = document.referrer;
+        const origin = window.location.origin;
+
+        if (referrer && referrer.startsWith(origin)) {
+            history.back();
+        } else {
+            window.location.href = './';
+        }
+    })
 });
