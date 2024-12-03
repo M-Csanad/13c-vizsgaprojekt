@@ -1253,7 +1253,7 @@
                     <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="A termék oldal módosítása nem visszavonható művelet!">
                         <div class="input-grid">
                             <div class="search-wrapper">
-                                <div class="search" data-search-type="product_page">
+                                <div class="search" data-search-type="product_page" data-id-input="product_page_id" data-autofill-fields="true">
                                     <input type="text" name="product_page_name" id="product_page_name_modify" placeholder="Termék oldal keresése" required autocomplete="off">
                                     <label for="product_name_page_delete" class="search-button">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -1568,7 +1568,7 @@
                 echo "<div class='success'>Termék oldal sikeresen létrehozva!</div>";
             }
             else {
-                echo "<div class='error'>A termék oldal létrehozása sikertelen! {$result}</div>";
+                echo "<div class='error'>A termék oldal létrehozása sikertelen! {$result['message']}</div>";
             }
         }
 
