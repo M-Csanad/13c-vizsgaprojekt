@@ -72,6 +72,12 @@ function initializeSearch(search) {
             }
         },
         product_page: {
+            autofillFields: [
+                { name: "category" }, 
+                { name: "subcategory" }, 
+                { name: "price" }, 
+                { name: "content" },
+            ],
             template: (page) => {
                 return `<img src='${page.uri}'><div><b>${page.name}</b> - <i>${page.category_name ? page.category_name : "#"} / ${page.subcategory_name ? page.subcategory_name : "#"}</i> (${page.content_preview}...)</div>`;
             },
@@ -81,7 +87,10 @@ function initializeSearch(search) {
                 }
                 else {
                     itemClickHandler(page, ["id", "name"], { fields: [
-                        { field: "title", value: page.name },
+                        { field: "product_page_name", value: page.name },
+                        { field: "category", value: page.category_name },
+                        { field: "subcategory", value: page.subcategory_name },
+                        { field: "content", value: page.page_content }
                     ]});
                 }
             }

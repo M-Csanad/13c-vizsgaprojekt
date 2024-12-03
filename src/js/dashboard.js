@@ -231,6 +231,7 @@ window.addEventListener("load", () => {
     loaderForms.forEach(el => {
         el.addEventListener("submit", (e) => {
             if (el.dataset.needsConfirm == "false") {
+                e.preventDefault();
                 toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
             }
         });
@@ -432,6 +433,7 @@ document.querySelectorAll("select[data-table=category]").forEach(async select =>
     let table = select.dataset.table;
 
     await populateOptions(select, null, table);
+    console.log(select)
     setHiddenInput(select);
 
     let subcategorySelect = select.closest('.inline-input').nextElementSibling.querySelector('select[data-table=subcategory]');
