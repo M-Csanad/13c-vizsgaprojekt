@@ -1,3 +1,61 @@
+<?php
+include_once "./auth/init.php";
+// Ha az űrlapot elküldték (post metódussal), a bejelentkezési logika fut le
+if (isset($_POST['login'])) {
+    $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
+    $project_id = 'florens-botanica-1727886723149';
+    $url = "https://recaptchaenterprise.googleapis.com/v1/projects/$project_id/assessments?key=$recaptcha_secret";
+
+    $token = $_POST['g-recaptcha-response']; 
+    $user_action = 'login'; 
+
+    $data = [
+        "event" => [
+            "token" => $token,
+            "expectedAction" => $user_action,
+            "siteKey" => "6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"
+        ]
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json'
+    ]);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $response_data = json_decode($response, true);
+
+    if (!isset($response_data['tokenProperties']['valid']) || !$response_data['tokenProperties']['valid']) {
+        $message = "Hibás reCAPTCHA. Kérjük próbálja újra később.";
+    }
+    else if ($response_data['event']['expectedAction'] === $user_action && $response_data['riskAnalysis']['score'] >= 0.5) {
+        $username = $_POST['username']; // Felhasználónév lekérése
+        $password = $_POST['passwd']; // Jelszó lekérése
+        $rememberMe = isset($_POST['rememberMe']); // Emlékezz rám opció lekérése
+
+        // Bejelentkezési függvény meghívása, amely visszaadja a siker vagy hiba állapotát
+        session_start();
+        $result = login($username, $password, $rememberMe);
+
+        if (typeOf($result, "SUCCESS")) {
+            header('Location: ./');
+        }
+        else {
+            $message = "Hibás felhasználónév, vagy jelszó.";
+        }
+    }
+    else {
+        $message = "reCAPTCHA ellenőrzés sikertelen. Kérjük próbálja újra.";
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -11,6 +69,7 @@
     <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
 
     <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
+    <script src="./js/prevent-resubmit.js" defer></script>
 </head>
 
 <body>
@@ -48,66 +107,7 @@
                 </div>
                 <div class="form-bottom">
                     <div class="form-message">
-                        <?php
-
-                        include_once "./auth/init.php";
-                        // Ha az űrlapot elküldték (post metódussal), a bejelentkezési logika fut le
-                        if (isset($_POST['login'])) {
-                            $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
-                            $project_id = 'florens-botanica-1727886723149';
-                            $url = "https://recaptchaenterprise.googleapis.com/v1/projects/$project_id/assessments?key=$recaptcha_secret";
-
-                            $token = $_POST['g-recaptcha-response']; 
-                            $user_action = 'login'; 
-
-                            $data = [
-                                "event" => [
-                                    "token" => $token,
-                                    "expectedAction" => $user_action,
-                                    "siteKey" => "6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"
-                                ]
-                            ];
-
-                            $ch = curl_init();
-                            curl_setopt($ch, CURLOPT_URL, $url);
-                            curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-                            curl_setopt($ch, CURLOPT_POST, 1);
-                            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-                            curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                                'Content-Type: application/json'
-                            ]);
-
-                            $response = curl_exec($ch);
-                            curl_close($ch);
-
-                            $response_data = json_decode($response, true);
-
-                            if (!isset($response_data['tokenProperties']['valid']) || !$response_data['tokenProperties']['valid']) {
-                                echo "Hibás reCAPTCHA. Kérjük próbálja újra később.";
-                                return;
-                            }
-
-                            if ($response_data['event']['expectedAction'] === $user_action && $response_data['riskAnalysis']['score'] >= 0.5) {
-                                $username = $_POST['username']; // Felhasználónév lekérése
-                                $password = $_POST['passwd']; // Jelszó lekérése
-                                $rememberMe = isset($_POST['rememberMe']); // Emlékezz rám opció lekérése
-
-                                // Bejelentkezési függvény meghívása, amely visszaadja a siker vagy hiba állapotát
-                                session_start();
-                                $result = login($username, $password, $rememberMe);
-
-                                if (typeOf($result, "SUCCESS")) {
-                                    header('Location: ./');
-                                }
-                                else {
-                                    echo "Hibás felhasználónév, vagy jelszó.";
-                                }
-                            }
-                            else {
-                                echo "reCAPTCHA ellenőrzés sikertelen. Kérjük próbálja újra.";
-                            }
-                        }
-                        ?>
+                        <?php if (isset($message) && !empty($message)) echo $message; ?>
                     </div>
                     <input type="submit" value="Bejelentkezés" name="login" class="action-button g-recaptcha">
                     <div class="register">Nincs még fiókja? <a href="./register" class="form-link">Regisztráljon!</a></div>

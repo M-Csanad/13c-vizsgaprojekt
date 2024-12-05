@@ -10,17 +10,19 @@ function togglePage(id) {
     pages[id].classList.add("active");
 }
 
+pageLinks = document.querySelectorAll(".page");
+pages = document.querySelectorAll(".content-page");
+for (let page of pageLinks) {
+    page.addEventListener("click", () => {
+        togglePage(page.dataset.pageid);
+    });
+    page.addEventListener("keydown", (e) => {
+        if (e.code === "Space" || e.code === "Enter") togglePage(page.dataset.pageid);
+    });
+}
+
+
 window.addEventListener("load", () => {
-    pageLinks = document.querySelectorAll(".page");
-    pages = document.querySelectorAll(".content-page");
-    for (let page of pageLinks) {
-        page.addEventListener("click", () => {
-            togglePage(page.dataset.pageid);
-        });
-        page.addEventListener("keydown", (e) => {
-            if (e.code === "Space" || e.code === "Enter") togglePage(page.dataset.pageid);
-        });
-    }
     
     let main = document.querySelector(".main");
     let borderElements = document.querySelectorAll(".dynamic-border");
