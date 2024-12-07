@@ -1,5 +1,5 @@
 <?php
-include_once "./auth/init.php";
+include_once __DIR__."../../../../.ext/init.php";
 // Ha az űrlapot elküldték (post metódussal), a bejelentkezési logika fut le
 if (isset($_POST['login'])) {
     $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
@@ -64,22 +64,22 @@ if (isset($_POST['login'])) {
     <title>Florens Botanica - Bejelentkezés</title>
     
     <link rel="preload" href="fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/root.css">
-    <link rel="stylesheet" href="./css/login.css">
-    <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="stylesheet" href="./assets/css/root.css">
+    <link rel="stylesheet" href="./assets/css/login.css">
+    <link rel="shortcut icon" href="../fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
 
     <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
-    <script src="./js/prevent-resubmit.js" defer></script>
+    <script src="./assets/js/prevent-resubmit.js" defer></script>
 </head>
 
 <body>
 
     <div class="main">
         <div class="side-image">
-            <div class="bg visible" style="background-image: url('./images/site/bg0.jpg');"></div>
-            <div class="bg" style="background-image: url('./images/site/bg1.jpg');"></div>
-            <div class="bg" style="background-image: url('./images/site/bg2.jpg');"></div>
-            <div class="bg" style="background-image: url('./images/site/bg3.jpg');"></div>
+            <div class="bg visible" style="background-image: url('../fb-content/assets/media/images/site/login/bg0.jpg');"></div>
+            <div class="bg" style="background-image: url('../fb-content/assets/media/images/site/login/bg1.jpg');"></div>
+            <div class="bg" style="background-image: url('../fb-content/assets/media/images/site/login/bg2.jpg');"></div>
+            <div class="bg" style="background-image: url('../fb-content/assets/media/images/site/login/bg3.jpg');"></div>
         </div>
         <form method="post" id="login">
             <div class="form-header">
@@ -115,8 +115,8 @@ if (isset($_POST['login'])) {
             </div>
         </form>
     </div>
-    <script src="./js/login.js"></script>
-    <script src="./js/prevent-resubmit.js"></script>
+    <script src="./assets/js/login.js"></script>
+    <script src="./assets/js/prevent-resubmit.js"></script>
 </body>
 
 </html>

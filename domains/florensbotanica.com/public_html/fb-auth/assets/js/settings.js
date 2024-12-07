@@ -236,7 +236,7 @@ window.addEventListener("load", () => {
         if (referrer && referrer.startsWith(origin)) {
             history.back();
         } else {
-            window.location.href = './';
+            window.location.href = './'; // URI_CHANGED
         }
     })
 });

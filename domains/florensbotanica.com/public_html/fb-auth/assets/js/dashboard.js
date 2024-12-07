@@ -396,7 +396,7 @@ async function populateOptions(select, category, table) {
     data.append('table', table);
     if (category) data.append("category_name", category);
     
-    const response = await fetch(`./misc/get_categories.php`, {
+    const response = await fetch(`../../../../.ext/misc/get_categories.php`, {
         method: "POST",
         body: data
     });

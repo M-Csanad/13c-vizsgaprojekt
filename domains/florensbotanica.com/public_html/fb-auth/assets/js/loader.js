@@ -22,7 +22,7 @@ function toggleLoader(message) {
   
   loaderContent.appendChild(loaderLogo);
   loaderContent.appendChild(loaderMessage);
-  loaderContent.innerHTML += `<iframe src="./web/dino/index.html" title="Chrome Dinó játék" id="dino-game" height="300" width="70%"></iframe>`;
+  loaderContent.innerHTML += `<iframe src="../dino/index.html" title="Chrome Dinó játék" id="dino-game" height="300" width="70%"></iframe>`;
   
   
   loaderOverlay.appendChild(loaderContent);

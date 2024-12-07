@@ -14,8 +14,6 @@ body {
     align-items: center;
     justify-content: center;
     font-family: Raleway;
-    background-image: url('../web/media/img/blackSand.jpg');
-    background-size: cover;
     font-weight: 500;
     overflow-y: hidden;
 }
@@ -275,12 +273,6 @@ form {
     90% {transform: translateX(-1px);}
     96% {transform: translateX(0px);}
     100% {transform: translateX(1px);}
-}
-
-@media screen and (max-width: 285px) {
-    form {
-
-    }
 }
 
 @media screen and (max-width: 500px) {

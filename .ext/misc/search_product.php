@@ -3,7 +3,7 @@
 $searchTerm = $_POST['search_term'] ?? '';
 $searchTerm = "%".$searchTerm."%";
 if ($searchTerm) {
-    include_once "../auth/init.php";
+    include_once "../init.php";
     
     $query = "SELECT product.id, product.name, product.description,
                 product.unit_price, product.stock, category.name AS category, GROUP_CONCAT(DISTINCT product_tag.tag_id) as tag_ids, 

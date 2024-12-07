@@ -1,5 +1,5 @@
 <?php 
-    include_once "./auth/init.php"; 
+    include_once __DIR__."../../../../../.ext/init.php"; 
     session_start();
     if (isset($_SESSION['role'])) {
         if ($_SESSION['role'] != "Administrator") {
@@ -20,18 +20,18 @@
     <meta name="description" content="A Florens Botanica vezérlőpultja">
     <title>Vezérlőpult</title>
     <link rel="preload" href="fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/root.css">
-    <link rel="stylesheet" href="./css/dashboard.css">
-    <link rel="stylesheet" href="./css/allergen-checkbox.css">
-    <link rel="stylesheet" href="./css/search.css">
-    <link rel="stylesheet" href="./css/table.css">
-    <link rel="stylesheet" href="./css/loader.css">
-    <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
-    <script defer src="./js/dashboard.js"></script>
-    <script defer src="./js/search.js"></script>
-    <script defer src="./js/tag-checkbox.js"></script>
-    <script defer src="./js/loader.js"></script>
-    <script src="./js/prevent-resubmit.js"></script>
+    <link rel="stylesheet" href="../assets/css/root.css">
+    <link rel="stylesheet" href="../assets/css/dashboard.css">
+    <link rel="stylesheet" href="../assets/css/allergen-checkbox.css">
+    <link rel="stylesheet" href="../assets/css/search.css">
+    <link rel="stylesheet" href="../assets/css/table.css">
+    <link rel="stylesheet" href="../assets/css/loader.css">
+    <link rel="shortcut icon" href="../../fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+    <script defer src="../assets/js/dashboard.js"></script>
+    <script defer src="../assets/js/search.js"></script>
+    <script defer src="../assets/js/tag-checkbox.js"></script>
+    <script defer src="../assets/js/loader.js"></script>
+    <script src="../assets/js/prevent-resubmit.js"></script>
 </head>
 <body>
     <p>

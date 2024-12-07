@@ -1,5 +1,5 @@
 <?php
-include_once "./auth/init.php";
+include_once __DIR__."../../../../.ext/init.php";
 
 if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $message = "";
@@ -72,16 +72,16 @@ if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
 
     <script async defer src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
-    <script defer src="./js/register.js"></script>
-    <script defer src="./js/prevent-resubmit.js"></script>
+    <script defer src="./assets/js/register.js"></script>
+    <script defer src="./assets/js/prevent-resubmit.js"></script>
 </head>
 <body>
     <div class="main">
         <div class="side-image">
-            <div class="bg visible" style="background-image: url('./images/site/bg0.jpg');"></div>
-            <div class="bg" style="background-image: url('./images/site/bg1.jpg');"></div>
-            <div class="bg" style="background-image: url('./images/site/bg2.jpg');"></div>
-            <div class="bg" style="background-image: url('./images/site/bg3.jpg');"></div>
+            <div class="bg visible" style="background-image: url('../fb-content/assets/media/images/site/login/bg0.jpg');"></div>
+            <div class="bg" style="background-image: url('../fb-content/assets/media/images/site/login/bg1.jpg');"></div>
+            <div class="bg" style="background-image: url('../fb-content/assets/media/images/site/login/bg2.jpg');"></div>
+            <div class="bg" style="background-image: url('../fb-content/assets/media/images/site/login/bg3.jpg');"></div>
         </div>
         <form action="" method="post" id="register">
             <div class="form-header">

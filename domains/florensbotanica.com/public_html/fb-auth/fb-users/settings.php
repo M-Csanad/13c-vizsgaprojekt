@@ -1,5 +1,5 @@
 <?php 
-    include_once "./auth/init.php";
+    include_once __DIR__."../../../../../.ext/init.php";
     session_start(); 
 
     if (isset($_SESSION['user_name'])) {
@@ -34,11 +34,11 @@
     <title>Beállítások</title>
 
     <link rel="preload" href="fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/root.css">
-    <link rel="stylesheet" href="./css/settings.css">
-    <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="stylesheet" href="../assets/css/root.css">
+    <link rel="stylesheet" href="../assets/css/settings.css">
+    <link rel="shortcut icon" href="../../fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
 
-    <script src="./js/settings.js" defer></script>
+    <script src="../assets/js/settings.js" defer></script>
 </head>
 <body>
     <div class="main">

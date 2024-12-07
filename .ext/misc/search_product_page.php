@@ -12,7 +12,7 @@ if (!isset($_POST["search_term"]) || empty($_POST["search_term"])) {
     return;
 }
 
-include "../auth/init.php";
+include "../init.php";
 
 $searchTerm = $_POST['search_term'];
 $searchTerm = "%".$searchTerm."%";

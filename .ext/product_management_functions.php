@@ -2,7 +2,7 @@
 /* --------------------------- Termék létrehozása --------------------------- */
 
 function getProductDir($productData) {
-    $baseDir = "./images/products/";
+    $baseDir = "../domains/florensbotanica.com/public_html/fb-content/assets/media/images/products/";
     $dirName = "product-".$productData["id"]."/";
     return $baseDir.$dirName;
 }

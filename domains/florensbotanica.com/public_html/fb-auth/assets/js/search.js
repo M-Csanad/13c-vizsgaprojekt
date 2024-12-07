@@ -106,7 +106,7 @@ function initializeSearch(search) {
         let data = new FormData();
         data.append('search_term', input);
         if (input.length > 0) {
-            const response = await fetch(`./misc/search_${searchType}.php`, {
+            const response = await fetch(`../../../../.ext/misc/search_${searchType}.php`, {
                 method: "POST",
                 body: data
             });

@@ -1,7 +1,7 @@
 <?php
 
 function getCategoryDir($categoryData) {
-    $baseDir = "./images/";
+    $baseDir = "../domains/florensbotanica.com/public_html/fb-content/assets/media/images/";
 
     if ($categoryData["type"] == "subcategory") {
         $baseDir .= "sub";

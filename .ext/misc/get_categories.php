@@ -3,7 +3,7 @@
 $table = $_POST['table'] ?? '';
 
 if ($table) {
-    include_once "../auth/init.php";
+    include_once "../init.php";
 
     $matches = '';
     if ($table == 'category') {

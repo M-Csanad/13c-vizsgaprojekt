@@ -1,5 +1,5 @@
 <?php
-include_once "./auth/init.php";
+include_once __DIR__."../../../../.ext/init.php";
 // Session indítása és majd a session lezárása a kijelentkezés érdekében
 session_start();
 session_destroy(); // Az aktuális session megsemmisítése (felhasználói adatok törlése)
