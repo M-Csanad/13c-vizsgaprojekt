@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,6 +17,7 @@
             align-items: center;
             height: 100vh;
         }
+
         #container {
             text-align: center;
             background: rgba(0, 0, 0, 0.8);
@@ -26,14 +27,17 @@
             max-width: 400px;
             width: 90%;
         }
+
         h1 {
             font-size: 2.5em;
             margin-bottom: 20px;
         }
+
         form {
             display: flex;
             flex-direction: column;
         }
+
         input {
             margin: 10px 0;
             padding: 10px;
@@ -41,6 +45,7 @@
             border-radius: 5px;
             font-size: 1em;
         }
+
         button {
             padding: 10px;
             border: none;
@@ -50,17 +55,19 @@
             font-size: 1em;
             cursor: pointer;
         }
+
         .error {
             color: #ff4d4d;
             margin-top: 10px;
         }
     </style>
 </head>
+
 <body>
-    <?php include "maintenanceVerify.php"; ?>
+    <?php include "./fb-maintenance/maintenanceVerify.php"; ?>
     <div id="container">
         <h1>Karbantartás alatt</h1>
-        
+
         <form method="POST">
             <input type="text" name="username" placeholder="Felhasználónév" required>
             <input type="password" name="password" placeholder="Jelszó" required>
@@ -71,4 +78,5 @@
         <?php endif; ?>
     </div>
 </body>
+
 </html>

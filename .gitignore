@@ -16,7 +16,7 @@ __pycache__/
 *.exe
 
 # Érzékeny adatok
-.env
+*.env
 *.pem
 *.key
 *.db
@@ -30,6 +30,6 @@ debug/
 *.tmp
 
 # Külső függőségek
-/node_modules/
-/.npm/
-bin/*
+*/node_modules/
+*/.npm/
+*/bin/*
