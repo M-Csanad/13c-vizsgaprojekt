@@ -1,0 +1,4 @@
+height: 100dvh
+
+dvh - Dynamic Viewport Height
+    - Beleveszi a többi UI elemet is, pl. URL sor

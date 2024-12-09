@@ -1,0 +1,1 @@
+Fingerprinting, több eszközről való belépés (https://github.com/thumbmarkjs/thumbmarkjs?tab=readme-ov-file, sütik)
