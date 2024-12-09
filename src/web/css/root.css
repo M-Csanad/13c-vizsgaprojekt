@@ -1,0 +1,69 @@
+:root {
+  /*
+   Color elements
+  */
+  --dark_primary: rgb(12, 12, 12);
+  --dark_primary-op1: rgba(12, 12, 12, 0.1);
+  --dark_primary-op2: rgba(12, 12, 12, 0.2);
+  --dark_primary-op3: rgba(12, 12, 12, 0.3);
+  --dark_primary-op4: rgba(12, 12, 12, 0.4);
+  --dark_primary-op5: rgba(12, 12, 12, 0.5);
+  --dark_primary-op6: rgba(12, 12, 12, 0.6);
+  --dark_primary-op7: rgba(12, 12, 12, 0.7);
+  --dark_primary-op8: rgba(12, 12, 12, 0.8);
+  --dark_primary-op9: rgba(12, 12, 12, 0.9);
+  --dark_secondary: rgb(18, 18, 18);
+  --dark_secondary-op1: rgba(18, 18, 18, 0.1);
+  --dark_secondary-op2: rgba(18, 18, 18, 0.2);
+  --dark_secondary-op3: rgba(18, 18, 18, 0.3);
+  --dark_secondary-op4: rgba(18, 18, 18, 0.4);
+  --dark_secondary-op5: rgba(18, 18, 18, 0.5);
+  --dark_secondary-op6: rgba(18, 18, 18, 0.6);
+  --dark_secondary-op7: rgba(18, 18, 18, 0.7);
+  --dark_secondary-op8: rgba(18, 18, 18, 0.8);
+  --dark_secondary-op9: rgba(18, 18, 18, 0.9);
+  --dark_tertiary: rgb(24, 24, 24);
+  --dark_tertiary-op1: rgba(24, 24, 24, 0.1);
+  --dark_tertiary-op2: rgba(24, 24, 24, 0.2);
+  --dark_tertiary-op3: rgba(24, 24, 24, 0.3);
+  --dark_tertiary-op4: rgba(24, 24, 24, 0.4);
+  --dark_tertiary-op5: rgba(24, 24, 24, 0.5);
+  --dark_tertiary-op6: rgba(24, 24, 24, 0.6);
+  --dark_tertiary-op7: rgba(24, 24, 24, 0.7);
+  --dark_tertiary-op8: rgba(24, 24, 24, 0.8);
+  --dark_tertiary-op9: rgba(24, 24, 24, 0.9);
+  --dark_quaternary: rgb(30, 30, 30);
+  --dark_quaternary-op1: rgba(30, 30, 30, 0.1);
+  --dark_quaternary-op2: rgba(30, 30, 30, 0.2);
+  --dark_quaternary-op3: rgba(30, 30, 30, 0.3);
+  --dark_quaternary-op4: rgba(30, 30, 30, 0.4);
+  --dark_quaternary-op5: rgba(30, 30, 30, 0.5);
+  --dark_quaternary-op6: rgba(30, 30, 30, 0.6);
+  --dark_quaternary-op7: rgba(30, 30, 30, 0.7);
+  --dark_quaternary-op8: rgba(30, 30, 30, 0.8);
+  --dark_quaternary-op9: rgba(30, 30, 30, 0.9);
+  --light_main: #ffffff;
+  --light_main-op1: rgba(255, 255, 255, 0.1);
+  --light_main-op2: rgba(255, 255, 255, 0.2);
+  --light_main-op3: rgba(255, 255, 255, 0.3);
+  --light_main-op4: rgba(255, 255, 255, 0.4);
+  --light_main-op5: rgba(255, 255, 255, 0.5);
+  --light_main-op6: rgba(255, 255, 255, 0.6);
+  --light_main-op7: rgba(255, 255, 255, 0.7);
+  --light_main-op8: rgba(255, 255, 255, 0.8);
+  --light_main-op9: rgba(255, 255, 255, 0.9);
+
+  /*
+   Filter elements
+  */
+  --blur1: blur(1px);
+  --blur2: blur(2px);
+  --blur3: blur(3px);
+  --blur4: blur(4px);
+  --blur5: blur(5px);
+  --blur6: blur(6px);
+  --blur7: blur(7px);
+  --blur8: blur(8px);
+  --blur9: blur(9px);
+  --blur10: blur(10px);
+}

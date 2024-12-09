@@ -1,0 +1,126 @@
+.tag-wrapper {
+    height: 70px !important;
+    position: relative;
+}
+
+.tag-wrapper > .swipe-indicator {
+    position: absolute;
+    bottom: -15px;
+    left: calc(22% + 20px);
+    flex: 0;
+    max-width: 20px;
+}
+
+.tag-items {
+    flex-shrink: 1;
+    height: 100%;
+    min-height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    overflow: hidden;
+}
+.tag-body {
+    max-width: 72%;
+    width: 72%;
+}
+
+.tag-wrapper > .tag-body > .tag-items {
+    max-width: 100%;
+    width: 100%;
+    flex-grow: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    overflow-x: scroll;
+    padding-right: 7px;
+
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    scroll-snap-type: x mandatory;
+    gap: 10px;
+}
+
+.tag-wrapper > * {
+    user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+.tag-checkbox {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    width: 50px;
+    height: 50px;
+    padding: 5px;
+
+    border: 2px solid var(--border);
+    border-radius: 5px;
+    box-shadow: 2px 2px 5px var(--border);
+
+    transition: background-color 0.3s ease;
+}
+
+.tag-checkbox:hover {
+    background-color: rgb(223, 223, 223);
+}
+
+.tag-checkbox:active > .tag-check {
+    transform: translate(-50%, -50%) scale(0.9) !important;
+}
+
+.tag-checkbox.active {
+    background-color: rgb(223, 223, 223);
+}
+
+.tag-checkbox > img {
+    width: 100%;
+    height: 100%;
+    filter: invert(1);
+    
+    transition: filter 0.3s ease;
+}
+
+.tag-checkbox.active > img {
+    filter: invert(0);
+}
+
+.tag-checkbox > input {
+    display: none;
+}
+
+.tag-checkbox > .tag-check {
+    position: absolute;
+    
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+
+    transform: translate(-50%, -50%) scale(0);
+    transform-origin: center center;
+    fill: black;
+    filter: drop-shadow(0px 0px 5px rgb(100, 100, 100));
+
+    opacity: 0;
+
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.tag-checkbox.active > .tag-check {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
