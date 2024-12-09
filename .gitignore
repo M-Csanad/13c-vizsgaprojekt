@@ -30,6 +30,6 @@ debug/
 *.tmp
 
 # Külső függőségek
-*/node_modules/
-*/.npm/
-*/bin/*
+node_modules/
+.npm/
+bin/*

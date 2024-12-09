@@ -1,1 +1,0 @@
-//Be és kikapcsolása a karbantartási módnak
