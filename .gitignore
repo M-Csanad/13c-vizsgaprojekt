@@ -27,6 +27,7 @@ log/
 debugs/
 debug/
 *.log
+*.logs
 *.tmp
 
 # Külső függőségek

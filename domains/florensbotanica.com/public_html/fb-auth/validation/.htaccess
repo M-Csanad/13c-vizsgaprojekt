@@ -1,0 +1,4 @@
+<FilesMatch "\.(php|log)$">
+    Order Deny,Allow
+    Deny from all
+</FilesMatch>

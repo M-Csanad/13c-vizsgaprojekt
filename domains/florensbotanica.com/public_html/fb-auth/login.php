@@ -1,0 +1,124 @@
+<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php'; ?>
+<?php
+include_once __DIR__."../../../../.ext/init.php";
+// Ha az űrlapot elküldték (post metódussal), a bejelentkezési logika fut le
+if (isset($_POST['login'])) {
+    $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
+    $project_id = 'florens-botanica-1727886723149';
+    $url = "https://recaptchaenterprise.googleapis.com/v1/projects/$project_id/assessments?key=$recaptcha_secret";
+
+    $token = $_POST['g-recaptcha-response']; 
+    $user_action = 'login'; 
+
+    $data = [
+        "event" => [
+            "token" => $token,
+            "expectedAction" => $user_action,
+            "siteKey" => "6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"
+        ]
+    ];
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json'
+    ]);
+
+    $response = curl_exec($ch);
+    curl_close($ch);
+
+    $response_data = json_decode($response, true);
+
+    if (!isset($response_data['tokenProperties']['valid']) || !$response_data['tokenProperties']['valid']) {
+        $message = "Hibás reCAPTCHA. Kérjük próbálja újra később.";
+    }
+    else if ($response_data['event']['expectedAction'] === $user_action && $response_data['riskAnalysis']['score'] >= 0.5) {
+        $username = $_POST['username']; // Felhasználónév lekérése
+        $password = $_POST['passwd']; // Jelszó lekérése
+        $rememberMe = isset($_POST['rememberMe']); // Emlékezz rám opció lekérése
+
+        // Bejelentkezési függvény meghívása, amely visszaadja a siker vagy hiba állapotát
+        session_start();
+        $result = login($username, $password, $rememberMe);
+
+        if (typeOf($result, "SUCCESS")) {
+            header('Location: ./');
+        }
+        else {
+            $message = "Hibás felhasználónév, vagy jelszó.";
+        }
+    }
+    else {
+        $message = "reCAPTCHA ellenőrzés sikertelen. Kérjük próbálja újra.";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Florens Botanica - Bejelentkezés</title>
+    
+    <link rel="preload" href="./assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="../assets/css/root.css">
+    <link rel="stylesheet" href="../assets/css/login.css">
+    <link rel="shortcut icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
+    <script src="./assets/js/prevent-resubmit.js" defer></script>
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="side-image">
+            <div class="bg visible" style="background-image: url('/fb-content/assets/media/images/site/login/bg0.jpg');"></div>
+            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg1.jpg');"></div>
+            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg2.jpg');"></div>
+            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg3.jpg');"></div>
+        </div>
+        <form method="post" id="login">
+            <div class="form-header">
+                <h1>Üdvözöljük!</h1>
+                <div>Adja meg az e-mail címét és jelszavát.</div>
+            </div>
+            <div class="form-body">
+                <div class="input-wrapper">
+                    <div class="input-group">
+                        <label for="username">Felhasználónév</label>
+                        <input type="text" class="empty" name="username" id="username" autocomplete="username" required placeholder="" oninput="validateUserNameInput()" value="<?= isset($_POST['username']) ? $_POST['username'] : ''; ?>">
+                    </div>
+                    <div class="input-group">
+                        <label for="passwd">Jelszó</label>
+                        <input type="password" class="empty" name="passwd" id="passwd" autocomplete="current-password" required placeholder="">
+                    </div>
+                    <div class="input-group-inline">
+                        <div>
+                            <input type="checkbox" name="rememberMe" id="rememberMe" placeholder="">
+                            <label for="rememberMe">Maradjak bejelentkezve</label>
+                        </div>
+                        <a href="" class="form-link" id="forgotPassword">Elfelejtette a jelszavát?</a>
+                    </div>
+                    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
+                </div>
+                <div class="form-bottom">
+                    <div class="form-message">
+                        <?php if (isset($message) && !empty($message)) echo $message; ?>
+                    </div>
+                    <input type="submit" value="Bejelentkezés" name="login" class="action-button g-recaptcha">
+                    <div class="register">Nincs még fiókja? <a href="../register" class="form-link">Regisztráljon!</a></div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="../assets/js/login.js"></script>
+    <script src="../assets/js/prevent-resubmit.js"></script>
+</body>
+
+</html>
+
