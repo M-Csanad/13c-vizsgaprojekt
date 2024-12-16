@@ -1,11 +1,8 @@
 RewriteEngine On
-RewriteCond %{THE_REQUEST} /index\.php [NC]
-RewriteRule ^index\.php$ / [R=301,L]
-RewriteEngine On
 ### HTTPS-re történő átirányítás
-RewriteCond %{HTTPS} off [OR]
-RewriteCond %{HTTP_HOST} !^www\. [NC]
-RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+#RewriteCond %{HTTPS} off [OR]
+#RewriteCond %{HTTP_HOST} !^www\. [NC]
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 ###/ HTTPS-re történő átirányítás
 
 ### .htaccess fájl védelme
@@ -21,17 +18,16 @@ RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 ###/ .htaccess fájl védelme
 
 ### Karbantartási mód ellenőrzése
-RewriteCond %{DOCUMENT_ROOT}/fb-functions/maintenance/.maintenance -f
-RewriteCond %{REQUEST_URI} !^/fb-content/maintenance.php$
-RewriteCond %{REQUEST_URI} !\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|otf|webp|avif)$ [NC]
+#RewriteCond %{DOCUMENT_ROOT}/fb-functions/maintenance/.maintenance -f
+#RewriteCond %{REQUEST_URI} !^/fb-content/maintenance.php$
+#RewriteCond %{REQUEST_URI} !\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|otf|webp|avif)$ [NC]
 # Átirányítás a karbantartási oldalra
-RewriteRule ^.*$ /fb-content/maintenance.php [L]
-
-<FilesMatch "\.(php)$">
-    RewriteEngine On
-    RewriteCond %{REQUEST_FILENAME} !/index.php$
-    RewriteRule ^(.*)$ - [F,L]
-</FilesMatch>
+#RewriteRule ^.*$ /fb-content/maintenance.php [L]
+#<FilesMatch "\.(php)$">
+#    RewriteEngine On
+#    RewriteCond %{REQUEST_FILENAME} !/index.php$
+#    RewriteRule ^(.*)$ - [F,L]
+#</FilesMatch>
 
 <Files ".maintenance">
     <IfModule mod_authz_core.c>
@@ -45,21 +41,21 @@ RewriteRule ^.*$ /fb-content/maintenance.php [L]
 ###/ Karbantartási mód ellenőrzése
 
 ### Bejelentkezési oldal átirányítása
-<IfModule mod_rewrite.c> 
-RewriteEngine On 
+<IfModule mod_rewrite.c>
+RewriteEngine On
 RewriteRule ^login$ /fb-auth/login.php [L]
-</IfModule> 
-#<IfModule mod_rewrite.c> 
-#RewriteEngine On 
-#RewriteCond %{REQUEST_URI} ^/login$ 
-#RewriteRule ^login$ /fb-auth/login.php [L,R=301] 
-#</IfModule> 
+</IfModule>
+#<IfModule mod_rewrite.c>
+#RewriteEngine On
+#RewriteCond %{REQUEST_URI} ^/login$
+#RewriteRule ^login$ /fb-auth/login.php [L,R=301]
+#</IfModule>
 
 #<IfModule mod_rewrite.c>
 #RewriteEngine On
 #RewriteCond %{REQUEST_FILENAME} !-f
 #RewriteCond %{REQUEST_FILENAME} !-d
-#RewriteRule ^login$ /fb-auth/login.php [L,R=301] 
+#RewriteRule ^login$ /fb-auth/login.php [L,R=301]
 #RewriteRule ^logout$ /fb-auth/logout.php [R=301,L]
 #RewriteRule ^register$ /fb-auth/register.php [R=301,L]
 #RewriteRule ^settings$ /fb-auth/settings.php [R=301,L]
@@ -95,7 +91,7 @@ RewriteRule ^login$ /fb-auth/login.php [L]
 
 ### Compress HTML, CSS, JavaScript, Text, XML, and fonts
 <IfModule mod_deflate.c>
-    
+
     AddOutputFilterByType DEFLATE text/html text/plain text/xml
     AddOutputFilterByType DEFLATE text/css
     AddOutputFilterByType DEFLATE text/javascript
@@ -137,13 +133,7 @@ RewriteRule ^login$ /fb-auth/login.php [L]
 ###/ Böngésző oldali gyorsítótárazás beállítása
 
 ### ETag letiltása a teljesítmény javítása érdekében
-Header unset ETag
-FileETag None
+#Header unset ETag
+#FileETag None
 ###/ ETag letiltása a teljesítmény javítása érdekében
-
-RewriteEngine On
-RewriteBase /
-
-# Internally map /login to /fb-auth/login.php
-RewriteRule ^login$ /fb-auth/login.php [L]
 
