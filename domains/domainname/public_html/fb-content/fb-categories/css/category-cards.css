@@ -13,6 +13,25 @@ main {
   width: 100vw;
 }
 
+#CardSection__category::-webkit-scrollbar-track,
+#CardSection__subcategory::-webkit-scrollbar-track {
+  background-color: #0c0c0c;
+  border-radius: 0px;
+}
+
+#CardSection__category::-webkit-scrollbar,
+#CardSection__subcategory::-webkit-scrollbar {
+  height: 4.8px;
+  background-color: #fff;
+  border-radius: 20px;
+}
+
+#CardSection__category::-webkit-scrollbar-thumb,
+#CardSection__subcategory::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border-radius: 20px;
+}
+
 .Card-container_main,
 .Card-subcontainer_main {
   display: flex;
