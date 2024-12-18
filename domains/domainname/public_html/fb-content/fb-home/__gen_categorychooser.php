@@ -1,4 +1,4 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php'; ?>
+<?php include_once 'config.php'; ?>
 <?php
 include_once BASE_PATH . '/../../../.ext/db_connect.php';
 include_once BASE_PATH . '/error_logger.php';
@@ -64,20 +64,20 @@ function generateHTML()
 
             // Vertical képek 1024px alatt
             foreach ($resolutions_vertical as $resolution) {
-                echo '<source type="image/avif" media="(max-width:' . $resolution . 'px)" srcset="https://florensbotanica.com/fb-content/assets/media/' . $FileName_vertical . '-' . $resolution . 'px.avif">';
-                echo '<source type="image/webp" media="(max-width:' . $resolution . 'px)" srcset="https://florensbotanica.com/fb-content/assets/media/' . $FileName_vertical . '-' . $resolution . 'px.webp">';
-                echo '<source type="image/jpeg" media="(max-width:' . $resolution . 'px)" srcset="https://florensbotanica.com/fb-content/assets/media/' . $FileName_vertical . '-' . $resolution . 'px.jpg">';
+                echo '<source type="image/avif" media="(max-width:' . $resolution . 'px)" srcset="' . $FileName_vertical . '-' . $resolution . 'px.avif">';
+                echo '<source type="image/webp" media="(max-width:' . $resolution . 'px)" srcset="' . $FileName_vertical . '-' . $resolution . 'px.webp">';
+                echo '<source type="image/jpeg" media="(max-width:' . $resolution . 'px)" srcset="' . $FileName_vertical . '-' . $resolution . 'px.jpg">';
             }
 
             // Horizontal képek 1024px fölött
             foreach ($resolutions_horizontal as $resolution) {
-                echo '<source type="image/avif" media="(min-width:' . $resolution . 'px)" srcset="https://florensbotanica.com/fb-content/assets/media/' . $FileName_horizontal . '-' . $resolution . 'px.avif">';
-                echo '<source type="image/webp" media="(min-width:' . $resolution . 'px)" srcset="https://florensbotanica.com/fb-content/assets/media/' . $FileName_horizontal . '-' . $resolution . 'px.webp">';
-                echo '<source type="image/jpeg" media="(min-width:' . $resolution . 'px)" srcset="https://florensbotanica.com/fb-content/assets/media/' . $FileName_horizontal . '-' . $resolution . 'px.jpg">';
+                echo '<source type="image/avif" media="(min-width:' . $resolution . 'px)" srcset="' . $FileName_horizontal . '-' . $resolution . 'px.avif">';
+                echo '<source type="image/webp" media="(min-width:' . $resolution . 'px)" srcset="' . $FileName_horizontal . '-' . $resolution . 'px.webp">';
+                echo '<source type="image/jpeg" media="(min-width:' . $resolution . 'px)" srcset="' . $FileName_horizontal . '-' . $resolution . 'px.jpg">';
             }
 
             // Fallback kép
-            echo '<img src="https://florensbotanica.com/fb-content/assets/media/' . $FileName_horizontal . '-' . $resolutions_horizontal[2] . 'px.jpg"
+            echo '<img src="' . $FileName_horizontal . '-' . $resolutions_horizontal[2] . 'px.jpg"
                       alt="' . htmlspecialchars($row['name']) . ' ' . htmlspecialchars($row['subname']) . '"
                       loading="lazy">';
             echo '</picture>
@@ -98,7 +98,7 @@ function generateHTML()
 
             echo '<div class="swiper-slide">
                     <div class="circleImg">
-                        <img src="https://florensbotanica.com/fb-content/assets/media/' . $FileName_horizontal . '-768px.avif" alt=thumbnail_"' . htmlspecialchars($row['name']) . '" />
+                        <img src="' . $FileName_horizontal . '-768px.avif" alt=thumbnail_"' . htmlspecialchars($row['name']) . '" />
                         <div class="halo">
                             <div class="point"></div>
                         </div>

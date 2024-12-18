@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Főoldal - TESZT</title>
-    <link rel="stylesheet" href="./css/root.css">
+    <link rel="stylesheet" href="../assets/css/root.css">
     <?php
-    include_once __DIR__."../../../../../.ext/init.php";
+    include_once $_SERVER["DOCUMENT_ROOT"].'/config.php';
+    include_once "../../../../../.ext/init.php";
     
     session_start();
     $isLoggedIn = false;  // Alapértelmezett, hogy a felhasználó nincs bejelentkezve
@@ -51,15 +52,15 @@
         <?php
         // Link megjelenítése bejelentkezési státusz alapján
         if ($isLoggedIn) {
-            echo "<a href='./logout'>Kijelentkezés</a>";
+            echo "<a href='../../logout'>Kijelentkezés</a>";
         } else {
-            echo "<a href='./login'>Bejelentkezés</a>";
+            echo "<a href='../../login'>Bejelentkezés</a>";
         }
         ?>
     </p>
-    <p><a href="./register">Regisztráció</a></p>
-    <p><a href="./settings">Profil</a></p>
-    <p><a href="./dashboard">Vezérlőpult</a></p>
+    <p><a href="../../register">Regisztráció</a></p>
+    <p><a href="../../settings">Profil</a></p>
+    <p><a href="../../dashboard">Vezérlőpult</a></p>
 </body>
 
 </html>

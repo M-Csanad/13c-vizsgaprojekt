@@ -1,9 +1,7 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php'; ?>
-<?php
+<?php 
+include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
-
-
-$base_url = "https://florensbotanica.com";
+$base_url = "http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html";
 $footerData = [
     'logo' => "$base_url/fb-content/assets/media/images/logos/herbalLogo_white.png",
     'description' => 'We bring the healing power of nature into modern wellness, offering pure, Ayurveda-inspired products for balanced health and well-being.',

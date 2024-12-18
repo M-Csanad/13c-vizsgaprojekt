@@ -1,4 +1,4 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php'; ?>
+<?php include_once 'config.php'; ?>
 <?php
 include_once BASE_PATH . '/../../../.ext/db_connect.php';
 include_once BASE_PATH . '/error_logger.php'; // Naplózás integrálása
@@ -41,13 +41,13 @@ function generateImageGallery()
 
             // Horizontal képek forrásai (AVIF, WebP, JPG)
             foreach ($resolutions_horizontal as $resolution) {
-                echo '<source type="image/avif" media="(min-width:' . $resolution . 'px)" srcset="https://florensbotanica.com/fb-content/assets/media/' . $FileName_horizontal . '-' . $resolution . 'px.avif">';
-                echo '<source type="image/webp" media="(min-width:' . $resolution . 'px)" srcset="https://florensbotanica.com/fb-content/assets/media/' . $FileName_horizontal . '-' . $resolution . 'px.webp">';
-                echo '<source type="image/jpeg" media="(min-width:' . $resolution . 'px)" srcset="https://florensbotanica.com/fb-content/assets/media/' . $FileName_horizontal . '-' . $resolution . 'px.jpg">';
+                echo '<source type="image/avif" media="(min-width:' . $resolution . 'px)" srcset="' . $FileName_horizontal . '-' . $resolution . 'px.avif">';
+                echo '<source type="image/webp" media="(min-width:' . $resolution . 'px)" srcset="' . $FileName_horizontal . '-' . $resolution . 'px.webp">';
+                echo '<source type="image/jpeg" media="(min-width:' . $resolution . 'px)" srcset="' . $FileName_horizontal . '-' . $resolution . 'px.jpg">';
             }
 
             // Fallback kép
-            echo '<img src="https://florensbotanica.com/fb-content/assets/media/' . $FileName_horizontal . '-' . $resolutions_horizontal[2] . 'px.jpg"
+            echo '<img src="' . $FileName_horizontal . '-' . $resolutions_horizontal[2] . 'px.jpg"
                       alt="' . htmlspecialchars($row['name']) . ' ' . htmlspecialchars($row['subname']) . '"
                       loading="lazy">';
 

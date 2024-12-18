@@ -2,7 +2,7 @@
 /* --------------------------- Termék létrehozása --------------------------- */
 
 function getProductDir($productData) {
-    $baseDir = "../domains/florensbotanica.com/public_html/fb-content/assets/media/images/products/";
+    $baseDir = ROOT_PATH."/fb-content/assets/media/images/products/";
     $dirName = "product-".$productData["id"]."/";
     return $baseDir.$dirName;
 }
@@ -86,7 +86,7 @@ function uploadProductImages($paths) {
             $orientation = getOrientation($path);
         }
         
-        $result = updateData("INSERT INTO `image`(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, $orientation, $mediaType], "sss");
+        $result = updateData("INSERT INTO `image`(uri, orientation, media_type) VALUES (?, ?, ?);", [str_replace(ROOT_PATH, ROOT_URL, $path), $orientation, $mediaType], "sss");
         if (!typeOf($result, "SUCCESS")) {
             return $result;
         }
@@ -150,7 +150,7 @@ function createProduct($productData, $productPageData, $productCategoryData) {
 
     $result = createProductDirectory($productData);
     if (!typeOf($result, "SUCCESS")) {
-        return ["message" => "Sikertelen képfeltöltés. ($result)", "type" => "ERROR"];
+        return ["message" => "Sikertelen képfeltöltés. ({$result['message']})", "type" => "ERROR"];
     }
     $paths = $result["message"];
 
@@ -299,7 +299,7 @@ function updateProductImages($productData, $images, $paths) {
     if (count($paths) == 0) return false;
 
     if (count(array_filter($images, function ($e) {return $e["name"]=="product_image";})) > 0) {
-        $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%image%' AND product_image.product_id=?;", $productData["id"], "i");
+        $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%image%' AND image.uri NOT LIKE '%thumbnail%' AND product_image.product_id=?;", $productData["id"], "i");
         if (typeOf($result, "ERROR")) {
             return $result;
         }
@@ -319,7 +319,7 @@ function updateProductImages($productData, $images, $paths) {
     $ids = array();
     for ($i = 0; $i < count($paths); $i++) {
         $image = $images[$i];
-        $path = $paths[$i];
+        $path = str_replace(ROOT_PATH, ROOT_URL, $paths[$i]);
 
         if ($image["name"] == "thumbnail_image" || $image["name"] == "product_image") {
 
@@ -385,7 +385,7 @@ function updateProductDirectory($productData, $images) {
     $productDirURI = getProductDir($productData);
 
     if (!is_dir($productDirURI)) {
-        return ["message" => "Hiányzó mappa.", "type" => "ERROR"];
+        return ["message" => "Hiányzó mappa: $productDirURI", "type" => "ERROR"];
     }
     
     $thumbnailImages = array('thumbnail_image');

@@ -1,4 +1,3 @@
-RewriteEngine On
 ### HTTPS-re történő átirányítás
 #RewriteCond %{HTTPS} off [OR]
 #RewriteCond %{HTTP_HOST} !^www\. [NC]
@@ -29,39 +28,41 @@ RewriteEngine On
 #    RewriteRule ^(.*)$ - [F,L]
 #</FilesMatch>
 
-<Files ".maintenance">
-    <IfModule mod_authz_core.c>
-        Require all denied
-    </IfModule>
-    <IfModule !mod_authz_core.c>
-        Order deny,allow
-        Deny from all
-    </IfModule>
-</Files>
+#<Files ".maintenance">
+#    <IfModule mod_authz_core.c>
+#        Require all denied
+#    </IfModule>
+#    <IfModule !mod_authz_core.c>
+#        Order deny,allow
+#        Deny from all
+#    </IfModule>
+#</Files>
 ###/ Karbantartási mód ellenőrzése
 
-### Bejelentkezési oldal átirányítása
-<IfModule mod_rewrite.c>
+### Statikus átirányítások
 RewriteEngine On
-RewriteRule ^login$ /fb-auth/login.php [L]
-</IfModule>
-#<IfModule mod_rewrite.c>
-#RewriteEngine On
-#RewriteCond %{REQUEST_URI} ^/login$
-#RewriteRule ^login$ /fb-auth/login.php [L,R=301]
-#</IfModule>
+RewriteRule ^login$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-auth/login.php [L]
+RewriteRule ^logout$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-auth/logout.php [L]
+RewriteRule ^register$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-auth/register.php [L]
+RewriteRule ^settings$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-auth/settings.php [L]
+RewriteRule ^404$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/pages/error-404.html [L]
+RewriteRule ^dashboard$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-auth/fb-admin/dashboard.php [L]
+###/ Statikus átirányítások
 
-#<IfModule mod_rewrite.c>
-#RewriteEngine On
-#RewriteCond %{REQUEST_FILENAME} !-f
-#RewriteCond %{REQUEST_FILENAME} !-d
-#RewriteRule ^login$ /fb-auth/login.php [L,R=301]
-#RewriteRule ^logout$ /fb-auth/logout.php [R=301,L]
-#RewriteRule ^register$ /fb-auth/register.php [R=301,L]
-#RewriteRule ^settings$ /fb-auth/settings.php [R=301,L]
-#RewriteRule ^dashboard$ /fb-auth/fb-admin/dashboard.php [R=301,L]
-#</IfModule>
-###/ Bejelentkezési oldal átirányítása
+### Dinamikus átirányítások
+RewriteCond %{REQUEST_URI} ^/fb-auth/ [OR]
+RewriteCond %{REQUEST_URI} ^/fb-admin/
+RewriteRule ^ - [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/router.php [L,QSA]
+
+# Statikus fájlokat ne irányísa át a routerbe
+RewriteCond %{REQUEST_URI} \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|otf|webp|avif|html|php)$ [NC]
+RewriteRule ^ - [L]
+###/ Dinamikus átirányítások
+
 
 ### config.php fájl védelme
 <Files "config.php">
@@ -91,7 +92,7 @@ RewriteRule ^login$ /fb-auth/login.php [L]
 
 ### Compress HTML, CSS, JavaScript, Text, XML, and fonts
 <IfModule mod_deflate.c>
-
+    
     AddOutputFilterByType DEFLATE text/html text/plain text/xml
     AddOutputFilterByType DEFLATE text/css
     AddOutputFilterByType DEFLATE text/javascript
@@ -133,7 +134,10 @@ RewriteRule ^login$ /fb-auth/login.php [L]
 ###/ Böngésző oldali gyorsítótárazás beállítása
 
 ### ETag letiltása a teljesítmény javítása érdekében
-#Header unset ETag
-#FileETag None
+Header unset ETag
+FileETag None
 ###/ ETag letiltása a teljesítmény javítása érdekében
+
+RewriteEngine On
+RewriteBase /
 

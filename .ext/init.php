@@ -1,5 +1,7 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+include_once '../.packs/ffmpeg/ffmpeg_automatization.php';
+include_once 'constants.php';
 include_once 'db_connect.php';
 include_once 'login_register_functions.php';
 include_once 'cookie_session_functions.php';
@@ -9,4 +11,4 @@ include_once 'product_management_functions.php';
 include_once 'product_page_management_functions.php';
 include_once 'category_management_functions.php';
 include_once 'user_management_functions.php';
-include_once 'ffmpeg_automatization.php';
+include_once 'errorlog.php';

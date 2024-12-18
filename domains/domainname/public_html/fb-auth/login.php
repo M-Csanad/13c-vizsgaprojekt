@@ -1,6 +1,6 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php'; ?>
 <?php
-include_once __DIR__."../../../../.ext/init.php";
+include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+include_once "../../../../.ext/init.php";
 // Ha az űrlapot elküldték (post metódussal), a bejelentkezési logika fut le
 if (isset($_POST['login'])) {
     $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
@@ -45,7 +45,7 @@ if (isset($_POST['login'])) {
         $result = login($username, $password, $rememberMe);
 
         if (typeOf($result, "SUCCESS")) {
-            header('Location: ./');
+            header('Location: ./fb-auth/fb-admin/index.php');
         }
         else {
             $message = "Hibás felhasználónév, vagy jelszó.";
@@ -64,23 +64,23 @@ if (isset($_POST['login'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Florens Botanica - Bejelentkezés</title>
     
-    <link rel="preload" href="./assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="stylesheet" href="../assets/css/root.css">
-    <link rel="stylesheet" href="../assets/css/login.css">
-    <link rel="shortcut icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/login.css">
+    <link rel="shortcut icon" href="./fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
 
     <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
-    <script src="./assets/js/prevent-resubmit.js" defer></script>
+    <script src="./fb-auth/assets/js/prevent-resubmit.js" defer></script>
 </head>
 
 <body>
 
     <div class="main">
         <div class="side-image">
-            <div class="bg visible" style="background-image: url('/fb-content/assets/media/images/site/login/bg0.jpg');"></div>
-            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg1.jpg');"></div>
-            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg2.jpg');"></div>
-            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg3.jpg');"></div>
+            <div class="bg visible" style="background-image: url('./fb-content/assets/media/images/site/login/bg0.jpg');"></div>
+            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg1.jpg');"></div>
+            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg2.jpg');"></div>
+            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg3.jpg');"></div>
         </div>
         <form method="post" id="login">
             <div class="form-header">
@@ -111,13 +111,13 @@ if (isset($_POST['login'])) {
                         <?php if (isset($message) && !empty($message)) echo $message; ?>
                     </div>
                     <input type="submit" value="Bejelentkezés" name="login" class="action-button g-recaptcha">
-                    <div class="register">Nincs még fiókja? <a href="../register" class="form-link">Regisztráljon!</a></div>
+                    <div class="register">Nincs még fiókja? <a href="./register" class="form-link">Regisztráljon!</a></div>
                 </div>
             </div>
         </form>
     </div>
-    <script src="../assets/js/login.js"></script>
-    <script src="../assets/js/prevent-resubmit.js"></script>
+    <script src="./fb-auth/assets/js/login.js"></script>
+    <script src="./fb-auth/assets/js/prevent-resubmit.js"></script>
 </body>
 
 </html>

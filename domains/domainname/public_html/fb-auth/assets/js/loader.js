@@ -15,16 +15,15 @@ function toggleLoader(message) {
   loaderLogoInner.className = "loader-logo-inner";
 
   loaderLogo.appendChild(loaderLogoInner);
-  
+
   const loaderMessage = document.createElement("div");
   loaderMessage.className = "loader-message";
   loaderMessage.textContent = message;
-  
+
   loaderContent.appendChild(loaderLogo);
   loaderContent.appendChild(loaderMessage);
-  loaderContent.innerHTML += `<iframe src="../dino/index.html" title="Chrome Dinó játék" id="dino-game" height="300" width="70%"></iframe>`;
-  
-  
+  loaderContent.innerHTML += `<iframe src="./fb-auth/assets/dino/index.html" title="Chrome Dinó játék" id="dino-game" height="300" width="70%"></iframe>`;
+
   loaderOverlay.appendChild(loaderContent);
   document.body.appendChild(loaderOverlay);
   loaderOverlay.focus();

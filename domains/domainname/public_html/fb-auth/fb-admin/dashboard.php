@@ -1,5 +1,6 @@
 <?php 
-    include_once __DIR__."../../../../../.ext/init.php"; 
+    include_once $_SERVER["DOCUMENT_ROOT"].'/config.php';
+    include_once "../../../../../.ext/init.php"; 
     session_start();
     if (isset($_SESSION['role'])) {
         if ($_SESSION['role'] != "Administrator") {
@@ -19,19 +20,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A Florens Botanica vezérlőpultja">
     <title>Vezérlőpult</title>
-    <link rel="preload" href="fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="stylesheet" href="../assets/css/root.css">
-    <link rel="stylesheet" href="../assets/css/dashboard.css">
-    <link rel="stylesheet" href="../assets/css/allergen-checkbox.css">
-    <link rel="stylesheet" href="../assets/css/search.css">
-    <link rel="stylesheet" href="../assets/css/table.css">
-    <link rel="stylesheet" href="../assets/css/loader.css">
-    <link rel="shortcut icon" href="../../fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
-    <script defer src="../assets/js/dashboard.js"></script>
-    <script defer src="../assets/js/search.js"></script>
-    <script defer src="../assets/js/tag-checkbox.js"></script>
-    <script defer src="../assets/js/loader.js"></script>
-    <script src="../assets/js/prevent-resubmit.js"></script>
+    <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/dashboard.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/allergen-checkbox.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/search.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/table.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/loader.css">
+    <link rel="shortcut icon" href="./fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+    <script defer src="./fb-auth/assets/js/dashboard.js"></script>
+    <script defer src="./fb-auth/assets/js/search.js"></script>
+    <script defer src="./fb-auth/assets/js/tag-checkbox.js"></script>
+    <script defer src="./fb-auth/assets/js/loader.js"></script>
+    <script src="./fb-auth/assets/js/prevent-resubmit.js"></script>
 </head>
 <body>
     <p>

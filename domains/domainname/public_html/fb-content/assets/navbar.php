@@ -78,13 +78,13 @@ function getCategoryContent()
 
            
             $category_slug = generateSlug($category_name);
-            $category_url = "https://florensbotanica.com/" . $category_slug . "/";
+            $category_url = "./" . $category_slug . "/";
 
             if (!isset($category_content[$category_name])) {
                 $category_content[$category_name] = [
                     'title' => $category_name,
                     'url' => $category_url,
-                    'img' => "https://florensbotanica.com/fb-content/assets/media/" . $category_image,
+                    'img' => $category_image,
                     'subcategories' => []
                 ];
                 
@@ -92,7 +92,7 @@ function getCategoryContent()
 
             if ($subcategory_name) {
                 $subcategory_slug = generateSlug($subcategory_name);
-                $subcategory_url = "https://florensbotanica.com/" . $category_slug . "/" . $subcategory_slug;
+                $subcategory_url = "./" . $category_slug . "/" . $subcategory_slug;
 
                 $category_content[$category_name]['subcategories'][] = [
                     'name' => $subcategory_name,
@@ -114,7 +114,7 @@ function getCategoryContent()
 $category_content = getCategoryContent();
 
 // Navigációs elemek
-$base_url = "https://florensbotanica.com";
+$base_url = ".";
 $logo_url = htmlspecialchars("$base_url/fb-content/assets/media/images/logos/herbalLogo_mini_white.png");
 $menu_items = [
     ['name' => 'Categories', 'id' => 'fb-navlink-category', 'url' => '#'],

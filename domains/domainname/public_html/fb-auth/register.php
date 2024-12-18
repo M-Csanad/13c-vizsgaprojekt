@@ -1,6 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
-include_once __DIR__."../../../../.ext/init.php";
+include_once "../../../../.ext/init.php";
 
 if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $message = "";
@@ -67,22 +67,22 @@ if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Florens Botanica - Regisztráció</title>
 
-    <link rel="preload" href="fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/root.css">
-    <link rel="stylesheet" href="./css/register.css">
-    <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/register.css">
+    <link rel="shortcut icon" href="./fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
 
     <script async defer src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
-    <script defer src="./assets/js/register.js"></script>
-    <script defer src="./assets/js/prevent-resubmit.js"></script>
+    <script defer src="./fb-auth/assets/js/register.js"></script>
+    <script defer src="./fb-auth/assets/js/prevent-resubmit.js"></script>
 </head>
 <body>
     <div class="main">
         <div class="side-image">
-            <div class="bg visible" style="background-image: url('../fb-content/assets/media/images/site/login/bg0.jpg');"></div>
-            <div class="bg" style="background-image: url('../fb-content/assets/media/images/site/login/bg1.jpg');"></div>
-            <div class="bg" style="background-image: url('../fb-content/assets/media/images/site/login/bg2.jpg');"></div>
-            <div class="bg" style="background-image: url('../fb-content/assets/media/images/site/login/bg3.jpg');"></div>
+            <div class="bg visible" style="background-image: url('./fb-content/assets/media/images/site/login/bg0.jpg');"></div>
+            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg1.jpg');"></div>
+            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg2.jpg');"></div>
+            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg3.jpg');"></div>
         </div>
         <form action="" method="post" id="register">
             <div class="form-header">

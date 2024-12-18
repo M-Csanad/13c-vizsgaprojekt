@@ -1,6 +1,6 @@
 <?php 
     include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
-    include_once "./auth/init.php";
+    include_once "../../../../.ext/init.php";
     session_start(); 
 
     if (isset($_SESSION['user_name'])) {
@@ -34,12 +34,12 @@
     <meta name="description" content="Profil beállítások">
     <title>Beállítások</title>
 
-    <link rel="preload" href="fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="stylesheet" href="./css/root.css">
-    <link rel="stylesheet" href="./css/settings.css">
-    <link rel="shortcut icon" href="./web/media/img/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/settings.css">
+    <link rel="shortcut icon" href="./fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
 
-    <script src="./js/settings.js" defer></script>
+    <script src="./fb-auth/assets/js/settings.js" defer></script>
 </head>
 <body>
     <div class="main">

@@ -24,7 +24,7 @@ if (!function_exists('db_connect')) {
         $password = $_ENV['DB_MAIN_PASSWORD'] ?? null;
         $dbname = $_ENV['DB_MAIN_NAME'] ?? null;
 
-        if (!$servername || !$username || !$password || !$dbname) {
+        if (!$servername || !$username || !$dbname) {
             log_Error("Missing required database configuration in .env", "db_error.log");
             throw new Exception("Missing required database configuration in .env");
         }

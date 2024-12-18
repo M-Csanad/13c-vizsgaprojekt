@@ -11,6 +11,10 @@ function format_str($s) {
     return strtr($temp, $hungarian_to_english);
 }
 
+function reverse_format_str($s) {
+    return str_replace("-", " ", $s);
+}
+
 function getOrientation($image) {
     $size = getimagesize($image);
     if ($size) {
