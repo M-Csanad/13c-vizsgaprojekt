@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2024. Dec 01. 16:05
+-- Gép: 127.0.0.1
+-- Létrehozás ideje: 2024. Dec 18. 10:06
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -57,21 +57,21 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `name`, `subname`, `description`, `thumbnail_image_vertical_uri`, `thumbnail_image_horizontal_uri`, `thumbnail_video_uri`) VALUES
-(24, 'A Tiszta Egészség', 'A Természet Esszenciája', 'Támogasd szervezetedet a természet legjavával! Vitaminok, ásványi anyagok, és növényi kivonatok gondoskodnak az energikus mindennapokról, miközben természetes forrásokból származó kiegészítők segítenek megőrizni egészséged harmóniáját. Válaszd a természet', './images/categories/category-24/thumbnail_image_vertical.jpg', './images/categories/category-24/thumbnail_image_horizontal.jpg', NULL),
-(25, 'A Nyugodt Elme ', 'A Nyugalom Forrása', 'Találd meg a belső békédet természetes megoldásokkal! Ebben a kategóriában mindent megtalálsz, ami támogatja a relaxációt, csökkenti a stresszt és segít az éjszakai pihenésben, hogy minden nap energikusan és kiegyensúlyozottan induljon. Fedezd fel a nyuga', './images/categories/category-25/thumbnail_image_vertical.jpg', './images/categories/category-25/thumbnail_image_horizontal.jpg', NULL),
-(26, 'A Detox Ereje', 'Méregtelenítés', 'Adj új lendületet testednek természetes méregtelenítő megoldásokkal! Ebben a kategóriában hatékony, természetes eszközöket találsz, amelyek segítenek a belső tisztulásban, támogatják a májat, vesét és az emésztőrendszert, hogy szervezeted felfrissüljön és', './images/categories/category-26/thumbnail_image_vertical.jpg', './images/categories/category-26/thumbnail_image_horizontal.jpg', NULL),
-(27, 'A Könnyed Emésztés', 'Az Anyagcsere', 'Támogasd tested természetes egyensúlyát! Ebben a kategóriában hatékony megoldásokat találsz, amelyek serkentik az anyagcserét, javítják az emésztést, és hozzájárulnak a megfelelő rostbevitelhez, hogy energikus és kiegyensúlyozott lehess minden nap.', './images/categories/category-27/thumbnail_image_vertical.jpg', './images/categories/category-27/thumbnail_image_horizontal.jpg', NULL),
-(28, 'A Mozgás Ereje', 'A Mozgás Forrása', 'Turbózd fel teljesítményed természetes, erőt adó megoldásokkal! Ebben a kategóriában megtalálod mindazt, ami támogatja az aktív életmódot, növeli az energiát és segíti a regenerációt – természetes alapanyagokból, hogy minden mozdulat könnyed legyen és hat', './images/categories/category-28/thumbnail_image_vertical.jpg', './images/categories/category-28/thumbnail_image_horizontal.jpg', NULL),
-(29, 'A Pillanat Lángja', 'A Szenvedély Ereje', 'Ébreszd fel a belső tüzed a természet erejével! Ebben a kategóriában olyan különleges gyógynövények, aromaterápiás esszenciák és tápláló kiegészítők várnak rád, amelyek támogatják az érzelmi harmóniát, fokozzák az energiát és új lendületet adnak a mindennapoknak.', './images/categories/category-29/thumbnail_image_vertical.jpg', './images/categories/category-29/thumbnail_image_horizontal.jpg', NULL),
-(30, 'A Szépség Titka', 'Az Fiatalos Szépség', 'Fedezd fel a ragyogó megjelenés titkát! Ebben a kategóriában bőrápoló, hajápoló és anti-aging megoldások várnak, amelyek természetes összetevőikkel támogatják a fiatalos szépséget és az egészséges ragyogást. Érd el a szépség új dimenzióját!', './images/categories/category-30/thumbnail_image_vertical.jpg', './images/categories/category-30/thumbnail_image_horizontal.jpg', NULL),
-(31, 'Az Energia Alapjai', 'A Vitalitás Forrásai', 'Töltsd fel szervezeted a legfontosabb tápanyagokkal! Ebben a kategóriában vitaminok, aminosavak és enzimek kínálnak természetes támogatást az energiád fenntartásához és a mindennapi vitalitás eléréséhez. Érezd a különbséget, amit a természet ereje adhat!', './images/categories/category-31/thumbnail_image_vertical.jpg', './images/categories/category-31/thumbnail_image_horizontal.jpg', NULL),
-(32, 'A Frissítő Élmény', 'A Frissesség Titka', 'Élvezd a természetesen frissítő italok és ízek világát! Ebben a kategóriában teák, kávék és gyümölcs alapú italok kínálnak energiát, vitalitást és egy kis kényeztetést, hogy felfrissülve nézhess szembe a nap kihívásaival.', './images/categories/category-32/thumbnail_image_vertical.jpg', './images/categories/category-32/thumbnail_image_horizontal.jpg', NULL),
-(33, 'A Természet Elixirjei', 'Az Egészség Esszenciája', 'Ismerd meg a természet rejtett kincseit! Ebben a kategóriában egzotikus gyógynövények, tinktúrák és különleges elixírek segítenek támogatni a vitalitást és a belső harmóniát, hogy a mindennapjaid energikusabbak és kiegyensúlyozottabbak legyenek.', './images/categories/category-33/thumbnail_image_vertical.jpg', './images/categories/category-33/thumbnail_image_horizontal.jpg', NULL),
-(34, 'A Tengerek Kincsei', 'Az Óceán Ereje', 'Meríts erőt a tengerek gazdagságából! Ebben a kategóriában tengeri algák, ásványok, halolajok és kollagén alapú kiegészítők várnak rád, hogy természetes támogatást nyújtsanak az egészséghez és a vitalitáshoz. Fedezd fel az óceán erejét!', './images/categories/category-34/thumbnail_image_vertical.jpg', './images/categories/category-34/thumbnail_image_horizontal.jpg', NULL),
-(35, 'A Természet Illatai', 'A Lélek Illatai', 'Engedd, hogy a természet illatai harmóniát és nyugalmat hozzanak az életedbe! Ebben a kategóriában illóolajok, füstölők és illatgyertyák segítenek a relaxációban, a stresszoldásban és a tér energiájának megújításában. Fedezd fel a lélek illatainak erejét!', './images/categories/category-35/thumbnail_image_vertical.jpg', './images/categories/category-35/thumbnail_image_horizontal.jpg', NULL),
-(36, 'A Konyha Ízei', 'Az Ízek Harmóniája', 'Hozd ki a legtöbbet a konyhából természetes fűszerekkel és gyógyhatású kiegészítőkkel! Ebben a kategóriában ízletes és egészséges megoldások várnak, amelyek nemcsak ételeidet teszik különlegessé, hanem az egészségedet is támogatják.', './images/categories/category-36/thumbnail_image_vertical.jpg', './images/categories/category-36/thumbnail_image_horizontal.jpg', NULL),
-(37, 'A Szív Egészsége', 'A Szív Ereje', 'Támogasd szíved egészségét természetes megoldásokkal! Ebben a kategóriában olyan kiegészítőket találsz, amelyek segítik a keringést, erősítik az érrendszert és hozzájárulnak a szív optimális működéséhez. Adj lendületet az élet ritmusának!', './images/categories/category-37/thumbnail_image_vertical.jpg', './images/categories/category-37/thumbnail_image_horizontal.jpg', NULL),
-(38, 'Az Erdő Ajándéka', 'Az Erdő Kincsei', 'Fedezd fel az erdő gazdagságát! Ebben a kategóriában erdei gombák, gyógynövények, gyümölcsök, mézek és aromaterápiás termékek várnak, hogy természetes módon támogassák egészségedet és kényeztessék érzékeidet. Hozd el otthonodba az erdő ajándékait!', './images/categories/category-38/thumbnail_image_vertical.jpg', './images/categories/category-38/thumbnail_image_horizontal.jpg', NULL);
+(1, 'A Tiszta Egészség', 'A Természet Esszenciája', 'Támogasd szervezetedet a természet legjavával! Vitaminok, ásványi anyagok, és növényi kivonatok gondoskodnak az energikus mindennapokról, miközben természetes forrásokból származó kiegészítők segítenek megőrizni egészséged harmóniáját. Válaszd a természet', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-1/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-1/thumbnail_image_horizontal.jpg', NULL),
+(2, 'A Nyugodt Elme', 'A Nyugalom Forrása', 'Találd meg a belső békédet természetes megoldásokkal! Ebben a kategóriában mindent megtalálsz, ami támogatja a relaxációt, csökkenti a stresszt és segít az éjszakai pihenésben, hogy minden nap energikusan és kiegyensúlyozottan induljon. Fedezd fel a nyuga', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-2/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-2/thumbnail_image_horizontal.jpg', NULL),
+(3, 'A Detox Ereje', 'Méregtelenítés', 'Adj új lendületet testednek természetes méregtelenítő megoldásokkal! Ebben a kategóriában hatékony, természetes eszközöket találsz, amelyek segítenek a belső tisztulásban, támogatják a májat, vesét és az emésztőrendszert, hogy szervezeted felfrissüljön és', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-3/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-3/thumbnail_image_horizontal.jpg', NULL),
+(4, 'A Könnyed Emésztés', 'Az Anyagcsere', 'Támogasd tested természetes egyensúlyát! Ebben a kategóriában hatékony megoldásokat találsz, amelyek serkentik az anyagcserét, javítják az emésztést, és hozzájárulnak a megfelelő rostbevitelhez, hogy energikus és kiegyensúlyozott lehess minden nap.', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-4/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-4/thumbnail_image_horizontal.jpg', NULL),
+(5, 'A Mozgás Ereje', 'A Mozgás Forrása', 'Turbózd fel teljesítményed természetes, erőt adó megoldásokkal! Ebben a kategóriában megtalálod mindazt, ami támogatja az aktív életmódot, növeli az energiát és segíti a regenerációt – természetes alapanyagokból, hogy minden mozdulat könnyed legyen és hat', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-5/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-5/thumbnail_image_horizontal.jpg', NULL),
+(6, 'A Pillanat Lángja', 'A Szenvedély Ereje', 'Ébreszd fel a belső tüzed a természet erejével! Ebben a kategóriában olyan különleges gyógynövények, aromaterápiás esszenciák és tápláló kiegészítők várnak rád, amelyek támogatják az érzelmi harmóniát, fokozzák az energiát és új lendületet adnak a mindennapoknak.', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-6/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-6/thumbnail_image_horizontal.jpg', NULL),
+(7, 'A Szépség Titka', 'Az Fiatalos Szépség', 'Fedezd fel a ragyogó megjelenés titkát! Ebben a kategóriában bőrápoló, hajápoló és anti-aging megoldások várnak, amelyek természetes összetevőikkel támogatják a fiatalos szépséget és az egészséges ragyogást. Érd el a szépség új dimenzióját!', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-7/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-7/thumbnail_image_horizontal.jpg', NULL),
+(8, 'Az Energia Alapjai', 'A Vitalitás Forrásai', 'Töltsd fel szervezeted a legfontosabb tápanyagokkal! Ebben a kategóriában vitaminok, aminosavak és enzimek kínálnak természetes támogatást az energiád fenntartásához és a mindennapi vitalitás eléréséhez. Érezd a különbséget, amit a természet ereje adhat!', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-8/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-8/thumbnail_image_horizontal.jpg', NULL),
+(9, 'A Frissítő Élmény', 'A Frissesség Titka', 'Élvezd a természetesen frissítő italok és ízek világát! Ebben a kategóriában teák, kávék és gyümölcs alapú italok kínálnak energiát, vitalitást és egy kis kényeztetést, hogy felfrissülve nézhess szembe a nap kihívásaival.', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-9/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-9/thumbnail_image_horizontal.jpg', NULL),
+(10, 'A Természet Elixirjei', 'Az Egészség Esszenciája', 'Ismerd meg a természet rejtett kincseit! Ebben a kategóriában egzotikus gyógynövények, tinktúrák és különleges elixírek segítenek támogatni a vitalitást és a belső harmóniát, hogy a mindennapjaid energikusabbak és kiegyensúlyozottabbak legyenek.', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-10/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-10/thumbnail_image_horizontal.jpg', NULL),
+(11, 'A Tengerek Kincsei', 'Az Óceán Ereje', 'Meríts erőt a tengerek gazdagságából! Ebben a kategóriában tengeri algák, ásványok, halolajok és kollagén alapú kiegészítők várnak rád, hogy természetes támogatást nyújtsanak az egészséghez és a vitalitáshoz. Fedezd fel az óceán erejét!', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-11/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-11/thumbnail_image_horizontal.jpg', NULL),
+(12, 'A Természet Illatai', 'A Lélek Illatai', 'Engedd, hogy a természet illatai harmóniát és nyugalmat hozzanak az életedbe! Ebben a kategóriában illóolajok, füstölők és illatgyertyák segítenek a relaxációban, a stresszoldásban és a tér energiájának megújításában. Fedezd fel a lélek illatainak erejét!', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-12/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-12/thumbnail_image_horizontal.jpg', NULL),
+(13, 'A Konyha Ízei', 'Az Ízek Harmóniája', 'Hozd ki a legtöbbet a konyhából természetes fűszerekkel és gyógyhatású kiegészítőkkel! Ebben a kategóriában ízletes és egészséges megoldások várnak, amelyek nemcsak ételeidet teszik különlegessé, hanem az egészségedet is támogatják.', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-13/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-13/thumbnail_image_horizontal.jpg', NULL),
+(14, 'A Szív Egészsége', 'A Szív Ereje', 'Támogasd szíved egészségét természetes megoldásokkal! Ebben a kategóriában olyan kiegészítőket találsz, amelyek segítik a keringést, erősítik az érrendszert és hozzájárulnak a szív optimális működéséhez. Adj lendületet az élet ritmusának!', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-14/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-14/thumbnail_image_horizontal.jpg', NULL),
+(15, 'Az Erdő Ajándéka', 'Az Erdő Kincsei', 'Fedezd fel az erdő gazdagságát! Ebben a kategóriában erdei gombák, gyógynövények, gyümölcsök, mézek és aromaterápiás termékek várnak, hogy természetes módon támogassák egészségedet és kényeztessék érzékeidet. Hozd el otthonodba az erdő ajándékait!', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-15/thumbnail_image_vertical.jpg', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/categories/category-15/thumbnail_image_horizontal.jpg', NULL);
 
 -- --------------------------------------------------------
 
@@ -89,6 +89,19 @@ CREATE TABLE `delivery_info` (
   `zip` int(11) DEFAULT NULL,
   `billing_address` varchar(255) DEFAULT NULL,
   `delivery_address` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `health_effect`
+--
+
+CREATE TABLE `health_effect` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `benefit` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
@@ -139,6 +152,18 @@ CREATE TABLE `product` (
   `unit_price` int(11) DEFAULT NULL,
   `stock` int(11) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `product_health_effect`
+--
+
+CREATE TABLE `product_health_effect` (
+  `id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `health_effect_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
@@ -231,16 +256,16 @@ CREATE TABLE `tag` (
 --
 
 INSERT INTO `tag` (`id`, `name`, `icon_uri`) VALUES
-(2, 'BPA-mentes', './images/tags/bpa-free.png'),
-(3, 'Gluténmentes', './images/tags/gluten-free.png'),
-(4, 'Méz', './images/tags/honeycomb.png'),
-(5, 'Halmentes', './images/tags/no-fish.png'),
-(6, 'GMO-mentes', './images/tags/non-gmo.png'),
-(7, 'Mogyoró mentes', './images/tags/peanut-free.png'),
-(8, 'Pollen', './images/tags/pollen.png'),
-(9, 'Tinktúra', './images/tags/serum.png'),
-(10, 'Cukormentes', './images/tags/sugar-free.png'),
-(11, 'Vegán', './images/tags/vegan.png');
+(1, 'BPA-mentes', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/tags/bpa-free.png'),
+(2, 'Gluténmentes', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/tags/gluten-free.png'),
+(3, 'Méz', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/tags/honeycomb.png'),
+(4, 'Halmentes', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/tags/no-fish.png'),
+(5, 'GMO-mentes', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/tags/non-gmo.png'),
+(6, 'Mogyoró mentes', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/tags/peanut-free.png'),
+(7, 'Pollen', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/tags/pollen.png'),
+(8, 'Tinktúra', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/tags/serum.png'),
+(9, 'Cukormentes', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/tags/sugar-free.png'),
+(10, 'Vegán', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/media/images/tags/vegan.png');
 
 -- --------------------------------------------------------
 
@@ -296,6 +321,12 @@ ALTER TABLE `delivery_info`
   ADD KEY `delivery_info_ibfk_1` (`user_id`);
 
 --
+-- A tábla indexei `health_effect`
+--
+ALTER TABLE `health_effect`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- A tábla indexei `image`
 --
 ALTER TABLE `image`
@@ -312,6 +343,12 @@ ALTER TABLE `order`
 -- A tábla indexei `product`
 --
 ALTER TABLE `product`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- A tábla indexei `product_health_effect`
+--
+ALTER TABLE `product_health_effect`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -383,7 +420,7 @@ ALTER TABLE `cart`
 -- AUTO_INCREMENT a táblához `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT a táblához `delivery_info`
@@ -392,34 +429,46 @@ ALTER TABLE `delivery_info`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT a táblához `health_effect`
+--
+ALTER TABLE `health_effect`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=214;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `product_health_effect`
+--
+ALTER TABLE `product_health_effect`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=181;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `product_page`
 --
 ALTER TABLE `product_page`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `product_tag`
 --
 ALTER TABLE `product_tag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=316;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT a táblához `review`
@@ -431,13 +480,13 @@ ALTER TABLE `review`
 -- AUTO_INCREMENT a táblához `subcategory`
 --
 ALTER TABLE `subcategory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `tag`
 --
 ALTER TABLE `tag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT a táblához `user`
