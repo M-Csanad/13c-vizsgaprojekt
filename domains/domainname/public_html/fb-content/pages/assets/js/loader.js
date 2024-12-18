@@ -2,6 +2,8 @@
   // Ensure overlay is available immediately from HTML
   const loadingOverlay = document.getElementById("loadingOverlay");
 
+  document.body.classList.add("loading");
+
   // Wait until all images are loaded
   const images = document.querySelectorAll("img");
   const imagePromises = Array.from(images).map((img) => {

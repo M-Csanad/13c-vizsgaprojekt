@@ -27,6 +27,11 @@
   --border: #2b2b2b;
 }
 
+html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 body {
   background-color: var(--background-light);
   color: var(--text);
@@ -35,10 +40,13 @@ body {
   display: flex;
   align-items: center;
   flex-direction: column;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
 main.body-main {
   width: 100%;
+  opacity: 1;
   max-width: min(1400px, 100%);
   padding: 1rem;
   display: flex;
@@ -563,7 +571,7 @@ hr {
   font-family: "Playfair Display";
   font-size: 25px;
   color: rgb(226, 226, 226);
-  border-bottom: 1px solid rgb(77, 74, 74);
+  mix-blend-mode: screen;
   margin-bottom: 1rem;
 }
 
@@ -571,13 +579,26 @@ hr {
   display: flex;
   flex-direction: row;
   align-items: center;
+  position: relative;
   gap: 1rem;
   height: 30px;
   font-size: 18px;
   font-family: "Playfair Display";
   color: #bdbdbd;
-  border-top: 1px solid #333;
+  /* border-top: 1px solid #333; */
+  /* border-bottom: 1px solid rgb(255 255 255 / 25%); */
   margin-bottom: 0.5rem;
+}
+.subtitle::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  display: block;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  z-index: -1;
+  background: linear-gradient(to right, rgb(255, 255, 255, 25%), transparent);
 }
 
 .description {
@@ -586,7 +607,6 @@ hr {
   gap: 1rem;
   text-align: justify;
   margin-bottom: 1rem;
-
   & > p > em {
     color: #9ed877;
   }
@@ -1023,6 +1043,58 @@ hr {
     margin: 1em 0;
     padding: 0;
   }
+}
+
+#top-button {
+  z-index: 999;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  margin: 2rem;
+  padding: 0.7rem;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  background-color: white;
+  border: 2px solid white;
+  box-shadow: 0px 0px 5px #494949;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateX(87px) scale(0);
+  transition: background-color 0.2s ease,
+    transform 1s cubic-bezier(0.84, -0.69, 0.16, 1.69);
+}
+
+body.top-show #top-button {
+  transform: translateX(0) scale(1);
+}
+
+#top-button:hover {
+  background-color: #1d1d1d;
+}
+
+#top-button > svg {
+  width: 100%;
+  height: 100%;
+  mix-blend-mode: difference;
+}
+
+#scrollBar {
+  z-index: 9998;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(39, 39, 39);
+  height: 3px;
+}
+#scrollStatus {
+  height: 100%;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  background-color: rgb(197, 197, 197);
+  width: 0%;
 }
 
 @media screen and (min-width: 600px) {
