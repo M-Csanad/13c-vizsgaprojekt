@@ -1,7 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  fetch(
-    "http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/assets/footer.php"
-  )
+  fetch("http://localhost/fb-content/assets/footer.php")
     .then((response) => response.json())
     .then((data) => {
       const footer = document.getElementById("fb-footer");

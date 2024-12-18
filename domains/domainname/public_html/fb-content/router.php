@@ -1,6 +1,5 @@
 <?php
 
-include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/constants.php';
 include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
 include_once $_SERVER["DOCUMENT_ROOT"] . '/../../../.ext/router_helpers.php';
 

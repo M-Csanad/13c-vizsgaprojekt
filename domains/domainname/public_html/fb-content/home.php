@@ -1,4 +1,38 @@
-<?php include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php'; ?>
+<?php 
+  include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+  include_once $_SERVER['DOCUMENT_ROOT'] . "/../../../.ext/init.php";
+
+  session_start();
+  $isLoggedIn = false;  // Alapértelmezett, hogy a felhasználó nincs bejelentkezve
+
+  // Emlékezz rám funkció - ellenőrzi, hogy van-e 'rememberMe' süti
+  if (isset($_COOKIE['rememberMe'])) {
+      $cookieToken = $_COOKIE['rememberMe'];
+      $result = selectData("SELECT COUNT(*) as num,
+                          user.password_hash,
+                          user.role, user.id,
+                          user.user_name,
+                          user.cookie_expires_at
+                          FROM user
+                          WHERE user.cookie_id = ?", $cookieToken, "s");
+
+      if (typeOf($result, "SUCCESS")) {
+          $user = $result["message"];
+          if (time() < $user['cookie_expires_at']) {
+              setSessionData($user);
+          }
+      } else {
+          echo "<div class='error'>", $result["message"], "</div>";
+          exit();
+      }
+  }
+
+  // Ha a felhasználó már be van jelentkezve
+  if (isset($_SESSION['user_name'])) {
+      $sessionId = session_id();
+      $isLoggedIn = true;
+  }
+?>
 
 <!DOCTYPE html>
 <html lang="hu">

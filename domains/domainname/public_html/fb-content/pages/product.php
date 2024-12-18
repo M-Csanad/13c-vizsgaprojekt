@@ -1,11 +1,9 @@
 <?php
     include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
-    include_once $_SERVER["DOCUMENT_ROOT"] . '/fb-content/router_helpers.php';
-    include_once $_SERVER["DOCUMENT_ROOT"].'/13c-vizsgaprojekt/.ext/init.php';
+    include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/init.php';
 
     $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
-    $segments = explode('/', $uri);
-    $segments = array_slice($segments, 4); // 0: category, 1: subcategory, 2: product
+    $segments = explode('/', $uri); // 0: category, 1: subcategory, 2: product
 
     // Termék és termékoldal adatainak lekérése
     $result = selectData("SELECT product.*, product_page.id as page_id, product_page.created_at, product_page.last_modified, product_page.page_title, product_page.page_content, category.name AS category_name, subcategory.name AS subcategory_name FROM product_page 

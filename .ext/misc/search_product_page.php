@@ -12,7 +12,7 @@ if (!isset($_POST["search_term"]) || empty($_POST["search_term"])) {
     return;
 }
 
-include "../init.php";
+include_once __DIR__."/../init.php";
 
 $searchTerm = $_POST['search_term'];
 $searchTerm = "%".$searchTerm."%";

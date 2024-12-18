@@ -224,7 +224,7 @@ main.body-main {
   background-color: transparent;
   flex-grow: 1;
   /* max-width: 600px; */
-  width: calc(50% - 2rem);
+  min-width: calc(50% - 2rem);
   /* width: 400px; */
 }
 
