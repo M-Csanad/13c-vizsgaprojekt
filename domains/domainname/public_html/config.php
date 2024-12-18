@@ -4,7 +4,7 @@
 define('BASE_PATH', realpath(__DIR__));
 
 if (!defined("ROOT_URL")) {
-    define('ROOT_URL', 'http://localhost/13c-vizsgaprojekt/domains/florensbotanica.com/public_html');
+    define('ROOT_URL', 'http://localhost');
 }
 
 include BASE_PATH  . '/fb-functions/maintenance/maintenanceVerify.php';

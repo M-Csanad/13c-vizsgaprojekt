@@ -1,6 +1,6 @@
 <?php
-    include_once ROOT_PATH . '/config.php';
-    include_once ROOT_PATH . '/fb-content/router_helpers.php';
+    include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
+    include_once $_SERVER["DOCUMENT_ROOT"] . '/fb-content/router_helpers.php';
     include_once $_SERVER["DOCUMENT_ROOT"].'/13c-vizsgaprojekt/.ext/init.php';
 
     $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
@@ -17,7 +17,7 @@
     // Ha nem sikeres, akkor 404 oldal betöltése
     if (!typeOf($result, "SUCCESS")) {
         http_response_code(404);
-        include ROOT_PATH . "/fb-content/pages/error-404.html";
+        include $_SERVER["DOCUMENT_ROOT"] . "/fb-content/pages/error-404.html";
         exit;
     }
     $product = $result["message"];
@@ -30,7 +30,7 @@
     // Ha nem sikeres, akkor 404 oldal betöltése
     if (!typeOf($result, "SUCCESS")) {
       http_response_code(404);
-      include ROOT_PATH . "/fb-content/pages/error-404.html";
+      include $_SERVER["DOCUMENT_ROOT"] . "/fb-content/pages/error-404.html";
       exit;
     }
     $images = $result["message"];
@@ -44,7 +44,7 @@
     if (typeOf($result, "ERROR")) {
       logError("Sikertelen termék címke lekérdezés: ".json_encode($result), "productpage.log", $_SERVER["DOCUMENT_ROOT"]."/13c-vizsgaprojekt/.logs");
       http_response_code(404);
-      include ROOT_PATH . "/fb-content/pages/error-404.html";
+      include $_SERVER["DOCUMENT_ROOT"] . "/fb-content/pages/error-404.html";
       exit;
     }
     $tags = ($result["type"]=="EMPTY") ? "Nincsenek termékhez csatolt címkék." : $result["message"];

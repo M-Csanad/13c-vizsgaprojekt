@@ -1,5 +1,5 @@
 <?php
-include_once $_SERVER["DOCUMENT_ROOT"].'/13c-vizsgaprojekt/.ext/init.php';
+include_once 'init.php';
 
 // Kategória ellenőrzés
 function isValidCategory($name) {

@@ -41,12 +41,12 @@
 
 ### Statikus átirányítások
 RewriteEngine On
-RewriteRule ^login$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-auth/login.php [L]
-RewriteRule ^logout$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-auth/logout.php [L]
-RewriteRule ^register$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-auth/register.php [L]
-RewriteRule ^settings$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-auth/settings.php [L]
-RewriteRule ^404$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/pages/error-404.html [L]
-RewriteRule ^dashboard$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-auth/fb-admin/dashboard.php [L]
+RewriteRule ^login$ /fb-auth/login.php [L]
+RewriteRule ^logout$ /fb-auth/logout.php [L]
+RewriteRule ^register$ /fb-auth/register.php [L]
+RewriteRule ^settings$ /fb-auth/settings.php [L]
+RewriteRule ^404$ /fb-content/pages/error-404.html [L]
+RewriteRule ^dashboard$ /fb-auth/fb-admin/dashboard.php [L]
 ###/ Statikus átirányítások
 
 ### Dinamikus átirányítások
@@ -56,7 +56,7 @@ RewriteRule ^ - [L]
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ /13c-vizsgaprojekt/domains/florensbotanica.com/public_html/fb-content/router.php [L,QSA]
+RewriteRule ^(.*)$ /fb-content/router.php [L]
 
 # Statikus fájlokat ne irányísa át a routerbe
 RewriteCond %{REQUEST_URI} \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|otf|webp|avif|html|php)$ [NC]

@@ -436,10 +436,11 @@ categoryType.addEventListener("change", () => {
 
 async function populateOptions(select, category, table) {
   let data = new FormData();
+  data.append("search_type", "get_categories");
   data.append("table", table);
   if (category) data.append("category_name", category);
 
-  const response = await fetch(`../../../.ext/misc/get_categories.php`, {
+  const response = await fetch(`../../search.php`, {
     method: "POST",
     body: data,
   });

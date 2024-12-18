@@ -2,7 +2,7 @@
 /* --------------------------- Termék létrehozása --------------------------- */
 
 function getProductDir($productData) {
-    $baseDir = ROOT_PATH."/fb-content/assets/media/images/products/";
+    $baseDir = $_SERVER["DOCUMENT_ROOT"]."/fb-content/assets/media/images/products/";
     $dirName = "product-".$productData["id"]."/";
     return $baseDir.$dirName;
 }
@@ -86,7 +86,7 @@ function uploadProductImages($paths) {
             $orientation = getOrientation($path);
         }
         
-        $result = updateData("INSERT INTO `image`(uri, orientation, media_type) VALUES (?, ?, ?);", [str_replace(ROOT_PATH, ROOT_URL, $path), $orientation, $mediaType], "sss");
+        $result = updateData("INSERT INTO `image`(uri, orientation, media_type) VALUES (?, ?, ?);", [str_replace($_SERVER["DOCUMENT_ROOT"], ROOT_URL, $path), $orientation, $mediaType], "sss");
         if (!typeOf($result, "SUCCESS")) {
             return $result;
         }
@@ -319,7 +319,7 @@ function updateProductImages($productData, $images, $paths) {
     $ids = array();
     for ($i = 0; $i < count($paths); $i++) {
         $image = $images[$i];
-        $path = str_replace(ROOT_PATH, ROOT_URL, $paths[$i]);
+        $path = str_replace($_SERVER["DOCUMENT_ROOT"], ROOT_URL, $paths[$i]);
 
         if ($image["name"] == "thumbnail_image" || $image["name"] == "product_image") {
 

@@ -1,6 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
-include_once '../.packs/ffmpeg/ffmpeg_automatization.php';
+include_once __DIR__.'/../.packs/ffmpeg/ffmpeg_automatization.php';
 include_once 'constants.php';
 include_once 'db_connect.php';
 include_once 'login_register_functions.php';

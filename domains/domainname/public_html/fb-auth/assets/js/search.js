@@ -130,10 +130,11 @@ function initializeSearch(search) {
   async function searchHandler() {
     let input = searchInput.value;
     let data = new FormData();
+    data.append("search_type", searchType);
     data.append("search_term", input);
     if (input.length > 0) {
       const response = await fetch(
-        `../../../.ext/misc/search_${searchType}.php`,
+        `../../search.php`,
         {
           method: "POST",
           body: data,

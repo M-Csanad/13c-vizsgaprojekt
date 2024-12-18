@@ -1,7 +1,7 @@
 <?php
 
 function getCategoryDir($categoryData) {
-    $baseDir = ROOT_PATH."/fb-content/assets/media/images/";
+    $baseDir = $_SERVER["DOCUMENT_ROOT"]."/fb-content/assets/media/images/";
 
     if ($categoryData["type"] == "subcategory") {
         $baseDir .= "sub";
@@ -118,7 +118,7 @@ function uploadCategoryImages($categoryData) {
 
     foreach ($types as $type) {
         if (isset($categoryData[$type])) {
-            array_push($values, str_replace(ROOT_PATH, ROOT_URL, $categoryData[$type]));
+            array_push($values, str_replace($_SERVER["DOCUMENT_ROOT"], ROOT_URL, $categoryData[$type]));
             array_push($fields, $type."_uri");
             $typeString .= "s";
         }
