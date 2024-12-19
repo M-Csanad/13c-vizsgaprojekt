@@ -46,10 +46,6 @@ function selectData($query, $parameters = null, $typeString = null) {
 
         db_disconnect($db);
 
-        if ($result->num_rows === 1) {
-            return ["message" => $result->fetch_assoc(), "type" => "SUCCESS", "contentType" => "ASSOC"];
-        }
-
         if ($result->num_rows > 0) {
             return ["message" => $result->fetch_all(MYSQLI_ASSOC), "type" => "SUCCESS", "contentType" => "ARRAY"];
         }

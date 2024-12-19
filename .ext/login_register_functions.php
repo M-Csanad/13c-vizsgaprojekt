@@ -60,7 +60,7 @@ function authenticate_user($username, $password) {
                           WHERE user.user_name = ?", $username, "s");
 
     if (typeOf($result, "SUCCESS")) {
-        $user = $result["message"];
+        $user = $result["message"][0];
         if (!password_verify($password, $user['password_hash'])) {
             return ["message" => "Érvénytelen felhasználónév, vagy jelszó.", "type" => "DENIED"];
         }

@@ -459,7 +459,6 @@ async function populateOptions(select, category, table) {
     }
 
     select.innerHTML = "";
-    if (data.contentType == "ASSOC") data.message = [data.message];
 
     data = data.message;
     data.forEach(

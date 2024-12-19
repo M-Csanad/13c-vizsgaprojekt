@@ -25,7 +25,7 @@
                             WHERE user.cookie_id = ?", $cookieToken, "s");
 
         if (typeOf($result, "SUCCESS")) {
-            $user = $result["message"];
+            $user = $result["message"][0];
             if (time() < $user['cookie_expires_at']) {
                 setSessionData($user);
             }

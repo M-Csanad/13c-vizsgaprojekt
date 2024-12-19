@@ -18,9 +18,8 @@
         include $_SERVER["DOCUMENT_ROOT"] . "/fb-content/pages/error-404.html";
         exit;
     }
-    $product = $result["message"];
+    $product = $result["message"][0];
     
-
 
     // Termékképek lekérése
     $result = selectData("SELECT image.uri FROM image INNER JOIN product_image ON product_image.image_id=image.id WHERE product_image.product_id=?", $product["id"], "i");
@@ -47,7 +46,6 @@
     }
     $tags = ($result["type"]=="EMPTY") ? "Nincsenek termékhez csatolt címkék." : $result["message"];
 
-    if ($result['contentType'] == "ASSOC") $tags = [$tags];
     // Hasonló termékek lekérése
 ?>
 <!DOCTYPE html>

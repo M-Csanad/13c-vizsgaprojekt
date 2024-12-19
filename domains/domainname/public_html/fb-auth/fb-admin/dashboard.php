@@ -12,6 +12,258 @@
         header("Location: ./");
         exit();
     }
+
+    $result = selectData("SELECT * FROM health_effect");
+    if (typeOf($result, "ERROR")) {
+        $error = "Nem sikerült betölteni az egészségügyi hatásokat.";
+    }
+    else {
+        if (!is_array($result["message"])) {
+            $error = "Nincsenek megadva egészségügyi hatások.";
+        }
+        else {
+            $benefits = $result["message"];
+        }
+    }
+
+    $result = selectData("SELECT * FROM tag;");
+    if (typeOf($result, "SUCCESS")) {
+        $tags = $result["message"];
+    }
+    else if (typeOf($result, "EMPTY")){
+        $tags = "Nincsenek allergének felvéve.";
+    }
+
+
+    // Űrlap beküldés kezelése
+    // Kategória létrehozása
+    if (isset($_POST['create_category'])) {
+
+        $categoryData = array(
+            "name" => $_POST['category_name'],
+            "subname" => $_POST['category_subname'],
+            "type" => ($_POST['type'] == "sub") ? "subcategory" : "category",
+            "description" => $_POST['description']);
+
+        if (isset($_POST['parent_category'])) {
+            $categoryData['parent_category'] = $_POST['parent_category'];
+            $categoryData['parent_category_id'] = intval($_POST['parent_category_id']);
+        }
+
+        $result = createCategory($categoryData);
+
+        if (typeOf($result, "SUCCESS")) {
+            echo "<div class='success'>Kategória sikeresen létrehozva!</div></div>";
+        }
+        else {
+            echo "<div class='error'>A kategória létrehozása sikertelen! {$result["message"]}</div></div>";
+        }
+
+    }
+
+    // Kategória törlése
+    if (isset($_POST['delete_category'])) {
+
+        if ($_POST['category_type'] == 'null' || $_POST['category_id'] == 'null') {
+            echo "<div class='error'>A kategória törlése sikertelen! Kérjük töltsön ki minden mezőt!</div></div>"; 
+        }
+        else {
+            $categoryData = array(
+                "name" => $_POST['category_name'],
+                "type" => $_POST['category_type'],
+                "id" => intval($_POST['category_id'])
+            );
+            $result = removeCategory($categoryData);
+
+            if (typeOf($result, "SUCCESS")) {
+                echo "<div class='success'>A kategória sikeresen törölve.</div></div>";
+            }
+            else {
+                echo "<div class='error'>A kategória törlése sikertelen! {$result["message"]}</div></div>";
+            }
+        }
+    }
+
+    // Kategória módosítása
+    if (isset($_POST['modify_category'])) {
+
+        $categoryData = array(
+            "id" => intval($_POST['category_id']),
+            "name" => $_POST['name'],
+            "original_name" => $_POST['category_name'],
+            "type" => isset($_POST['parent_category']) ? "subcategory" : "category",
+            "subname" => $_POST['subname'],
+            "description" => $_POST['description']);
+
+        if (isset($_POST['parent_category'])) {
+            $categoryData['parent_category'] = $_POST['parent_category'];
+            $categoryData['original_parent_category'] = $_POST['original_parent_category'];
+            $categoryData['parent_category_id'] = intval($_POST['parent_category_id']);
+        }
+
+        $result = updateCategory($categoryData);
+        
+        if (!typeOf($result, "ERROR")) {
+            echo "<div class='success'>A kategória sikeresen módosítva.</div></div>";
+        }
+        else {
+            echo "<div class='error'>A kategória módosítása sikertelen! {$result["message"]}</div></div>";
+        }
+    }
+
+    // Termék létrehozása
+    if (isset($_POST['create_product'])) {
+        $productData = array(
+            "name" => $_POST['product_name'],
+            "unit_price" => intval($_POST['price']),
+            "stock" => intval($_POST['stock']),
+            "description" => $_POST['description'],
+            "tags" => $_POST['tags']
+        );
+
+        $productPageData = array(
+            "product_id" => null, // Termékfeltöltés után lesz beállítva
+            "link_slug" => null, // Létrehozáskor meghatározzuk a kategória és alkategória neveiből
+            "category_id" => intval($_POST['category_id']),
+            "subcategory_id" => intval($_POST['subcategory_id']),
+            "page_title" => $_POST['product_name'],
+            "page_content" => $_POST['content']
+        );
+
+        $productCategoryData = array(
+            "category" => $_POST['category'],
+            "subcategory" => $_POST['subcategory'],
+        );
+
+        $tags = $_POST['tags'];
+
+        $result = createProduct($productData, $productPageData, $productCategoryData);
+
+        if (!typeOf($result, "ERROR")) {
+            echo "<div class='success'>Termék sikeresen létrehozva!</div></div>";
+        }
+        else {
+            echo "<div class='error'>A termék létrehozása sikertelen! {$result["message"]}</div></div>";
+        }
+    }
+
+    // Termék módosítása
+    if (isset($_POST['modify_product'])) {
+        $productData = array(
+            "id" => intval($_POST['product_id']),
+            "original_name" => $_POST['product_name'],
+            "name" => $_POST['name'],
+            "description" => $_POST['description'],
+            "price" => $_POST['price'],
+            "stock" => $_POST['stock']
+        );
+
+        if (isset($_POST["tags"])) $productData["tags"] = $_POST['tags'];
+
+        $result = updateProduct($productData);
+        if (!typeOf($result, "ERROR")) {
+            echo "<div class='success'>Termék sikeresen módosítva!</div></div>";
+        }
+        else {
+            echo "<div class='error'>A termék módosítása sikertelen! {$result["message"]}</div></div>";
+        }
+    }
+    
+    //Termék törlése
+    if (isset($_POST['delete_product'])) {
+        $productData = array(
+            "id" => intval($_POST['product_id']),
+            "name" => $_POST['product_name']
+        );
+
+        $result = removeProduct($productData);
+
+        if (!typeOf($result, "ERROR")) {
+            echo "<div class='success'>A termék sikeresen törölve.</div>";
+        }
+        else {
+            echo "<div class='error'>A termék törlése sikertelen! {$result["message"]}</div>";
+        }
+    }
+
+    // Termék oldal létrehozása
+    if (isset($_POST['create_product_page'])) {
+        
+        $productData = array(
+            "name" => $_POST["product_name"],
+            "id" => intval($_POST["product_id"])
+        );
+
+        $productPageData = array(
+            "product_id" => null, // Termékfeltöltés után lesz beállítva
+            "link_slug" => null, // Létrehozáskor meghatározzuk a kategória és alkategória neveiből
+            "category_id" => intval($_POST['category_id']),
+            "subcategory_id" => intval($_POST['subcategory_id']),
+            "page_title" => $_POST['product_name'],
+            "page_content" => $_POST['content']
+        );
+
+        $productCategoryData = array(
+            "category" => $_POST['category'],
+            "subcategory" => $_POST['subcategory'],
+        );
+
+        $result = createProductPage($productData, $productPageData, $productCategoryData);
+        if (!typeOf($result, "ERROR")) {
+            echo "<div class='success'>Termék oldal sikeresen létrehozva!</div>";
+        }
+        else {
+            echo "<div class='error'>A termék oldal létrehozása sikertelen! {$result['message']}</div>";
+        }
+    }
+
+    // Termék oldal törlése
+    if (isset($_POST['delete_product_page'])) {
+        $result = removeProductPage(intval($_POST['product_page_id']));
+
+        if (!isError($result)) {
+            echo "<div class='success'>A termék oldal sikeresen törölve.</div>";
+        }
+        else {
+            echo "<div class='error'>A termék oldal törlése sikertelen! {$result['message']}</div>";
+        }
+    }
+
+    // Termék oldal módosítása
+    if (isset($_POST['modify_product_page'])) {
+        $productPageData = array(
+            "id" => intval($_POST['product_page_id']),
+            "page_title" => $_POST['product_page_name'],
+            "page_content" => $_POST['content'],
+            "category_id" => intval($_POST['category_id']),
+            "subcategory_id" => intval($_POST['subcategory_id'])
+        );
+
+        $categoryData = array(
+            "category" => $_POST['category'],
+            "subcategory" => $_POST['subcategory'],
+        );
+
+        $result = modifyProductPage($productPageData, $categoryData);
+        if (!isError($result)) {
+            echo "<div class='success'>A termék oldal módosítva.</div>";
+        }
+        else {
+            echo "<div class='error'>A termék oldal módosítása sikertelen! {$result['message']}</div>";
+        }
+    }
+    
+    // Jogosultság változtatása
+    if (isset($_POST['modify_role'])) {
+        $userId = intval($_POST['user_id']);
+        $role = $_POST['role'];
+        if (typeOf(modifyRole($userId, $role), "SUCCESS")) {
+            echo "<div class='success'>Sikeres művelet!</div>";
+        }
+        else {
+            echo "<div class='error'>A művelet sikertelen!</div>";
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -20,6 +272,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A Florens Botanica vezérlőpultja">
     <title>Vezérlőpult</title>
+
+    <link rel="shortcut icon" href="./fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
     <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/dashboard.css">
@@ -27,7 +281,7 @@
     <link rel="stylesheet" href="./fb-auth/assets/css/search.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/table.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/loader.css">
-    <link rel="shortcut icon" href="./fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+
     <script defer src="./fb-auth/assets/js/dashboard.js"></script>
     <script defer src="./fb-auth/assets/js/search.js"></script>
     <script defer src="./fb-auth/assets/js/tag-checkbox.js"></script>
@@ -638,26 +892,29 @@
                                 <label><div>Allergének</div></label>
                                 <div class="tag-body">
                                     <div class="tag-items">
-                                        <?php
-                                            $result = selectData("SELECT * FROM tag;");
-                                            if (typeOf($result, "SUCCESS")) {
-                                                $tags = $result["message"];
-
-                                                if ($result["contentType"] == "ASSOC") $tags = [$tags];
-                                                
-                                                $count = 0;
-                                                for ($i = 0; $i < count($tags); $i++) {
-                                                    $tag = $tags[$i];
-                                                    $id = "tag".$i;
-                                                    echo "<label for='$id' class='tag-checkbox'><img loading='lazy' src='{$tag['icon_uri']}' draggable='false' title='{$tag['name']}' alt='{$tag['name']}'><input type='checkbox' name='tags[]' id='$id' value='{$tag['id']}'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>";
-                                                }
-                                            }
-                                            else if (typeOf($result, "EMPTY")){
-                                                echo "Nincsenek allergének felvéve.";
-                                            }
-                                        ?>
+                                        <?php if (is_string($tags)): ?>
+                                            <?= htmlspecialchars($tags) ?>
+                                        <?php else: ?>
+                                            <?php foreach ($tags as $index => $tag): ?>
+                                                <label for='$id-modify' class='tag-checkbox'><img loading='lazy' src='<?= htmlspecialchars($tag['icon_uri']) ?>' draggable='false' title='<?= htmlspecialchars($tag['name']) ?>' alt='<?= htmlspecialchars($tag['name']) ?>'><input type='checkbox' name='tags[]' id='tag<?= htmlspecialchars($index) ?>-modify' value='<?= htmlspecialchars($tag['id']) ?>'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="inline-input">
+                                <label for="benefits">Jótékony hatások</label>
+                                <select name="benefits" id="benefits" data-multi-select multiple>
+                                    <option value="">Lorem, ipsum dolor.</option>
+                                    <option value="">Id, suscipit placeat?</option>
+                                    <option value="">Nulla, nisi porro!</option>
+                                    <option value="">Ducimus, optio quod!</option>
+                                    <option value="">Pariatur, natus aperiam.</option>
+                                </select>
+                            </div>
+                            <div class="inline-input">
+                                <label for="side-effects">Mellékhatások</label>
+                                <select name="benefits" id="benefits" data-multi-select multiple></select>
                             </div>
                             <div class="form-divider">Termékoldal adatai</div>
                             <div class="inline-input">
@@ -947,24 +1204,13 @@
                                 <label><div>Allergének</div></label>
                                 <div class="tag-body">
                                     <div class="tag-items" name="tags">
-                                        <?php
-                                            $result = selectData("SELECT * FROM tag;");
-                                            if (typeOf($result, "SUCCESS")) {
-                                                $tags = $result["message"];
-
-                                                if ($result["contentType"] == "ASSOC") $tags = [$tags];
-
-                                                $count = 0;
-                                                for ($i = 0; $i < count($tags); $i++) {
-                                                    $tag = $tags[$i];
-                                                    $id = "tag".$i;
-                                                    echo "<label for='$id-modify' class='tag-checkbox'><img loading='lazy' src='{$tag['icon_uri']}' draggable='false' title='{$tag['name']}' alt='{$tag['name']}'><input type='checkbox' name='tags[]' id='$id-modify' value='{$tag['id']}'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>";
-                                                }
-                                            }
-                                            else if (typeOf($result, "EMPTY")){
-                                                echo "Nincsenek allergének felvéve.";
-                                            }
-                                        ?>
+                                        <?php if (is_string($tags)): ?>
+                                            <?= htmlspecialchars($tags) ?>
+                                        <?php else: ?>
+                                            <?php foreach ($tags as $index => $tag): ?>
+                                                <label for='$id-modify' class='tag-checkbox'><img loading='lazy' src='<?= htmlspecialchars($tag['icon_uri']) ?>' draggable='false' title='<?= htmlspecialchars($tag['name']) ?>' alt='<?= htmlspecialchars($tag['name']) ?>'><input type='checkbox' name='tags[]' id='tag<?= htmlspecialchars($index) ?>-modify' value='<?= htmlspecialchars($tag['id']) ?>'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>
+                                            <?php endforeach; ?>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -1391,235 +1637,5 @@
             </section>
         </div>
     </div>
-    <?php
-        // Kategória létrehozása
-        if (isset($_POST['create_category'])) {
-
-            $categoryData = array(
-                "name" => $_POST['category_name'],
-                "subname" => $_POST['category_subname'],
-                "type" => ($_POST['type'] == "sub") ? "subcategory" : "category",
-                "description" => $_POST['description']);
-
-            if (isset($_POST['parent_category'])) {
-                $categoryData['parent_category'] = $_POST['parent_category'];
-                $categoryData['parent_category_id'] = intval($_POST['parent_category_id']);
-            }
-
-            $result = createCategory($categoryData);
-
-            if (typeOf($result, "SUCCESS")) {
-                echo "<div class='success'>Kategória sikeresen létrehozva!</div></div>";
-            }
-            else {
-                echo "<div class='error'>A kategória létrehozása sikertelen! {$result["message"]}</div></div>";
-            }
-
-        }
-
-        // Kategória törlése
-        if (isset($_POST['delete_category'])) {
-
-            if ($_POST['category_type'] == 'null' || $_POST['category_id'] == 'null') {
-                echo "<div class='error'>A kategória törlése sikertelen! Kérjük töltsön ki minden mezőt!</div></div>"; 
-            }
-            else {
-                $categoryData = array(
-                    "name" => $_POST['category_name'],
-                    "type" => $_POST['category_type'],
-                    "id" => intval($_POST['category_id'])
-                );
-                $result = removeCategory($categoryData);
-
-                if (typeOf($result, "SUCCESS")) {
-                    echo "<div class='success'>A kategória sikeresen törölve.</div></div>";
-                }
-                else {
-                    echo "<div class='error'>A kategória törlése sikertelen! {$result["message"]}</div></div>";
-                }
-            }
-        }
-
-        // Kategória módosítása
-        if (isset($_POST['modify_category'])) {
-
-            $categoryData = array(
-                "id" => intval($_POST['category_id']),
-                "name" => $_POST['name'],
-                "original_name" => $_POST['category_name'],
-                "type" => isset($_POST['parent_category']) ? "subcategory" : "category",
-                "subname" => $_POST['subname'],
-                "description" => $_POST['description']);
-
-            if (isset($_POST['parent_category'])) {
-                $categoryData['parent_category'] = $_POST['parent_category'];
-                $categoryData['original_parent_category'] = $_POST['original_parent_category'];
-                $categoryData['parent_category_id'] = intval($_POST['parent_category_id']);
-            }
-
-            $result = updateCategory($categoryData);
-            
-            if (!typeOf($result, "ERROR")) {
-                echo "<div class='success'>A kategória sikeresen módosítva.</div></div>";
-            }
-            else {
-                echo "<div class='error'>A kategória módosítása sikertelen! {$result["message"]}</div></div>";
-            }
-        }
-
-        // Termék létrehozása
-        if (isset($_POST['create_product'])) {
-            $productData = array(
-                "name" => $_POST['product_name'],
-                "unit_price" => intval($_POST['price']),
-                "stock" => intval($_POST['stock']),
-                "description" => $_POST['description'],
-                "tags" => $_POST['tags']
-            );
-
-            $productPageData = array(
-                "product_id" => null, // Termékfeltöltés után lesz beállítva
-                "link_slug" => null, // Létrehozáskor meghatározzuk a kategória és alkategória neveiből
-                "category_id" => intval($_POST['category_id']),
-                "subcategory_id" => intval($_POST['subcategory_id']),
-                "page_title" => $_POST['product_name'],
-                "page_content" => $_POST['content']
-            );
-
-            $productCategoryData = array(
-                "category" => $_POST['category'],
-                "subcategory" => $_POST['subcategory'],
-            );
-
-            $tags = $_POST['tags'];
-
-            $result = createProduct($productData, $productPageData, $productCategoryData);
-
-            if (!typeOf($result, "ERROR")) {
-                echo "<div class='success'>Termék sikeresen létrehozva!</div></div>";
-            }
-            else {
-                echo "<div class='error'>A termék létrehozása sikertelen! {$result["message"]}</div></div>";
-            }
-        }
-
-        // Termék módosítása
-        if (isset($_POST['modify_product'])) {
-            $productData = array(
-                "id" => intval($_POST['product_id']),
-                "original_name" => $_POST['product_name'],
-                "name" => $_POST['name'],
-                "description" => $_POST['description'],
-                "price" => $_POST['price'],
-                "stock" => $_POST['stock']
-            );
-
-            if (isset($_POST["tags"])) $productData["tags"] = $_POST['tags'];
-
-            $result = updateProduct($productData);
-            if (!typeOf($result, "ERROR")) {
-                echo "<div class='success'>Termék sikeresen módosítva!</div></div>";
-            }
-            else {
-                echo "<div class='error'>A termék módosítása sikertelen! {$result["message"]}</div></div>";
-            }
-        }
-        
-        //Termék törlése
-        if (isset($_POST['delete_product'])) {
-            $productData = array(
-                "id" => intval($_POST['product_id']),
-                "name" => $_POST['product_name']
-            );
-
-            $result = removeProduct($productData);
-
-            if (!typeOf($result, "ERROR")) {
-                echo "<div class='success'>A termék sikeresen törölve.</div>";
-            }
-            else {
-                echo "<div class='error'>A termék törlése sikertelen! {$result["message"]}</div>";
-            }
-        }
-
-        // Termék oldal létrehozása
-        if (isset($_POST['create_product_page'])) {
-            
-            $productData = array(
-                "name" => $_POST["product_name"],
-                "id" => intval($_POST["product_id"])
-            );
-
-            $productPageData = array(
-                "product_id" => null, // Termékfeltöltés után lesz beállítva
-                "link_slug" => null, // Létrehozáskor meghatározzuk a kategória és alkategória neveiből
-                "category_id" => intval($_POST['category_id']),
-                "subcategory_id" => intval($_POST['subcategory_id']),
-                "page_title" => $_POST['product_name'],
-                "page_content" => $_POST['content']
-            );
-
-            $productCategoryData = array(
-                "category" => $_POST['category'],
-                "subcategory" => $_POST['subcategory'],
-            );
-
-            $result = createProductPage($productData, $productPageData, $productCategoryData);
-            if (!typeOf($result, "ERROR")) {
-                echo "<div class='success'>Termék oldal sikeresen létrehozva!</div>";
-            }
-            else {
-                echo "<div class='error'>A termék oldal létrehozása sikertelen! {$result['message']}</div>";
-            }
-        }
-
-        // Termék oldal törlése
-        if (isset($_POST['delete_product_page'])) {
-            $result = removeProductPage(intval($_POST['product_page_id']));
-
-            if (!isError($result)) {
-                echo "<div class='success'>A termék oldal sikeresen törölve.</div>";
-            }
-            else {
-                echo "<div class='error'>A termék oldal törlése sikertelen! {$result['message']}</div>";
-            }
-        }
-
-        // Termék oldal módosítása
-        if (isset($_POST['modify_product_page'])) {
-            $productPageData = array(
-                "id" => intval($_POST['product_page_id']),
-                "page_title" => $_POST['product_page_name'],
-                "page_content" => $_POST['content'],
-                "category_id" => intval($_POST['category_id']),
-                "subcategory_id" => intval($_POST['subcategory_id'])
-            );
-
-            $categoryData = array(
-                "category" => $_POST['category'],
-                "subcategory" => $_POST['subcategory'],
-            );
-
-            $result = modifyProductPage($productPageData, $categoryData);
-            if (!isError($result)) {
-                echo "<div class='success'>A termék oldal módosítva.</div>";
-            }
-            else {
-                echo "<div class='error'>A termék oldal módosítása sikertelen! {$result['message']}</div>";
-            }
-        }
-        
-        // Jogosultság változtatása
-        if (isset($_POST['modify_role'])) {
-            $userId = intval($_POST['user_id']);
-            $role = $_POST['role'];
-            if (typeOf(modifyRole($userId, $role), "SUCCESS")) {
-                echo "<div class='success'>Sikeres művelet!</div>";
-            }
-            else {
-                echo "<div class='error'>A művelet sikertelen!</div>";
-            }
-        }
-    ?>
 </body>
 </html>

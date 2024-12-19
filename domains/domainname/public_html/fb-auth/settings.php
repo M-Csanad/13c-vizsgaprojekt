@@ -16,7 +16,7 @@
             exit();
         }
 
-        $user = $result["message"];
+        $user = $result["message"][0];
         $curDate = new DateTime();
         $createDate = new DateTime($user["created_at"]);
         $accountAge = $curDate -> diff($createDate) -> days;

@@ -265,7 +265,6 @@ function updateProductPage($data, $table = null) {
     }
 
     $pages = $result["message"];
-    if ($result["contentType"] == "ASSOC") $pages = [$pages];
     
     $slugs = array_map(function ($e) {return $e["link_slug"];}, $pages);
     $ids = array_map(function ($e) {return $e["id"];}, $pages);
