@@ -53,10 +53,10 @@
         $result = createCategory($categoryData);
 
         if (typeOf($result, "SUCCESS")) {
-            echo "<div class='success'>Kategória sikeresen létrehozva!</div></div>";
+            $message = "<div class='success'>Kategória sikeresen létrehozva!</div></div>";
         }
         else {
-            echo "<div class='error'>A kategória létrehozása sikertelen! {$result["message"]}</div></div>";
+            $message = "<div class='error'>A kategória létrehozása sikertelen! {$result["message"]}</div></div>";
         }
 
     }
@@ -65,7 +65,7 @@
     if (isset($_POST['delete_category'])) {
 
         if ($_POST['category_type'] == 'null' || $_POST['category_id'] == 'null') {
-            echo "<div class='error'>A kategória törlése sikertelen! Kérjük töltsön ki minden mezőt!</div></div>"; 
+            $message = "<div class='error'>A kategória törlése sikertelen! Kérjük töltsön ki minden mezőt!</div></div>"; 
         }
         else {
             $categoryData = array(
@@ -76,10 +76,10 @@
             $result = removeCategory($categoryData);
 
             if (typeOf($result, "SUCCESS")) {
-                echo "<div class='success'>A kategória sikeresen törölve.</div></div>";
+                $message = "<div class='success'>A kategória sikeresen törölve.</div></div>";
             }
             else {
-                echo "<div class='error'>A kategória törlése sikertelen! {$result["message"]}</div></div>";
+                $message = "<div class='error'>A kategória törlése sikertelen! {$result["message"]}</div></div>";
             }
         }
     }
@@ -104,10 +104,10 @@
         $result = updateCategory($categoryData);
         
         if (!typeOf($result, "ERROR")) {
-            echo "<div class='success'>A kategória sikeresen módosítva.</div></div>";
+            $message = "<div class='success'>A kategória sikeresen módosítva.</div></div>";
         }
         else {
-            echo "<div class='error'>A kategória módosítása sikertelen! {$result["message"]}</div></div>";
+            $message = "<div class='error'>A kategória módosítása sikertelen! {$result["message"]}</div></div>";
         }
     }
 
@@ -140,10 +140,10 @@
         $result = createProduct($productData, $productPageData, $productCategoryData);
 
         if (!typeOf($result, "ERROR")) {
-            echo "<div class='success'>Termék sikeresen létrehozva!</div></div>";
+            $message = "<div class='success'>Termék sikeresen létrehozva!</div></div>";
         }
         else {
-            echo "<div class='error'>A termék létrehozása sikertelen! {$result["message"]}</div></div>";
+            $message = "<div class='error'>A termék létrehozása sikertelen! {$result["message"]}</div></div>";
         }
     }
 
@@ -162,10 +162,10 @@
 
         $result = updateProduct($productData);
         if (!typeOf($result, "ERROR")) {
-            echo "<div class='success'>Termék sikeresen módosítva!</div></div>";
+            $message = "<div class='success'>Termék sikeresen módosítva!</div></div>";
         }
         else {
-            echo "<div class='error'>A termék módosítása sikertelen! {$result["message"]}</div></div>";
+            $message = "<div class='error'>A termék módosítása sikertelen! {$result["message"]}</div></div>";
         }
     }
     
@@ -179,10 +179,10 @@
         $result = removeProduct($productData);
 
         if (!typeOf($result, "ERROR")) {
-            echo "<div class='success'>A termék sikeresen törölve.</div>";
+            $message = "<div class='success'>A termék sikeresen törölve.</div>";
         }
         else {
-            echo "<div class='error'>A termék törlése sikertelen! {$result["message"]}</div>";
+            $message = "<div class='error'>A termék törlése sikertelen! {$result["message"]}</div>";
         }
     }
 
@@ -210,10 +210,10 @@
 
         $result = createProductPage($productData, $productPageData, $productCategoryData);
         if (!typeOf($result, "ERROR")) {
-            echo "<div class='success'>Termék oldal sikeresen létrehozva!</div>";
+            $message = "<div class='success'>Termék oldal sikeresen létrehozva!</div>";
         }
         else {
-            echo "<div class='error'>A termék oldal létrehozása sikertelen! {$result['message']}</div>";
+            $message = "<div class='error'>A termék oldal létrehozása sikertelen! {$result['message']}</div>";
         }
     }
 
@@ -222,10 +222,10 @@
         $result = removeProductPage(intval($_POST['product_page_id']));
 
         if (!isError($result)) {
-            echo "<div class='success'>A termék oldal sikeresen törölve.</div>";
+            $message = "<div class='success'>A termék oldal sikeresen törölve.</div>";
         }
         else {
-            echo "<div class='error'>A termék oldal törlése sikertelen! {$result['message']}</div>";
+            $message = "<div class='error'>A termék oldal törlése sikertelen! {$result['message']}</div>";
         }
     }
 
@@ -246,10 +246,10 @@
 
         $result = modifyProductPage($productPageData, $categoryData);
         if (!isError($result)) {
-            echo "<div class='success'>A termék oldal módosítva.</div>";
+            $message = "<div class='success'>A termék oldal módosítva.</div>";
         }
         else {
-            echo "<div class='error'>A termék oldal módosítása sikertelen! {$result['message']}</div>";
+            $message = "<div class='error'>A termék oldal módosítása sikertelen! {$result['message']}</div>";
         }
     }
     
@@ -258,10 +258,10 @@
         $userId = intval($_POST['user_id']);
         $role = $_POST['role'];
         if (typeOf(modifyRole($userId, $role), "SUCCESS")) {
-            echo "<div class='success'>Sikeres művelet!</div>";
+            $message = "<div class='success'>Sikeres művelet!</div>";
         }
         else {
-            echo "<div class='error'>A művelet sikertelen!</div>";
+            $message = "<div class='error'>A művelet sikertelen!</div>";
         }
     }
 ?>
@@ -1637,5 +1637,6 @@
             </section>
         </div>
     </div>
+    <?php if (isset($message) && !empty($message)) echo $message; ?>
 </body>
 </html>
