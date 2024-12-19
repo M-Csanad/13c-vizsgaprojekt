@@ -165,9 +165,11 @@ function createProduct($productData, $productPageData, $productCategoryData) {
         return ["message" => "Sikertelen feltöltés a product_image táblába. ({$result["message"]})", "type" => "ERROR"];
     }
 
-    $result = connectProductTags($productData['id'], $productData['tags']);
-    if (!typeOf($result, "SUCCESS")) {
-        return ["message" => "Sikertelen feltöltés a product_tag táblába. ({$result["message"]})", "type" => "ERROR"];
+    if (isset($productData['tags'])) {
+        $result = connectProductTags($productData['id'], $productData['tags']);
+        if (!typeOf($result, "SUCCESS")) {
+            return ["message" => "Sikertelen feltöltés a product_tag táblába. ({$result["message"]})", "type" => "ERROR"];
+        }
     }
     
     $result = createProductPage($productData, $productPageData, $productCategoryData);

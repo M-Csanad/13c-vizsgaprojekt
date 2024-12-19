@@ -117,9 +117,9 @@
             "name" => $_POST['product_name'],
             "unit_price" => intval($_POST['price']),
             "stock" => intval($_POST['stock']),
-            "description" => $_POST['description'],
-            "tags" => $_POST['tags']
+            "description" => $_POST['description']
         );
+        if (isset($_POST["tags"])) $productData["tags"] = $_POST['tags'];
 
         $productPageData = array(
             "product_id" => null, // Termékfeltöltés után lesz beállítva
@@ -134,8 +134,6 @@
             "category" => $_POST['category'],
             "subcategory" => $_POST['subcategory'],
         );
-
-        $tags = $_POST['tags'];
 
         $result = createProduct($productData, $productPageData, $productCategoryData);
 
@@ -896,7 +894,7 @@
                                             <?= htmlspecialchars($tags) ?>
                                         <?php else: ?>
                                             <?php foreach ($tags as $index => $tag): ?>
-                                                <label for='$id-modify' class='tag-checkbox'><img loading='lazy' src='<?= htmlspecialchars($tag['icon_uri']) ?>' draggable='false' title='<?= htmlspecialchars($tag['name']) ?>' alt='<?= htmlspecialchars($tag['name']) ?>'><input type='checkbox' name='tags[]' id='tag<?= htmlspecialchars($index) ?>-modify' value='<?= htmlspecialchars($tag['id']) ?>'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>
+                                                <label for='tag<?= htmlspecialchars($index); ?>-modify' class='tag-checkbox'><img loading='lazy' src='<?= htmlspecialchars($tag['icon_uri']) ?>' draggable='false' title='<?= htmlspecialchars($tag['name']) ?>' alt='<?= htmlspecialchars($tag['name']) ?>'><input type='checkbox' name='tags[]' id='tag<?= htmlspecialchars($index) ?>-modify' value='<?= htmlspecialchars($tag['id']) ?>'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                     </div>
@@ -1208,7 +1206,7 @@
                                             <?= htmlspecialchars($tags) ?>
                                         <?php else: ?>
                                             <?php foreach ($tags as $index => $tag): ?>
-                                                <label for='$id-modify' class='tag-checkbox'><img loading='lazy' src='<?= htmlspecialchars($tag['icon_uri']) ?>' draggable='false' title='<?= htmlspecialchars($tag['name']) ?>' alt='<?= htmlspecialchars($tag['name']) ?>'><input type='checkbox' name='tags[]' id='tag<?= htmlspecialchars($index) ?>-modify' value='<?= htmlspecialchars($tag['id']) ?>'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>
+                                                <label for='tag<?= htmlspecialchars($index); ?>-modify' class='tag-checkbox'><img loading='lazy' src='<?= htmlspecialchars($tag['icon_uri']) ?>' draggable='false' title='<?= htmlspecialchars($tag['name']) ?>' alt='<?= htmlspecialchars($tag['name']) ?>'><input type='checkbox' name='tags[]' id='tag<?= htmlspecialchars($index) ?>-modify' value='<?= htmlspecialchars($tag['id']) ?>'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                     </div>
