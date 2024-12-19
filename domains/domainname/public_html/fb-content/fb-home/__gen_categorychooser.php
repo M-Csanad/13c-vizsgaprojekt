@@ -118,7 +118,7 @@ function generateHTML()
     }
 
     db_disconnect($conn);
-    log_Error("Adatbázis kapcsolat lezárva.", 'generateHTML.log');
+
 }
 
 generateHTML();
