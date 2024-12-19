@@ -279,11 +279,13 @@
     <link rel="stylesheet" href="./fb-auth/assets/css/search.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/table.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/loader.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/multiselect.css">
 
     <script defer src="./fb-auth/assets/js/dashboard.js"></script>
     <script defer src="./fb-auth/assets/js/search.js"></script>
     <script defer src="./fb-auth/assets/js/tag-checkbox.js"></script>
     <script defer src="./fb-auth/assets/js/loader.js"></script>
+    <script defer src="./fb-auth/assets/js/multiselect.js"></script>
     <script src="./fb-auth/assets/js/prevent-resubmit.js"></script>
 </head>
 <body>
@@ -902,13 +904,143 @@
                             </div>
                             <div class="inline-input">
                                 <label for="benefits">Jótékony hatások</label>
-                                <select name="benefits" id="benefits" data-multi-select multiple>
-                                    <option value="">Lorem, ipsum dolor.</option>
-                                    <option value="">Id, suscipit placeat?</option>
-                                    <option value="">Nulla, nisi porro!</option>
-                                    <option value="">Ducimus, optio quod!</option>
-                                    <option value="">Pariatur, natus aperiam.</option>
-                                </select>
+                                <div class="multiselect" id="fruits" name="fruits">
+                                    <div class="body">
+                                        <div class="selected-item-count">Elemek kiválasztása</div>
+                                        <div class="expander">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="16"
+                                            height="16"
+                                            fill="currentColor"
+                                            class="bi bi-chevron-down"
+                                            viewBox="0 0 16 16"
+                                        >
+                                            <path
+                                            fill-rule="evenodd"
+                                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
+                                            />
+                                        </svg>
+                                        </div>
+                                    </div>
+                                    <div class="dropdown">
+                                        <div class="multiselect-items">
+                                            <div class="search-input">
+                                                <input
+                                                type="text"
+                                                name="multiselect_filter"
+                                                class="multiselect-filter"
+                                                placeholder="Keresés..."
+                                                >
+                                            </div>
+                                            <div class="option visible" data-value="Select All">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Összes kiválasztása</div>
+                                            </div>
+                                            <hr />
+                                            <div class="option visible" data-value="Apple">
+                                                <div class="check" data-value>
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Apple</div>
+                                            </div>
+                                            <div class="option visible" data-value="Banana">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Banana</div>
+                                            </div>
+                                            <div class="option visible" data-value="Blackberry">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Blackberry</div>
+                                            </div>
+                                            <div class="option visible" data-value="Blueberry">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Blueberry</div>
+                                            </div>
+                                            <div class="option visible" data-value="Cherry">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Cherry</div>
+                                            </div>
+                                            <div class="option visible" data-value="Cranberry">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Cranberry</div>
+                                            </div>
+                                            <div class="option visible" data-value="Grapes">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Grapes</div>
+                                            </div>
+                                            <div class="option visible" data-value="Kiwi">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Kiwi</div>
+                                            </div>
+                                            <div class="option visible" data-value="Mango">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Mango</div>
+                                            </div>
+                                            <div class="option visible" data-value="Orange">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Orange</div>
+                                            </div>
+                                            <div class="option visible" data-value="Peach">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Peach</div>
+                                            </div>
+                                            <div class="option visible" data-value="Pear">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Pear</div>
+                                            </div>
+                                            <div class="option visible" data-value="Pineapple">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Pineapple</div>
+                                            </div>
+                                            <div class="option visible" data-value="Raspberry">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Raspberry</div>
+                                            </div>
+                                            <div class="option visible" data-value="Strawberry">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Strawberry</div>
+                                            </div>
+                                            <div class="option visible" data-value="Watermelon">
+                                                <div class="check">
+                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                </div>
+                                                <div class="label">Watermelon</div>
+                                            </div>
+                                            <div class="no-result">Nincsenek találatok!</div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="multiselect-selectedItems" value="null" />
+                                </div>
                             </div>
                             <div class="inline-input">
                                 <label for="side-effects">Mellékhatások</label>

@@ -1,164 +1,167 @@
 @import url("./spinner.css");
 
 .search-wrapper {
-    display: flex;
-    flex-direction: row;
-    align-items: stretch;
-    height: 32px;
-    gap: 10px;
-    min-width: 0;
-    width: 66%;
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  height: 32px;
+  gap: 10px;
+  min-width: 0;
+  width: 66%;
 }
 .search-wrapper > svg {
-    flex-shrink: 0;
-    height: 100%;
-    display: none;
+  flex-shrink: 0;
+  height: 100%;
+  display: none;
 }
 .search-wrapper > svg.valid {
-    color: var(--valid);
+  color: var(--valid);
 }
 .search-wrapper > svg.invalid {
-    color: var(--invalid);
+  color: var(--invalid);
 }
 .search-wrapper:has(input:valid) > svg.valid {
-    display: block;
+  display: block;
 }
 .search-wrapper:has(input:valid) > svg.invalid {
-    display: none;
+  display: none;
 }
 .search-wrapper:has(input:invalid) > svg.valid {
-    display: none;
+  display: none;
 }
 .search-wrapper:has(input:invalid) > svg.invalid {
-    display: block;
+  display: block;
 }
 .search {
-    flex-grow: 1;
-    display: flex;
-    align-items: stretch;
-    flex-direction: row;
-    position: relative;
-    height: 32px;
-    border-radius: 5px;
-    transition: color 0.3s ease, border 0.3s ease;
-    color: grey;
-    flex-shrink: 1;
+  flex-grow: 1;
+  display: flex;
+  align-items: stretch;
+  flex-direction: row;
+  position: relative;
+  height: 32px;
+  border-radius: 5px;
+  transition: color 0.3s ease, border 0.3s ease;
+  color: grey;
+  flex-shrink: 1;
+  min-width: 0;
+
+  input {
+    flex: 1;
+    width: 100%;
     min-width: 0;
-
-    input {
-        flex: 1;
-        width: 100%;
-        min-width: 0;
-        max-width: 100%;
-        border-radius: 5px;
-        outline: none;
-        border: none;
-        background-color: var(--background);
-        padding-left: 5px;
-        font-size: 16px;
-        transition: color 0.3s ease;
-    }
-
-    label.search-button {
-        display: flex;
-        align-items: center;
-    }
-
-    label.search-button > svg {
-        transition: all 0.3s ease;
-        margin-inline:5px;
-        color: grey;
-    }
-
-}
-.search:has(input:valid) {
-    border: 2px solid var(--valid);
-}
-.search:has(input:invalid) {
-    border: 2px solid var(--invalid);
-}
-.search > input:invalid {
-    color: grey;
-}
-.search:has(input:valid) > label > svg {
-    color: black;
-}
-.items {
-    display: none;
-    font-family: Arial, Helvetica, sans-serif;
-    color: black;
-    width: calc(100% + 2px);
-    position: absolute;
-    z-index: 1000;
-    top: calc(100% + 1px);
-    left: -1px;
-    border-radius: 0 0 5px 5px;
+    max-width: 100%;
+    border-radius: 5px;
+    outline: none;
+    border: none;
     background-color: var(--background);
-    border-inline: 1px solid grey;
-    border-bottom: 1px solid grey;
-    max-height: 301px;
-    overflow-y: auto;
-    scroll-snap-type: y mandatory;
-    transition: max-height 0.3s ease;
-}
-.items > * {
-    scroll-snap-align: start;
+    padding-left: 5px;
+    font-size: 16px;
+    transition: color 0.3s ease;
+  }
+
+  label.search-button {
     display: flex;
     align-items: center;
-    gap: 5px;
-    user-select: none;
-    padding: 5px;
-    height: 60px;
-    transition: background-color 0.3s ease;
+  }
+
+  label.search-button > svg {
+    transition: all 0.3s ease;
+    margin-inline: 5px;
+    color: grey;
+  }
+}
+.search:has(input:valid) {
+  border: 2px solid var(--valid);
+}
+.search:has(input:invalid) {
+  border: 2px solid var(--invalid);
+}
+.search > input:invalid {
+  color: grey;
+}
+.search:has(input:valid) > label > svg {
+  color: black;
+}
+.items {
+  display: none;
+  font-family: Arial, Helvetica, sans-serif;
+  color: black;
+  width: calc(100% + 2px);
+  position: absolute;
+  z-index: 1000;
+  top: calc(100% + 1px);
+  left: -1px;
+  border-radius: 0 0 5px 5px;
+  background-color: var(--background);
+  border-inline: 1px solid grey;
+  border-bottom: 1px solid grey;
+  max-height: 301px;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  transition: max-height 0.3s ease;
+}
+.items > * {
+  scroll-snap-align: start;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  user-select: none;
+  padding: 5px;
+  height: 60px;
+  transition: background-color 0.3s ease;
 }
 .items > *:last-child {
-    border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px;
 }
 .items > *:not(.loader-wrapper):hover {
-    background-color: rgb(255, 211, 211);
+  background-color: rgb(255, 211, 211);
 }
 .items > * > img {
-    width: 48px; 
-    height: 48px;
-    object-fit: cover;       
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
 }
 
-.search:hover, .search:has(input:focus), .search:has(input:active){
-    label.search-button > svg {
-        color: rgb(0, 0, 0);
-    }
+.search:hover,
+.search:has(input:focus),
+.search:has(input:active) {
+  label.search-button > svg {
+    color: rgb(0, 0, 0);
+  }
 }
 
-.search:hover > input, .search > input:focus, .search > input:active {
-    color: black;
+.search:hover > input,
+.search > input:focus,
+.search > input:active {
+  color: black;
 }
 .loader {
-    width: 48px;
-    height: 48px;
+  width: 48px;
+  height: 48px;
 }
 
 .loader-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    width: 100%;
-    height: 100px;
-    z-index: 9;
-    background-color: var(--background);
-    opacity: 0;
-    
-    transition: opacity 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  z-index: 9;
+  background-color: var(--background);
+  opacity: 0;
+
+  transition: opacity 0.3s ease;
 }
 
 @media screen and (max-width: 1100px) {
-    .search-wrapper {
-        width: 75%;
-    }
+  .search-wrapper {
+    width: 75%;
+  }
 }
 
 @media screen and (max-width: 991px) {
-    .search-wrapper {
-        width: 100%;
-    }
+  .search-wrapper {
+    width: 100%;
+  }
 }
