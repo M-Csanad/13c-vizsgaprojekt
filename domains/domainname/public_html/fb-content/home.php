@@ -1,14 +1,14 @@
-<?php 
-  include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
-  include_once $_SERVER['DOCUMENT_ROOT'] . "/../../../.ext/init.php";
+<?php
+include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . "/../../../.ext/init.php";
 
-  session_start();
-  $isLoggedIn = false;  // Alapértelmezett, hogy a felhasználó nincs bejelentkezve
+session_start();
+$isLoggedIn = false;  // Alapértelmezett, hogy a felhasználó nincs bejelentkezve
 
-  // Emlékezz rám funkció - ellenőrzi, hogy van-e 'rememberMe' süti
-  if (isset($_COOKIE['rememberMe'])) {
-      $cookieToken = $_COOKIE['rememberMe'];
-      $result = selectData("SELECT COUNT(*) as num,
+// Emlékezz rám funkció - ellenőrzi, hogy van-e 'rememberMe' süti
+if (isset($_COOKIE['rememberMe'])) {
+  $cookieToken = $_COOKIE['rememberMe'];
+  $result = selectData("SELECT COUNT(*) as num,
                           user.password_hash,
                           user.role, user.id,
                           user.user_name,
@@ -16,22 +16,22 @@
                           FROM user
                           WHERE user.cookie_id = ?", $cookieToken, "s");
 
-      if (typeOf($result, "SUCCESS")) {
-          $user = $result["message"][0];
-          if (time() < $user['cookie_expires_at']) {
-              setSessionData($user);
-          }
-      } else {
-          echo "<div class='error'>", $result["message"], "</div>";
-          exit();
-      }
+  if (typeOf($result, "SUCCESS")) {
+    $user = $result["message"][0];
+    if (time() < $user['cookie_expires_at']) {
+      setSessionData($user);
+    }
+  } else {
+    echo "<div class='error'>", $result["message"], "</div>";
+    exit();
   }
+}
 
-  // Ha a felhasználó már be van jelentkezve
-  if (isset($_SESSION['user_name'])) {
-      $sessionId = session_id();
-      $isLoggedIn = true;
-  }
+// Ha a felhasználó már be van jelentkezve
+if (isset($_SESSION['user_name'])) {
+  $sessionId = session_id();
+  $isLoggedIn = true;
+}
 ?>
 
 <!DOCTYPE html>
@@ -298,6 +298,7 @@
   <link rel="stylesheet" href="./fb-content/fb-home/css/main_media.css" media="all" />
   <link rel="stylesheet" href="./fb-content/assets/css/footer.css" media="all" />
   <link rel="stylesheet" href="./fb-content/assets/css/navbar.css" media="all" />
+  <link rel="stylesheet" href="http://localhost/fb-content/assets/css/mobileNavbar.css">
   <script src="./fb-content/assets/js/autogenerate__footer.js" defer></script>
   <script src="./fb-content/assets/js/autogenerate__navbar.js" defer></script>
 
@@ -325,6 +326,7 @@
   <header>
     <section id="StickyNavbar_container">
       <?php include __DIR__ . '/assets/navbar.php'; ?>
+
     </section>
   </header>
 
@@ -634,8 +636,8 @@
              (max-width: 2560px) 2560px,
              3840px" />
                 <!-- Alapértelmezett JPG -->
-                <img src="./fb-content/assets/media/images/site/home/HerbsInHands-1024px.jpg" alt="Gyógynövények hölgy kezében"
-                  loading="lazy" />
+                <img src="./fb-content/assets/media/images/site/home/HerbsInHands-1024px.jpg"
+                  alt="Gyógynövények hölgy kezében" loading="lazy" />
               </picture>
             </div>
           </div>
@@ -644,7 +646,9 @@
       </div>
       </div>
 
-      <div id="categoryGallery" class="ImgGallery_container"><?php include __DIR__ . '/fb-home/__gen_imageGallery.php'; ?></div>
+      <div id="categoryGallery" class="ImgGallery_container">
+        <?php include __DIR__ . '/fb-home/__gen_imageGallery.php'; ?>
+      </div>
 
       <div id="break"></div>
     </section>
@@ -659,7 +663,7 @@
 
   <!--lenis scroll-->
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
-  <script src="./fb-content/assets/js/lenis.js"></script>
+  <script src="http://localhost/fb-content/assets/js/lenis.js"></script>
 
 
 
@@ -668,7 +672,7 @@
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   <!--extras-->
-
+  <script src="http://localhost/fb-content/assets/js/mobileNavbar.js"></script>
 
 </body>
 
