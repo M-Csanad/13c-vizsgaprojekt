@@ -42,6 +42,27 @@
   --dark_quaternary-op7: rgba(30, 30, 30, 0.7);
   --dark_quaternary-op8: rgba(30, 30, 30, 0.8);
   --dark_quaternary-op9: rgba(30, 30, 30, 0.9);
+  --dark_quinary: rgb(36, 36, 36);
+  --dark_quinary-op1: rgba(36, 36, 36, 0.1);
+  --dark_quinary-op2: rgba(36, 36, 36, 0.2);
+  --dark_quinary-op3: rgba(36, 36, 36, 0.3);
+  --dark_quinary-op4: rgba(36, 36, 36, 0.4);
+  --dark_quinary-op5: rgba(36, 36, 36, 0.5);
+  --dark_quinary-op6: rgba(36, 36, 36, 0.6);
+  --dark_quinary-op7: rgba(36, 36, 36, 0.7);
+  --dark_quinary-op8: rgba(36, 36, 36, 0.8);
+  --dark_quinary-op9: rgba(36, 36, 36, 0.9);
+  --dark_senary: rgb(42, 42, 42);
+  --dark_senary-op1: rgba(42, 42, 42, 0.1);
+  --dark_senary-op2: rgba(42, 42, 42, 0.2);
+  --dark_senary-op3: rgba(42, 42, 42, 0.3);
+  --dark_senary-op4: rgba(42, 42, 42, 0.4);
+  --dark_senary-op5: rgba(42, 42, 42, 0.5);
+  --dark_senary-op6: rgba(42, 42, 42, 0.6);
+  --dark_senary-op7: rgba(42, 42, 42, 0.7);
+  --dark_senary-op8: rgba(42, 42, 42, 0.8);
+  --dark_senary-op9: rgba(42, 42, 42, 0.9);
+
   --light_main: #ffffff;
   --light_main-op1: rgba(255, 255, 255, 0.1);
   --light_main-op2: rgba(255, 255, 255, 0.2);

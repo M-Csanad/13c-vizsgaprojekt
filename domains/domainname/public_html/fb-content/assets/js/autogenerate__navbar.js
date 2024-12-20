@@ -60,49 +60,11 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const hamburgerMenu = document.querySelector(".hamburger-menu");
   const hamburgerIcon = document.querySelector(".hamburger-icon");
-  const navbar = document.getElementById("fb-navbar");
-
-  // JSON adat lekérése a data-category attribútumból
-  const categoryContent = JSON.parse(navbar.getAttribute("data-category"));
-
-  // Menü tartalom generálása
-  categoryContent.forEach((content) => {
-    const categoryItem = document.createElement("div");
-    categoryItem.classList.add("hamburger-menu-item");
-
-    // Fő kategória cím
-    const categoryTitle = document.createElement("div");
-    categoryTitle.classList.add("dropdown-title");
-    categoryTitle.textContent = content.title;
-
-    // Alkategóriák listája (alapértelmezetten rejtett)
-    const subcategoryList = document.createElement("ul");
-    subcategoryList.classList.add("dropdown-content");
-
-    // Alkategóriák hozzáadása
-    content.subcategories.forEach((sub) => {
-      const subcategoryItem = document.createElement("li");
-      const subcategoryLink = document.createElement("a");
-      subcategoryLink.href = sub.url;
-      subcategoryLink.textContent = sub.name;
-      subcategoryLink.classList.add("fb-link");
-      subcategoryItem.appendChild(subcategoryLink);
-      subcategoryList.appendChild(subcategoryItem);
-    });
-
-    // Kattintási esemény: a fő kategória legördülő menüjének megjelenítése/elrejtése
-    categoryTitle.addEventListener("click", () => {
-      subcategoryList.classList.toggle("active");
-    });
-
-    categoryItem.appendChild(categoryTitle);
-    categoryItem.appendChild(subcategoryList);
-    hamburgerMenu.appendChild(categoryItem);
-  });
 
   // Hamburger ikon eseménykezelés – menü megjelenítése és ikon váltás
   hamburgerIcon.addEventListener("click", function () {
     hamburgerIcon.classList.toggle("active"); // Morph X ikonra és vissza
-    hamburgerMenu.classList.toggle("active"); // Menüt megjelenít vagy elrejt
+    hamburgerMenu.classList.toggle("hidden");
+    hamburgerMenu.classList.toggle("active");
   });
 });
