@@ -1,4 +1,4 @@
-<?php 
+<?php
   include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
   include_once $_SERVER['DOCUMENT_ROOT'] . "/../../../.ext/init.php";
 
@@ -325,6 +325,7 @@
   <header>
     <section id="StickyNavbar_container">
       <?php include __DIR__ . '/assets/navbar.php'; ?>
+      <?php include __DIR__ . '/assets/mobileNavbar.php'; ?>
     </section>
   </header>
 

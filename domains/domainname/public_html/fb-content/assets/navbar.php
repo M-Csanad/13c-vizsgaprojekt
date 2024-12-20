@@ -38,7 +38,7 @@ function generateSlug($string)
         'Ü' => 'U',
         'Ű' => 'U'
     ];
-    
+
     $string = strtr($string, $unwanted_chars); // Ékezetek eltávolítása
     $string = strtolower($string); // Kisbetűsítés
     $string = preg_replace('/[^a-z0-9\s-]/', '', $string); // Speciális karakterek eltávolítása
@@ -65,18 +65,18 @@ function getCategoryContent()
             FROM category
             LEFT JOIN subcategory ON category.id = subcategory.category_id";
 
- 
+
     $result = $conn->query($sql);
     $category_content = [];
 
     if ($result && $result->num_rows > 0) {
-        
+
         while ($row = $result->fetch_assoc()) {
             $category_name = $row['category_name'];
             $subcategory_name = $row['subcategory_name'];
             $category_image = $row['category_image'];
 
-           
+
             $category_slug = generateSlug($category_name);
             $category_url = "./" . $category_slug . "/";
 
@@ -87,7 +87,7 @@ function getCategoryContent()
                     'img' => $category_image,
                     'subcategories' => []
                 ];
-                
+
             }
 
             if ($subcategory_name) {
@@ -98,7 +98,7 @@ function getCategoryContent()
                     'name' => $subcategory_name,
                     'url' => $subcategory_url
                 ];
-                
+
             }
         }
     } else {
@@ -106,7 +106,7 @@ function getCategoryContent()
     }
 
     db_disconnect($conn); // Kapcsolat lezárása
-    
+
 
     return array_values($category_content); // Az asszociatív indexeket numerikusra váltja
 }
@@ -159,7 +159,7 @@ $menu_items = [
                 <div class="fb-nav-subcontent-frame">
                     <div class="fb-nav-subcontent-imgblock">
                         <img src="<?= htmlspecialchars($content['img']) ?>" alt="<?= htmlspecialchars($content['title']) ?> image" />
-                        <h2 class="fb-subcontent-imgblock-title"><?= htmlspecialchars($content['title']) ?></h2>
+                        <h2 class="fb-subcontent-imgblock-title __t02-men1"><?= htmlspecialchars($content['title']) ?></h2>
                     </div>
                 </div>
             </a>
