@@ -47,3 +47,7 @@
     border: 5px solid rgb(63, 169, 69);
     box-shadow: 0px 0px 5px rgb(23, 235, 34);
 }
+
+.no-overflow {
+    overflow: visible !important;
+}

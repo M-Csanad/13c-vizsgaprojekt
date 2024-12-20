@@ -482,7 +482,6 @@ document
     let table = select.dataset.table;
 
     await populateOptions(select, null, table);
-    console.log(select);
     setHiddenInput(select);
 
     let subcategorySelect = select

@@ -1,6 +1,6 @@
 document.querySelectorAll(".multiselect").forEach((multiSelect) => {
   const selectedItemsContainer = multiSelect.querySelector(
-    "[name=multiselect-selectedItems]"
+    ".multiselect-selectedItems"
   );
   const checkElements = multiSelect.querySelectorAll(".check");
   const optionElements = multiSelect.querySelectorAll(".option");
@@ -16,7 +16,8 @@ document.querySelectorAll(".multiselect").forEach((multiSelect) => {
     let option = e.closest(".option");
     if (!option) return;
 
-    let selectedValue = option.dataset.value ?? null;
+    let selectedValue = option.dataset.labelValue ?? null;
+    let selectedId = option.dataset.value ?? null;
     e.classList.toggle("on");
 
     if (e.classList.contains("on")) {
@@ -30,7 +31,7 @@ document.querySelectorAll(".multiselect").forEach((multiSelect) => {
             toggleCheck(e);
         });
       } else {
-        selectedItems.push(selectedValue);
+        if (selectedId) selectedItems.push(selectedId);
       }
     } else {
       // Ha az "Összes kiválasztása"- van kiválasztva, akkor minden kiválasztást töröl
@@ -39,7 +40,7 @@ document.querySelectorAll(".multiselect").forEach((multiSelect) => {
           if (e.classList.contains("on")) toggleCheck(e);
         });
       }
-      selectedItems = selectedItems.filter((e) => e !== selectedValue);
+      selectedItems = selectedItems.filter((e) => e !== selectedId);
     }
 
     multiSelect.querySelector(".selected-item-count").innerHTML =
@@ -57,13 +58,13 @@ document.querySelectorAll(".multiselect").forEach((multiSelect) => {
     let filterValue = filterInput.value;
     let filterRegex = new RegExp(`^.*${filterValue}.*$`);
     optionElements.forEach((e) => {
-      if (e.dataset.value !== "Select All") e.classList.remove("visible");
+      if (e.dataset.labelValue !== "Select All") e.classList.remove("visible");
     });
 
     let matches = Array.from(optionElements).filter(
       (e) =>
-        e.dataset.value.toLowerCase().match(filterRegex) &&
-        e.dataset.value !== "Select All"
+        e.dataset.labelValue.toLowerCase().match(filterRegex) &&
+        e.dataset.labelValue !== "Select All"
     );
 
     if (matches.length == 0) {
@@ -78,4 +79,6 @@ document.querySelectorAll(".multiselect").forEach((multiSelect) => {
   multiSelect.querySelector(".body").addEventListener("click", () => {
     multiSelect.classList.toggle("active");
   });
+
+  window.addEventListener("click", (e) => {if (!multiSelect.contains(e.target)) multiSelect.classList.remove("active")});
 });

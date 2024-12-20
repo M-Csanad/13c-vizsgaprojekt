@@ -122,8 +122,36 @@ function connectProductTags($id, $tags) {
     return updateData("INSERT INTO product_tag (tag_id, product_id) VALUES $placeholderList;", $values, $typeString);
 }
 
+function connectProductHealthEffects($id, $productHealthEffectsData) {
+    $results = array();
+    
+    foreach ($productHealthEffectsData as $type=>$effects) {
+        $table = 'product_health_effect';
+
+        $benefit = $effects == "benefit";
+        
+        $placeholderList = implode(", ", array_fill(0, count($effects), "(?, ?)"));
+        $values = array();
+        $typeString = "";
+
+        foreach ($effects as $effect) {
+            array_push($values, $effect, $id);
+            $typeString .= "ii";
+        }
+
+        $result = updateData("INSERT INTO product_health_effect (health_effect_id, product_id) VALUES $placeholderList;", $values, $typeString);
+        if (!typeOf($result, "SUCCESS")) {
+            return $result;
+        }
+
+        array_push($results, $result);
+    }
+
+    return ["message" => "Az egészségügyi hatások feltöltése sikeres volt.", "type" => "SUCCESS"];
+}
+
 // Termék létrehozása - Fő függvény
-function createProduct($productData, $productPageData, $productCategoryData) {
+function createProduct($productData, $productPageData, $productCategoryData, $productHealthEffectsData) {
     include_once "init.php";
 
     // Ellenőrizzük, hogy merült-e fel hiba valamelyik fájl feltöltésekor
@@ -131,6 +159,7 @@ function createProduct($productData, $productPageData, $productCategoryData) {
         return ["message" => "Hiba merült fel a feltöltés során.", "type" => "ERROR"];
     }
     
+    // Adatfeltölés a product táblába
     $result = uploadProductData($productData);
     if (typeOf($result, "SUCCESS")) {
         $productData["id"] = $result["message"];
@@ -148,12 +177,14 @@ function createProduct($productData, $productPageData, $productCategoryData) {
         return ["message" => "Sikertelen feltöltés az adatbázisba: {$result['message']}", "type" => "ERROR"];
     }
 
+    // Termékképek mentése a fájlrendszerbe
     $result = createProductDirectory($productData);
     if (!typeOf($result, "SUCCESS")) {
         return ["message" => "Sikertelen képfeltöltés. ({$result['message']})", "type" => "ERROR"];
     }
     $paths = $result["message"];
 
+    // URL-ek feltöltése az adatbázisba
     $result = uploadProductImages($paths);
     if (!typeOf($result, "SUCCESS")) {
         return ["message" => "Sikertelen feltöltés az image táblába. ({$result['message']})", "type" => "ERROR"];
@@ -165,18 +196,29 @@ function createProduct($productData, $productPageData, $productCategoryData) {
         return ["message" => "Sikertelen feltöltés a product_image táblába. ({$result["message"]})", "type" => "ERROR"];
     }
 
+    // Címkék feltöltése - product_tag
     if (isset($productData['tags'])) {
         $result = connectProductTags($productData['id'], $productData['tags']);
         if (!typeOf($result, "SUCCESS")) {
             return ["message" => "Sikertelen feltöltés a product_tag táblába. ({$result["message"]})", "type" => "ERROR"];
         }
     }
+
+    // Egészségügyi hatások feltöltése - product_health_effects
+    if (!empty($productHealthEffectsData)) {
+        $result = connectProductHealthEffects($productData['id'], $productHealthEffectsData);
+        if (!typeOf($result, "SUCCESS")) {
+            return ["message" => "Sikertelen feltöltés a product_health_effect táblába. ({$result["message"]})", "type" => "ERROR"];
+        }
+    }
     
+    // Alap termékoldal létrehozása
     $result = createProductPage($productData, $productPageData, $productCategoryData);
     if (!typeOf($result, "SUCCESS")) {
         return $result;
     }
 
+    // Feltöltött képek optimalizálása
     foreach ($paths as $path) {
         optimizeImage($path);
     }

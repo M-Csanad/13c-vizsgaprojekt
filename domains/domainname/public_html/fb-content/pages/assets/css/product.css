@@ -94,8 +94,8 @@ main.body-main {
     border-radius: 5px;
     object-fit: cover;
     transform-origin: center;
-    height: 100%;
-    min-width: 100%;
+    height: calc(100% + 2px);
+    min-width: calc(100% + 2px);
     z-index: -1;
     will-change: transform, scale, left, width;
     transition: opacity 0.8s ease, scale 0.3s ease-out;

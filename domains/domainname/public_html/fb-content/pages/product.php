@@ -46,6 +46,16 @@
     }
     $tags = ($result["type"]=="EMPTY") ? "Nincsenek termékhez csatolt címkék." : $result["message"];
 
+    $result = selectData("SELECT * FROM health_effect INNER JOIN product_health_effect ON product_health_effect.health_effect_id=health_effect.id WHERE product_health_effect.product_id=? AND health_effect.benefit=1;", $product['id'], "i");
+    if (typeOf($result, "ERROR")) {
+      logError("Sikertelen termék hatások lekérdezés: ".json_encode($result), "productpage.log", $_SERVER["DOCUMENT_ROOT"]."/13c-vizsgaprojekt/.logs");
+      http_response_code(404);
+      include $_SERVER["DOCUMENT_ROOT"] . "/fb-content/pages/error-404.html";
+      exit;
+    }
+
+    $benefits = $result["message"];
+  
     // Hasonló termékek lekérése
 ?>
 <!DOCTYPE html>

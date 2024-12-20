@@ -15,14 +15,17 @@
 
     $result = selectData("SELECT * FROM health_effect");
     if (typeOf($result, "ERROR")) {
-        $error = "Nem sikerült betölteni az egészségügyi hatásokat.";
+        $healthEffectError = "Nem sikerült betölteni az egészségügyi hatásokat.";
     }
     else {
         if (!is_array($result["message"])) {
-            $error = "Nincsenek megadva egészségügyi hatások.";
+            $healthEffectError = "Nincsenek megadva egészségügyi hatások.";
         }
         else {
-            $benefits = $result["message"];
+            $healthEffects = $result["message"];
+
+            $benefits = array_filter($healthEffects, function ($e) {return $e["benefit"] == 1;});
+            $sideEffects = array_filter($healthEffects, function ($e) {return $e["benefit"] == 0;});
         }
     }
 
@@ -132,10 +135,18 @@
 
         $productCategoryData = array(
             "category" => $_POST['category'],
-            "subcategory" => $_POST['subcategory'],
+            "subcategory" => $_POST['subcategory']
         );
 
-        $result = createProduct($productData, $productPageData, $productCategoryData);
+        $productHealthEffectsData = array();
+        if ($_POST["benefits"] != "null") {
+            $productHealthEffectsData["benefits"] = explode(",", $_POST["benefits"]);
+        }
+        if ($_POST["side_effects"] != "null") {
+            $productHealthEffectsData["side_effects"] = explode(",", $_POST["side_effects"]);
+        }
+
+        $result = createProduct($productData, $productPageData, $productCategoryData, $productHealthEffectsData);
 
         if (!typeOf($result, "ERROR")) {
             $message = "<div class='success'>Termék sikeresen létrehozva!</div></div>";
@@ -903,148 +914,100 @@
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="benefits">Jótékony hatások</label>
-                                <div class="multiselect" id="fruits" name="fruits">
-                                    <div class="body">
-                                        <div class="selected-item-count">Elemek kiválasztása</div>
-                                        <div class="expander">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="16"
-                                            height="16"
-                                            fill="currentColor"
-                                            class="bi bi-chevron-down"
-                                            viewBox="0 0 16 16"
-                                        >
-                                            <path
-                                            fill-rule="evenodd"
-                                            d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"
-                                            />
+                                <label for="benefits-select">Jótékony hatások</label>
+                                <div class="input-content no-overflow">
+                                    <div class="input-container">
+                                        <?php if (isset($healthEffectError) && !empty($healthEffectError)): ?>
+                                            <div style="color: #771201"><?= htmlspecialchars($healthEffectError) ?></div>
+                                        <?php else: ?>
+                                            <div class="multiselect" id="benefits-select">
+                                                <div class="body">
+                                                    <div class="selected-item-count">Elemek kiválasztása</div>
+                                                    <div class="expander">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                                                    </svg>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <div class="multiselect-items">
+                                                        <div class="search-input">
+                                                            <input type="text" class="multiselect-filter" placeholder="Keresés...">
+                                                        </div>
+                                                        <div class="option visible" data-label-value="Select All">
+                                                            <div class="check">
+                                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                            </div>
+                                                            <div class="label">Összes kiválasztása</div>
+                                                        </div>
+                                                        <hr />
+                                                        <?php foreach ($benefits as $index=>$benefit): ?>
+                                                            <div class="option visible" data-value="<?= htmlspecialchars($benefit["id"])?>" data-label-value="<?= htmlspecialchars($benefit["name"])?>">
+                                                                <div class="check">
+                                                                    <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                                </div>
+                                                                <div class="label"><?= htmlspecialchars($benefit["name"]) ?></div>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                        <div class="no-result">Nincsenek találatok!</div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="benefits" class="multiselect-selectedItems" value="null" />
+                                            </div>
+                                        <?php endif; ?>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
                                         </svg>
-                                        </div>
                                     </div>
-                                    <div class="dropdown">
-                                        <div class="multiselect-items">
-                                            <div class="search-input">
-                                                <input
-                                                type="text"
-                                                name="multiselect_filter"
-                                                class="multiselect-filter"
-                                                placeholder="Keresés..."
-                                                >
-                                            </div>
-                                            <div class="option visible" data-value="Select All">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Összes kiválasztása</div>
-                                            </div>
-                                            <hr />
-                                            <div class="option visible" data-value="Apple">
-                                                <div class="check" data-value>
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Apple</div>
-                                            </div>
-                                            <div class="option visible" data-value="Banana">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Banana</div>
-                                            </div>
-                                            <div class="option visible" data-value="Blackberry">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Blackberry</div>
-                                            </div>
-                                            <div class="option visible" data-value="Blueberry">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Blueberry</div>
-                                            </div>
-                                            <div class="option visible" data-value="Cherry">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Cherry</div>
-                                            </div>
-                                            <div class="option visible" data-value="Cranberry">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Cranberry</div>
-                                            </div>
-                                            <div class="option visible" data-value="Grapes">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Grapes</div>
-                                            </div>
-                                            <div class="option visible" data-value="Kiwi">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Kiwi</div>
-                                            </div>
-                                            <div class="option visible" data-value="Mango">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Mango</div>
-                                            </div>
-                                            <div class="option visible" data-value="Orange">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Orange</div>
-                                            </div>
-                                            <div class="option visible" data-value="Peach">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Peach</div>
-                                            </div>
-                                            <div class="option visible" data-value="Pear">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Pear</div>
-                                            </div>
-                                            <div class="option visible" data-value="Pineapple">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Pineapple</div>
-                                            </div>
-                                            <div class="option visible" data-value="Raspberry">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Raspberry</div>
-                                            </div>
-                                            <div class="option visible" data-value="Strawberry">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Strawberry</div>
-                                            </div>
-                                            <div class="option visible" data-value="Watermelon">
-                                                <div class="check">
-                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
-                                                </div>
-                                                <div class="label">Watermelon</div>
-                                            </div>
-                                            <div class="no-result">Nincsenek találatok!</div>
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="multiselect-selectedItems" value="null" />
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="side-effects">Mellékhatások</label>
-                                <select name="benefits" id="benefits" data-multi-select multiple></select>
+                                <label for="side-effects-select">Mellékhatások</label>
+                                <div class="input-content no-overflow">
+                                    <div class="input-container">
+                                        <?php if (isset($healthEffectError) && !empty($healthEffectError)): ?>
+                                            <div style="color: #771201"><?= htmlspecialchars($healthEffectError) ?></div>
+                                        <?php else: ?>
+                                            <div class="multiselect" id="side-effects-select">
+                                                <div class="body">
+                                                    <div class="selected-item-count">Elemek kiválasztása</div>
+                                                    <div class="expander">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                                                    </svg>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <div class="multiselect-items">
+                                                        <div class="search-input">
+                                                            <input type="text" class="multiselect-filter" placeholder="Keresés...">
+                                                        </div>
+                                                        <div class="option visible" data-label-value="Select All">
+                                                            <div class="check">
+                                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                            </div>
+                                                            <div class="label">Összes kiválasztása</div>
+                                                        </div>
+                                                        <hr />
+                                                        <?php foreach ($sideEffects as $index=>$sideEffect): ?>
+                                                            <div class="option visible" data-value="<?= htmlspecialchars($sideEffect["id"]) ?>" data-label-value="<?= htmlspecialchars($benefit["name"])?>">
+                                                                <div class="check">
+                                                                    <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                                </div>
+                                                                <div class="label"><?= htmlspecialchars($sideEffect["name"]) ?></div>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                        <div class="no-result">Nincsenek találatok!</div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="side_effects" class="multiselect-selectedItems" value="null" />
+                                            </div>
+                                        <?php endif; ?>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                        </svg>
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-divider">Termékoldal adatai</div>
                             <div class="inline-input">

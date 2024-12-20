@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2024. Dec 19. 16:03
+-- Gép: 127.0.0.1
+-- Létrehozás ideje: 2024. Dec 20. 10:52
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -395,7 +395,9 @@ ALTER TABLE `product`
 -- A tábla indexei `product_health_effect`
 --
 ALTER TABLE `product_health_effect`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`),
+  ADD KEY `health_effect_id` (`health_effect_id`);
 
 --
 -- A tábla indexei `product_image`
@@ -562,6 +564,13 @@ ALTER TABLE `delivery_info`
 --
 ALTER TABLE `order`
   ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `product_health_effect`
+--
+ALTER TABLE `product_health_effect`
+  ADD CONSTRAINT `product_health_effect_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `product_health_effect_ibfk_2` FOREIGN KEY (`health_effect_id`) REFERENCES `health_effect` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `product_image`

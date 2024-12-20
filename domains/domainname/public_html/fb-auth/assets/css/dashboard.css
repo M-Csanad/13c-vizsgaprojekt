@@ -712,11 +712,15 @@ section.active {
         height: 60px !important;
         gap: 5px !important;
     }
-    .inline-input > *:not(label) {
+    .inline-input > * {
         width: 100% !important;
+        max-width: none !important;
     }
     .tag-wrapper {
         height: 100px !important;
+    }
+    .tag-wrapper > .tag-body {
+        max-width: 100%;
     }
     .file-input > .input-content > div > .main-wrapper {
         width: 100% !important;
