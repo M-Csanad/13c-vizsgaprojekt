@@ -135,22 +135,27 @@ $menu_items = [
                 <?php foreach ($menu_items as $item): ?>
                     <div class="fb-nav-content">
                         <?php if (isset($item['id'])): ?>
-                            <a id="<?= htmlspecialchars($item['id']) ?>" class="fb-link fb-nav-link"><?= htmlspecialchars($item['name']) ?></a>
+                            <a id="<?= htmlspecialchars($item['id']) ?>"
+                                class="fb-link fb-nav-link"><?= htmlspecialchars($item['name']) ?></a>
                         <?php else: ?>
-                            <a href="<?= htmlspecialchars($item['url']) ?>" class="fb-link fb-nav-link"><?= htmlspecialchars($item['name']) ?></a>
+                            <a href="<?= htmlspecialchars($item['url']) ?>"
+                                class="fb-link fb-nav-link"><?= htmlspecialchars($item['name']) ?></a>
                         <?php endif; ?>
                     </div>
                 <?php endforeach; ?>
             </div>
         </div>
-        <div class="hamburger-icon" onclick="toggleMobileMenu()">
+        <div class="hamburger-icon">
             <div class="line line1"></div>
             <div class="line line2"></div>
             <div class="line line3"></div>
         </div>
     </div>
-    <div class="hamburger-menu"></div>
+    <div class="hamburger-menu hidden">
+        <?php include 'mobileNavbar.php'; ?>
+    </div>
 </nav>
+
 
 <div id="fb-subcontentContainer" class="fb-nav-subcontent-container">
     <div id="fb-categoryContentWrapper" class="fb-nav-subcontent-wrapper">
@@ -158,7 +163,8 @@ $menu_items = [
             <a href="<?= htmlspecialchars($content["url"]) ?>">
                 <div class="fb-nav-subcontent-frame">
                     <div class="fb-nav-subcontent-imgblock">
-                        <img src="<?= htmlspecialchars($content['img']) ?>" alt="<?= htmlspecialchars($content['title']) ?> image" />
+                        <img src="<?= htmlspecialchars($content['img']) ?>"
+                            alt="<?= htmlspecialchars($content['title']) ?> image" />
                         <h2 class="fb-subcontent-imgblock-title __t02-men1"><?= htmlspecialchars($content['title']) ?></h2>
                     </div>
                 </div>

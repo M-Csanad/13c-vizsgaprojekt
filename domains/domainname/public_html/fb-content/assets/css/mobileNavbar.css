@@ -1,10 +1,12 @@
+@import url("./root.css");
+
 .navbar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
+  width: 66%;
   height: 100vh;
-  background: #333;
+  background: var(--dark_tertiary);
   color: white;
   display: flex;
   flex-direction: column;
@@ -14,19 +16,47 @@
   overflow: hidden;
 }
 
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.menu::-webkit-scrollbar-track {
+  background: var(--dark_quaternary);
+  border-radius: 20px;
+}
+
+.menu::-webkit-scrollbar {
+  width: 8px;
+  background: var(--dark_quaternary);
+  border-radius: 20px;
+}
+
+.menu::-webkit-scrollbar-thumb {
+  background: var(--dark_senary);
+  border-radius: 20px;
+}
+
 .menu {
   list-style: none;
   padding: 0;
   margin: 0;
-  width: 100%;
-  text-align: center;
+
+  position: relative;
+  top: 0;
+  width: 96%;
+  height: 72%;
+  overflow-y: auto;
   z-index: 1;
   transition: transform 0.4s ease-in-out;
 }
 
 .menu-item {
-  padding: 15px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: space-between;
+  padding: 24px 15px;
+  align-items: center;
+  border-bottom: 1px solid var(--dark_tertiary);
   cursor: pointer;
 }
 
@@ -34,12 +64,25 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
+.menu-item a,
+.menu-item p {
+  align-items: center;
+  display: flex;
+  height: 30px;
+  transition: 0.2s ease-in-out;
+}
+
+.menu-item a:hover {
+  color: #baffd3;
+  transition: 0.2s ease-in-out;
+}
+
 .submenu {
   position: absolute;
   top: 0;
   width: 100%;
   height: 100%;
-  background: #444;
+  background: var(--dark_tertiary);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -58,19 +101,31 @@
   transform: translateX(100%);
 }
 
+.menu-item-logo {
+  display: flex;
+  align-items: center;
+}
+
 .back {
   position: absolute;
-  top: 20px;
+  top: 2.4rem;
   left: 20px;
   color: white;
   background: none;
   border: none;
-  font-size: 18px;
+
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
   cursor: pointer;
 }
 
 .back:hover {
   text-decoration: underline;
+}
+
+.back .back-logo {
+  padding-right: 12px;
 }
 
 @media (max-width: 768px) {
@@ -112,41 +167,6 @@
 
   .hamburger-menu.active {
     display: flex; /* Aktív állapotban jelenjen meg */
-  }
-
-  .hamburger-menu-item {
-    padding: 15px;
-    color: white;
-    text-align: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  }
-  .hamburger-menu-item h3 {
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .hamburger-menu-item h3::after {
-    content: "\25BC"; /* Lefelé mutató nyíl */
-    margin-left: 10px;
-    font-size: 0.8em;
-    transition: transform 0.3s ease;
-  }
-
-  .hamburger-menu-item ul {
-    list-style: none;
-    padding: 0;
-    margin: 10px 0 0;
-  }
-
-  .hamburger-menu-item ul li {
-    padding: 8px 0;
-  }
-
-  .hamburger-menu-item ul li a {
-    color: var(--light-gray);
-    text-decoration: none;
   }
 
   #fb-subcontentContainer {
