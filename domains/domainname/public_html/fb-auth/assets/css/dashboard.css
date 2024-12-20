@@ -530,6 +530,12 @@ section {
     .inline-input > .input-content > div > input:not(:disabled) ~ svg.disabled, .inline-input > .input-content > div > select:not(:disabled) ~ svg.disabled {
         display: none;
     }
+    .inline-input > .input-content:has(.multiselect) > div:not(:has(.check.on)) > svg.valid {
+        opacity: 0;
+    }
+    .inline-input > .input-content:has(.multiselect) > div:has(.check.on) > svg.valid {
+        opacity: 1;
+    }
 
     .inline-input > .input-content > div > input:disabled, 
     .inline-input > .input-content > div > select:disabled {
@@ -714,6 +720,8 @@ section.active {
     }
     .inline-input > * {
         width: 100% !important;
+    }
+    .fill-width {
         max-width: none !important;
     }
     .tag-wrapper {

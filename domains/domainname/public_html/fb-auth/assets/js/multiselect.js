@@ -13,45 +13,53 @@ document.querySelectorAll(".multiselect").forEach((multiSelect) => {
 
   // Jelölőnégyzet bepipálása, kipipálása kattintásra
   function toggleCheck(e) {
-    let option = e.closest(".option");
-    if (!option) return;
+  let option = e.closest(".option");
+  if (!option) return;
 
-    let selectedValue = option.dataset.labelValue ?? null;
-    let selectedId = option.dataset.value ?? null;
-    e.classList.toggle("on");
+  let selectedValue = option.dataset.labelValue ?? null;
+  let selectedId = option.dataset.value ?? null;
+  e.classList.toggle("on");
 
-    if (e.classList.contains("on")) {
-      // Ha az "Összes kiválasztása"- van kiválasztva, akkor mindet kiválasztja
-      if (selectedValue == "Select All") {
-        checkElements.forEach((e) => {
-          if (
-            !e.classList.contains("on") &&
-            e.closest(".option").classList.contains("visible")
-          )
-            toggleCheck(e);
-        });
-      } else {
-        if (selectedId) selectedItems.push(selectedId);
-      }
+  if (e.classList.contains("on")) {
+    // Ha az "Összes kiválasztása"- van kiválasztva, akkor mindet kiválasztja
+    if (selectedValue == "Select All") {
+      checkElements.forEach((e) => { if (!e.classList.contains("on") && e.closest(".option").classList.contains("visible")) toggleCheck(e); });
     } else {
-      // Ha az "Összes kiválasztása"- van kiválasztva, akkor minden kiválasztást töröl
-      if (selectedValue == "Select All") {
-        checkElements.forEach((e) => {
-          if (e.classList.contains("on")) toggleCheck(e);
-        });
-      }
-      selectedItems = selectedItems.filter((e) => e !== selectedId);
+      if (selectedId) selectedItems.push(selectedId);
     }
-
-    multiSelect.querySelector(".selected-item-count").innerHTML =
-      selectedItems.length == 0
-        ? "Elemek kiválasztása"
-        : `<b>${selectedItems.length}</b> kiválasztott elem`;
-
-    // A rejtett mező értékének frissítése
-    selectedItemsContainer.value =
-      selectedItems.length > 0 ? selectedItems.join(",") : null;
+  } else {
+    // Ha az "Összes kiválasztása"- van kiválasztva, akkor minden kiválasztást töröl
+    if (selectedValue == "Select All") {
+      checkElements.forEach((e) => {
+        if (e.classList.contains("on")) toggleCheck(e);
+      });
+    }
+    selectedItems = selectedItems.filter((e) => e !== selectedId);
   }
+
+  // Az "Összes kiválasztása" automatikus bepipálása, ha minden elem be van pipálva
+  let allOptionsSelected = Array.from(optionElements).every(
+    (e) => e.dataset.labelValue === "Select All" || e.querySelector(".check").classList.contains("on")
+  );
+
+  if (allOptionsSelected) {
+    let selectAllOption = Array.from(optionElements).find(
+      (e) => e.dataset.labelValue === "Select All"
+    );
+    if (selectAllOption && !selectAllOption.querySelector(".check").classList.contains("on")) {
+      toggleCheck(selectAllOption.querySelector(".check"));
+    }
+  }
+
+  multiSelect.querySelector(".selected-item-count").innerHTML =
+    selectedItems.length == 0
+      ? "Elemek kiválasztása"
+      : `<b>${selectedItems.length}</b> kiválasztott elem`;
+
+  // Rejtett mező értékének frissíése
+  selectedItemsContainer.value =
+    selectedItems.length > 0 ? selectedItems.join(",") : "null";
+}
 
   // Szűrés alkalmazása
   filterInput.addEventListener("input", () => {

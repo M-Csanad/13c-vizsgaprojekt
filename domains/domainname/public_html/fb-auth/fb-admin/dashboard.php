@@ -169,7 +169,15 @@
 
         if (isset($_POST["tags"])) $productData["tags"] = $_POST['tags'];
 
-        $result = updateProduct($productData);
+        $productHealthEffectsData = array();
+        if ($_POST["benefits"] != "null") {
+            $productHealthEffectsData["benefits"] = explode(",", $_POST["benefits"]);
+        }
+        if ($_POST["side_effects"] != "null") {
+            $productHealthEffectsData["side_effects"] = explode(",", $_POST["side_effects"]);
+        }
+
+        $result = updateProduct($productData, $productHealthEffectsData);
         if (!typeOf($result, "ERROR")) {
             $message = "<div class='success'>Termék sikeresen módosítva!</div></div>";
         }
@@ -907,14 +915,14 @@
                                             <?= htmlspecialchars($tags) ?>
                                         <?php else: ?>
                                             <?php foreach ($tags as $index => $tag): ?>
-                                                <label for='tag<?= htmlspecialchars($index); ?>-modify' class='tag-checkbox'><img loading='lazy' src='<?= htmlspecialchars($tag['icon_uri']) ?>' draggable='false' title='<?= htmlspecialchars($tag['name']) ?>' alt='<?= htmlspecialchars($tag['name']) ?>'><input type='checkbox' name='tags[]' id='tag<?= htmlspecialchars($index) ?>-modify' value='<?= htmlspecialchars($tag['id']) ?>'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>
+                                                <label for='tag<?= htmlspecialchars($index); ?>' class='tag-checkbox'><img loading='lazy' src='<?= htmlspecialchars($tag['icon_uri']) ?>' draggable='false' title='<?= htmlspecialchars($tag['name']) ?>' alt='<?= htmlspecialchars($tag['name']) ?>'><input type='checkbox' name='tags[]' id='tag<?= htmlspecialchars($index) ?>' value='<?= htmlspecialchars($tag['id']) ?>'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
                             <div class="inline-input">
-                                <label for="benefits-select">Jótékony hatások</label>
+                                <label for="benefits-select" class="fill-width">Jótékony hatások</label>
                                 <div class="input-content no-overflow">
                                     <div class="input-container">
                                         <?php if (isset($healthEffectError) && !empty($healthEffectError)): ?>
@@ -930,7 +938,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="dropdown">
-                                                    <div class="multiselect-items">
+                                                    <div class="multiselect-items" name="benefits-container">
                                                         <div class="search-input">
                                                             <input type="text" class="multiselect-filter" placeholder="Keresés...">
                                                         </div>
@@ -978,7 +986,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="dropdown">
-                                                    <div class="multiselect-items">
+                                                    <div class="multiselect-items" name="side-effects-container">
                                                         <div class="search-input">
                                                             <input type="text" class="multiselect-filter" placeholder="Keresés...">
                                                         </div>
@@ -1304,6 +1312,102 @@
                                                 <label for='tag<?= htmlspecialchars($index); ?>-modify' class='tag-checkbox'><img loading='lazy' src='<?= htmlspecialchars($tag['icon_uri']) ?>' draggable='false' title='<?= htmlspecialchars($tag['name']) ?>' alt='<?= htmlspecialchars($tag['name']) ?>'><input type='checkbox' name='tags[]' id='tag<?= htmlspecialchars($index) ?>-modify' value='<?= htmlspecialchars($tag['id']) ?>'><svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-check2 tag-check' viewBox='0 0 16 16'><path d='M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0'/></svg></label>
                                             <?php endforeach; ?>
                                         <?php endif; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inline-input">
+                                <label for="benefits-select-modify" class="fill-width">Jótékony hatások</label>
+                                <div class="input-content no-overflow">
+                                    <div class="input-container">
+                                        <?php if (isset($healthEffectError) && !empty($healthEffectError)): ?>
+                                            <div style="color: #771201"><?= htmlspecialchars($healthEffectError) ?></div>
+                                        <?php else: ?>
+                                            <div class="multiselect" id="benefits-select-modify">
+                                                <div class="body">
+                                                    <div class="selected-item-count">Elemek kiválasztása</div>
+                                                    <div class="expander">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                                                    </svg>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <div class="multiselect-items" name="benefits-container">
+                                                        <div class="search-input">
+                                                            <input type="text" class="multiselect-filter" placeholder="Keresés...">
+                                                        </div>
+                                                        <div class="option visible" data-label-value="Select All">
+                                                            <div class="check">
+                                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                            </div>
+                                                            <div class="label">Összes kiválasztása</div>
+                                                        </div>
+                                                        <hr />
+                                                        <?php foreach ($benefits as $index=>$benefit): ?>
+                                                            <div class="option visible" data-value="<?= htmlspecialchars($benefit["id"])?>" data-label-value="<?= htmlspecialchars($benefit["name"])?>">
+                                                                <div class="check">
+                                                                    <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                                </div>
+                                                                <div class="label"><?= htmlspecialchars($benefit["name"]) ?></div>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                        <div class="no-result">Nincsenek találatok!</div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="benefits" class="multiselect-selectedItems" value="null" />
+                                            </div>
+                                        <?php endif; ?>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="inline-input">
+                                <label for="side-effects-select-modify">Mellékhatások</label>
+                                <div class="input-content no-overflow">
+                                    <div class="input-container">
+                                        <?php if (isset($healthEffectError) && !empty($healthEffectError)): ?>
+                                            <div style="color: #771201"><?= htmlspecialchars($healthEffectError) ?></div>
+                                        <?php else: ?>
+                                            <div class="multiselect" id="side-effects-select-modify">
+                                                <div class="body">
+                                                    <div class="selected-item-count">Elemek kiválasztása</div>
+                                                    <div class="expander">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                                                    </svg>
+                                                    </div>
+                                                </div>
+                                                <div class="dropdown">
+                                                    <div class="multiselect-items" name="side-effects-container">
+                                                        <div class="search-input">
+                                                            <input type="text" class="multiselect-filter" placeholder="Keresés...">
+                                                        </div>
+                                                        <div class="option visible" data-label-value="Select All">
+                                                            <div class="check">
+                                                                <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                            </div>
+                                                            <div class="label">Összes kiválasztása</div>
+                                                        </div>
+                                                        <hr />
+                                                        <?php foreach ($sideEffects as $index=>$sideEffect): ?>
+                                                            <div class="option visible" data-value="<?= htmlspecialchars($sideEffect["id"]) ?>" data-label-value="<?= htmlspecialchars($sideEffect["name"])?>">
+                                                                <div class="check">
+                                                                    <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
+                                                                </div>
+                                                                <div class="label"><?= htmlspecialchars($sideEffect["name"]) ?></div>
+                                                            </div>
+                                                        <?php endforeach; ?>
+                                                        <div class="no-result">Nincsenek találatok!</div>
+                                                    </div>
+                                                </div>
+                                                <input type="hidden" name="side_effects" class="multiselect-selectedItems" value="null" />
+                                            </div>
+                                        <?php endif; ?>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                        </svg>
                                     </div>
                                 </div>
                             </div>

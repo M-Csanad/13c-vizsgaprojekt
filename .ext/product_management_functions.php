@@ -125,11 +125,7 @@ function connectProductTags($id, $tags) {
 function connectProductHealthEffects($id, $productHealthEffectsData) {
     $results = array();
     
-    foreach ($productHealthEffectsData as $type=>$effects) {
-        $table = 'product_health_effect';
-
-        $benefit = $effects == "benefit";
-        
+    foreach ($productHealthEffectsData as $type=>$effects) { 
         $placeholderList = implode(", ", array_fill(0, count($effects), "(?, ?)"));
         $values = array();
         $typeString = "";
@@ -260,6 +256,37 @@ function removeProduct($productData) {
 
 /* ---------------------------- Termék módosítása --------------------------- */
 
+function updateProductHealthEffect($id, $productHealthEffectsData) {
+    
+    $query = "DELETE FROM product_health_effect WHERE product_health_effect.product_id=?;";
+    $result = updateData($query, $id, "i");
+    if (typeOf($result, "ERROR")) {
+        return ["message" => "Sikertelen törlés a product_health_effect táblából.", "type" => "ERROR"];
+    }
+
+    if (!isset($productHealthEffectsData["benefits"]) && !isset($productHealthEffectsData["side_effects"]) || empty($productHealthEffectsData["benefits"]) && empty($productHealthEffectsData["side_effects"])) return ["message" => "Nincs változás.", "type" => "SUCCESS"];
+    
+    $values = array();
+    $placeholders = array();
+    $typeString = "";
+    
+    foreach ($productHealthEffectsData as $type=>$effects) {
+        foreach ($effects as $effectId) {
+            array_push($placeholders, "(?, ?)");
+            array_push($values, $id, $effectId);
+            $typeString .= "ii";
+        }
+    }
+    
+    $query = "INSERT INTO product_health_effect (product_id, health_effect_id) VALUES " . implode(", ", $placeholders);
+    $result = updateData($query, $values, $typeString);
+    if (typeOf($result, "ERROR")) {
+        return ["message" => "Sikertelen felvitel: ".$result["message"], "type" => "ERROR"];
+    }
+
+    return ["message" => "Sikeres törlés.", "type" => "SUCCESS"];
+}
+
 function updateProductTags($productData) {
     
     $query = "DELETE FROM product_tag WHERE product_tag.product_id=?;";
@@ -267,7 +294,7 @@ function updateProductTags($productData) {
     if (typeOf($result, "ERROR")) {
         return ["message" => "Sikertelen törlés.", "type" => "ERROR"];
     }
-
+    
     if (!isset($productData["tags"])) return ["message" => "Nincs változás.", "type" => "SUCCESS"];
     
     $values = array();
@@ -387,7 +414,7 @@ function updateProductImages($productData, $images, $paths) {
     return connectProductImages($ids, $productData["id"]);
 }
 
-function updateProductData($productData, $images, $paths) {
+function updateProductData($productData, $images, $paths, $productHealthEffectsData) {
     
     $fields = array("name", "unit_price", "stock", "description");
     $values = array(
@@ -416,6 +443,11 @@ function updateProductData($productData, $images, $paths) {
     }
     
     $result = updateProductTags($productData);
+    if (!typeOf($result, "SUCCESS")) {
+        return $result;
+    }
+
+    $result = updateProductHealthEffect($productData['id'], $productHealthEffectsData);
     if (!typeOf($result, "SUCCESS")) {
         return $result;
     }
@@ -483,7 +515,7 @@ function updateProductDirectory($productData, $images) {
     return ["message" => $paths, "type" => "SUCCESS"];
 }
 
-function updateProduct($productData) {
+function updateProduct($productData, $productHealthEffectsData) {
     include_once "init.php";
 
     if (hasUploadError()) {
@@ -521,7 +553,7 @@ function updateProduct($productData) {
         }
     }
 
-    $result = updateProductData($productData, $images, $paths);
+    $result = updateProductData($productData, $images, $paths, $productHealthEffectsData);
     if (!typeOf($result, "SUCCESS")) {
         return $result;
     }

@@ -612,13 +612,8 @@ hr {
   }
 }
 
-.health-benefits > ul {
+.health-benefits > ul, .precautions > ul {
   padding-left: 1rem;
-  padding-bottom: 1rem;
-  font-size: 15px;
-}
-
-.precautions > div {
   padding-bottom: 1rem;
   font-size: 15px;
 }

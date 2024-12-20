@@ -46,7 +46,7 @@
     }
     $tags = ($result["type"]=="EMPTY") ? "Nincsenek termékhez csatolt címkék." : $result["message"];
 
-    $result = selectData("SELECT * FROM health_effect INNER JOIN product_health_effect ON product_health_effect.health_effect_id=health_effect.id WHERE product_health_effect.product_id=? AND health_effect.benefit=1;", $product['id'], "i");
+    $result = selectData("SELECT * FROM health_effect INNER JOIN product_health_effect ON product_health_effect.health_effect_id=health_effect.id WHERE product_health_effect.product_id=?", $product['id'], "i");
     if (typeOf($result, "ERROR")) {
       logError("Sikertelen termék hatások lekérdezés: ".json_encode($result), "productpage.log", $_SERVER["DOCUMENT_ROOT"]."/13c-vizsgaprojekt/.logs");
       http_response_code(404);
@@ -54,7 +54,10 @@
       exit;
     }
 
-    $benefits = $result["message"];
+    if (is_array($result["message"])) {
+      $benefits = array_filter($result["message"], function ($e) {return $e["benefit"] == 1;});
+      $side_effects = array_filter($result["message"], function ($e) {return $e["benefit"] == 0;});
+    }
   
     // Hasonló termékek lekérése
 ?>
@@ -311,11 +314,17 @@
               </svg>
               <div>Jótékony hatások</div>
             </header>
-            <ul>
-              <li>
-                TODO
-              </li>
-            </ul>
+            <?php if (empty($benefits)): ?>
+              <div>Nincsenek jótékony hatások csatolva ehhez a termékhez.</div>
+            <?php else: ?>
+              <ul>
+                <?php foreach ($benefits as $index=>$benefit): ?>
+                  <li>
+                    <b><?= htmlspecialchars($benefit["name"]); ?></b>: <?= htmlspecialchars($benefit["description"]); ?>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            <?php endif; ?>
           </div>
           <div class="precautions">
             <header class="subtitle">
@@ -336,7 +345,17 @@
               </svg>
               <div>Mellékhatások</div>
             </header>
-            <div>TODO</div>
+            <?php if (empty($side_effects)): ?>
+            <div>Nincsenek mellékhatásai.</div>
+            <?php else: ?>
+              <ul>
+                <?php foreach ($side_effects as $index=>$side_effect): ?>
+                  <li>
+                    <b><?= htmlspecialchars($side_effect["name"]); ?></b>: <?= htmlspecialchars($side_effect["description"]); ?>
+                  </li>
+                <?php endforeach; ?>
+              </ul>
+            <?php endif; ?>
           </div>
           <div class="tags-container">
             <header class="subtitle">

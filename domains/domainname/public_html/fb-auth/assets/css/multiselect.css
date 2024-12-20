@@ -13,7 +13,7 @@
   }
 
   & > .body {
-    border-bottom-color: #399841;
+    border-bottom-color: #595959;
     border-style: solid;
     border-width: 0px 0px 3px 0px;
     height: 100%;
@@ -22,7 +22,12 @@
     justify-content: space-between;
     padding-inline: 0.5rem;
     background-color: #eaeaea;
-    cursor: pointer;
+    user-select: none;
+    transition: border-color 0.3s ease;
+  }
+
+  &:has(.check.on) > .body {
+    border-bottom-color: #399841;
   }
 
   & > .body > .selected-items {
@@ -173,9 +178,11 @@
   }
 
   & > .dropdown > .multiselect-items > .option > .check > img {
+    max-width: 100%;
+    max-height: 100%;
+    will-change: scale;
     scale: 0;
     filter: invert(1);
-    will-change: scale;
     transition: scale 0.3s ease;
   }
 

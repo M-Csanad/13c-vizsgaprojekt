@@ -86,6 +86,8 @@ function initializeSearch(search) {
                 field: "tags",
                 value: product.tag_ids ? product.tag_ids.split(",") : null,
               },
+              { field: "benefits-container", value: product.benefit_ids ? product.benefit_ids.split(",") : null},
+              { field: "side-effects-container", value: product.side_effect_ids ? product.side_effect_ids.split(",") : null}
             ],
           });
         }
@@ -224,13 +226,16 @@ function initializeSearch(search) {
     if (outputData.fields) {
       outputData.fields.forEach(({ field, value }) => {
         const input = parentForm.querySelector(`[name=${field}]`);
+        console.log(input)
         if (input) {
           if (value) {
             if (Array.isArray(value)) {
               for (let id of value) {
-                input
-                  .querySelector(`input[type="checkbox"][value="${id}"]`)
-                  .parentElement.click();
+                let clickElement = input.querySelector(`input[value="${id}"]`);
+                if (!clickElement) clickElement = input.querySelector(`.option[data-value="${id}"] > .check`);
+
+                console.log(clickElement)
+                clickElement.click();
               }
             } else {
               input.value = value;
