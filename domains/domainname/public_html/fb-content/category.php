@@ -6,11 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <link rel="stylesheet"
-    href="http://localhost:8080/13c-vizsgaprojekt/domains/domainname/public_html/fb-content/assets/css/box.css" />
+    href="http://localhost//fb-content/assets/css/box.css" />
   <link rel="stylesheet"
-    href="http://localhost:8080/13c-vizsgaprojekt/domains/domainname/public_html/fb-content/assets/css/font.css" />
+    href="http://localhost//fb-content/assets/css/font.css" />
   <link rel="stylesheet"
-    href="http://localhost:8080/13c-vizsgaprojekt/domains/domainname/public_html/fb-content/fb-categories/css/category-cards.css" />
+    href="http://localhost//fb-content/fb-categories/css/category-cards.css" />
   <title>Category Cards</title>
 </head>
 
@@ -72,7 +72,7 @@
             <div class="Card_footerLeft">
               <div class="Card_imageWrapper Card_logoImage">
                 <img
-                  src="http://localhost:8080/13c-vizsgaprojekt/domains/domainname/public_html/fb-content/assets/media/images/logos/around-the-globe.png"
+                  src="http://localhost//fb-content/assets/media/images/logos/around-the-globe.png"
                   alt="Travel Logo" />
               </div>
             </div>
@@ -100,7 +100,7 @@
             <div class="Card_footerLeft">
               <div class="Card_imageWrapper Card_logoImage">
                 <img
-                  src="http://localhost:8080/13c-vizsgaprojekt/domains/domainname/public_html/fb-content/assets/media/images/logos/parfume.png"
+                  src="http://localhost//fb-content/assets/media/images/logos/parfume.png"
                   alt="Perfume Logo" />
               </div>
             </div>
@@ -128,7 +128,7 @@
             <div class="Card_footerLeft">
               <div class="Card_imageWrapper Card_logoImage">
                 <img
-                  src="http://localhost:8080/13c-vizsgaprojekt/domains/domainname/public_html/fb-content/assets/media/images/logos/campsite.png"
+                  src="http://localhost//fb-content/assets/media/images/logos/campsite.png"
                   alt="Accessories Logo" />
               </div>
             </div>

@@ -6,7 +6,7 @@
 
 @font-face {
   font-family: "Playfair Display";
-  src: url("../fonts/PlayfairDisplay-VariableFont_wght.woff2") format("woff2");
+  src: url("../../assets/font/PlayfairDisplay-VariableFont_wght.woff2") format("woff2");
   /* font-weight: 100 900; A betűtípus vastagsági tartománya */
   font-style: normal;
   font-display: swap;
@@ -14,7 +14,7 @@
 
 @font-face {
   font-family: "Roboto";
-  src: url("../fonts/Roboto-Regular.woff2") format("woff2");
+  src: url("../../assets/font/Roboto-Regular.woff2") format("woff2");
   /* font-weight: 100 900; A betűtípus vastagsági tartománya */
   font-style: normal;
   font-display: swap;
@@ -440,17 +440,17 @@ hr {
   width: 24px;
   height: 24px;
   display: inline-block;
-  background: url("../images/star-empty.svg") no-repeat center;
+  background: url("../media/images/star-empty.svg") no-repeat center;
   background-size: contain;
 }
 
 .stars > span.filled {
-  background: url("../images/star-filled.svg") no-repeat center;
+  background: url("../media/images/star-filled.svg") no-repeat center;
   background-size: contain;
 }
 
 .stars > span.half {
-  background: url("../images/star-half.svg") no-repeat center;
+  background: url("../media/images/star-half.svg") no-repeat center;
   background-size: contain;
 }
 

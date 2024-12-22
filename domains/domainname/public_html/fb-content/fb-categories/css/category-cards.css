@@ -217,7 +217,7 @@ main {
 }
 
 .card-pattern {
-  background-image: url(http://localhost:8080/13c-vizsgaprojekt/domains/domainname/public_html/fb-content/assets/media/images/logos/herbalLogo_mini_white.png);
+  background-image: url(http://localhost//fb-content/assets/media/images/logos/herbalLogo_mini_white.png);
   position: absolute;
   background-size: 50px 50px;
   top: 0;

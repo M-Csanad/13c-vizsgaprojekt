@@ -3,7 +3,7 @@
 
 function getProductDir($productData)
 {
-    $baseDir = $_SERVER["DOCUMENT_ROOT"] . "/fb-content/fb-products/media/images/products/";
+    $baseDir = $_SERVER["DOCUMENT_ROOT"] . "/fb-content/fb-products/media/images/";
     $dirName = "product-" . $productData["id"] . "/";
     return $baseDir . $dirName;
 }
