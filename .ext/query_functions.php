@@ -1,5 +1,4 @@
 <?php
-
 function selectData($query, $parameters = null, $typeString = null) {
     try {
         if (!$query) {
@@ -114,18 +113,3 @@ function updateData($query, $parameters = null, $typeString = null) {
         return ["message" => $e->getMessage(), "code" => $e->getCode(), "type" => "ERROR"];
     }
 }
-
-
-function isError($result) {
-    return $result["type"] == "ERROR";
-}
-
-function isSuccess($result) {
-    return $result["type"] == "SUCCESS";
-}
-
-function typeOf($result, $resultType) {
-    if (!isset($result["type"])) return false;
-    return $result["type"] === $resultType;
-}
-?>

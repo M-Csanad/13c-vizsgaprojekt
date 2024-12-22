@@ -1,3 +1,4 @@
+const isMobile = (getComputedStyle(document.body).getPropertyValue("--is-mobile") == "1") || (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
 let pageLinks;
 let pages;
 
@@ -163,6 +164,19 @@ window.addEventListener("load", () => {
     });
   }
 
+  document.getElementById("back-button").addEventListener("click", () => {
+    const referrer = document.referrer;
+    const origin = window.location.origin;
+
+    if (referrer && referrer.startsWith(origin)) {
+      history.back();
+    } else {
+      window.location.href = "./"; // URI_CHANGED
+    }
+  });
+
+  if (isMobile) return;
+
   main.addEventListener("mousemove", (e) => {
     if (borderElements[0].style.getPropertyValue("--radius") == "0px") {
       borderElements.forEach((element) => {
@@ -240,15 +254,4 @@ window.addEventListener("load", () => {
   setHoverStyle(logout, "#b92424");
   setHoverStyle(dashboard, "#2797ca");
   setHoverStyle(dyk, "#5dbc55");
-
-  document.getElementById("back-button").addEventListener("click", () => {
-    const referrer = document.referrer;
-    const origin = window.location.origin;
-
-    if (referrer && referrer.startsWith(origin)) {
-      history.back();
-    } else {
-      window.location.href = "./"; // URI_CHANGED
-    }
-  });
 });

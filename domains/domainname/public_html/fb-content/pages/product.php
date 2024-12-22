@@ -1,6 +1,37 @@
 <?php
     include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
     include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/init.php';
+    
+    session_start();
+    $isLoggedIn = false;  // Alapértelmezett, hogy a felhasználó nincs bejelentkezve
+    
+    // Emlékezz rám funkció - ellenőrzi, hogy van-e 'rememberMe' süti
+    if (isset($_COOKIE['rememberMe'])) {
+        $cookieToken = $_COOKIE['rememberMe'];
+        $result = selectData("SELECT COUNT(*) as num,
+                            user.password_hash,
+                            user.role, user.id,
+                            user.user_name,
+                            user.cookie_expires_at
+                            FROM user
+                            WHERE user.cookie_id = ?", $cookieToken, "s");
+
+        if (typeOf($result, "SUCCESS")) {
+            $user = $result["message"][0];
+            if (time() < $user['cookie_expires_at']) {
+                setSessionData($user);
+            }
+        } else {
+            echo "<div class='error'>", $result["message"], "</div>";
+            exit();
+        }
+    }
+
+    // Ha a felhasználó már be van jelentkezve
+    if (isset($_SESSION['user_name'])) {
+        $sessionId = session_id();
+        $isLoggedIn = true;
+    }
 
     $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
     $segments = explode('/', $uri); // 0: category, 1: subcategory, 2: product
@@ -19,7 +50,8 @@
         exit;
     }
     $product = $result["message"][0];
-    
+
+
 
     // Termékképek lekérése
     $result = selectData("SELECT image.uri FROM image INNER JOIN product_image ON product_image.image_id=image.id WHERE product_image.product_id=?", $product["id"], "i");
@@ -59,7 +91,21 @@
       $side_effects = array_filter($result["message"], function ($e) {return $e["benefit"] == 0;});
     }
   
+
+
+    // Értékelések lekérdezése
+    $result = selectData("SELECT review.*, user.* FROM review INNER JOIN user ON review.user_id = user.id WHERE product_id=?", $product["id"], "i");
+
+    if (typeOf($result, "ERROR")) {
+      logError("Sikertelen termék értékelés lekérdezés: ".json_encode($result), "productpage.log", $_SERVER["DOCUMENT_ROOT"]."/13c-vizsgaprojekt/.logs");
+      http_response_code(404);
+      include $_SERVER["DOCUMENT_ROOT"] . "/fb-content/pages/error-404.html";
+      exit;
+    }
+    $reviews = $result["message"];
+    
     // Hasonló termékek lekérése
+
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -69,35 +115,20 @@
     <title><?= $product["name"]; ?></title>
 
     <link rel="prefetch" href="../../fb-content/assets/media/images/logos/herbalLogo_mini_white.png" as="image" />
+    <link rel="preload" href="../../fb-content/pages/assets/fonts/PlayfairDisplay-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="preload" href="../../fb-content/pages/assets/fonts/Roboto-Regular.woff2" as="font" type="font/woff2" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.14/dist/lenis.css" />
     <link rel="stylesheet" href="../../fb-content/pages/assets/css/product.css" />
     <link rel="stylesheet" href="../../fb-content/assets/css/footer.css">
-    <link
-      rel="preload"
-      href="../../fb-content/pages/assets/fonts/PlayfairDisplay-VariableFont_wght.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
-    <link
-      rel="preload"
-      href="../../fb-content/pages/assets/fonts/Roboto-Regular.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="../../fb-content/pages/assets/css/reviewform.css">
+    <link rel="shortcut icon" href="../../fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
 
+    <script defer src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" ></script>
     <script defer src="../../fb-content/pages/assets/js/product.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/lenis@1.1.14/dist/lenis.css"
-    />
-    <script
-      defer
-      src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"
-    ></script>
     <script defer src="../../fb-content/pages/assets/js/lenis.js"></script>
     <script defer src="../../fb-content/pages/assets/js/loader.js"></script>
     <script defer src="../../fb-content/pages/assets/js/scrollbar.js"></script>
+    <script defer src="../../fb-content/pages/assets/js/reviewform.js"></script>
 
     <style>
       body.loading {
@@ -391,14 +422,6 @@
               <?php else: ?>
                 <?= htmlspecialchars($tags); ?>
               <?php endif; ?>
-              <!-- <div class="tag">
-                <img
-                  src="./gluten-free.png"
-                  alt="Glutén mentes"
-                  class="tag-icon"
-                  draggable="false"
-                />
-              </div> -->
             </div>
           </div>
         </section>
@@ -406,133 +429,83 @@
     </main>
     <section class="reviews">
       <header class="title">Értékelések</header>
+      <?php if ($isLoggedIn): ?>
+        <div class="review-form-container">
+          <form class="review-form" action="">
+              <div class="title">Oszd meg véleményedet velünk!</div>
+              <div class="review-form-stars grey">
+                  <div class="star" data-index="0">
+                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/pages/assets/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
+                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/pages/assets/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
+                  </div>
+                  <div class="star" data-index="1">
+                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/pages/assets/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
+                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/pages/assets/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
+                  </div>
+                  <div class="star" data-index="2">
+                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/pages/assets/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
+                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/pages/assets/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
+                  </div>
+                  <div class="star" data-index="3">
+                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/pages/assets/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
+                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/pages/assets/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
+                  </div>
+                  <div class="star" data-index="4">
+                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/pages/assets/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
+                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/pages/assets/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
+                  </div>
+                  <input type="hidden" name="stars-input" value="null">
+                </div>
+                <div class="review-form-title">
+                  <input type="text" name="review-title" id="review-title" placeholder="Cím">
+                </div>
+                <div class="review-form-body">
+                  <textarea name="review-body" id="review-body" placeholder="Leírás"></textarea>
+                </div>
+                <button class="submit" type="button">
+                  <div>Küldés</div>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                    <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+                  </svg>
+                </button>
+          </form>
+        </div>
+      <?php endif; ?>
       <div class="review-container">
-        <div class="review">
-          <div class="review-head">
-            <div class="review-info">
-              <div class="user">
-                <div class="profile-pic">
-                  <img
-                    src="https://ui-avatars.com/api/?name=Blank+Máté&background=9CB5A6&bold=true&format=svg"
-                    alt=""
-                  />
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-check-circle-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
-                    />
-                  </svg>
+        <?php if (is_string($reviews)): ?>
+          <div><?= htmlspecialchars($reviews); ?></div>
+        <?php else: ?>
+          <?php foreach ($reviews as $review): ?>
+            <div class="review">
+              <div class="review-head">
+                <div class="review-info">
+                  <div class="user">
+                    <div class="profile-pic">
+                      <img src="<?= htmlspecialchars($review["pfp_uri"]); ?>" alt="" />
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16" >
+                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                      </svg>
+                    </div>
+                    <div class="profile-info">
+                      <div class="name"><?= htmlspecialchars($review["last_name"] . " " . $review["first_name"]); ?></div>
+                      <div class="verified">Hitelesített vásárló</div>
+                    </div>
+                  </div>
+                  <div class="stars-title">
+                    <div class="review-stars stars" data-rating="<?= htmlspecialchars($review["rating"]) ?>"></div>
+                    <div class="review-title"><?= htmlspecialchars($review["title"]) ?></div>
+                  </div>
                 </div>
-                <div class="profile-info">
-                  <div class="name">Blank Máté</div>
-                  <div class="verified">Hitelesített vásárló</div>
-                </div>
+                <div class="date"><?= htmlspecialchars($review["created_at"]) ?></div>
               </div>
-              <div class="stars-title">
-                <div class="review-stars stars" data-rating="5"></div>
-                <div class="review-title">Nagyon elégedett vagyok!</div>
-              </div>
-            </div>
-            <div class="date">2024.12.08</div>
-          </div>
-          <div class="review-body">
-            <div class="review-text">
-              Az acai por fantasztikus kiegészítője lett a reggeli rutinomnak!
-              Az energiaszintemet és az általános közérzetemet is javította,
-              mióta használom. Csak ajánlani tudom mindenkinek!
-            </div>
-          </div>
-        </div>
-        <div class="review">
-          <div class="review-head">
-            <div class="review-info">
-              <div class="user">
-                <div class="profile-pic">
-                  <img
-                    src="https://ui-avatars.com/api/?name=Blank+Máté&background=9CB5A6&bold=true&format=svg"
-                    alt=""
-                  />
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-check-circle-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
-                    />
-                  </svg>
-                </div>
-                <div class="profile-info">
-                  <div class="name">Blank Máté</div>
-                  <div class="verified">Hitelesített vásárló</div>
+              <div class="review-body">
+                <div class="review-text">
+                  <?= htmlspecialchars($review["description"]) ?>
                 </div>
               </div>
-              <div class="stars-title">
-                <div class="review-stars stars" data-rating="4.3"></div>
-                <div class="review-title">Egész jó</div>
-              </div>
             </div>
-            <div class="date">2024.12.08</div>
-          </div>
-          <div class="review-body">
-            <div class="review-text">
-              Az acai por fantasztikus kiegészítője lett a reggeli rutinomnak!
-              Az energiaszintemet és az általános közérzetemet is javította,
-              mióta használom. Csak ajánlani tudom mindenkinek!
-            </div>
-          </div>
-        </div>
-        <div class="review">
-          <div class="review-head">
-            <div class="review-info">
-              <div class="user">
-                <div class="profile-pic">
-                  <img
-                    src="https://ui-avatars.com/api/?name=Blank+Máté&background=9CB5A6&bold=true&format=svg"
-                    alt=""
-                  />
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-check-circle-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"
-                    />
-                  </svg>
-                </div>
-                <div class="profile-info">
-                  <div class="name">Blank Máté</div>
-                  <div class="verified">Hitelesített vásárló</div>
-                </div>
-              </div>
-              <div class="stars-title">
-                <div class="review-stars stars" data-rating="3.5"></div>
-                <div class="review-title">Elmegy</div>
-              </div>
-            </div>
-            <div class="date">2024.12.08</div>
-          </div>
-          <div class="review-body">
-            <div class="review-text">
-              Az acai por fantasztikus kiegészítője lett a reggeli rutinomnak!
-              Az energiaszintemet és az általános közérzetemet is javította,
-              mióta használom. Csak ajánlani tudom mindenkinek!
-            </div>
-          </div>
-        </div>
+          <?php endforeach; ?>
+        <?php endif; ?>
       </div>
     </section>
     <section class="recommendations">

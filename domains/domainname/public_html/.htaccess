@@ -47,6 +47,7 @@ RewriteRule ^register$ /fb-auth/register.php [L]
 RewriteRule ^settings$ /fb-auth/settings.php [L]
 RewriteRule ^404$ /fb-content/pages/error-404.html [L]
 RewriteRule ^dashboard$ /fb-auth/fb-admin/dashboard.php [L]
+RewriteRule ^review$ /review.php [L]
 ###/ Statikus átirányítások
 
 ### Dinamikus átirányítások

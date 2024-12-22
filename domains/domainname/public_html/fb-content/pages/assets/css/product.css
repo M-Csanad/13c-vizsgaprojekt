@@ -42,6 +42,7 @@ body {
   flex-direction: column;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  --is-mobile: 0;
 }
 
 main.body-main {
@@ -294,6 +295,7 @@ header.product-name {
 }
 
 hr {
+  width: 100%;
   opacity: 0.2;
 }
 
@@ -648,6 +650,7 @@ hr {
   flex-direction: column;
   gap: 0.5rem;
   max-width: min(800px, 100%);
+  width: 100%;
   justify-content: center;
 
   & > .review-head {
@@ -1121,5 +1124,11 @@ body.top-show #top-button {
 @media screen and (max-width: 600px) {
   .review > .review-head > .review-info {
     flex-wrap: wrap;
+  }
+}
+
+@media (pointer: coarse) {
+  body {
+      --is-mobile: 1;
   }
 }

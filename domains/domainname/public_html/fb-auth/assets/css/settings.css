@@ -19,6 +19,7 @@ body {
     width: 100%;
     font-family: Raleway;
     color: var(--text);
+    --is-mobile: 0;
 }
 
 .main {
@@ -547,5 +548,11 @@ body {
 @media (prefers-reduced-motion: reduce) {
     * {
         transition: none !important;
+    }
+}
+
+@media (pointer: coarse) {
+    body {
+        --is-mobile: 1;
     }
 }
