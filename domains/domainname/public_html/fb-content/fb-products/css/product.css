@@ -624,12 +624,20 @@ hr {
 .recommendations {
   padding-inline: 1rem;
   max-width: min(1400px, 100%);
+  min-width: min(650px, 100%);
 
   & > .title {
     font-family: "Playfair Display";
     font-size: 40px;
     text-align: center;
     margin-top: 4rem;
+  }
+
+  & > .form-subtitle {
+    font-family: "Playfair Display";
+    font-size: max(30px, min(1.7vw, 50px));;
+    text-align: center;
+    color: #838383;
   }
 }
 

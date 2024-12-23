@@ -429,49 +429,66 @@
       <?php if ($isLoggedIn): ?>
         <div class="review-form-container">
           <form class="review-form" action="">
+            <?php if (is_string($reviews)): ?>
+              <div class="title">Légy te az első, aki értékeli ezt a terméket!</div>
+            <?php else: ?>
               <div class="title">Oszd meg véleményedet velünk!</div>
-              <div class="review-form-stars grey">
-                  <div class="star" data-index="0">
-                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
-                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
-                  </div>
-                  <div class="star" data-index="1">
-                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
-                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
-                  </div>
-                  <div class="star" data-index="2">
-                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
-                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
-                  </div>
-                  <div class="star" data-index="3">
-                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
-                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
-                  </div>
-                  <div class="star" data-index="4">
-                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
-                      <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
-                  </div>
-                  <input type="hidden" name="stars-input" value="null">
-                </div>
-                <div class="review-form-title">
-                  <input type="text" name="review-title" id="review-title" placeholder="Cím">
-                </div>
-                <div class="review-form-body">
-                  <textarea name="review-body" id="review-body" placeholder="Leírás"></textarea>
-                </div>
-                <button class="submit" type="button">
-                  <div>Küldés</div>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
-                    <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
-                  </svg>
-                </button>
+            <?php endif; ?>
+            <div class="review-form-stars grey">
+              <div class="star" data-index="0">
+                  <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
+                  <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
+              </div>
+              <div class="star" data-index="1">
+                  <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
+                  <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
+              </div>
+              <div class="star" data-index="2">
+                  <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
+                  <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
+              </div>
+              <div class="star" data-index="3">
+                  <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
+                  <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
+              </div>
+              <div class="star" data-index="4">
+                  <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-empty.svg" alt="Üres csillag" class="empty active" draggable="false">
+                  <img src="<?= htmlspecialchars(ROOT_URL)?>/fb-content/fb-products/media/images/star-filled.svg" alt="Teli csillag" class="full" draggable="false">
+              </div>
+              <input type="hidden" name="stars-input" value="null">
+            </div>
+            <div class="review-form-title">
+              <input type="text" name="review-title" id="review-title" placeholder="Cím">
+            </div>
+            <div class="review-form-body">
+              <textarea name="review-body" id="review-body" placeholder="Leírás"></textarea>
+            </div>
+            <button class="send-button submit" type="button" disabled>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-send" viewBox="0 0 16 16">
+                <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z"/>
+              </svg>
+              <div class="success send-feedback">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                </svg>
+                <div class="send-text">Sikeres küldés!</div>
+              </div>
+              <div class="unsuccessful send-feedback">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                </svg>
+                <div class="send-text">Sikertelen küldés!</div>
+              </div>
+            </button>
           </form>
         </div>
-      <?php endif; ?>
-      <div class="review-container">
+      <?php else: ?>
         <?php if (is_string($reviews)): ?>
-          <div><?= htmlspecialchars($reviews); ?></div>
-        <?php else: ?>
+          <div class="form-subtitle">Még nincsenek értékelések ehhez a termékhez.</div>
+        <?php endif; ?>
+      <?php endif; ?>
+      <?php if (is_array($reviews)): ?>
+        <div class="review-container">
           <?php foreach ($reviews as $review): ?>
             <div class="review">
               <div class="review-head">
@@ -502,8 +519,8 @@
               </div>
             </div>
           <?php endforeach; ?>
-        <?php endif; ?>
-      </div>
+        </div>
+      <?php endif; ?>
     </section>
     <section class="recommendations">
       <header class="title">Hasonló termékek</header>

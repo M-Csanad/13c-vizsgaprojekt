@@ -6,6 +6,22 @@ const reviewStars = document.querySelectorAll(".review-form .star");
 const hiddenInput = reviewStarsContainer.querySelector("[name=stars-input]");
 const reviewSubmitter = document.querySelector(".review-form > .submit");
 
+const sendButton = document.querySelector(".send-button");
+
+sendButton.addEventListener("mouseenter", () => {
+  sendButton.classList.add("hovered");
+})
+
+sendButton.addEventListener("mouseleave", () => {
+  sendButton.classList.remove("hovered");
+})
+
+sendButton.addEventListener("click", () => {
+  sendButton.classList.remove("hovered");
+  sendButton.classList.add("sent");
+  sendButton.classList.add("unsuccessful")
+})
+
 let isActive = false;
 let isSet = false;
 
@@ -42,10 +58,12 @@ reviewSubmitter.addEventListener("click", async () => {
   });
   
   if (response.ok) {
-    // TODO: visszajelzés
+    reviewSubmitter.classList.remove("unsuccessful");
+    reviewSubmitter.classList.add("successful");
   }
   else {
-    // TODO: visszajelzés
+    reviewSubmitter.classList.remove("successful");
+    reviewSubmitter.classList.add("unsuccessful");
   }
 });
 
@@ -182,6 +200,8 @@ function handleClick(e, star) {
     reviewStarsContainer.classList.remove("grey", "invalid"); // Szürke állapot eltávolítása
     isSet = true;
   }
+
+  formChangeHandler();
 }
 
 // Csillagok állapotának beállítása egy adott érték alapján
@@ -198,4 +218,23 @@ function setStarsFromValue(value) {
   if (hasHalfStar && fullStars < reviewStars.length) {
     toggleHalfState(reviewStars[fullStars]); // Fél csillag beállítása, ha van
   }
+}
+
+const requiredFields = ["stars-input", "review-title", "review-body"];
+for (let field of requiredFields) {
+  const input = form.querySelector(`[name=${field}]`);
+  if (input.getAttribute("type") != "hidden") {
+    input.addEventListener("input", formChangeHandler);
+  }
+}
+
+function formChangeHandler() {
+  let isValid = true;
+  for (let field of requiredFields) {
+    const input = form.querySelector(`[name=${field}]`);
+    if (!input.value || input.getAttribute("type") == "hidden" && input.value == "null") isValid = false;
+  }
+
+  if (isValid) reviewSubmitter.disabled = false;
+  else reviewSubmitter.disabled = true;
 }
