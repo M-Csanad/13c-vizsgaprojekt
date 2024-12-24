@@ -19,42 +19,43 @@ function generateStars(element) {
 
 // Értékelés generálása
 const avgReviewElement = document.querySelector(".avg-review");
-
-const rating = parseFloat(avgReviewElement.getAttribute("data-rating"));
-const reviewCount = parseInt(avgReviewElement.getAttribute("data-reviews"));
-
-const ratingNumber = document.createElement("div");
-const starsContainer = document.createElement("div");
-
-ratingNumber.classList.add("rating-number");
-ratingNumber.textContent = rating.toFixed(1);
-starsContainer.classList.add("stars");
-
-const fullStars = Math.floor(rating);
-const halfStar = rating % 1 >= 0.5;
-const totalStars = 5;
-
-for (let i = 0; i < totalStars; i++) {
-  const star = document.createElement("span");
-  if (i < fullStars) {
-    star.classList.add("filled");
-  } else if (i === fullStars && halfStar) {
-    star.classList.add("half");
+if (avgReviewElement) {
+  const rating = parseFloat(avgReviewElement.getAttribute("data-rating"));
+  const reviewCount = parseInt(avgReviewElement.getAttribute("data-reviews"));
+  
+  const ratingNumber = document.createElement("div");
+  const starsContainer = document.createElement("div");
+  
+  ratingNumber.classList.add("rating-number");
+  ratingNumber.textContent = rating.toFixed(1);
+  starsContainer.classList.add("stars");
+  
+  const fullStars = Math.floor(rating);
+  const halfStar = rating % 1 >= 0.5;
+  const totalStars = 5;
+  
+  for (let i = 0; i < totalStars; i++) {
+    const star = document.createElement("span");
+    if (i < fullStars) {
+      star.classList.add("filled");
+    } else if (i === fullStars && halfStar) {
+      star.classList.add("half");
+    }
+    starsContainer.appendChild(star);
   }
-  starsContainer.appendChild(star);
+  
+  const reviewCountElement = document.createElement("div");
+  const starsAndReviews = document.createElement("div");
+  
+  reviewCountElement.classList.add("review-count");
+  starsAndReviews.classList.add("stars-and-reviews");
+  reviewCountElement.textContent = `${reviewCount} értékelés`;
+  
+  starsAndReviews.appendChild(starsContainer);
+  starsAndReviews.appendChild(reviewCountElement);
+  avgReviewElement.appendChild(ratingNumber);
+  avgReviewElement.appendChild(starsAndReviews);
 }
-
-const reviewCountElement = document.createElement("div");
-const starsAndReviews = document.createElement("div");
-
-reviewCountElement.classList.add("review-count");
-starsAndReviews.classList.add("stars-and-reviews");
-reviewCountElement.textContent = `${reviewCount} értékelés`;
-
-starsAndReviews.appendChild(starsContainer);
-starsAndReviews.appendChild(reviewCountElement);
-avgReviewElement.appendChild(ratingNumber);
-avgReviewElement.appendChild(starsAndReviews);
 
 // A termékképek mögött megjelenő dinamikus háttér frissítése
 function updateDynamicBackground() {
