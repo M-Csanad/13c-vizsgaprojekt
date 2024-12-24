@@ -101,6 +101,10 @@
     }
     $reviews = $result["message"];
     
+    if (is_array($reviews)) {
+      $reviewNum = count($reviews);
+      $avgReview = array_sum(array_map(function ($e) { return $e["rating"]; }, $reviews)) / $reviewNum;
+    }
     // Hasonló termékek lekérése
 
 ?>
@@ -276,12 +280,14 @@
             <span class="price-value"><?= htmlspecialchars($product["unit_price"]); ?></span>
             <span class="price-currency">Ft</span>
           </div>
-          <div
-            class="avg-review"
-            aria-label="Átlagos értékelés"
-            data-rating="4.7"
-            data-reviews="125"
-          ></div>
+          <?php if (is_array($reviews)): ?>
+            <div
+              class="avg-review"
+              aria-label="Átlagos értékelés"
+              data-rating="<?= htmlspecialchars($avgReview) ?>"
+              data-reviews="<?= htmlspecialchars($reviewNum) ?>"
+            ></div>
+          <?php endif; ?>
         </div>
         <button class="add-to-cart">
           <div>Kosárba</div>
