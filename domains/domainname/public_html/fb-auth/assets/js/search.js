@@ -136,7 +136,7 @@ function initializeSearch(search) {
     data.append("search_term", input);
     if (input.length > 0) {
       const response = await fetch(
-        `../../search.php`,
+        `../../dashboard_search.php`,
         {
           method: "POST",
           body: data,

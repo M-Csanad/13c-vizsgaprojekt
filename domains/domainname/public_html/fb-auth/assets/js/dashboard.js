@@ -440,7 +440,7 @@ async function populateOptions(select, category, table) {
   data.append("table", table);
   if (category) data.append("category_name", category);
 
-  const response = await fetch(`../../search.php`, {
+  const response = await fetch(`../../dashboard_search.php`, {
     method: "POST",
     body: data,
   });
