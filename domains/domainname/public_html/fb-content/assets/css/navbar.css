@@ -287,6 +287,18 @@
   text-decoration: none;
 }
 
+/*Icons*/
+#interfaceIcons {
+  position: absolute;
+  width: 84%;
+}
+.icon_container {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  gap: 15px;
+}
+
 /*Hamburger*/
 
 .hamburger-icon .line {
