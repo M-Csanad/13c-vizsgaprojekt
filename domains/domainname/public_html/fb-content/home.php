@@ -1,5 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+session_start();
 ?>
 
 <!DOCTYPE html>
@@ -294,7 +295,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
   <header>
     <section id="StickyNavbar_container">
       <?php include __DIR__ . '/assets/navbar.php'; ?>
-
     </section>
   </header>
 

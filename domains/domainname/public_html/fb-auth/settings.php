@@ -1,28 +1,19 @@
 <?php 
     include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
     include_once "../../../../.ext/init.php";
-    session_start(); 
 
-    if (isset($_SESSION['user_name'])) {
+    $isLoggedIn = false;
+    $result = getUserData();
+    if (typeOf($result, "SUCCESS")) {
+      $user = $result["message"][0];
+      $isLoggedIn = true;
 
-        $result = getUserData($_SESSION['user_id']);
-        
-        if (typeOf($result, "ERROR")) {
-            echo "<div class='error'>", $result["message"], "</div>";
-            exit();
-        }
-        else if (typeOf($result, "EMPTY")) { // Ha nincs olyan user, akinek az id-ja megegyezik a SESSION-ben lévővel
-            header("Location: ./");
-            exit();
-        }
-
-        $user = $result["message"][0];
-        $curDate = new DateTime();
-        $createDate = new DateTime($user["created_at"]);
-        $accountAge = $curDate -> diff($createDate) -> days;
-    } 
+      $curDate = new DateTime();
+      $createDate = new DateTime($user["created_at"]);
+      $accountAge = $curDate -> diff($createDate) -> days;
+    }
     else {
-        header("Location: ./");
+        header("Location: ./login");
         exit();
     }
 ?>

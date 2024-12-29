@@ -2,52 +2,29 @@
     include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
     include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/init.php';
     
-    session_start();
-    $isLoggedIn = false;  // Alapértelmezett, hogy a felhasználó nincs bejelentkezve
-    
-    // Emlékezz rám funkció - ellenőrzi, hogy van-e 'rememberMe' süti
-    if (isset($_COOKIE['rememberMe'])) {
-        $cookieToken = $_COOKIE['rememberMe'];
-        $result = selectData("SELECT COUNT(*) as num,
-                            user.password_hash,
-                            user.role, user.id,
-                            user.user_name,
-                            user.cookie_expires_at
-                            FROM user
-                            WHERE user.cookie_id = ?", $cookieToken, "s");
-
-        if (typeOf($result, "SUCCESS")) {
-            $user = $result["message"][0];
-            if (time() < $user['cookie_expires_at']) {
-                setSessionData($user);
-            }
-        } else {
-            echo "<div class='error'>", $result["message"], "</div>";
-            exit();
-        }
-    }
-
-    // Ha a felhasználó már be van jelentkezve
-    if (isset($_SESSION['user_name'])) {
-        $sessionId = session_id();
-        $isLoggedIn = true;
+    // Felhasználó adatainak lekérdezése
+    $isLoggedIn = false;
+    $result = getUserData();
+    if (typeOf($result, "SUCCESS")) {
+      $user = $result["message"];
+      $isLoggedIn = true;
     }
 
     $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
     $segments = explode('/', $uri); // 0: category, 1: subcategory, 2: product
     $slug = implode('/', $segments);
+    
+
     // Termék és termékoldal adatainak lekérése
     $result = selectData("SELECT product.*, product_page.id as page_id, product_page.created_at, product_page.last_modified, product_page.page_title, product_page.page_content, category.name AS category_name, subcategory.name AS subcategory_name FROM product_page INNER JOIN product ON product_page.product_id=product.id INNER JOIN category ON product_page.category_id=category.id INNER JOIN subcategory ON product_page.subcategory_id=subcategory.id WHERE product_page.link_slug LIKE ?", [$slug], "s");
-
+    
     // Ha nem sikeres, akkor 404 oldal betöltése
     if (!typeOf($result, "SUCCESS")) {
       http_response_code(404);
       include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
       exit;
     }
-
     $product = $result["message"][0];
-
 
 
     // Termékképek lekérése
@@ -62,7 +39,6 @@
     $images = $result["message"];
 
 
-
     // Címkék lekérése
     $result = selectData("SELECT tag.icon_uri, tag.name FROM tag INNER JOIN product_tag ON product_tag.tag_id=tag.id WHERE product_tag.product_id=?", $product["id"], "i");
     
@@ -75,7 +51,10 @@
     }
     $tags = ($result["type"] == "EMPTY") ? "Nincsenek termékhez csatolt címkék." : $result["message"];
     
+
+    // Egészségügyi hatások lekérdezése
     $result = selectData("SELECT * FROM health_effect INNER JOIN product_health_effect ON product_health_effect.health_effect_id=health_effect.id WHERE product_health_effect.product_id=?", $product['id'], "i");
+
     if (typeOf($result, "ERROR")) {
       logError("Sikertelen termék hatások lekérdezés: " . json_encode($result), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
       http_response_code(404);
@@ -88,7 +67,6 @@
       $side_effects = array_filter($result["message"], function ($e) {return $e["benefit"] == 0;});
     }
   
-
 
     // Értékelések lekérdezése
     $result = selectData("SELECT review.id, review.user_id, review.product_id, review.rating, review.description, review.title, DATE(review.created_at) AS created_at, user.id, user.email, user.user_name, user.password_hash, user.role, user.cookie_id, user.cookie_expires_at, user.first_name, user.last_name, user.pfp_uri, user.created_at AS user_created_at FROM review INNER JOIN user ON review.user_id = user.id WHERE product_id=?", $product["id"], "i");
@@ -105,6 +83,8 @@
       $reviewNum = count($reviews);
       $avgReview = array_sum(array_map(function ($e) { return $e["rating"]; }, $reviews)) / $reviewNum;
     }
+
+
     // Hasonló termékek lekérése
 
 ?>

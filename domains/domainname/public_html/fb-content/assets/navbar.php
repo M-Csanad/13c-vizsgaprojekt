@@ -5,37 +5,13 @@ $loggerPath = BASE_PATH . '/error_logger.php';
 $filePath = BASE_PATH . '/../../../.ext/db_connect.php';
 
 
-session_start();
-$isLoggedIn = false;  // Alapértelmezett, hogy a felhasználó nincs bejelentkezve
-
-// Emlékezz rám funkció - ellenőrzi, hogy van-e 'rememberMe' süti
-if (isset($_COOKIE['rememberMe'])) {
-    $cookieToken = $_COOKIE['rememberMe'];
-    $result = selectData("SELECT COUNT(*) as num,
-                          user.password_hash,
-                          user.role, user.id,
-                          user.user_name,
-                          user.cookie_expires_at
-                          FROM user
-                          WHERE user.cookie_id = ?", $cookieToken, "s");
-
-    if (typeOf($result, "SUCCESS")) {
-        $user = $result["message"][0];
-        if (time() < $user['cookie_expires_at']) {
-            setSessionData($user);
-        }
-    } else {
-        echo "<div class='error'>", $result["message"], "</div>";
-        exit();
-    }
+// Felhasználó adatainak lekérdezése
+$isLoggedIn = false;
+$result = getUserData();
+if (typeOf($result, "SUCCESS")) {
+  $user = $result["message"];
+  $isLoggedIn = true;
 }
-
-// Ha a felhasználó már be van jelentkezve
-if (isset($_SESSION['user_name'])) {
-    $sessionId = session_id();
-    $isLoggedIn = true;
-}
-
 
 if ($loggerPath === false) {
     throw new Exception("Az error_logger.php fájl nem található.");

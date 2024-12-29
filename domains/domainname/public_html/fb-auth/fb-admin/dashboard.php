@@ -1,17 +1,23 @@
 <?php 
     include_once $_SERVER["DOCUMENT_ROOT"].'/config.php';
     include_once "../../../../../.ext/init.php"; 
-    session_start();
-    if (isset($_SESSION['role'])) {
-        if ($_SESSION['role'] != "Administrator") {
-            header("Location: ./");
-            exit();
-        }
+
+    $isLoggedIn = false;
+    $result = getUserData();
+    if (typeOf($result, "SUCCESS")) {
+      $user = $result["message"][0];
+      $isLoggedIn = true;
+
+      if ($user["role"] !== "Administrator") {
+          header("Location: ./");
+          exit();
+      }
     }
     else {
         header("Location: ./");
         exit();
     }
+
 
     $result = selectData("SELECT * FROM health_effect");
     if (typeOf($result, "ERROR")) {

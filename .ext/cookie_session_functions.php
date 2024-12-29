@@ -41,19 +41,15 @@ function bindCookie($userId)
 function removeCookie($cookieToken)
 {
     include_once "init.php";
-    $result = updateData("UPDATE user 
-                          SET cookie_id = NULL, 
-                          cookie_expires_at = NULL 
-                          WHERE user.cookie_id = ?", $cookieToken, "s");
+
+    // A süti törlése a felhasználó gépéről
+    unset($_COOKIE['rememberMe']);
+    setcookie('rememberMe', '', time() - 3600, '/');
+
+    // A süti törlése az adatbázisból
+    $result = updateData("UPDATE user  SET cookie_id = NULL,  cookie_expires_at = NULL WHERE user.cookie_id = ?", $cookieToken, "s");
     
-    if (typeOf($result, "SUCCESS")) {
-        unset($_COOKIE['rememberMe']);
-        setcookie('rememberMe', '', time() - 3600, '/');
-        return ["message" => "Sikeres süti törlés.", "type" => "SUCCESS"];
-    }
-    else {
-        return $result;
-    }
+    return (typeOf($result, "SUCCESS")) ? ["message" => "Sikeres süti törlés.", "type" => "SUCCESS"] : $result;
 }
 
 function setSessionData($user)
@@ -63,4 +59,3 @@ function setSessionData($user)
     $_SESSION['user_name'] = $user['user_name'];
     $_SESSION['role'] = $user['role'];
 }
-?>
