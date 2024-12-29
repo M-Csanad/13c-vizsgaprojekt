@@ -21,12 +21,13 @@ function optimizeImage($inputFile, $sizes = [3840, 2560, 1920, 1440, 1024, 768],
     }
 
     // FFMPEG elérési útjának beállítása
-    $ffmpegPath = './bin/ffmpeg.exe';
+    $ffmpegPath = $_SERVER["DOCUMENT_ROOT"].'/../../../bin/ffmpeg/bin/ffmpeg.exe';
     if (!is_executable($ffmpegPath)) {
         logError("Az FFMPEG nem elérhető: $ffmpegPath", "image_optimization.log");
         return;
     }
 
+    ini_set('max_execution_time', 300);
     // Fájl információk kinyerése
     $fileInfo = pathinfo($inputFile);
     $dirname = $fileInfo['dirname'];
