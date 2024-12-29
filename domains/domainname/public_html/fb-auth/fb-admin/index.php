@@ -7,9 +7,9 @@
     <title>Főoldal - TESZT</title>
     <link rel="stylesheet" href="../assets/css/root.css">
     <?php
-    include_once $_SERVER["DOCUMENT_ROOT"].'/config.php';
+    include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
     include_once "../../../../../.ext/init.php";
-    
+
     session_start();
     $isLoggedIn = false;  // Alapértelmezett, hogy a felhasználó nincs bejelentkezve
     
