@@ -15,7 +15,7 @@ session_start();
 $_SESSION['successful_logout'] = true; // Beállítja, hogy a kijelentkezés sikeres volt
 
 // Átirányítás a főoldalra a kijelentkezés után
-header('Location: ./fb-auth/fb-admin/index.php');
+header('Location: /');
 exit(); // A script futásának leállítása, hogy biztosan ne fusson tovább
 ?>
 

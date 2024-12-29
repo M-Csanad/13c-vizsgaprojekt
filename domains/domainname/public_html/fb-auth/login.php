@@ -7,8 +7,8 @@ if (isset($_POST['login'])) {
     $project_id = 'florens-botanica-1727886723149';
     $url = "https://recaptchaenterprise.googleapis.com/v1/projects/$project_id/assessments?key=$recaptcha_secret";
 
-    $token = $_POST['g-recaptcha-response']; 
-    $user_action = 'login'; 
+    $token = $_POST['g-recaptcha-response'];
+    $user_action = 'login';
 
     $data = [
         "event" => [
@@ -34,8 +34,7 @@ if (isset($_POST['login'])) {
 
     if (!isset($response_data['tokenProperties']['valid']) || !$response_data['tokenProperties']['valid']) {
         $message = "Hibás reCAPTCHA. Kérjük próbálja újra később.";
-    }
-    else if ($response_data['event']['expectedAction'] === $user_action && $response_data['riskAnalysis']['score'] >= 0.5) {
+    } else if ($response_data['event']['expectedAction'] === $user_action && $response_data['riskAnalysis']['score'] >= 0.5) {
         $username = $_POST['username']; // Felhasználónév lekérése
         $password = $_POST['passwd']; // Jelszó lekérése
         $rememberMe = isset($_POST['rememberMe']); // Emlékezz rám opció lekérése
@@ -45,13 +44,11 @@ if (isset($_POST['login'])) {
         $result = login($username, $password, $rememberMe);
 
         if (typeOf($result, "SUCCESS")) {
-            header('Location: ./fb-auth/fb-admin/index.php');
-        }
-        else {
+            header('Location: /');
+        } else {
             $message = "Hibás felhasználónév, vagy jelszó.";
         }
-    }
-    else {
+    } else {
         $message = "reCAPTCHA ellenőrzés sikertelen. Kérjük próbálja újra.";
     }
 }
@@ -59,17 +56,20 @@ if (isset($_POST['login'])) {
 
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Florens Botanica - Bejelentkezés</title>
-    
+
     <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/login.css">
-    <link rel="shortcut icon" href="./fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="shortcut icon" href="./fb-content/assets/media/images/logos/herbalLogo_mini_white.png"
+        type="image/x-icon">
 
-    <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
+    <script
+        src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
     <script src="./fb-auth/assets/js/prevent-resubmit.js" defer></script>
 </head>
 
@@ -77,7 +77,8 @@ if (isset($_POST['login'])) {
 
     <div class="main">
         <div class="side-image">
-            <div class="bg visible" style="background-image: url('./fb-content/assets/media/images/site/login/bg0.jpg');"></div>
+            <div class="bg visible"
+                style="background-image: url('./fb-content/assets/media/images/site/login/bg0.jpg');"></div>
             <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg1.jpg');"></div>
             <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg2.jpg');"></div>
             <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg3.jpg');"></div>
@@ -91,11 +92,14 @@ if (isset($_POST['login'])) {
                 <div class="input-wrapper">
                     <div class="input-group">
                         <label for="username">Felhasználónév</label>
-                        <input type="text" class="empty" name="username" id="username" autocomplete="username" required placeholder="" oninput="validateUserNameInput()" value="<?= isset($_POST['username']) ? $_POST['username'] : ''; ?>">
+                        <input type="text" class="empty" name="username" id="username" autocomplete="username" required
+                            placeholder="" oninput="validateUserNameInput()"
+                            value="<?= isset($_POST['username']) ? $_POST['username'] : ''; ?>">
                     </div>
                     <div class="input-group">
                         <label for="passwd">Jelszó</label>
-                        <input type="password" class="empty" name="passwd" id="passwd" autocomplete="current-password" required placeholder="">
+                        <input type="password" class="empty" name="passwd" id="passwd" autocomplete="current-password"
+                            required placeholder="">
                     </div>
                     <div class="input-group-inline">
                         <div>
@@ -108,10 +112,12 @@ if (isset($_POST['login'])) {
                 </div>
                 <div class="form-bottom">
                     <div class="form-message">
-                        <?php if (isset($message) && !empty($message)) echo $message; ?>
+                        <?php if (isset($message) && !empty($message))
+                            echo $message; ?>
                     </div>
                     <input type="submit" value="Bejelentkezés" name="login" class="action-button g-recaptcha">
-                    <div class="register">Nincs még fiókja? <a href="./register" class="form-link">Regisztráljon!</a></div>
+                    <div class="register">Nincs még fiókja? <a href="./register" class="form-link">Regisztráljon!</a>
+                    </div>
                 </div>
             </div>
         </form>
@@ -121,4 +127,3 @@ if (isset($_POST['login'])) {
 </body>
 
 </html>
-
