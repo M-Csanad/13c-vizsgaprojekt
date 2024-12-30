@@ -1,15 +1,96 @@
+function shakeElement(element) {
+  const ease = "power1.inOut";
+
+  const shouldReverse = element.style.transform = "scale(0,0)";
+
+  gsap.set(element, {opacity: 0})
+  gsap.to(element, {
+    opacity: 1,
+    duration: 0.3,
+    ease: ease,
+    scale: shouldReverse ? 1 : 0
+  })
+  gsap.fromTo(
+    element,
+    { x: 0 },
+    {
+      x: `+=5`,
+      duration: 0.1,
+      repeat: 7,
+      yoyo: true,
+      ease: ease,
+    }
+  );
+}
+
+function removeElementContent(element) {
+  return new Promise((resolve) => {
+    const ease = "power1.inOut";
+  
+    gsap.to(element, {
+      opacity: 0,
+      scale: 0,
+      duration: 0.3,
+      ease: ease,
+      onComplete: () => {
+        element.innerHTML = "";
+        resolve();
+      }
+    })
+  })
+}
+
 const form = document.getElementById("register");
+const formMessage = form.querySelector(".form-message");
 let submitted = false;
 
-form.addEventListener('submit', function (event) {
+form.addEventListener('submit', async function (event) {
   if (submitted) return;
   event.preventDefault();
 
-  grecaptcha.enterprise.ready(function () {
-      grecaptcha.enterprise.execute('6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj', { action: 'register' }).then(function (token) {
+  grecaptcha.enterprise.ready(async function () {
+      grecaptcha.enterprise.execute('6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj', { action: 'register' }).then(async function (token) {
           document.getElementById('g-recaptcha-response').value = token;
           submitted = true;
-          form.querySelector("input[type=submit]").click();
+
+          const data = new FormData(form);
+          data.append("register", "1");
+          const response = await fetch("./fb-auth/_register.php", {
+            method: "POST",
+            body: data
+          })
+
+          const result = await response.json();
+          if (response.ok) {
+            if (formMessage.innerHTML) {
+              await removeElementContent(formMessage);
+            }
+
+            const outParams = {
+              scaleY: 1, 
+              duration: 1,
+              stagger: {
+                  each: 0.05,
+                  from: "start",
+                  grid: "auto",
+                  axis: "x"
+              },
+              ease: "power4.inOut"
+            }
+
+            animatePageTransition(outParams).then(() => {
+              window.location.href = "./login";
+            });
+
+          }
+          else {
+            submitted = false;
+            if (formMessage.innerHTML) await removeElementContent(formMessage);
+            formMessage.innerHTML = result.message;
+            shakeElement(formMessage);
+            
+            form.querySelectorAll("input[type=password").forEach(e => e.value="");
+          }
       });
   });
 });

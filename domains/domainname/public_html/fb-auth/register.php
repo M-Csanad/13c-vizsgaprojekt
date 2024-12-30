@@ -1,64 +1,17 @@
 <?php
+
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 include_once "../../../../.ext/init.php";
 
-if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
-    $message = "";
+$isLoggedIn = false;
+$result = getUserData();
+if (typeOf($result, "SUCCESS")) {
+    $user = $result["message"][0];
 
-    $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
-    $project_id = 'florens-botanica-1727886723149';
-    $url = "https://recaptchaenterprise.googleapis.com/v1/projects/$project_id/assessments?key=$recaptcha_secret";
-
-    $token = $_POST['g-recaptcha-response']; 
-    $user_action = 'register'; 
-
-    $data = [
-        "event" => [
-            "token" => $token,
-            "expectedAction" => $user_action,
-            "siteKey" => "6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"
-        ]
-    ];
-
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json'
-    ]);
-
-    $response = curl_exec($ch);
-    curl_close($ch);
-
-    $response_data = json_decode($response, true);
-    if (!isset($response_data['tokenProperties']['valid']) || !$response_data['tokenProperties']['valid']) {
-        $message = "Hibás reCAPTCHA. Kérjük próbálja újra később.";
-    }
-    else if ($response_data['event']['expectedAction'] === $user_action && $response_data['riskAnalysis']['score'] >= 0.5) {
-
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $email = $_POST['email'];
-        $firstname = $_POST['firstname'];
-        $lastname = $_POST['lastname'];
-
-        $result = register($username, $password, $email, $firstname, $lastname);
-
-        if (typeOf($result, "SUCCESS")) {
-            $message = "Sikeres regisztráció!";
-            header("Location: ./login");
-            exit();
-        }
-        else {
-           $message = $result["message"];
-        }
-    }
-    else {
-        $message = "reCAPTCHA ellenőrzés sikertelen. Kérjük próbálja újra.";
-    }
+    // Ha be van jelentkezve, akkor kijelentkeztetjük
+    header("Location: ./logout");
 }
+
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -77,7 +30,6 @@ if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="/fb-content/assets/js/page_transition.js"></script>
     <script defer src="./fb-auth/assets/js/register.js"></script>
-    <script defer src="./fb-auth/assets/js/prevent-resubmit.js"></script>
 </head>
 <body>
     <div class=transition><div class=transition-text><div class=hero><div class=char>F</div><div class=char>l</div><div class=char>o</div><div class=char>r</div><div class=char>e</div><div class=char>n</div><div class=char>s</div><div class=char> </div><div class=char>B</div><div class=char>o</div><div class=char>t</div><div class=char>a</div><div class=char>n</div><div class=char>i</div><div class=char>c</div><div class=char>a</div></div><div class=quote><div class=char>"</div><div class=char>A</div><div class=char> </div><div class=char>l</div><div class=char>e</div><div class=char>g</div><div class=char>n</div><div class=char>a</div><div class=char>g</div><div class=char>y</div><div class=char>o</div><div class=char>b</div><div class=char>b</div><div class=char> </div><div class=char>g</div><div class=char>a</div><div class=char>z</div><div class=char>d</div><div class=char>a</div><div class=char>g</div><div class=char>s</div><div class=char>á</div><div class=char>g</div><div class=char> </div><div class=char>a</div><div class=char>z</div><div class=char> </div><div class=char>e</div><div class=char>g</div><div class=char>é</div><div class=char>s</div><div class=char>z</div><div class=char>s</div><div class=char>é</div><div class=char>g</div><div class=char>.</div><div class=char>"</div><div class=char> </div><div class=char>-</div><div class=char> </div><div class=char>V</div><div class=char>e</div><div class=char>r</div><div class=char>g</div><div class=char>i</div><div class=char>l</div><div class=char>i</div><div class=char>u</div><div class=char>s</div></div></div><div class="layer layer-0"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-1"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-2"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-3"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div></div>
@@ -97,11 +49,11 @@ if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="input-wrapper">
                     <div class="input-group">
                         <label for="email">E-mail</label>
-                        <input type="email" name="email" id="email" required placeholder="" autocomplete="email" value="<?= isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ""; ?>" class="empty">
+                        <input type="email" name="email" id="email" required placeholder="" autocomplete="email" value="" class="empty">
                     </div>
                     <div class="input-group">
                         <label for="username">Felhasználónév</label>
-                        <input type="text" name="username" id="username" required placeholder="" autocomplete="username" value="<?= isset($_POST['username']) ? htmlspecialchars($_POST['username']) : ""; ?>" class="empty">
+                        <input type="text" name="username" id="username" required placeholder="" autocomplete="username" value="" class="empty">
                     </div>
                     <div class="input-group-inline">
                         <div class="input-group">
@@ -133,9 +85,7 @@ if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
                     <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" class="empty">
                 </div>
                 <div class="form-bottom">
-                    <div class='form-message'>
-                        <?php if (isset($message) && !empty($message)) echo $message; ?>
-                    </div>
+                    <div class='form-message'></div>
                     <input type="submit" name="register" class="action-button g-recaptcha" value="Profil létrehozása" class="empty">
                     <div class="login">Regisztrált már? <a href="./login" class="form-link">Jelentkezzen be!</a></div>
                 </div>

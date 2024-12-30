@@ -23,7 +23,7 @@ window.addEventListener("load", () => {
   setTimeout(() => {
     scrollHandler();
     window.addEventListener("scroll", scrollHandler);
-  }, 500);
+  }, 1000);
 });
 
 window.addEventListener("resize", scrollHandler);

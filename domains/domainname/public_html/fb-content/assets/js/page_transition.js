@@ -1,15 +1,27 @@
 const loadingImages = document.querySelectorAll("img");
-// const imagePromises = Array.from(loadingImages).map((img) => {
-//     if (img.complete) return Promise.resolve();
-//     return new Promise((resolve) => {
-//         img.onload = resolve;
-//         img.onerror = resolve;
-//     });
-// });
+const imagePromises = Array.from(loadingImages).map((img) => {
+    if (img.complete || img.getAttribute("loading") == "lazy") return Promise.resolve();
+    return new Promise((resolve) => {
+        img.onload = resolve;
+        img.onerror = resolve;
+    });
+});
 
 let isAnimating = false;
 
 window.addEventListener("load", () => {
+    let isBackForwardNav = false;
+    if (window.performance && window.performance.getEntriesByType) {
+        const navigationEntries = window.performance.getEntriesByType('navigation');
+    
+        if (navigationEntries.length > 0) {
+            const navigationType = navigationEntries[0].type;
+    
+            if (navigationType === 'back_forward') {
+                isBackForwardNav = true;
+            }
+        }
+    }
     const ease = "power3.inOut";
     const inParams = {
         scaleY: 0, 
@@ -35,14 +47,19 @@ window.addEventListener("load", () => {
     }
 
     document.querySelectorAll("a").forEach((link) => {
+        if (!link.href || link.href.includes("#")) return;
         link.addEventListener("click", (e) => {
             e.preventDefault();
-            console.log("asd");
             
             if (isAnimating) return;
 
             isAnimating = true;
             const href = link.href;
+
+            if (href.includes("dashboard")) {
+                window.location.href = href;
+                return;
+            }
 
             if (href && !href.startsWith("#") && href !== window.location.pathname) {
                 animatePageTransition(outParams).then(() => {
@@ -52,14 +69,14 @@ window.addEventListener("load", () => {
         });
     });
 
-    // Promise.all(imagePromises).then(() => {
+    Promise.all(imagePromises).then(() => {
         setTimeout(() => {
             revealPageTransition(inParams).then(() => { 
                 isAnimating = false;
                 gsap.set(".block", { visibility: "hidden" });
             });
         }, 250)
-    // });
+    });
 });
 
 function revealPageTransition(inParams) {

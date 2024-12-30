@@ -53,7 +53,7 @@ form.querySelector(".action-button").addEventListener('click', async function (e
         
         const data = new FormData(form);
         data.append("login", "1");
-        const response = await fetch("./fb-auth/login.php", {
+        const response = await fetch("./fb-auth/_login.php", {
           method: "POST",
           body: data
         })

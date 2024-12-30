@@ -289,8 +289,8 @@
 
 /*Icons*/
 #interfaceIcons {
-  position: absolute;
-  width: 84%;
+  /* position: absolute; */
+  /* width: 84%; */
 }
 .icon_container {
   display: flex;

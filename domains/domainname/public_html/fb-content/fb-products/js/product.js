@@ -252,7 +252,6 @@ let frameId = null;
 allImages.forEach((image) => {
   image.parentElement.addEventListener("mouseenter", () => {
     if (image.classList.contains("active")) {
-      console.log("first");
       isZoom = true;
       image.style.transition = "transform 0.5s ease-out";
       image.style.transform = "scale(1.2)";

@@ -33,7 +33,6 @@ foreach ($segments as $level => $segment) {
     $page = $validationMap[$key][1];
 
     if (!call_user_func_array($validationFunction, [$segment, $parents])) {
-
         show404($_SERVER["DOCUMENT_ROOT"]);
 
     }
@@ -55,6 +54,6 @@ if (count($segments) <= count($keys)) {
 function show404($url)
 {
     http_response_code(404);
-    include $url . "/fb-functions/error/error-404.html";
+    // include $url . "/fb-functions/error/error-404.html";
     exit;
 }

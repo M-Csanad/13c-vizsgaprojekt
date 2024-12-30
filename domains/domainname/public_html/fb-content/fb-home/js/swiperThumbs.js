@@ -14,19 +14,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const tooltip = document.getElementById("thumb-slider_tooltip");
 
   thumbSlider.addEventListener("mouseenter", () => {
-    console.log("mouseenter");
     tooltip.style.visibility = "visible";
     tooltip.style.opacity = "1";
   });
 
   thumbSlider.addEventListener("mousemove", (e) => {
-    console.log("mousemove");
     tooltip.style.left = `${e.pageX + 15}px`;
     tooltip.style.top = `${e.pageY + 15}px`;
   });
 
   thumbSlider.addEventListener("mouseleave", () => {
-    console.log("mouseleave");
     tooltip.style.visibility = "hidden";
     tooltip.style.opacity = "0";
   });

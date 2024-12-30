@@ -168,11 +168,26 @@ window.addEventListener("load", () => {
     const referrer = document.referrer;
     const origin = window.location.origin;
 
-    if (referrer && referrer.startsWith(origin)) {
-      history.back();
-    } else {
-      window.location.href = "./"; // URI_CHANGED
+    const outParams = {
+      scaleY: 1, 
+      duration: 1,
+      stagger: {
+          each: 0.05,
+          from: "start",
+          grid: "auto",
+          axis: "x"
+      },
+      ease: "power4.inOut"
     }
+
+    animatePageTransition(outParams).then(() => {
+      if (referrer && referrer.startsWith(origin)) {
+        history.back();
+      } else {
+        window.location.href = "./";
+      }
+    });
+
   });
 
   if (isMobile) return;
@@ -245,10 +260,6 @@ window.addEventListener("load", () => {
         );
       }
     });
-  });
-
-  window.addEventListener("mouseenter", () => {
-    console.log("window enter");
   });
 
   setHoverStyle(logout, "#b92424");

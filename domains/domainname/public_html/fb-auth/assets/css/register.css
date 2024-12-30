@@ -269,7 +269,7 @@ form {
 
     .form-message {
         font-style: italic;
-        margin-top: 20px;
+        height: 20px;
         color: red;
         animation: shake 0.5s;
         animation-timing-function: ease;

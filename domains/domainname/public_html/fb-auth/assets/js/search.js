@@ -101,7 +101,6 @@ function initializeSearch(search) {
         { name: "content" },
       ],
       template: (page) => {
-        console.log(page.uri);
         return `<img src='${page.uri}'><div><b>${page.name}</b> - <i>${
           page.category_name ? page.category_name : "#"
         } / ${page.subcategory_name ? page.subcategory_name : "#"}</i> (${
@@ -226,7 +225,6 @@ function initializeSearch(search) {
     if (outputData.fields) {
       outputData.fields.forEach(({ field, value }) => {
         const input = parentForm.querySelector(`[name=${field}]`);
-        console.log(input)
         if (input) {
           if (value) {
             if (Array.isArray(value)) {
@@ -234,7 +232,6 @@ function initializeSearch(search) {
                 let clickElement = input.querySelector(`input[value="${id}"]`);
                 if (!clickElement) clickElement = input.querySelector(`.option[data-value="${id}"] > .check`);
 
-                console.log(clickElement)
                 clickElement.click();
               }
             } else {
