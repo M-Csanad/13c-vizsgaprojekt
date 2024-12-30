@@ -102,94 +102,20 @@
     <link rel="stylesheet" href="/fb-content/fb-products/css/product.css" />
     <link rel="stylesheet" href="/fb-content/assets/css/footer.css">
     <link rel="stylesheet" href="/fb-content/fb-products/css/reviewform.css">
+    <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="shortcut icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
 
     <script defer src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" ></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script defer src="/fb-content/assets/js/page_transition.js"></script>
     <script defer src="/fb-content/fb-products/js/product.js"></script>
     <script defer src="/fb-content/assets/js/lenis.js"></script>
-    <script defer src="/fb-content/assets/js/loader.js"></script>
     <script defer src="/fb-content/assets/js/scrollbar.js"></script>
     <script defer src="/fb-content/fb-products/js/reviewform.js"></script>
 
-    <style>
-      body.loading {
-        overflow: hidden;
-        margin: 0;
-      }
-      #loadingOverlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100vw;
-        height: 100vh;
-        background-color: #1d1d1d;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        font-family: Arial, sans-serif;
-        font-size: 2rem;
-        z-index: 9999;
-      }
-
-      .loader-message > .title {
-        color: #ffffff;
-        font-size: 60px;
-        font-family: Georgia, "Times New Roman", Times, serif;
-        margin-top: 20px;
-        letter-spacing: 1px;
-        opacity: 0;
-        animation: fadeInText 0.5s forwards;
-      }
-
-      .loader-message > .content {
-        color: #dfdfdf;
-        font-size: 30px;
-        font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-        margin-top: 20px;
-        letter-spacing: 1px;
-        opacity: 0;
-        text-align: center;
-        animation: fadeInText 1s 0.5s forwards, pulse 2s 1.5s infinite;
-      }
-
-      @keyframes pulse {
-        0%,
-        100% {
-          scale: 1;
-          opacity: 1;
-        }
-
-        50% {
-          scale: 0.9;
-          opacity: 0;
-        }
-      }
-
-      @keyframes fadeInText {
-        0% {
-          opacity: 0;
-          transform: translateY(15px);
-        }
-
-        100% {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-    </style>
   </head>
   <body>
-    <div id="loadingOverlay">
-      <div class="loader-logo">
-        <div class="loader-logo-inner"></div>
-      </div>
-      <div class="loader-message">
-        <div class="title">Florens Botanica</div>
-        <div class="content">Betöltés...</div>
-      </div>
-    </div>
+    <div class=transition><div class=transition-text><div class=hero><div class=char>F</div><div class=char>l</div><div class=char>o</div><div class=char>r</div><div class=char>e</div><div class=char>n</div><div class=char>s</div><div class=char> </div><div class=char>B</div><div class=char>o</div><div class=char>t</div><div class=char>a</div><div class=char>n</div><div class=char>i</div><div class=char>c</div><div class=char>a</div></div><div class=quote><div class=char>"</div><div class=char>A</div><div class=char> </div><div class=char>l</div><div class=char>e</div><div class=char>g</div><div class=char>n</div><div class=char>a</div><div class=char>g</div><div class=char>y</div><div class=char>o</div><div class=char>b</div><div class=char>b</div><div class=char> </div><div class=char>g</div><div class=char>a</div><div class=char>z</div><div class=char>d</div><div class=char>a</div><div class=char>g</div><div class=char>s</div><div class=char>á</div><div class=char>g</div><div class=char> </div><div class=char>a</div><div class=char>z</div><div class=char> </div><div class=char>e</div><div class=char>g</div><div class=char>é</div><div class=char>s</div><div class=char>z</div><div class=char>s</div><div class=char>é</div><div class=char>g</div><div class=char>.</div><div class=char>"</div><div class=char> </div><div class=char>-</div><div class=char> </div><div class=char>V</div><div class=char>e</div><div class=char>r</div><div class=char>g</div><div class=char>i</div><div class=char>l</div><div class=char>i</div><div class=char>u</div><div class=char>s</div></div></div><div class="layer layer-0"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-1"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-2"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-3"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div></div>
     <main class="body-main">
       <div class="image-viewer">
         <div class="wrapper">

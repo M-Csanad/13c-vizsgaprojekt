@@ -248,8 +248,9 @@ form {
     }
 
     .form-message {
+        height: 20px;
         font-style: italic;
-        margin-top: 20px;
+        will-change: transform, opacity;
         color: red;
         animation: shake 0.5s;
         animation-timing-function: ease;

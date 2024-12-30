@@ -41,7 +41,7 @@
 
 ### Statikus átirányítások
 RewriteEngine On
-RewriteRule ^login$ /fb-auth/login.php [L]
+RewriteRule ^login$ /fb-auth/login.html [L]
 RewriteRule ^logout$ /fb-auth/logout.php [L]
 RewriteRule ^register$ /fb-auth/register.php [L]
 RewriteRule ^privacy-policy$ /fb-content/privacy_policy.html [L]
