@@ -227,7 +227,7 @@ function updateCategoryData($categoryData, $images)
 
     foreach ($images as $image) {
         array_push($fields, $image["name"] . "_uri");
-        array_push($values, $categoryData[$image["name"]]);
+        array_push($values, str_replace($_SERVER["DOCUMENT_ROOT"], ROOT_URL, $categoryData[$image["name"]]));
         $typeString .= "s";
     }
 
@@ -249,28 +249,6 @@ function updateCategoryData($categoryData, $images)
     $query .= " WHERE `$table`.`id`=?;";
 
     return updateData($query, $values, $typeString);
-}
-
-function updateURIs($categoryData)
-{
-    if (isset($categoryData["thumbnail_image_vertical"])) {
-        $result = updateData("UPDATE {$categoryData['type']} SET thumbnail_image_vertical_uri=? WHERE id=?;", [$categoryData['thumbnail_image_vertical'], $categoryData['id']], "si");
-        if (typeOf($result, "ERROR"))
-            return $result;
-    }
-
-    if (isset($categoryData["thumbnail_image_horizontal"])) {
-        $result = updateData("UPDATE {$categoryData['type']} SET thumbnail_image_horizontal_uri=? WHERE id=?;", [$categoryData['thumbnail_image_horizontal'], $categoryData['id']], "si");
-        if (typeOf($result, "ERROR"))
-            return $result;
-    }
-
-    if (isset($categoryData["thumbnail_video"])) {
-        $result = updateData("UPDATE {$categoryData['type']} SET thumbnail_video_uri=? WHERE id=?;", [$categoryData['thumbnail_video'], $categoryData['id']], "si");
-        if (typeOf($result, "ERROR"))
-            return $result;
-    }
-    return $result;
 }
 
 function updateCategory($categoryData)
@@ -307,11 +285,6 @@ function updateCategory($categoryData)
 
         for ($i = 0; $i < count($images); $i++) {
             $categoryData[$images[$i]["name"]] = $paths[$i];
-        }
-
-        $result = updateURIs($categoryData);
-        if (typeOf($result, "ERROR")) {
-            return $result;
         }
     }
 
