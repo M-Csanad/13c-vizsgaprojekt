@@ -7,9 +7,9 @@
  * @param string $logDirectory A naplófájl mappájának elérési útja. Alapértelmezett: 'log'.
  * @return void
  */
-function logError($message, $logFileName, $logDirectory = '../../.logs')
+function logError($message, $logFileName, $logDirectory = (__DIR__ . '/../../.logs'))
 {
-    $fallbackLog = "$logDirectory/fallback_error.log";
+    $fallbackLog = $_SERVER['DOCUMENT_ROOT'] . "/.logs/fallback_error.log";
 
     $logFilePath = rtrim($logDirectory, DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR . $logFileName;
 

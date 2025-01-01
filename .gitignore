@@ -34,3 +34,5 @@ debug/
 node_modules/
 .npm/
 bin/*
+
+/vendor/
