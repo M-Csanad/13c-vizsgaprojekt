@@ -63,7 +63,7 @@
   --dark_senary-op8: rgba(42, 42, 42, 0.8);
   --dark_senary-op9: rgba(42, 42, 42, 0.9);
 
-  --light_main: #ffffff;
+  --light_main: rgb(255, 255, 255);
   --light_main-op1: rgba(255, 255, 255, 0.1);
   --light_main-op2: rgba(255, 255, 255, 0.2);
   --light_main-op3: rgba(255, 255, 255, 0.3);
@@ -73,6 +73,61 @@
   --light_main-op7: rgba(255, 255, 255, 0.7);
   --light_main-op8: rgba(255, 255, 255, 0.8);
   --light_main-op9: rgba(255, 255, 255, 0.9);
+
+  --light_secondary: rgb(242, 242, 242);
+  --light_secondary-op1: rgba(242, 242, 242, 0.1);
+  --light_secondary-op2: rgba(242, 242, 242, 0.2);
+  --light_secondary-op3: rgba(242, 242, 242, 0.3);
+  --light_secondary-op4: rgba(242, 242, 242, 0.4);
+  --light_secondary-op5: rgba(242, 242, 242, 0.5);
+  --light_secondary-op6: rgba(242, 242, 242, 0.6);
+  --light_secondary-op7: rgba(242, 242, 242, 0.7);
+  --light_secondary-op8: rgba(242, 242, 242, 0.8);
+  --light_secondary-op9: rgba(242, 242, 242, 0.9);
+
+  --green_primary: rgb(160, 221, 119);
+  --green_primary-op1: rgba(160, 221, 119, 0.1);
+  --green_primary-op2: rgba(160, 221, 119, 0.2);
+  --green_primary-op3: rgba(160, 221, 119, 0.3);
+  --green_primary-op4: rgba(160, 221, 119, 0.4);
+  --green_primary-op5: rgba(160, 221, 119, 0.5);
+  --green_primary-op6: rgba(160, 221, 119, 0.6);
+  --green_primary-op7: rgba(160, 221, 119, 0.7);
+  --green_primary-op8: rgba(160, 221, 119, 0.8);
+  --green_primary-op9: rgba(160, 221, 119, 0.9);
+
+  --green_secondary: rgb(107, 145, 81);
+  --green_secondary-op1: rgba(107, 145, 81, 0.1);
+  --green_secondary-op2: rgba(107, 145, 81, 0.2);
+  --green_secondary-op3: rgba(107, 145, 81, 0.3);
+  --green_secondary-op4: rgba(107, 145, 81, 0.4);
+  --green_secondary-op5: rgba(107, 145, 81, 0.5);
+  --green_secondary-op6: rgba(107, 145, 81, 0.6);
+  --green_secondary-op7: rgba(107, 145, 81, 0.7);
+  --green_secondary-op8: rgba(107, 145, 81, 0.8);
+  --green_secondary-op9: rgba(107, 145, 81, 0.9);
+
+  --green_tertiary: rgb(72, 80, 68);
+  --green_tertiary-op1: rgba(72, 80, 68, 0.1);
+  --green_tertiary-op2: rgba(72, 80, 68, 0.2);
+  --green_tertiary-op3: rgba(72, 80, 68, 0.3);
+  --green_tertiary-op4: rgba(72, 80, 68, 0.4);
+  --green_tertiary-op5: rgba(72, 80, 68, 0.5);
+  --green_tertiary-op6: rgba(72, 80, 68, 0.6);
+  --green_tertiary-op7: rgba(72, 80, 68, 0.7);
+  --green_tertiary-op8: rgba(72, 80, 68, 0.8);
+  --green_tertiary-op9: rgba(72, 80, 68, 0.9);
+
+  --green_quaternary: rgb(110, 201, 49);
+  --green_quaternary-op1: rgba(110, 201, 49, 0.1);
+  --green_quaternary-op2: rgba(110, 201, 49, 0.2);
+  --green_quaternary-op3: rgba(110, 201, 49, 0.3);
+  --green_quaternary-op4: rgba(110, 201, 49, 0.4);
+  --green_quaternary-op5: rgba(110, 201, 49, 0.5);
+  --green_quaternary-op6: rgba(110, 201, 49, 0.6);
+  --green_quaternary-op7: rgba(110, 201, 49, 0.7);
+  --green_quaternary-op8: rgba(110, 201, 49, 0.8);
+  --green_quaternary-op9: rgba(110, 201, 49, 0.9);
 
   /*
    Filter elements

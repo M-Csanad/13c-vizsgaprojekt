@@ -1,7 +1,7 @@
-<?php include_once 'config.php'; ?>
-<?php
+<?php include_once 'config.php';
 include_once BASE_PATH . '/../../../.ext/db_connect.php';
 include_once BASE_PATH . '/error_logger.php'; // Naplózás integrálása
+include_once BASE_PATH . '/solid_func.php';
 
 /**
  * Galéria képeket generál az adatbázis kategóriái alapján.
@@ -17,7 +17,8 @@ function generateImageGallery()
     }
 
     // SQL lekérdezés
-    $sql = "SELECT category.name, category.subname, category.thumbnail_image_horizontal_uri FROM category";
+    $sql = "SELECT category.name, category.subname, category.thumbnail_image_horizontal_uri, category.product_count
+            FROM category";
 
     try {
         $result = $conn->query($sql);
@@ -32,6 +33,9 @@ function generateImageGallery()
     // Eredmények feldolgozása
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
+            // Slug generálása a kategória nevéből
+            $slug = format_str($row['name']);
+
             $fileInfo_horizontal = pathinfo(htmlspecialchars($row['thumbnail_image_horizontal_uri']));
             $FileName_horizontal = $fileInfo_horizontal['dirname'] . '/' . $fileInfo_horizontal['filename'];
             $resolutions_horizontal = [3840, 2560, 1920, 1440, 1024, 768];
@@ -53,10 +57,14 @@ function generateImageGallery()
 
             echo '</picture>
                     <div class="caption">
-                      <p class="__t03-law5 title_caption">' . htmlspecialchars($row['name']) . '</p>
+                      <p class="__t03-law5 title_caption">
+                        <a href="http://localhost/' . htmlspecialchars($slug) . '">'
+                . htmlspecialchars($row['name']) .
+                '</a>
+                      </p>
                       <div class="subcontent_caption">
                         <p class="__t01-mew1 subtitle_caption">' . htmlspecialchars($row['subname']) . '</p>
-                        <p class="__t02-mew1 productCount_caption">xyz termék</p>
+                        <p class="__t02-mew1 productCount_caption">' . htmlspecialchars($row['product_count']) . ' termék</p>
                       </div>
                     </div>
                   </div>';
@@ -68,9 +76,10 @@ function generateImageGallery()
 
     // Adatbázis-kapcsolat lezárása
     db_disconnect($conn);
-    
+
 }
 
 // Galéria generálása
 generateImageGallery();
 ?>
+

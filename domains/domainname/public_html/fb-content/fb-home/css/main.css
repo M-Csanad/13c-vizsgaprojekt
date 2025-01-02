@@ -503,9 +503,9 @@ h6 {
   padding: 1.2rem 2.4rem;
 }
 .swiper-slide .img-wrapper .text-overlay h3 {
-  font-family: "Cubano";
-  font-weight: 500;
-  text-transform: capitalize;
+  font-family: "Poppins";
+  font-weight: 600;
+  text-transform: uppercase;
   padding: 10px 0;
   text-shadow: 1px 0px 6px var(--dark_primary-op5);
 }
@@ -1013,7 +1013,21 @@ h6 {
   opacity: 1;
 }
 
-.ImgGallery_container .caption p {
+.ImgGallery_container .caption p a {
+  color: var(--light_main);
+  text-decoration: none;
+  font-family: "Poppins";
+}
+.ImgGallery_container .caption p a:hover {
+  color: var(--green_quaternary);
+  font-family: "Poppins";
+}
+.ImgGallery_container .caption p a:active {
+  color: var(--green_primary);
+  font-family: "Poppins";
+}
+.ImgGallery_container .caption p a:visited {
+  color: var(--light_secondary);
   font-family: "Poppins";
 }
 .ImgGallery_container .caption .title_caption {

@@ -1,114 +1,116 @@
+@import url("../../assets/css/root.css");
+
 .transition {
-    position: fixed;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 999999;
+  font-family: "Times New Roman", Times, serif;
+
+  & > .layer {
+    position: absolute;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
-    z-index: 999999;
-    font-family: 'Times New Roman', Times, serif;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    z-index: 2;
+  }
 
-    & > .layer {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: row;
-        z-index: 2;
-    }
-    
-    & > .layer > .transition-row {
-        flex: 1;
-        display: flex;
-    }
-    
-    & > .layer > .transition-row .block {
-        transform-origin: top;
-    }
-    
-    & .block {
-        pointer-events: all;
-        flex: 1;
-        transform: scaleY(1);
-        margin-inline: -0.5px;
-        will-change: transform;
-    }
+  & > .layer > .transition-row {
+    flex: 1;
+    display: flex;
+  }
 
-    & > .layer-0 {
-        z-index: 5;
-    }
+  & > .layer > .transition-row .block {
+    transform-origin: top;
+  }
 
-    & > .layer-0 .block {
-        background-color: #202020;
-    }
+  & .block {
+    pointer-events: all;
+    flex: 1;
+    transform: scaleY(1);
+    margin-inline: -0.5px;
+    will-change: transform;
+  }
 
-    & > .layer-1 {
-        z-index: 4;
-    }
+  & > .layer-0 {
+    z-index: 5;
+  }
 
-    & > .layer-1 .block {
-        background-color: #485044;
-    }
+  & > .layer-0 .block {
+    background-color: var(--dark_quaternary);
+  }
 
-    & > .layer-2 {
-        z-index: 3;
-    }
+  & > .layer-1 {
+    z-index: 4;
+  }
 
-    & > .layer-2 .block {
-        background-color: #6b9151;
-    }
+  & > .layer-1 .block {
+    background-color: var(--green_tertiary);
+  }
 
-    & > .layer-3 {
-        z-index: 2;
-    }
+  & > .layer-2 {
+    z-index: 3;
+  }
 
-    & > .layer-3 .block {
-        background-color: #a0dd77;
-    }
+  & > .layer-2 .block {
+    background-color: var(--green_secondary);
+  }
 
-    & > .transition-text {
-        z-index: 6;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 1rem;
-    }
-    
-    & > .transition-text > .hero {
-        font-size: min(11vw, 90px);
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
-        line-height: normal;
-    }
+  & > .layer-3 {
+    z-index: 2;
+  }
 
-    & > .transition-text > .hero > .char {
-        width: auto;
-        will-change: transform;
-    }
+  & > .layer-3 .block {
+    background-color: var(--green_primary);
+  }
 
-    & > .transition-text > .quote {
-        color: #90aa7e;
-        font-size: 20px;
-        font-style: italic;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        clip-path: polygon(0 5%, 100% 5%, 100% 100%, 0% 100%);
-    }
+  & > .transition-text {
+    z-index: 6;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+  }
 
-    & > .transition-text > .quote > .char {
-        width: auto;
-        will-change: transform;
-    }
+  & > .transition-text > .hero {
+    font-size: min(11vw, 90px);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+    line-height: normal;
+  }
+
+  & > .transition-text > .hero > .char {
+    width: auto;
+    will-change: transform;
+  }
+
+  & > .transition-text > .quote {
+    color: #90aa7e;
+    font-size: 20px;
+    font-style: italic;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    clip-path: polygon(0 5%, 100% 5%, 100% 100%, 0% 100%);
+  }
+
+  & > .transition-text > .quote > .char {
+    width: auto;
+    will-change: transform;
+  }
 }
