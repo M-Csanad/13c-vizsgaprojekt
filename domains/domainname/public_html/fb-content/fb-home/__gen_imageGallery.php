@@ -34,7 +34,7 @@ function generateImageGallery()
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             // Slug generálása a kategória nevéből
-            $slug = format_str($row['name']);
+            $slug = slug_gen($row['name']);
 
             $fileInfo_horizontal = pathinfo(htmlspecialchars($row['thumbnail_image_horizontal_uri']));
             $FileName_horizontal = $fileInfo_horizontal['dirname'] . '/' . $fileInfo_horizontal['filename'];

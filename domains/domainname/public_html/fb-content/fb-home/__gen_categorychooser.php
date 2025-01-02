@@ -1,7 +1,7 @@
-<?php include_once 'config.php'; ?>
-<?php
+<?php include_once 'config.php';
 include_once BASE_PATH . '/../../../.ext/db_connect.php';
 include_once BASE_PATH . '/error_logger.php';
+include_once BASE_PATH . '/solid_func.php';
 
 /**
  * HTML-t generál a kategóriaadatok alapján az adatbázisból.
@@ -12,7 +12,7 @@ function generateHTML()
     try {
         $conn = db_connect();
     } catch (Exception $e) {
-        log_Error("Adatbázis-kapcsolati hiba: " . $e->getMessage(), 'generateHTML_error.log');
+        logError("Adatbázis-kapcsolati hiba: " . $e->getMessage(), 'generateHTML_error.log');
         die("Nem sikerült csatlakozni az adatbázishoz. Kérlek, nézd meg a naplót.");
     }
 
@@ -25,7 +25,7 @@ function generateHTML()
             throw new Exception("SQL hiba: " . $conn->error);
         }
     } catch (Exception $e) {
-        log_Error("SQL végrehajtási hiba: " . $e->getMessage(), 'generateHTML_error.log');
+        logError("SQL végrehajtási hiba: " . $e->getMessage(), 'generateHTML_error.log');
         die("SQL hiba történt. Kérlek, nézd meg a naplót.");
     }
 
@@ -34,6 +34,7 @@ function generateHTML()
         // Swiper fő tartalom
         echo '<div class="swiper bg_slider"><div class="swiper-wrapper">';
         while ($row = $result->fetch_assoc()) {
+            $slug = slug_gen($row['name']);
             $name_parts = explode(' ', $row['name'], 2);
             $first_word = $name_parts[0];
             $remaining_words = isset($name_parts[1]) ? $name_parts[1] : '';
@@ -57,7 +58,8 @@ function generateHTML()
                             </div>
                             <div class="text-overlay">
                                 <h3 class="__t03-law5">' . htmlspecialchars($row['subname']) . '</h3>
-                                <p class="__t02-men1">' . htmlspecialchars($row['description']) . '</p>
+                                <p class="__t02-men1">' . htmlspecialchars($row['description']) . '...</p>
+                                <p class="__t02-men1"><a href="http://localhost/' . htmlspecialchars($slug) . '" class="cta-link">Kattints ide a részletekért!</a></p>
                             </div>
                         </div>
                         <picture>';
@@ -113,7 +115,7 @@ function generateHTML()
         echo '</div><div><input type="range" class="thumb-slider" min="0" max="100" value="0" /></div></div>';
         echo '<div class="thumb-slider_tooltip" id="thumb-slider_tooltip"><< Húzz meg>></div>';
     } else {
-        log_Error("Nincsenek elérhető kategóriák az adatbázisban.", 'generateHTML_error.log');
+        logError("Nincsenek elérhető kategóriák az adatbázisban.", 'generateHTML_error.log');
         echo "Nincsenek elérhető kategóriák.";
     }
 
@@ -123,3 +125,4 @@ function generateHTML()
 
 generateHTML();
 ?>
+

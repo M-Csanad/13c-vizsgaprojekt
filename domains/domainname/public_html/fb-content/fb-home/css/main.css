@@ -516,6 +516,24 @@ h6 {
   text-shadow: 1px 0px 6px var(--dark_primary-op5);
 }
 
+.swiper-slide .img-wrapper .text-overlay p a {
+  color: var(--green_primary);
+  text-decoration: underline;
+  font-family: "Poppins";
+}
+.swiper-slide .img-wrapper .text-overlay p a:hover {
+  color: var(--green_quaternary);
+  font-family: "Poppins";
+}
+.swiper-slide .img-wrapper .text-overlay p a:active {
+  color: var(--green_primary);
+  font-family: "Poppins";
+}
+.swiper-slide .img-wrapper .text-overlay p a:visited {
+  color: var(--green_primary);
+  font-family: "Poppins";
+}
+
 .swiper-slide .img-wrapper img {
   position: relative;
   top: 0;
