@@ -68,6 +68,18 @@ $cfg['Servers'][$i]['connect_type'] = 'tcp';
 [...]
 ```
 
+Utolsó sorban pedig keresd meg a httpd.conf fájlt (C:/xampp/apache/conf/httpd.conf), és írd át a következő sort:
+```conf
+[...]
+#
+# DocumentRoot: The directory out of which you will serve your
+# documents. By default, all requests are taken from this directory, but
+# symbolic links and aliases may be used to point to other locations.
+#
+DocumentRoot "C:/xampp/htdocs/" ==> "C:/xampp/htdocs/13c-vizsgaprojekt/domains/domainname/public_html"
+[...]
+```
+
 ## Letöltés
 
 Az alkalmazásunk legfrissebb verzióját [erről a linkről](https://github.com/M-Csanad/13c-vizsgaprojekt/releases) tudod letölteni.

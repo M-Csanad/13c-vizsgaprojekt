@@ -1,0 +1,146 @@
+### HTTPS-re történő átirányítás
+#RewriteCond %{HTTPS} off [OR]
+#RewriteCond %{HTTP_HOST} !^www\. [NC]
+#RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+###/ HTTPS-re történő átirányítás
+
+### .htaccess fájl védelme
+<Files .htaccess>
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order deny,allow
+        Deny from all
+    </IfModule>
+</Files>
+###/ .htaccess fájl védelme
+
+### Karbantartási mód ellenőrzése
+#RewriteCond %{DOCUMENT_ROOT}/fb-functions/maintenance/.maintenance -f
+#RewriteCond %{REQUEST_URI} !^/fb-content/maintenance.php$
+#RewriteCond %{REQUEST_URI} !\.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|otf|webp|avif)$ [NC]
+# Átirányítás a karbantartási oldalra
+#RewriteRule ^.*$ /fb-content/maintenance.php [L]
+#<FilesMatch "\.(php)$">
+#    RewriteEngine On
+#    RewriteCond %{REQUEST_FILENAME} !/index.php$
+#    RewriteRule ^(.*)$ - [F,L]
+#</FilesMatch>
+
+#<Files ".maintenance">
+#    <IfModule mod_authz_core.c>
+#        Require all denied
+#    </IfModule>
+#    <IfModule !mod_authz_core.c>
+#        Order deny,allow
+#        Deny from all
+#    </IfModule>
+#</Files>
+###/ Karbantartási mód ellenőrzése
+
+### Statikus átirányítások
+RewriteEngine On
+RewriteRule ^login$ /fb-auth/login.php [L]
+RewriteRule ^logout$ /fb-auth/logout.php [L]
+RewriteRule ^register$ /fb-auth/register.php [L]
+RewriteRule ^privacy-policy$ /fb-content/privacy_policy.html [L]
+RewriteRule ^terms-of-service$ /fb-content/terms_of_service.html [L]
+RewriteRule ^settings$ /fb-auth/settings.php [L]
+RewriteRule ^404$ /fb-functions/error/error-404.html [L]
+RewriteRule ^dashboard$ /fb-auth/fb-admin/dashboard.php [L]
+RewriteRule ^review$ /review.php [L]
+###/ Statikus átirányítások
+
+### Dinamikus átirányítások
+RewriteCond %{REQUEST_URI} ^/fb-auth/ [OR]
+RewriteCond %{REQUEST_URI} ^/fb-admin/
+RewriteRule ^ - [L]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ /fb-content/router.php [L]
+
+# Statikus fájlokat ne irányísa át a routerbe
+RewriteCond %{REQUEST_URI} \.(css|js|png|jpg|jpeg|gif|ico|svg|woff|woff2|ttf|eot|otf|webp|avif|html|php)$ [NC]
+RewriteRule ^ - [L]
+###/ Dinamikus átirányítások
+
+
+### config.php fájl védelme
+<Files "config.php">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</Files>
+
+###/ config.php fájl védelme
+
+### error_logger.php fájl védelme
+<Files "error_logger.php">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</Files>
+###/ error_logger.php fájl védelme
+
+
+### Compress HTML, CSS, JavaScript, Text, XML, and fonts
+<IfModule mod_deflate.c>
+
+    AddOutputFilterByType DEFLATE text/html text/plain text/xml
+    AddOutputFilterByType DEFLATE text/css
+    AddOutputFilterByType DEFLATE text/javascript
+    AddOutputFilterByType DEFLATE application/javascript application/x-javascript
+    AddOutputFilterByType DEFLATE application/json
+    AddOutputFilterByType DEFLATE application/xml
+    AddOutputFilterByType DEFLATE application/xhtml+xml
+    AddOutputFilterByType DEFLATE application/rss+xml
+    AddOutputFilterByType DEFLATE application/atom+xml
+    AddOutputFilterByType DEFLATE application/vnd.ms-fontobject
+    AddOutputFilterByType DEFLATE application/x-font-ttf
+    AddOutputFilterByType DEFLATE font/opentype
+    AddOutputFilterByType DEFLATE font/ttf
+    AddOutputFilterByType DEFLATE font/otf
+    AddOutputFilterByType DEFLATE font/woff
+    AddOutputFilterByType DEFLATE font/woff2
+
+    # Exclude images from compression
+    SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+</IfModule>
+###/ Compress HTML, CSS, JavaScript, Text, XML, and fonts
+
+### Böngésző oldali gyorsítótárazás beállítása
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/pdf "access plus 1 month"
+    ExpiresByType text/javascript "access plus 1 week"
+    ExpiresByType application/javascript "access plus 1 week"
+    ExpiresByType application/x-javascript "access plus 1 week"
+    ExpiresByType application/x-shockwave-flash "access plus 1 month"
+    ExpiresByType image/x-icon "access plus 1 year"
+    ExpiresDefault "access plus 2 days"
+</IfModule>
+###/ Böngésző oldali gyorsítótárazás beállítása
+
+### ETag letiltása a teljesítmény javítása érdekében
+Header unset ETag
+FileETag None
+###/ ETag letiltása a teljesítmény javítása érdekében
+
+RewriteEngine On
+RewriteBase /
+

@@ -1,0 +1,53 @@
+:root {
+    --background: #fafafa;
+    --background-dark: #121212;
+    --danger: rgb(181, 0, 0);
+    --border: #b6b6b6;
+    --line-height: 24px;
+    --padding: 16px 24px;
+    --text: #222222;
+    --text-light: #555555;
+    --valid: rgb(57, 152, 65);
+    --invalid: rgb(220, 21, 21);
+    --warn: rgb(255, 217, 0);
+}
+
+@font-face {
+    font-family: "Raleway";
+    font-display: swap;
+    src: url("../fonts/Raleway.woff2") format("woff2");
+    font-weight: 100 900;
+}
+
+.border {
+    border: 1px solid red !important;
+}
+
+.error, .success {
+    font-family: 'Raleway', Courier, monospace;
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: opacity 1s ease;
+    cursor: pointer;
+    position: relative;
+    margin-top: 1rem;
+}
+
+.error {
+    background-color: rgb(159, 21, 21);
+    border: 5px solid rgb(202, 67, 67);
+    box-shadow: 0px 0px 5px rgb(250, 75, 75);
+}
+
+.success {
+    background-color: rgb(32, 113, 21);
+    border: 5px solid rgb(63, 169, 69);
+    box-shadow: 0px 0px 5px rgb(23, 235, 34);
+}
+
+.no-overflow {
+    overflow: visible !important;
+}

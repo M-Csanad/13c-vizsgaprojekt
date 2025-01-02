@@ -1,0 +1,382 @@
+.fb-textblock-listpanel::-webkit-scrollbar-track,
+.fb-nav-subcontent-wrapper::-webkit-scrollbar-track {
+  background-color: #0c0c0c;
+  border-radius: 20px;
+}
+
+.fb-textblock-listpanel::-webkit-scrollbar,
+.fb-nav-subcontent-wrapper::-webkit-scrollbar {
+  width: 2.4px;
+  background-color: #fff;
+  border-radius: 20px;
+}
+
+.fb-textblock-listpanel::-webkit-scrollbar-thumb,
+.fb-nav-subcontent-wrapper::-webkit-scrollbar-thumb {
+  background-color: #fff;
+  border-radius: 20px;
+}
+
+/*
+  =============================
+     Navigation Menu
+  =============================
+*/
+#StickyNavbar_container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: auto;
+  position: fixed !important;
+  top: 0 !important;
+  z-index: 9999;
+  background: rgba(19, 19, 19, 0.55);
+  backdrop-filter: var(--blur8);
+  -webkit-backdrop-filter: var(--blur8);
+}
+
+.fb-link {
+  position: relative;
+  text-transform: capitalize;
+  text-decoration: none;
+  color: var(--light-gray);
+  transition: all 0.3s ease;
+}
+
+.fb-link:hover {
+  color: var(--light);
+}
+
+#fb-navbar {
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-transform: uppercase;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 9999;
+}
+
+#fb-navbar .fb-logo {
+  width: 73px;
+  margin-right: 8%;
+}
+
+#fb-navbar .fb-nav-links-wrapper {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  padding: 0.6rem 0;
+}
+
+#fb-navbar .fb-nav-links-wrapper-mini {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+#fb-navbar .fb-nav-content-container {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+  margin: 10px;
+}
+
+#fb-navbar .fb-nav-content-container .fb-nav-link {
+  margin: 0 25px;
+}
+
+#fb-navbar .fb-nav-content-container .fb-active {
+  color: var(--light);
+}
+
+/*
+  =============================
+     SubNavigation Menu
+  =============================
+*/
+
+.fb-nav-subcontent-container {
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  align-items: center;
+  width: 100vw;
+  margin: 0;
+  padding: 1.2rem 12px;
+  color: #fff;
+  top: -100%;
+  transition: all 0.4s ease-in;
+  opacity: 0;
+  z-index: 9998;
+}
+
+.hidden {
+  display: none !important;
+  pointer-events: none !important;
+}
+
+.fb-nav-subcontent-wrapper {
+  position: relative;
+  height: auto;
+  margin-inline: auto;
+  overflow-y: scroll;
+  align-content: flex-start;
+}
+
+.fb-nav-subcontent-wrapper,
+.fb-nav-imgcontent-wrapper {
+  display: flex;
+  box-sizing: border-box;
+  flex-flow: row wrap;
+  justify-content: center;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.fb-nav-subcontent-wrapper::before,
+.fb-nav-imgcontent-wrapper::before {
+  content: "";
+}
+
+.fb-nav-subcontent-wrapper::after,
+.fb-nav-imgcontent-wrapper::after {
+  content: "";
+}
+
+.fb-nav-subcontent-frame {
+  position: relative;
+  overflow: hidden;
+  width: calc(11vw - 0.8vh);
+  height: calc(16.5vw - 0.8vh);
+  margin: 12px;
+}
+
+.fb-nav-subcontent-frame,
+.fb-nav-imgcontent-frame {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fb-nav-subcontent-imgblock {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.fb-nav-subcontent-imgblock img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(1px);
+  transition: transform 0.5s ease-in-out, transform 0.4s ease-in-out;
+}
+
+.fb-nav-subcontent-frame:hover .fb-nav-subcontent-imgblock img {
+  transform: scale(1.1);
+  transition: transform 0.5s ease-in-out, transform 0.4s ease-in-out;
+}
+
+/* .fb-nav-subcontent-frame:hover .fb-nav-subcontent-imgblock img {
+  transform: translateY(-100%);
+} */
+
+.fb-subcontent-imgblock-title {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+  transform: translate(-50%, -50%);
+  color: #fff;
+
+  text-align: center;
+  transition: transform 0.5s ease-in-out;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.fb-nav-subcontent-textblock {
+  position: relative;
+  z-index: 1;
+  padding: 1.2rem;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+.fb-nav-subcontent-frame:hover .fb-nav-subcontent-textblock {
+  opacity: 1;
+}
+
+.fb-textblock-title {
+  color: #cccccc;
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.fb-textblock-listpanel {
+  flex-direction: column;
+  overflow-y: scroll;
+  height: 120px;
+  padding-right: 24px;
+}
+
+.fb-textblock-listpanel-ul {
+  list-style: none;
+  text-align: left;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8.6px;
+}
+
+.fb-textblock-listpanel-li a {
+  text-decoration: none;
+  color: #fff;
+}
+
+.fb-nav-imgcontent-frame {
+  display: flex;
+  flex: 1 1 auto;
+  flex-flow: row wrap;
+  align-items: center;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  margin: 12px;
+}
+
+.fb-nav-imgcontent-block {
+  width: 100%;
+  max-width: calc((((100vw / 12) * 4) / 2.3));
+  overflow: hidden;
+  align-items: center;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  transition: all 0.3s ease;
+}
+
+.fb-nav-imgcontent-block:hover {
+  max-width: calc((((100vw / 12) * 4) / 2.33));
+}
+
+.fb-nav-imgcontent-block .fb-imgcontent-img img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.fb-imgcontent-text p,
+.fb-imgcontent-text a {
+  color: #fff;
+  text-decoration: none;
+}
+
+/*Icons*/
+#interfaceIcons {
+  position: absolute;
+  right: 5%;
+  width: auto;
+}
+.icon_container {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: row;
+  gap: 15px;
+}
+
+/*Hamburger*/
+
+.hamburger-icon .line {
+  width: 100%;
+  height: 3px;
+  background-color: white;
+  transition: all 0.4s ease;
+}
+
+/* Morph hatás - ha aktív (X formában) */
+.hamburger-icon.active .line1 {
+  transform: rotate(45deg) translate(5px, 5px);
+}
+
+.hamburger-icon.active .line2 {
+  opacity: 0;
+}
+
+.hamburger-icon.active .line3 {
+  transform: rotate(-45deg) translate(5px, -5px);
+}
+
+/* Hamburger menü teljes képernyőn */
+.hamburger-menu {
+  display: none;
+  flex-direction: column;
+  background: rgba(0, 0, 0, 0.84);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  overflow-y: auto;
+  z-index: 10000;
+  padding-top: 20px;
+}
+
+.close-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  font-size: 24px;
+  color: #fff;
+  cursor: pointer;
+}
+
+.dropdown-title {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.dropdown-content {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+/* Legördülő menü aktív állapota */
+.dropdown-content.active {
+  display: block;
+}
+
+.dropdown-content li {
+  padding: 8px 0;
+}
+
+.dropdown-content li a {
+  color: var(--light-gray);
+  text-decoration: none;
+}
+
+/* Aktív (megnyitott) állapot stílusai */
+.hamburger-menu-item.active h3::after {
+  transform: rotate(180deg);
+}
+
+.hamburger-menu-item.active ul {
+  display: block;
+}

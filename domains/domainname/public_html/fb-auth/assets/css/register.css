@@ -1,0 +1,343 @@
+@import url('./root.css');
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+body {
+    background-color: #333333;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    font-family: Raleway;
+    font-weight: 500;
+    overflow-y: hidden;
+}
+
+/* input.autofilled {
+    appearance: menulist-button;
+    background-image: none !important;
+    background-color: light-dark(rgb(232, 240, 254), rgba(70, 90, 126, 0.4)) !important;
+    color: fieldtext !important;
+} */
+
+/*Firefox nem támogatja a dvh-t*/
+
+.main {
+    width: 100% !important;
+    height: 100vh;
+    max-height: 100vh;
+    display: flex;
+    flex-direction: row;
+}
+@supports(height: 100dvh) { 
+    body {
+        height: 100dvh;
+    }
+    .main {
+        height: 100dvh;
+    }
+}
+
+.side-image {
+    flex-grow: 1;
+    width: 50%;
+    background-color: #171717;
+    position: relative;
+}
+
+.bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    z-index: 1;
+  }
+
+.bg.visible {
+    opacity: 1;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+}
+
+form {
+    min-width: 400px;
+    overflow-y: auto;
+    width: 50%;
+    flex-shrink: 0;
+    max-height: 100vh;
+    flex-grow: 1;
+    padding: 20px;
+    width: 400px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    background-color: #FAFAFA;
+
+    .form-header {
+        display: flex;
+        flex-grow: 1;
+        align-items: flex-start;
+        justify-content: center;
+        flex-direction: column;
+        gap: 10px;
+        width: 80%;
+        
+        h1 {
+            font-size: 35px;
+        }
+
+        div {
+            color: #565656;
+        }
+    }
+    .form-divider{
+        flex-grow: 1;
+    
+        width: 100%;
+        color: #747474;
+    
+        padding-bottom: 0.2rem;
+        font-weight: 400;
+        margin-top: 0.5rem;
+        margin-bottom: 0.5rem;
+        
+        border-bottom: 1px solid #dfdfdf;
+    }
+
+    .form-body {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .form-bottom {
+        width: 80%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        flex-grow: 1;
+    }
+
+    .input-wrapper{ 
+        width: 80%;
+    }
+
+    .input-group {
+        flex-grow: 1;
+        margin-block: 25px;
+        width: 100%;
+        position: relative;
+        transition: all 0.3s ease;
+        border-bottom: 3px solid var(--text-light);
+    }
+
+    .input-group:has(input:not(.empty)):has(input:valid), 
+    /* .input-group:has(input.autofilled),  */
+    .input-group:has(input:-webkit-autofill) {
+        border-bottom: 3px solid var(--valid) !important;
+    }
+    .input-group:has(input:not(.empty)):has(input:invalid) {
+        border-bottom: 3px solid var(--invalid) !important;
+    }
+    
+    .input-group input {
+        height: 35px;
+        width: 100%;
+        border: none;
+        background-color: transparent;
+        position: relative;
+        outline: none;
+        font-size: 16px;
+        z-index: 10;
+    }
+    
+    .input-group label {
+        transition: all 0.3s ease;
+        position: absolute;
+        bottom: 8px;
+        cursor: text;
+        padding-left: 8px;
+        color: var(--text-light);
+        user-select: none;
+        z-index: 2;
+        font-size: 16px !important;
+    }
+
+    .input-group:has(input:focus) label, 
+    .input-group:has(input:valid) label, 
+    .input-group:has(input:-webkit-autofill) label, 
+    .input-group:has(input:not(.empty)) label
+    {
+        transform: translateY(-25px);
+        font-size: 14px;
+        color: rgb(118, 118, 118);
+    }
+
+    .input-group-inline {
+        margin-block: 25px;
+        display: flex;
+        flex-direction: row;
+        flex: 1;
+        gap: 15px;
+    }
+
+    .input-group-inline > div {
+        margin-block: 0 !important;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .input-group-inline > div > label {
+        flex-grow: 1;
+        padding-left: 5px;
+        font-size: 14px;
+    }
+
+    .action-button {
+        padding-inline: 10px;
+        padding-block: 10px;
+        margin-bottom: 10px;
+        width: 100%;
+        transition: border 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        color: white;
+        box-shadow: 0px 0px 0px var(--border);
+        background-color: #565656;
+        border: 4px solid #9f9f9f;
+        font-size: 18px;
+        letter-spacing: 1px;
+        border-radius: 15px;
+    }
+
+    .action-button:hover {
+        border: 4px solid #83b680;
+        background-color: #3a5b32;
+        box-shadow: 0px 0px 10px greenyellow;
+    }
+
+    .form-link {
+        display: inline-block;
+        text-decoration: underline;
+        transition: all 0.2s ease;
+    }
+    .form-link:hover {
+        transform: translateY(-5px);
+    }
+
+    .login {
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        font-size: 14px;
+    }
+
+    #forgotPassword {
+        font-size: 14px;
+        display: block;
+        width: fit-content;
+        margin-left: auto;
+        margin-right: 5px;
+    }
+
+    input[type="text"], input[type='password'], input[type='email'] {
+        padding: 8px;
+        border-radius: 4px;
+    }
+
+    input[type="checkbox"] {
+        width: 15px;
+    }
+
+    .form-message {
+        font-style: italic;
+        height: 20px;
+        color: red;
+        animation: shake 0.5s;
+        animation-timing-function: ease;
+    }
+}
+
+@keyframes shake {
+    0% {transform: translateX(0px);}
+    6% {transform: translateX(-5px);}
+    12% {transform: translateX(0px);}
+    18% {transform: translateX(5px);}
+    24% {transform: translateX(0px);}
+    36% {transform: translateX(-3px);}
+    42% {transform: translateX(0px);}
+    48% {transform: translateX(3px);}
+    54% {transform: translateX(0px);}
+    66% {transform: translateX(-2px);}
+    72% {transform: translateX(0px);}
+    78% {transform: translateX(2px);}
+    84% {transform: translateX(0px);}
+    90% {transform: translateX(-1px);}
+    96% {transform: translateX(0px);}
+    100% {transform: translateX(1px);}
+}
+
+@media screen and (max-width: 285px) {
+    form {
+
+    }
+}
+
+@media screen and (max-width: 500px) {
+    form {
+        padding: 0;
+    }
+    .input-group-inline {
+        flex-direction: column !important;
+        padding-inline: 0 !important;
+        gap: 25px !important;
+    }
+
+    .input-group-inline > a {
+        margin-inline: 0 !important;
+        margin-bottom: 10px !important;
+    }
+}
+
+@media screen and (max-width: 579px) {
+    body {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 900px) {
+    .side-image {
+        display: none;
+    }
+    .main {
+        background-color: rgba(250, 250, 250, 0.85);
+        backdrop-filter: blur(5px);
+        width: 100%;
+        height: 100%;
+        border: 3px solid transparent;
+        border-radius: 0px;
+    }
+    .main > form {
+        flex-shrink: 0 !important;
+        min-width: 0 !important;
+        max-width: 100%;
+    }
+}

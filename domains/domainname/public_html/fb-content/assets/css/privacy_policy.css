@@ -1,0 +1,114 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    /* margin: 0; */
+}
+
+@font-face {
+    font-family: "Playfair Display";
+    src: url("../font/PlayfairDisplay-VariableFont_wght.woff2") format("woff2");
+    /* font-weight: 100 900; A betűtípus vastagsági tartománya */
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../font/Roboto-Regular.woff2") format("woff2");
+    /* font-weight: 100 900; A betűtípus vastagsági tartománya */
+    font-style: normal;
+    font-display: swap;
+}
+
+html {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body {
+    background-color: #1d1d1d;
+    color: rgb(233, 233, 233);
+    font-family: Roboto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.5;
+}
+
+header {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 4rem;
+    
+    & > .updated {
+        color: rgb(146, 146, 146);
+        font-size: 20px;
+    }
+
+    & > h1 {
+        color: white;
+        margin: 0;
+        font-size: 45px;
+    }
+}
+
+section {
+    margin-block: 3rem;
+
+    & > h2 {
+        letter-spacing: 1px;
+        color: white;
+    }
+
+    &  ul {
+        margin-left: 1rem;
+        margin-block: 2rem;
+    }
+
+    & ul > li {
+        margin-block: 1rem;
+    }
+
+    & a {
+        color: yellowgreen;
+        text-decoration: underline;
+        transition: color 0.3s ease;
+    }
+
+    & a:visited {
+        color: rgb(163, 196, 98)
+    }
+
+    & a:hover {
+        color: rgb(118, 158, 38);
+    }
+
+    & strong {
+        font-family: Arial, Helvetica, sans-serif;
+        color: white;
+    }
+}
+
+main {
+    width: min(100%, 1000px);
+}
+
+#scrollBar {
+    z-index: 9998;
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    background-color: rgb(39, 39, 39);
+    height: 3px;
+  }
+  #scrollStatus {
+    height: 100%;
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
+    background-color: rgb(197, 197, 197);
+    width: 0%;
+  }
