@@ -143,3 +143,28 @@
   --blur9: blur(9px);
   --blur10: blur(10px);
 }
+
+html,
+main {
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+}
+
+body::-webkit-scrollbar,
+main::-webkit-scrollbar,
+.videoContent_wrapper::-webkit-scrollbar,
+.videoContent_scrollable::-webkit-scrollbar {
+  display: none;
+}
+
+p,
+a,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  padding: 0;
+}
