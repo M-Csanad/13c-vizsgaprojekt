@@ -338,7 +338,7 @@ CREATE TRIGGER `product_page_after_insert` AFTER INSERT ON `product_page` FOR EA
     UPDATE subcategory
       SET product_count = product_count + 1
       WHERE id = NEW.subcategory_id;
-    
+
     -- Növeljük a főkategóriáét is, de ehhez le kell kérni, melyik category-hoz tartozik ez a subcategory
     UPDATE category
       SET product_count = product_count + 1
@@ -356,13 +356,13 @@ DELIMITER $$
 CREATE TRIGGER `product_page_after_update` AFTER UPDATE ON `product_page` FOR EACH ROW BEGIN
   -- Ha a régiben volt subcategory, de az újban más
   IF OLD.subcategory_id <> NEW.subcategory_id THEN
-    
+
     -- Ha volt 'régi' subcategory, akkor onnan levonunk 1-et
     IF OLD.subcategory_id IS NOT NULL THEN
       UPDATE subcategory
         SET product_count = product_count - 1
         WHERE id = OLD.subcategory_id;
-      
+
       UPDATE category
         SET product_count = product_count - 1
         WHERE id = (
@@ -377,7 +377,7 @@ CREATE TRIGGER `product_page_after_update` AFTER UPDATE ON `product_page` FOR EA
       UPDATE subcategory
         SET product_count = product_count + 1
         WHERE id = NEW.subcategory_id;
-      
+
       UPDATE category
         SET product_count = product_count + 1
         WHERE id = (
@@ -772,37 +772,37 @@ ALTER TABLE `health_effect`
 -- AUTO_INCREMENT a táblához `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `product_health_effect`
 --
 ALTER TABLE `product_health_effect`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `product_page`
 --
 ALTER TABLE `product_page`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `product_tag`
 --
 ALTER TABLE `product_tag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `review`
