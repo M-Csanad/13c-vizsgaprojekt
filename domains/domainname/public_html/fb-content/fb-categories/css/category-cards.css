@@ -5,13 +5,11 @@ body {
   padding: 0;
   background: #0c0c0c;
   font-family: "Poppins", sans-serif;
-  overflow: hidden; /* CSAK LAGGOLT TŐLE EZ A LOADER CSAK MONDOM MERT VOLT OVERFLOW */
 }
 main {
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  width: 100vw;
 }
 
 #CardSection__category::-webkit-scrollbar-track,
@@ -39,6 +37,7 @@ main {
   flex-direction: column;
 }
 .Card-subcontainer_main {
+  padding-top: 4.8rem;
   background: rgba(255, 255, 255, 0.912);
 }
 
@@ -67,9 +66,15 @@ main {
 .CardContainer {
   padding: 1.2rem 0.8em 0.8em 0.8em;
   background: #ffffff;
-
+  cursor: pointer;
   border-radius: 6px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.CardContainer a {
+  display: contents;
+  text-decoration: none;
+  color: inherit;
 }
 
 .CardContainer.verticalCard {
@@ -94,14 +99,14 @@ main {
 }
 
 .Card_header {
-  height: 80px;
+  height: auto;
 }
 
 .Card_body {
   margin: 2.4rem 0;
   font-size: clamp(0.8rem, calc(0.6rem + 0.39vw), 1.24rem);
   font-weight: 300;
-  height: 100px;
+  height: auto;
   overflow-wrap: break-word;
   word-wrap: break-word;
   padding: 0 1rem;
@@ -139,7 +144,7 @@ main {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 900ms ease-out;
+  transition: transform 400ms ease-out;
 }
 
 .Card_themeImage {
@@ -155,7 +160,8 @@ main {
 .Card_logoImage {
   margin-bottom: 2.4rem;
 }
-.Card_logoImage img {
+.Card_logoImage img,
+.Card_logoImage svg {
   position: relative;
   width: 40%;
   height: auto;
@@ -163,7 +169,7 @@ main {
   padding: 12px 2rem;
   left: -2em;
   border-radius: 6px;
-  transition: all 900ms ease;
+  transition: all 400ms ease;
   background: #0c0c0c;
   z-index: 12;
 }
@@ -174,10 +180,11 @@ main {
 }
 
 /* Smooth shrink of logo with hover */
-.CardContainer:hover .Card_logoImage img {
+.CardContainer:hover .Card_logoImage img,
+.CardContainer:hover .Card_logoImage svg {
   height: auto;
   transform: translateY(75%);
-  transition: all 900ms ease-in-out;
+  transition: all 400ms ease-in-out;
 }
 
 .CardContainer:hover .Card_imageWrapper::before {
@@ -267,7 +274,7 @@ main {
   }
 
   .Card_header {
-    height: 80px;
+    height: auto;
   }
 
   .Card_imageWrapper {
@@ -277,7 +284,7 @@ main {
   .CardContainer:hover .Card_logoImage img {
     height: auto;
     transform: translateY(80%);
-    transition: all 900ms ease-in-out;
+    transition: all 400ms ease-in-out;
   }
 }
 
@@ -327,7 +334,7 @@ main {
       font-size: clamp(1rem, calc(0.9rem + 1.39vw), 1.45rem);
     }
     .Card_header {
-      height: 80px;
+      height: auto;
     }
     .Card_body {
       font-size: clamp(0.75rem, calc(0.6rem + 1.39vw), 1rem);

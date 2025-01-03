@@ -1,21 +1,30 @@
 <?php
 
-function format_str($s) {
+function format_str($s)
+{
     $hungarian_to_english = [
-        'á' => 'a', 'é' => 'e', 'í' => 'i', 
-        'ó' => 'o', 'ö' => 'o', 'ő' => 'o',
-        'ú' => 'u', 'ü' => 'u', 'ű' => 'u'
+        'á' => 'a',
+        'é' => 'e',
+        'í' => 'i',
+        'ó' => 'o',
+        'ö' => 'o',
+        'ő' => 'o',
+        'ú' => 'u',
+        'ü' => 'u',
+        'ű' => 'u'
     ];
 
     $temp = str_replace(" ", "-", trim(mb_strtolower($s)));
     return strtr($temp, $hungarian_to_english);
 }
 
-function reverse_format_str($s) {
+function reverse_format_str($s)
+{
     return str_replace("-", " ", $s);
 }
 
-function getOrientation($image) {
+function getOrientation($image)
+{
     $size = getimagesize($image);
     if ($size) {
         $width = $size[0];
@@ -28,30 +37,33 @@ function getOrientation($image) {
     }
 }
 
-function getMediaType($image) {
+function getMediaType($image)
+{
     return mime_content_type($image);
 }
 
-function createDirectory($paths) {
-    if (!is_array($paths)) $paths = [$paths];
+function createDirectory($paths)
+{
+    if (!is_array($paths))
+        $paths = [$paths];
 
     foreach ($paths as $path) {
         if (!is_dir($path)) {
             mkdir($path, 0755, true);
-        }
-        else {
+        } else {
             return false;
         }
     }
-    
+
     return true;
 }
 
-function deleteFolder($folderPath) {
+function deleteFolder($folderPath)
+{
     if (!is_dir($folderPath)) {
         return false;
     }
-    
+
     $files = scandir($folderPath);
     foreach ($files as $file) {
         if ($file === '.' || $file === '..') {
@@ -70,32 +82,40 @@ function deleteFolder($folderPath) {
     return rmdir($folderPath);
 }
 
-function moveFile($tmp, $name, $basename, $dir) {
+function moveFile($tmp, $name, $basename, $dir)
+{
     $extension = pathinfo($name, PATHINFO_EXTENSION);
-    
-    $filePath = $dir."$basename.".$extension;
+
+    $filePath = $dir . "$basename." . $extension;
     if (!move_uploaded_file($tmp, $filePath)) {
         return false;
     }
-    
+
     return $filePath;
 }
 
-function replaceFile($fileURI, $tmp, $name, $basename) {
-    $dirURI = pathinfo($fileURI, PATHINFO_DIRNAME)."/";
+function replaceFile($fileURI, $tmp, $name, $basename)
+{
+    $dirURI = pathinfo($fileURI, PATHINFO_DIRNAME) . "/";
 
     if (is_file($fileURI)) {
         unlink($fileURI);
         $result = moveFile($tmp, $name, $basename, $dirURI);
         return $result;
-    }
-    else return false;
+    } else
+        return false;
 }
 
-function hasError($paths) {
-    return count(array_filter($paths, function ($e) {return $e === false; })) > 0;
+function hasError($paths)
+{
+    return count(array_filter($paths, function ($e) {
+        return $e === false;
+    })) > 0;
 }
 
-function hasUploadError() {
-    return count(array_filter($_FILES, function ($e) { return $e['error'] == 1; })) > 0;
+function hasUploadError()
+{
+    return count(array_filter($_FILES, function ($e) {
+        return $e['error'] == 1;
+    })) > 0;
 }

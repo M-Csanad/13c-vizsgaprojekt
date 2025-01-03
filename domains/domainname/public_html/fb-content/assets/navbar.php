@@ -9,8 +9,8 @@ $filePath = BASE_PATH . '/../../../.ext/db_connect.php';
 $isLoggedIn = false;
 $result = getUserData();
 if (typeOf($result, "SUCCESS")) {
-  $user = $result["message"];
-  $isLoggedIn = true;
+    $user = $result["message"];
+    $isLoggedIn = true;
 }
 
 if ($loggerPath === false) {
@@ -120,7 +120,7 @@ function getCategoryContent()
 $category_content = getCategoryContent();
 
 // Navigációs elemek
-$base_url = ".";
+$base_url = "http://localhost";
 $logo_url = htmlspecialchars("$base_url/fb-content/assets/media/images/logos/herbalLogo_mini_white.png");
 $menu_items = [
     ['name' => 'Categories', 'id' => 'fb-navlink-category', 'url' => '#'],
@@ -132,6 +132,16 @@ $menu_items = [
 
 ?>
 
+
+<!--root stylesheet-->
+<link rel="stylesheet" href="/fb-content/assets/css/root.css" />
+
+<!--casual stylesheets-->
+<link rel="stylesheet" href="/fb-content/assets/css/box.css" />
+<link rel="stylesheet" href="/fb-content/assets/css/font.css" />
+<link rel="stylesheet" href="/fb-content/assets/css/navbar.css" media="all" />
+<link rel="stylesheet" href="/fb-content/assets/css/mobileNavbar.css" media="all">
+<script src="/fb-content/assets/js/autogenerate__navbar.js" defer></script>
 
 <nav id="fb-navbar" class="fb-sticky" data-category='<?= json_encode($category_content); ?>'>
     <div id="fb-navTopWrapper" class="fb-nav-links-wrapper">
@@ -229,3 +239,6 @@ $menu_items = [
         <?php endforeach; ?>
     </div>
 </div>
+
+
+<script src="http://localhost/fb-content/assets/js/mobileNavbar.js"></script>

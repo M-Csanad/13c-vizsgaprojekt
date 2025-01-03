@@ -239,6 +239,15 @@ function removeProductFromDB($productData)
     if (typeOf($result, "ERROR"))
         return $result;
 
+    $result = updateData(
+        "DELETE FROM product_page WHERE product_page.product_id = ?;",
+        $productData['id'],
+        "i"
+    ); //Ez egy biztonság miatt van itt, hogy a trigger 100% beinduljon és soha ne legyen hiba.
+    if (typeOf($result, "ERROR")) {
+        return $result;
+    }
+
     return updateData("DELETE FROM product WHERE product.id = ?;", $productData['id'], "i");
 }
 
@@ -358,9 +367,11 @@ function updateProductPage($data, $table = null)
     $pages = $result["message"];
 
     $slugs = array_map(function ($e) {
-        return $e["link_slug"]; }, $pages);
+        return $e["link_slug"];
+    }, $pages);
     $ids = array_map(function ($e) {
-        return $e["id"]; }, $pages);
+        return $e["id"];
+    }, $pages);
     $typeString = "";
 
     for ($i = 0; $i < count($pages); $i++) {
@@ -392,22 +403,31 @@ function updateProductImages($productData, $images, $paths)
     if (count($paths) == 0)
         return false;
 
-    if (count(array_filter($images, function ($e) {
-        return $e["name"] == "product_image"; })) > 0) {
+    if (
+        count(array_filter($images, function ($e) {
+            return $e["name"] == "product_image";
+        })) > 0
+    ) {
         $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%image%' AND image.uri NOT LIKE '%thumbnail%' AND product_image.product_id=?;", $productData["id"], "i");
         if (typeOf($result, "ERROR")) {
             return $result;
         }
     }
-    if (count(array_filter($images, function ($e) {
-        return $e["name"] == "thumbnail_image"; })) > 0) {
+    if (
+        count(array_filter($images, function ($e) {
+            return $e["name"] == "thumbnail_image";
+        })) > 0
+    ) {
         $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%thumbnail%' AND image.media_type='image' AND product_image.product_id=?;", $productData["id"], "i");
         if (typeOf($result, "ERROR")) {
             return $result;
         }
     }
-    if (count(array_filter($images, function ($e) {
-        return $e["name"] == "product_video"; })) > 0) {
+    if (
+        count(array_filter($images, function ($e) {
+            return $e["name"] == "product_video";
+        })) > 0
+    ) {
         $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%thumbnail%' AND image.media_type='video' AND product_image.product_id=?;", $productData["id"], "i");
         if (typeOf($result, "ERROR")) {
             return $result;
