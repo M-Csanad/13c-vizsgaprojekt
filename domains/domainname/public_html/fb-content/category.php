@@ -318,7 +318,7 @@
               </div>
               <div class="Card_body">
                 <p>
-                  <?= implode(' ', array_slice(explode(' ', htmlspecialchars($category['description'])), 0, 15)) . '...' ?>
+                  <?= implode(' ', array_slice(explode(' ', htmlspecialchars($category['description'])), 0, 12)) . '...' ?>
                 </p>
               </div>
               <div class="Card_footer">

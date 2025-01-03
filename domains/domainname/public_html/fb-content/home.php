@@ -267,10 +267,9 @@ session_start();
   <link rel="stylesheet" href="./fb-content/fb-home/css/main.css" media="all" />
   <link rel="stylesheet" href="./fb-content/fb-home/css/main_media.css" media="all" />
   <link rel="stylesheet" href="./fb-content/assets/css/footer.css" media="all" />
-  <link rel="stylesheet" href="./fb-content/assets/css/navbar.css" media="all" />
-  <link rel="stylesheet" href="http://localhost/fb-content/assets/css/mobileNavbar.css">
+
   <script src="./fb-content/assets/js/autogenerate__footer.js" defer></script>
-  <script src="./fb-content/assets/js/autogenerate__navbar.js" defer></script>
+
 
   <!--swiper bundle-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.0.4/swiper-bundle.min.js"
@@ -295,7 +294,135 @@ session_start();
 </head>
 
 <body>
-  <div class=transition><div class=transition-text><div class=hero><div class=char>F</div><div class=char>l</div><div class=char>o</div><div class=char>r</div><div class=char>e</div><div class=char>n</div><div class=char>s</div><div class=char> </div><div class=char>B</div><div class=char>o</div><div class=char>t</div><div class=char>a</div><div class=char>n</div><div class=char>i</div><div class=char>c</div><div class=char>a</div></div><div class=quote><div class=char>"</div><div class=char>A</div><div class=char> </div><div class=char>l</div><div class=char>e</div><div class=char>g</div><div class=char>n</div><div class=char>a</div><div class=char>g</div><div class=char>y</div><div class=char>o</div><div class=char>b</div><div class=char>b</div><div class=char> </div><div class=char>g</div><div class=char>a</div><div class=char>z</div><div class=char>d</div><div class=char>a</div><div class=char>g</div><div class=char>s</div><div class=char>á</div><div class=char>g</div><div class=char> </div><div class=char>a</div><div class=char>z</div><div class=char> </div><div class=char>e</div><div class=char>g</div><div class=char>é</div><div class=char>s</div><div class=char>z</div><div class=char>s</div><div class=char>é</div><div class=char>g</div><div class=char>.</div><div class=char>"</div><div class=char> </div><div class=char>-</div><div class=char> </div><div class=char>V</div><div class=char>e</div><div class=char>r</div><div class=char>g</div><div class=char>i</div><div class=char>l</div><div class=char>i</div><div class=char>u</div><div class=char>s</div></div></div><div class="layer layer-0"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-1"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-2"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-3"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div></div>
+  <div class=transition>
+    <div class=transition-text>
+      <div class=hero>
+        <div class=char>F</div>
+        <div class=char>l</div>
+        <div class=char>o</div>
+        <div class=char>r</div>
+        <div class=char>e</div>
+        <div class=char>n</div>
+        <div class=char>s</div>
+        <div class=char> </div>
+        <div class=char>B</div>
+        <div class=char>o</div>
+        <div class=char>t</div>
+        <div class=char>a</div>
+        <div class=char>n</div>
+        <div class=char>i</div>
+        <div class=char>c</div>
+        <div class=char>a</div>
+      </div>
+      <div class=quote>
+        <div class=char>"</div>
+        <div class=char>A</div>
+        <div class=char> </div>
+        <div class=char>l</div>
+        <div class=char>e</div>
+        <div class=char>g</div>
+        <div class=char>n</div>
+        <div class=char>a</div>
+        <div class=char>g</div>
+        <div class=char>y</div>
+        <div class=char>o</div>
+        <div class=char>b</div>
+        <div class=char>b</div>
+        <div class=char> </div>
+        <div class=char>g</div>
+        <div class=char>a</div>
+        <div class=char>z</div>
+        <div class=char>d</div>
+        <div class=char>a</div>
+        <div class=char>g</div>
+        <div class=char>s</div>
+        <div class=char>á</div>
+        <div class=char>g</div>
+        <div class=char> </div>
+        <div class=char>a</div>
+        <div class=char>z</div>
+        <div class=char> </div>
+        <div class=char>e</div>
+        <div class=char>g</div>
+        <div class=char>é</div>
+        <div class=char>s</div>
+        <div class=char>z</div>
+        <div class=char>s</div>
+        <div class=char>é</div>
+        <div class=char>g</div>
+        <div class=char>.</div>
+        <div class=char>"</div>
+        <div class=char> </div>
+        <div class=char>-</div>
+        <div class=char> </div>
+        <div class=char>V</div>
+        <div class=char>e</div>
+        <div class=char>r</div>
+        <div class=char>g</div>
+        <div class=char>i</div>
+        <div class=char>l</div>
+        <div class=char>i</div>
+        <div class=char>u</div>
+        <div class=char>s</div>
+      </div>
+    </div>
+    <div class="layer layer-0">
+      <div class="row-1 transition-row">
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+      </div>
+    </div>
+    <div class="layer layer-1">
+      <div class="row-1 transition-row">
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+      </div>
+    </div>
+    <div class="layer layer-2">
+      <div class="row-1 transition-row">
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+      </div>
+    </div>
+    <div class="layer layer-3">
+      <div class="row-1 transition-row">
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+        <div class=block></div>
+      </div>
+    </div>
+  </div>
 
   <header>
     <section id="StickyNavbar_container">
@@ -645,7 +772,7 @@ session_start();
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 
   <!--extras-->
-  <script src="http://localhost/fb-content/assets/js/mobileNavbar.js"></script>
+
 
 </body>
 
