@@ -63,12 +63,12 @@ section {
         color: white;
     }
 
-    &  ul {
+    & ul, ol {
         margin-left: 1rem;
         margin-block: 2rem;
     }
 
-    & ul > li {
+    & ul > li, ol > li {
         margin-block: 1rem;
     }
 

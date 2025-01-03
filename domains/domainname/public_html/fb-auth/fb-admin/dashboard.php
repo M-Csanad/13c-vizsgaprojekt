@@ -1004,7 +1004,7 @@
                                                         </div>
                                                         <hr />
                                                         <?php foreach ($sideEffects as $index=>$sideEffect): ?>
-                                                            <div class="option visible" data-value="<?= htmlspecialchars($sideEffect["id"]) ?>" data-label-value="<?= htmlspecialchars($benefit["name"])?>">
+                                                            <div class="option visible" data-value="<?= htmlspecialchars($sideEffect["id"]) ?>" data-label-value="<?= htmlspecialchars($sideEffect["name"])?>">
                                                                 <div class="check">
                                                                     <img src="./fb-auth/assets/svg/check.svg" alt="" draggable="false" />
                                                                 </div>
