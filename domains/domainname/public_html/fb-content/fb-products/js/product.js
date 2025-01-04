@@ -174,19 +174,19 @@ tags.forEach((tag) => {
 });
 
 const navigatorImages = document.querySelectorAll(".navigator-image");
-let isAnimating = false;
+let isNavAnimating = false;
 const allImages = document.querySelectorAll(".images .image");
 navigatorImages.forEach((navigatorImage, index) => {
   allImages[index].style.zIndex = navigatorImages.length - 1 - index;
   navigatorImage.addEventListener("click", () => {
-    if (isAnimating) return;
-    isAnimating = true;
+    if (isNavAnimating) return;
+    isNavAnimating = true;
 
     const currentImage = document.querySelector(".image.active");
     const targetImage = allImages[index];
 
     if (currentImage == targetImage) {
-      isAnimating = false;
+      isNavAnimating = false;
       return;
     }
 
@@ -211,7 +211,7 @@ navigatorImages.forEach((navigatorImage, index) => {
     updateDynamicBackground();
     setTimeout(() => {
       currentImage.style.zIndex = -1;
-      isAnimating = false;
+      isNavAnimating = false;
     }, 300);
   });
 });
