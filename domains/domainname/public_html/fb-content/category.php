@@ -278,7 +278,7 @@
                     <source type="image/jpeg" media="(min-width:<?= $resolution ?>px)"
                       srcset="<?= $FileName ?>-<?= $resolution ?>px.jpg">
                   <?php endforeach; ?>
-                  <img src="<?= $FileName ?>-<?= end($resolutions) ?>px.jpg"
+                  <img src="<?= $FileName ?>-<?= end($resolutions) ?>px.webp"
                     alt="<?= htmlspecialchars($subcategory['name']) ?>" loading="lazy">
                 </picture>
               </div>
@@ -287,9 +287,7 @@
                   <div class="Card_headerProductCounter"><?= $subcategory['product_count'] ?> products</div>
                   <div class="Card_headerProductTitle"><?= htmlspecialchars($subcategory['name']) ?></div>
                 </div>
-                <p>
-                  <?= implode(' ', array_slice(explode(' ', htmlspecialchars($subcategory['description'])), 0, 8)) . '...' ?>
-                </p>
+
               </div>
               <div class="card-pattern"></div>
             </a>

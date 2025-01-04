@@ -107,6 +107,11 @@ function uploadCategoryData($categoryData)
         array_push($values, $categoryData["parent_category_id"]);
         $types .= "i";
     }
+    $slug = format_str($categoryData["name"]);
+
+    array_push($fields, "slug");
+    array_push($values, $slug);
+    $types .= "s";
 
     $fieldList = implode(", ", $fields);
     $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
@@ -216,14 +221,16 @@ function updateCategoryData($categoryData, $images)
 
     $table = $categoryData["type"];
     $isMainCategory = $table == "category";
+    $slug = format_str($categoryData["name"]);
 
-    $fields = array("name", "subname", "description");
+    $fields = array("name", "subname", "description", "slug");
     $values = array(
         $categoryData["name"],
         $categoryData["subname"],
         $categoryData["description"],
+        $slug
     );
-    $typeString = "sss";
+    $typeString = "ssss";
 
     foreach ($images as $image) {
         array_push($fields, $image["name"] . "_uri");
