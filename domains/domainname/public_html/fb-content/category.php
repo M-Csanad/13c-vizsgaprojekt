@@ -5,13 +5,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!--lenis stylesheet-->
+  <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.14/dist/lenis.css" />
+
+  <!--root stylesheet-->
+  <link rel="stylesheet" href="./fb-content/assets/css/root.css" />
+
+  <!--casual stylesheets-->
   <link rel="stylesheet" href="http://localhost//fb-content/assets/css/box.css" />
   <link rel="stylesheet" href="http://localhost//fb-content/assets/css/font.css" />
-  <link rel="stylesheet" href="http://localhost//fb-content/fb-categories/css/category-cards.css" />
   <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
 
+  <link rel="stylesheet" href="http://localhost//fb-content/fb-categories/css/category-cards.css" />
+
+  <!--page transition-->
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script defer src="/fb-content/assets/js/page_transition.js"></script>
+
+  <!--footer stylesheets-->
+  <link rel="stylesheet" href="/fb-content/assets/css/footer.css" media="all" />
+  <script src="/fb-content/assets/js/autogenerate__footer.js" defer></script>
   <title>Category Cards</title>
 </head>
 
@@ -355,8 +368,20 @@
     </section>
   </main>
 
+  <footer id="fb-footer"></footer>
 
+  <!--jQuery-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.0/jquery.min.js"
+    integrity="sha512-3gJwYpMe3QewGELv8k/BX9vcqhryRdzRMxVfq6ngyWXwo03GFEzjsUm8Q7RZcHPHksttq7/GFoxjCVUjkjvPdw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+  <!--lenis scroll-->
+  <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
+  <script src="http://localhost/fb-content/assets/js/lenis.js"></script>
+
+  <!--ionicons-->
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>

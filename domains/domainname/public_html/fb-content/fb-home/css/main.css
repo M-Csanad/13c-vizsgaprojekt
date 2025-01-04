@@ -529,10 +529,6 @@ h6 {
   color: var(--green_primary);
   font-family: "Poppins";
 }
-.swiper-slide .img-wrapper .text-overlay p a:visited {
-  color: var(--green_primary);
-  font-family: "Poppins";
-}
 
 .swiper-slide .img-wrapper img {
   position: relative;
@@ -1042,10 +1038,6 @@ h6 {
 }
 .ImgGallery_container .caption p a:active {
   color: var(--green_primary);
-  font-family: "Poppins";
-}
-.ImgGallery_container .caption p a:visited {
-  color: var(--light_secondary);
   font-family: "Poppins";
 }
 .ImgGallery_container .caption .title_caption {

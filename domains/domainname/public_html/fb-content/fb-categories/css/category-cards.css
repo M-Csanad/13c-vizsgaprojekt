@@ -1,4 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap");
+@import url("/fb-content/assets/css/root.css");
+@import url("/fb-content/assets/css/font.css");
 
 body {
   margin: 0;
@@ -20,15 +22,19 @@ main {
 
 #CardSection__category::-webkit-scrollbar,
 #CardSection__subcategory::-webkit-scrollbar {
-  height: 4.8px;
-  background-color: #fff;
+  height: 8px;
+  background-color: var(--green_primary);
   border-radius: 20px;
 }
 
 #CardSection__category::-webkit-scrollbar-thumb,
 #CardSection__subcategory::-webkit-scrollbar-thumb {
-  background-color: #fff;
+  background-color: var(--green_primary);
   border-radius: 20px;
+}
+
+.Card-container_main {
+  margin-bottom: 6rem;
 }
 
 .Card-container_main,

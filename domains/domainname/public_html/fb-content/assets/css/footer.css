@@ -1,3 +1,6 @@
+@import url("./root.css");
+@import url("./font.css");
+
 footer {
   display: block;
   padding-top: 1.5px;
@@ -13,7 +16,7 @@ footer .fb-footer-mask {
     center top,
     center bottom,
     color-stop(0, #fff0),
-    color-stop(1, var(--light))
+    color-stop(1, var(--light_main))
   );
 }
 footer .fb-left-container {
@@ -69,7 +72,7 @@ footer .fb-f-container .fb-f-row .fb-f-col {
   content: "";
   position: absolute;
   bottom: -10px;
-  background: var(--light);
+  background: var(--light_main);
   height: 2px;
   width: 50px;
   box-sizing: border-box;
@@ -84,37 +87,37 @@ footer .fb-f-container .fb-f-row .fb-f-col .fb-f-content {
   padding-left: 5px;
 }
 footer .fb-copyright {
-  color: var(--light-gray);
+  color: var(--light_tertiary);
   max-width: 36vw;
 }
 footer .fb-links {
   position: relative;
   text-transform: uppercase;
   text-decoration: none;
-  color: var(--light-gray);
+  color: var(--light_tertiary);
   transition: all 0.3s ease;
 }
 footer .fb-links:hover {
-  color: var(--light);
+  color: var(--light_main);
   cursor: pointer;
 }
 footer h1 {
   font-size: 1.7em;
   font-family: "Nexa";
   text-transform: uppercase;
-  color: var(--light);
+  color: var(--light_main);
 }
 footer h2 {
   font-size: 1.4em;
   font-family: "Nexa";
   text-transform: uppercase;
-  color: var(--light);
+  color: var(--light_main);
 }
 footer h3 {
   font-size: 1em;
   font-family: "Nexa";
   text-transform: uppercase;
-  color: var(--light);
+  color: var(--light_main);
 }
 .fb-f-col-big {
   align-items: center;
@@ -140,8 +143,8 @@ footer h3 {
   width: 30px;
   align-items: center;
   justify-content: center;
-  background-color: var(--light);
-  color: var(--dark);
+  background-color: var(--light_main);
+  color: var(--dark_primary);
   text-align: center;
   border-radius: 50%;
   margin: 5px 0;
@@ -158,11 +161,11 @@ footer h3 {
   text-align: right;
   text-transform: none;
   text-decoration: none;
-  color: var(--light-gray);
+  color: var(--light_tertiary);
 }
 .fb-social-cont-mini > .fb-links:hover {
-  color: var(--light);
-  background-color: var(--dark);
+  color: var(--light_main);
+  background-color: var(--dark_primary);
   padding-right: 10px;
 }
 
@@ -219,7 +222,7 @@ footer h3 {
     width: 12rem;
   }
   footer .fb-copyright {
-    color: var(--light-gray);
+    color: var(--light_tertiary);
     max-width: 60vw;
   }
 }
@@ -269,7 +272,7 @@ footer h3 {
     flex-flow: row wrap;
     justify-content: space-evenly;
     padding: 0.5rem;
-    border-top: solid 1px var(--light);
+    border-top: solid 1px var(--light_main);
   }
   footer .fb-f-container .fb-f-row .fb-f-col {
     display: flex;
@@ -278,7 +281,7 @@ footer h3 {
     width: 12rem;
   }
   footer .fb-copyright {
-    color: var(--light-gray);
+    color: var(--light_tertiary);
     max-width: 60vw;
   }
 }
@@ -337,7 +340,7 @@ footer h3 {
     width: 12rem;
   }
   footer .fb-copyright {
-    color: var(--light-gray);
+    color: var(--light_tertiary);
     max-width: 60vw;
   }
 }
@@ -387,7 +390,7 @@ footer h3 {
     flex-flow: row wrap;
     justify-content: space-evenly;
     padding: 0.5rem;
-    border-top: solid 1px var(--light);
+    border-top: solid 1px var(--light_main);
   }
   footer .fb-f-container .fb-f-row .fb-f-col {
     display: flex;
@@ -396,7 +399,7 @@ footer h3 {
     width: 12rem;
   }
   footer .fb-copyright {
-    color: var(--light-gray);
+    color: var(--light_tertiary);
     max-width: 60vw;
   }
 }
@@ -446,7 +449,7 @@ footer h3 {
     flex-flow: row wrap;
     justify-content: space-evenly;
     padding: 0.5rem;
-    border-top: solid 1px var(--light);
+    border-top: solid 1px var(--light_main);
   }
   footer .fb-f-container .fb-f-row .fb-f-col {
     display: flex;
@@ -455,7 +458,7 @@ footer h3 {
     width: 12rem;
   }
   footer .fb-copyright {
-    color: var(--light-gray);
+    color: var(--light_tertiary);
     max-width: 60vw;
   }
 }

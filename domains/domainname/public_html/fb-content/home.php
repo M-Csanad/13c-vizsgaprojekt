@@ -266,10 +266,10 @@ session_start();
   <!--main stylesheet-->
   <link rel="stylesheet" href="./fb-content/fb-home/css/main.css" media="all" />
   <link rel="stylesheet" href="./fb-content/fb-home/css/main_media.css" media="all" />
+
+  <!--footer stylesheets-->
   <link rel="stylesheet" href="./fb-content/assets/css/footer.css" media="all" />
-
   <script src="./fb-content/assets/js/autogenerate__footer.js" defer></script>
-
 
   <!--swiper bundle-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.0.4/swiper-bundle.min.js"

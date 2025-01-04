@@ -85,6 +85,28 @@
   --light_secondary-op8: rgba(242, 242, 242, 0.8);
   --light_secondary-op9: rgba(242, 242, 242, 0.9);
 
+  --light_tertiary: rgb(230, 230, 230);
+  --light_tertiary-op1: rgba(230, 230, 230, 0.1);
+  --light_tertiary-op2: rgba(230, 230, 230, 0.2);
+  --light_tertiary-op3: rgba(230, 230, 230, 0.3);
+  --light_tertiary-op4: rgba(230, 230, 230, 0.4);
+  --light_tertiary-op5: rgba(230, 230, 230, 0.5);
+  --light_tertiary-op6: rgba(230, 230, 230, 0.6);
+  --light_tertiary-op7: rgba(230, 230, 230, 0.7);
+  --light_tertiary-op8: rgba(230, 230, 230, 0.8);
+  --light_tertiary-op9: rgba(230, 230, 230, 0.9);
+
+  --light_quaternary: rgb(218, 218, 218);
+  --light_quaternary-op1: rgba(218, 218, 218, 0.1);
+  --light_quaternary-op2: rgba(218, 218, 218, 0.2);
+  --light_quaternary-op3: rgba(218, 218, 218, 0.3);
+  --light_quaternary-op4: rgba(218, 218, 218, 0.4);
+  --light_quaternary-op5: rgba(218, 218, 218, 0.5);
+  --light_quaternary-op6: rgba(218, 218, 218, 0.6);
+  --light_quaternary-op7: rgba(218, 218, 218, 0.7);
+  --light_quaternary-op8: rgba(218, 218, 218, 0.8);
+  --light_quaternary-op9: rgba(218, 218, 218, 0.9);
+
   --green_primary: rgb(160, 221, 119);
   --green_primary-op1: rgba(160, 221, 119, 0.1);
   --green_primary-op2: rgba(160, 221, 119, 0.2);
