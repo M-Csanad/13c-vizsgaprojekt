@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Jan 03. 19:07
+-- Létrehozás ideje: 2025. Jan 05. 20:25
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -29,7 +29,6 @@ USE `florens_botanica`;
 -- Tábla szerkezet ehhez a táblához `cart`
 --
 
-DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
   `order_id` int(11) DEFAULT NULL,
@@ -43,7 +42,6 @@ CREATE TABLE `cart` (
 -- Tábla szerkezet ehhez a táblához `category`
 --
 
-DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -61,8 +59,8 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `name`, `subname`, `description`, `thumbnail_image_vertical_uri`, `thumbnail_image_horizontal_uri`, `thumbnail_video_uri`, `product_count`, `slug`) VALUES
-(1, 'A Tiszta Egészség', 'A Természet Esszenciája', 'Támogasd szervezetedet a természet legjavával! Vitaminok, ásványi anyagok, és növényi kivonatok gondoskodnak az energikus mindennapokról, miközben természetes forrásokból származó kiegészítők segítenek megőrizni egészséged harmóniáját. Válaszd a természet', 'http://localhost/fb-content/fb-categories/media/images/category-1/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-1/thumbnail_image_horizontal.jpg', NULL, 0, 'a-tiszta-egeszseg'),
-(2, 'A Nyugodt Elme', 'A Nyugalom Forrása', 'Találd meg a belső békédet természetes megoldásokkal! Ebben a kategóriában mindent megtalálsz, ami támogatja a relaxációt, csökkenti a stresszt és segít az éjszakai pihenésben, hogy minden nap energikusan és kiegyensúlyozottan induljon. Fedezd fel a nyuga', 'http://localhost/fb-content/fb-categories/media/images/category-2/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-2/thumbnail_image_horizontal.jpg', NULL, 0, 'a-nyugodt-elme'),
+(1, 'A Tiszta Egészség', 'A Természet Esszenciája', 'Támogasd szervezetedet a természet legjavával! Vitaminok, ásványi anyagok, és növényi kivonatok gondoskodnak az energikus mindennapokról, miközben természetes forrásokból származó kiegészítők segítenek megőrizni egészséged harmóniáját. Válaszd a természet', 'http://localhost/fb-content/fb-categories/media/images/category-1/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-1/thumbnail_image_horizontal.jpg', NULL, 3, 'a-tiszta-egeszseg'),
+(2, 'A Nyugodt Elme', 'A Nyugalom Forrása', 'Találd meg a belső békédet természetes megoldásokkal! Ebben a kategóriában mindent megtalálsz, ami támogatja a relaxációt, csökkenti a stresszt és segít az éjszakai pihenésben, hogy minden nap energikusan és kiegyensúlyozottan induljon. Fedezd fel a nyuga', 'http://localhost/fb-content/fb-categories/media/images/category-2/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-2/thumbnail_image_horizontal.jpg', NULL, 2, 'a-nyugodt-elme'),
 (3, 'A Detox Ereje', 'Méregtelenítés', 'Adj új lendületet testednek természetes méregtelenítő megoldásokkal! Ebben a kategóriában hatékony, természetes eszközöket találsz, amelyek segítenek a belső tisztulásban, támogatják a májat, vesét és az emésztőrendszert, hogy szervezeted felfrissüljön és', 'http://localhost/fb-content/fb-categories/media/images/category-3/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-3/thumbnail_image_horizontal.jpg', NULL, 0, 'a-detox-ereje'),
 (4, 'A Könnyed Emésztés', 'Az Anyagcsere', 'Támogasd tested természetes egyensúlyát! Ebben a kategóriában hatékony megoldásokat találsz, amelyek serkentik az anyagcserét, javítják az emésztést, és hozzájárulnak a megfelelő rostbevitelhez, hogy energikus és kiegyensúlyozott lehess minden nap.', 'http://localhost/fb-content/fb-categories/media/images/category-4/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-4/thumbnail_image_horizontal.jpg', NULL, 0, 'a-konnyed-emesztes'),
 (5, 'A Mozgás Ereje', 'A Mozgás Forrása', 'Turbózd fel teljesítményed természetes, erőt adó megoldásokkal! Ebben a kategóriában megtalálod mindazt, ami támogatja az aktív életmódot, növeli az energiát és segíti a regenerációt – természetes alapanyagokból, hogy minden mozdulat könnyed legyen és hat', 'http://localhost/fb-content/fb-categories/media/images/category-5/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-5/thumbnail_image_horizontal.jpg', NULL, 0, 'a-mozgas-ereje'),
@@ -83,7 +81,6 @@ INSERT INTO `category` (`id`, `name`, `subname`, `description`, `thumbnail_image
 -- Tábla szerkezet ehhez a táblához `delivery_info`
 --
 
-DROP TABLE IF EXISTS `delivery_info`;
 CREATE TABLE `delivery_info` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
@@ -102,7 +99,6 @@ CREATE TABLE `delivery_info` (
 -- Tábla szerkezet ehhez a táblához `health_effect`
 --
 
-DROP TABLE IF EXISTS `health_effect`;
 CREATE TABLE `health_effect` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
@@ -153,8 +149,7 @@ INSERT INTO `health_effect` (`id`, `name`, `description`, `benefit`) VALUES
 (36, 'Fokozott izzadás', 'Bizonyos hatások fokozhatják az izzadást, különösen nagyobb adagok esetén.', 0),
 (37, 'Szívritmuszavart okozó', 'Néhány hatás befolyásolhatja a szívritmust, különösen szívproblémákkal küzdőknél.', 0),
 (38, 'Fejfájást okozó', 'Bizonyos hatások, például túlzott mennyiségben alkalmazva, fejfájást válthatnak ki.', 0),
-(39, 'Hormonális zűrzavart', 'Néhány hatás befolyásolhatja a hormonális rendszert, ami menstruációs rendellenességekhez vezethet.', 0),
-(40, 'Túlérzékenység', 'Néhány hatás bőrirritációt és egyéb allergiás reakciókat válthat ki, például viszketést vagy bőrpírt.', 0);
+(39, 'Túlérzékenység', 'Néhány hatás bőrirritációt és egyéb allergiás reakciókat válthat ki, például viszketést vagy bőrpírt.', 0);
 
 -- --------------------------------------------------------
 
@@ -162,7 +157,6 @@ INSERT INTO `health_effect` (`id`, `name`, `description`, `benefit`) VALUES
 -- Tábla szerkezet ehhez a táblához `image`
 --
 
-DROP TABLE IF EXISTS `image`;
 CREATE TABLE `image` (
   `id` int(11) NOT NULL,
   `uri` varchar(255) NOT NULL,
@@ -170,13 +164,33 @@ CREATE TABLE `image` (
   `media_type` varchar(5) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
+--
+-- A tábla adatainak kiíratása `image`
+--
+
+INSERT INTO `image` (`id`, `uri`, `orientation`, `media_type`) VALUES
+(1, 'http://localhost/fb-content/fb-products/media/images/product-3/thumbnail.jpg', 'horizontal', 'image'),
+(2, 'http://localhost/fb-content/fb-products/media/images/product-3/image0.jpg', 'vertical', 'image'),
+(3, 'http://localhost/fb-content/fb-products/media/images/product-3/image1.jpg', 'horizontal', 'image'),
+(4, 'http://localhost/fb-content/fb-products/media/images/product-1/thumbnail.jpg', 'horizontal', 'image'),
+(5, 'http://localhost/fb-content/fb-products/media/images/product-1/image0.jpg', 'horizontal', 'image'),
+(6, 'http://localhost/fb-content/fb-products/media/images/product-1/image1.jpg', 'vertical', 'image'),
+(7, 'http://localhost/fb-content/fb-products/media/images/product-4/thumbnail.jpg', 'horizontal', 'image'),
+(8, 'http://localhost/fb-content/fb-products/media/images/product-4/image0.jpg', 'horizontal', 'image'),
+(9, 'http://localhost/fb-content/fb-products/media/images/product-4/image1.jpg', 'vertical', 'image'),
+(10, 'http://localhost/fb-content/fb-products/media/images/product-5/thumbnail.jpg', 'horizontal', 'image'),
+(11, 'http://localhost/fb-content/fb-products/media/images/product-5/image0.jpg', 'vertical', 'image'),
+(12, 'http://localhost/fb-content/fb-products/media/images/product-5/image1.jpg', 'horizontal', 'image'),
+(13, 'http://localhost/fb-content/fb-products/media/images/product-2/thumbnail.jpg', 'horizontal', 'image'),
+(14, 'http://localhost/fb-content/fb-products/media/images/product-2/image0.jpg', 'horizontal', 'image'),
+(15, 'http://localhost/fb-content/fb-products/media/images/product-2/image1.jpg', 'vertical', 'image');
+
 -- --------------------------------------------------------
 
 --
 -- Tábla szerkezet ehhez a táblához `order`
 --
 
-DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `session_id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL COMMENT 'Vendég rendelések miatt lehet NULL is a user_id',
@@ -200,7 +214,6 @@ CREATE TABLE `order` (
 -- Tábla szerkezet ehhez a táblához `product`
 --
 
-DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -209,18 +222,61 @@ CREATE TABLE `product` (
   `description` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
+--
+-- A tábla adatainak kiíratása `product`
+--
+
+INSERT INTO `product` (`id`, `name`, `unit_price`, `stock`, `description`) VALUES
+(1, 'Kamilla virág', 4900, 30, 'A Matricaria chamomilla, azaz a kamilla, az egyik legismertebb és leggyengédebb gyógynövény. Gyakran teaként használják a relaxáció elősegítésére és az emésztés támogatására. A kamilla finoman nyugtatja a bőrt, ezért előszeretettel alkalmazzák bőrápolási '),
+(2, 'Levendula virág', 6000, 20, 'A Lavandula angustifolia, közismert nevén levendula, mediterrán eredetű növény, amely édes, nyugtató, virágos illatáról ismert. Virágai és levelei évszázadok óta részei a nyugati gyógynövényhasználatnak, és a szépségápolástól kezdve a főzésig sokoldalúan '),
+(3, 'Kurkuma gyökér', 2000, 50, 'A Curcuma longa, azaz a kurkuma, az indiai és délkelet-ázsiai trópusi régiókból származó, gyömbérfélék családjába tartozó évelő növény. Élénk narancssárga-sárga színe miatt fűszerként és természetes színezőanyagként egyaránt népszerű. A kurkuma különleges'),
+(4, 'Kasvirág gyökér', 8000, 30, 'Az Echinacea angustifolia, egy észak-amerikai gyógynövény, amely támogatja az immunrendszert. Organikus gyökereit teák, tinktúrák és helyi olajok készítésére használják, hogy erősítse a test védelmi rendszereit és javítsa a közérzetet.'),
+(5, 'Darált fokhagyma', 3200, 40, 'Az Allium sativum, közismert nevén fokhagyma, egy ízletes és erőteljes fűszer, mely számos kultúrában népszerű. Szárított, aprított fokhagymánk a legnagyobb szemcseméretű, és kiválóan alkalmas olajok infúziójához vagy főzéshez. Emellett a fokhagyma híres ');
+
 -- --------------------------------------------------------
 
 --
 -- Tábla szerkezet ehhez a táblához `product_health_effect`
 --
 
-DROP TABLE IF EXISTS `product_health_effect`;
 CREATE TABLE `product_health_effect` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
   `health_effect_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `product_health_effect`
+--
+
+INSERT INTO `product_health_effect` (`id`, `product_id`, `health_effect_id`) VALUES
+(1, 3, 2),
+(2, 3, 6),
+(3, 3, 3),
+(4, 3, 24),
+(5, 3, 12),
+(6, 3, 19),
+(7, 1, 4),
+(8, 1, 22),
+(9, 1, 13),
+(10, 4, 1),
+(11, 4, 2),
+(12, 4, 28),
+(13, 4, 29),
+(14, 4, 13),
+(15, 4, 12),
+(16, 4, 15),
+(17, 5, 1),
+(18, 5, 6),
+(19, 5, 28),
+(20, 5, 29),
+(21, 5, 10),
+(22, 5, 12),
+(23, 5, 19),
+(24, 2, 4),
+(25, 2, 22),
+(26, 2, 13),
+(27, 2, 15);
 
 -- --------------------------------------------------------
 
@@ -228,12 +284,32 @@ CREATE TABLE `product_health_effect` (
 -- Tábla szerkezet ehhez a táblához `product_image`
 --
 
-DROP TABLE IF EXISTS `product_image`;
 CREATE TABLE `product_image` (
   `id` int(11) NOT NULL,
   `image_id` int(11) NOT NULL,
   `product_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `product_image`
+--
+
+INSERT INTO `product_image` (`id`, `image_id`, `product_id`) VALUES
+(1, 1, 3),
+(2, 2, 3),
+(3, 3, 3),
+(4, 4, 1),
+(5, 5, 1),
+(6, 6, 1),
+(7, 7, 4),
+(8, 8, 4),
+(9, 9, 4),
+(10, 10, 5),
+(11, 11, 5),
+(12, 12, 5),
+(13, 13, 2),
+(14, 14, 2),
+(15, 15, 2);
 
 -- --------------------------------------------------------
 
@@ -241,7 +317,6 @@ CREATE TABLE `product_image` (
 -- Tábla szerkezet ehhez a táblához `product_page`
 --
 
-DROP TABLE IF EXISTS `product_page`;
 CREATE TABLE `product_page` (
   `id` int(11) NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
@@ -255,9 +330,19 @@ CREATE TABLE `product_page` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
+-- A tábla adatainak kiíratása `product_page`
+--
+
+INSERT INTO `product_page` (`id`, `created_at`, `last_modified`, `product_id`, `link_slug`, `category_id`, `subcategory_id`, `page_title`, `page_content`) VALUES
+(1, '2025-01-05 16:16:00', '2025-01-05 16:16:00', 1, 'a-nyugodt-elme/nyugtato-novenyek/kamilla-virag', 2, 3, 'Kamilla virág', 'A kamilla teaként fogyasztva relaxációt nyújt, megnyugtatja az emésztőrendszert, és olyan gyengéd, hogy csecsemőknek is adható. Külsőleg alkalmazva lágyítja és nyugtatja a bőrt, és természetes fényt kölcsönöz a hajnak. A növényt történelmileg széles körben használták Európában és Észak-Amerikában teák, fürdők, inhalációk és borogatások formájában.\r\nA kamilla az ókori Egyiptomban is kedvelt volt, ahol az isteneknek szánt áldozatok közé tartozott. Mexikóban manzanillaként ismerik, és a gyomor megnyugtatására, valamint a hangulat emelésére készítenek belőle teát. Az őslakos amerikai törzsek, például a Cherokee és az Aleuták, szintén sokoldalúan használták ezt a növényt.\r\nEz az organikus, sokoldalú növény megérdemelten nyerte el az „alles zutraut” – „mindenre képes” – becenevet.'),
+(2, '2025-01-05 16:35:35', '2025-01-05 16:35:35', 2, 'a-nyugodt-elme/nyugtato-novenyek/levendula-virag', 2, 3, 'Levendula virág', 'Már az ókori egyiptomiak, görögök és rómaiak is használták fürdők, ételek és parfümök készítésére. A francia konyhában gyakori fűszer, amely különleges, virágos ízt kölcsönöz desszerteknek és húsoknak.\r\nA levendula az egyik legismertebb illat a világon, amely nyugtató hatása mellett a szépségápolásban és illatosító keverékekben is népszerű.'),
+(3, '2025-01-05 17:29:03', '2025-01-05 17:29:03', 3, 'a-tiszta-egeszseg/meregtelenito-novenyek/kurkuma-gyoker', 1, 1, 'Kurkuma gyökér', 'A kurkuma (Curcuma longa) a gyömbérfélék családjába tartozó évelő növény, amely Indiából és Délkelet-Ázsiából származik. Élénk színe és földes íze miatt népszerű fűszer, különösen currykhez, rizses ételekhez és italokhoz, mint az aranytej.\r\nHatóanyaga, a kurkumin, adja aranyló színét és jótékony tulajdonságait. A kurkuma természetes színezékként és hagyományos ájurvédikus gyógyászatban is használatos. Szárított gyökere teákhoz, tinktúrákhoz és természetes festékekhez is kiváló.'),
+(4, '2025-01-05 19:43:58', '2025-01-05 19:43:58', 4, 'a-tiszta-egeszseg/meregtelenito-novenyek/kasvirag-gyoker', 1, 1, 'Kasvirág gyökér', 'Az Echinacea angustifolia évezredek óta használatos a hagyományos gyógymódokban, elsősorban az immunrendszer erősítésére. A növény gyökerei teában, tinktúrában vagy olajban alkalmazhatóak, hogy támogassák a test védekezőképességét.\r\nA növény története a helyi amerikai törzsekhez vezethető vissza, akik számos egészségügyi problémára használták. Bár az Echinacea purpurea vált a legismertebb fajjá, az Echinacea angustifolia továbbra is értékes gyógynövény marad.'),
+(5, '2025-01-05 19:55:24', '2025-01-05 19:55:24', 5, 'a-tiszta-egeszseg/meregtelenito-novenyek/daralt-fokhagyma', 1, 1, 'Darált fokhagyma', 'A fokhagyma az egyik legismertebb és legszélesebb körben használt gyógynövény, melyet évezredek óta alkalmaznak ízesítésre és gyógyításra. Az Allium sativum a liliomfélék családjába tartozik, és a világ minden táján termesztik. Különleges, erőteljes illatával és ízével a fokhagyma nemcsak a konyhák alapvető fűszere, hanem a tradicionális kínai orvoslásban és az ayurvédikus gyógyászatban is elismert. Az aprított fokhagyma kiválóan használható olajok készítéséhez vagy főzéshez, és segíthet fenntartani a normál koleszterinszintet is.\r\n\r\nA fokhagyma több ezer éve elterjedt kultúrákban, és rengeteg jótékony hatásával híres. Az ókori görög és római orvosok is nagyra értékelték, és mágikus erőt tulajdonítottak neki, mint védelmet a gonosz szellemek és betegségek ellen. Az ayurvédában és a hagyományos kínai orvoslásban is fontos szerepe van. Segíthet az egészséges emésztés támogatásában és a koleszterinszint egyensúlyának megőrzésében.');
+
+--
 -- Eseményindítók `product_page`
 --
-DROP TRIGGER IF EXISTS `product_page_after_insert`;
 DELIMITER $$
 CREATE TRIGGER `product_page_after_insert` AFTER INSERT ON `product_page` FOR EACH ROW BEGIN
   -- Ha van subcategory_id
@@ -279,7 +364,6 @@ CREATE TRIGGER `product_page_after_insert` AFTER INSERT ON `product_page` FOR EA
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `product_page_after_update`;
 DELIMITER $$
 CREATE TRIGGER `product_page_after_update` AFTER UPDATE ON `product_page` FOR EACH ROW BEGIN
   -- Ha a régiben volt subcategory, de az újban más
@@ -318,7 +402,6 @@ CREATE TRIGGER `product_page_after_update` AFTER UPDATE ON `product_page` FOR EA
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `product_page_before_delete`;
 DELIMITER $$
 CREATE TRIGGER `product_page_before_delete` BEFORE DELETE ON `product_page` FOR EACH ROW BEGIN
   IF OLD.subcategory_id IS NOT NULL THEN
@@ -346,12 +429,35 @@ DELIMITER ;
 -- Tábla szerkezet ehhez a táblához `product_tag`
 --
 
-DROP TABLE IF EXISTS `product_tag`;
 CREATE TABLE `product_tag` (
   `id` int(11) NOT NULL,
   `tag_id` int(11) DEFAULT NULL,
   `product_id` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `product_tag`
+--
+
+INSERT INTO `product_tag` (`id`, `tag_id`, `product_id`) VALUES
+(1, 1, 3),
+(2, 5, 3),
+(3, 10, 3),
+(4, 1, 1),
+(5, 5, 1),
+(6, 9, 1),
+(7, 10, 1),
+(8, 1, 4),
+(9, 5, 4),
+(10, 9, 4),
+(11, 10, 4),
+(12, 1, 5),
+(13, 5, 5),
+(14, 10, 5),
+(15, 1, 2),
+(16, 5, 2),
+(17, 9, 2),
+(18, 10, 2);
 
 -- --------------------------------------------------------
 
@@ -359,7 +465,6 @@ CREATE TABLE `product_tag` (
 -- Tábla szerkezet ehhez a táblához `review`
 --
 
-DROP TABLE IF EXISTS `review`;
 CREATE TABLE `review` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
@@ -376,7 +481,6 @@ CREATE TABLE `review` (
 -- Tábla szerkezet ehhez a táblához `subcategory`
 --
 
-DROP TABLE IF EXISTS `subcategory`;
 CREATE TABLE `subcategory` (
   `id` int(11) NOT NULL,
   `category_id` int(11) DEFAULT NULL COMMENT 'On delete: SET NULL',
@@ -395,9 +499,9 @@ CREATE TABLE `subcategory` (
 --
 
 INSERT INTO `subcategory` (`id`, `category_id`, `name`, `subname`, `description`, `thumbnail_image_vertical_uri`, `thumbnail_image_horizontal_uri`, `thumbnail_video_uri`, `product_count`, `slug`) VALUES
-(1, 1, 'Méregtelenítő Növények', 'A tisztulás támogatása természetes módon', 'A méregtelenítő növények segítenek a test tisztulási folyamatainak elősegítésében, eltávolítva a felhalmozódott toxikus anyagokat.', 'http://localhost/fb-content/fb-subcategories/media/images/category-1/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-1/thumbnail_image_horizontal.jpg', NULL, 0, 'meregtelenito-novenyek'),
+(1, 1, 'Méregtelenítő Növények', 'A tisztulás támogatása természetes módon', 'A méregtelenítő növények segítenek a test tisztulási folyamatainak elősegítésében, eltávolítva a felhalmozódott toxikus anyagokat.', 'http://localhost/fb-content/fb-subcategories/media/images/category-1/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-1/thumbnail_image_horizontal.jpg', NULL, 3, 'meregtelenito-novenyek'),
 (2, 1, 'Immunerősítő Keverékek', 'A védekezőképesség fokozása', 'Erőteljes gyógynövény-keverékek, amelyek támogatják az immunrendszert, erősítve a szervezet védekezőképességét.', 'http://localhost/fb-content/fb-subcategories/media/images/category-2/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-2/thumbnail_image_horizontal.jpg', NULL, 0, 'immunerosito-keverekek'),
-(3, 2, 'Nyugtató Növények', 'Relaxáció és mentális egyensúly', 'Növények és gyógynövények, amelyek segítenek a stressz csökkentésében, és elősegítik a testi-lelki nyugalmat.', 'http://localhost/fb-content/fb-subcategories/media/images/category-3/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-3/thumbnail_image_horizontal.jpg', NULL, 0, 'nyugtato-novenyek'),
+(3, 2, 'Nyugtató Növények', 'Relaxáció és mentális egyensúly', 'Növények és gyógynövények, amelyek segítenek a stressz csökkentésében, és elősegítik a testi-lelki nyugalmat.', 'http://localhost/fb-content/fb-subcategories/media/images/category-3/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-3/thumbnail_image_horizontal.jpg', NULL, 2, 'nyugtato-novenyek'),
 (4, 2, 'Alvássegítők', 'A pihentető alvás titkai', 'Nyugtató hatású növények és kivonatok, amelyek javítják az alvást, segítve a pihentető, regeneráló éjszakákat.', 'http://localhost/fb-content/fb-subcategories/media/images/category-4/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-4/thumbnail_image_horizontal.jpg', NULL, 0, 'alvassegitok'),
 (5, 3, 'Májtisztító Növények', 'A méregtelenítés segítése a májban', 'Olyan gyógynövények, amelyek támogathatják a máj méregtelenítő és tisztító folyamatait.', 'http://localhost/fb-content/fb-subcategories/media/images/category-5/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-5/thumbnail_image_horizontal.jpg', NULL, 0, 'majtisztito-novenyek'),
 (6, 3, 'Lúgosító Növények', 'A sav-bázis egyensúly helyreállítása', 'Növények, amelyek elősegítik a szervezet lúgosítását, hozzájárulva a sav-bázis egyensúly fenntartásához.', 'http://localhost/fb-content/fb-subcategories/media/images/category-6/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-6/thumbnail_image_horizontal.jpg', NULL, 0, 'lugosito-novenyek'),
@@ -431,7 +535,6 @@ INSERT INTO `subcategory` (`id`, `category_id`, `name`, `subname`, `description`
 -- Tábla szerkezet ehhez a táblához `tag`
 --
 
-DROP TABLE IF EXISTS `tag`;
 CREATE TABLE `tag` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
@@ -460,7 +563,6 @@ INSERT INTO `tag` (`id`, `name`, `icon_uri`) VALUES
 -- Tábla szerkezet ehhez a táblához `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
@@ -622,43 +724,43 @@ ALTER TABLE `delivery_info`
 -- AUTO_INCREMENT a táblához `health_effect`
 --
 ALTER TABLE `health_effect`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT a táblához `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT a táblához `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT a táblához `product_health_effect`
 --
 ALTER TABLE `product_health_effect`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT a táblához `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT a táblához `product_page`
 --
 ALTER TABLE `product_page`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT a táblához `product_tag`
 --
 ALTER TABLE `product_tag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT a táblához `review`

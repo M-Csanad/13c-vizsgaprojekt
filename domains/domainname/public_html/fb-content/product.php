@@ -84,7 +84,6 @@
       $avgReview = array_sum(array_map(function ($e) { return $e["rating"]; }, $reviews)) / $reviewNum;
     }
 
-
     // Hasonló termékek lekérése
 
 ?>
@@ -228,12 +227,16 @@
         <section class="product-description">
           <header class="section-title">Részletes leírás</header>
           <div class="description">
-            <p>
-              <?= $product["description"]; ?>
-            </p>
-            <p>
-                <?= $product["page_content"]; ?>
-            </p>
+          <?php foreach (explode("\n", $product["description"]) as $line): ?>
+              <p>
+                  <?= htmlspecialchars($line); ?>
+              </p>
+            <?php endforeach; ?>
+            <?php foreach (explode("\n", $product["page_content"]) as $line): ?>
+              <p>
+                  <?= htmlspecialchars($line); ?>
+              </p>
+            <?php endforeach; ?>
           </div>
           <div class="health-benefits">
             <header class="subtitle">

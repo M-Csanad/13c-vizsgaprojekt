@@ -98,7 +98,7 @@ function initializeSearch(search) {
         { name: "category" },
         { name: "subcategory" },
         { name: "price" },
-        { name: "content" },
+        { name: "content", disabledByDefault: true },
       ],
       template: (page) => {
         return `<img src='${page.uri}'><div><b>${page.name}</b> - <i>${

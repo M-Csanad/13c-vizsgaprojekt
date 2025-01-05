@@ -405,15 +405,17 @@ section {
 
     
     .inline-input:has(input) > label > div:first-child:after,
-    .inline-input:has(select) > label > div:first-child:after {
+    .inline-input:has(select) > label > div:first-child:after,
+    .inline-input:has(textarea) > label > div:first-child:after {
         content: '*';
         color: red;
         opacity: 0;
         font-family:'Courier New', Courier, monospace;
         transition: opacity 0.3s ease;
     }
-    .inline-input:has(input:required:not(:disabled)) > label > div:first-child:after, 
-    .inline-input:has(select:required:not(:disabled)) > label > div:first-child:after {
+    .inline-input:has(input:required:enabled) > label > div:first-child:after, 
+    .inline-input:has(select:required:enabled) > label > div:first-child:after,
+    .inline-input:has(textarea:required:enabled) > label > div:first-child:after {
         opacity: 1;
     }
 
@@ -476,7 +478,8 @@ section {
         z-index: 1;
     }
 
-    .inline-input > .input-content > div > input, .inline-input > .input-content > div > select {
+    .inline-input > .input-content > div > input, .inline-input > .input-content > div > select,
+    .inline-input > .input-content > div > textarea {
         display: flex;
         align-items: center;
         flex-grow: 1;
@@ -487,8 +490,20 @@ section {
         border-bottom: 3px solid black; 
         font-size: 16px;
         border-radius: 0%;
-        transition: all 0.3s ease;
+        transition: border-color 0.3s ease;
         min-width: 0px;
+    }
+
+    .inline-input:has(textarea) {
+        height: 100px;
+    }
+    .inline-input:has(textarea) > .input-content {
+        height: 100px;
+    }
+
+    .inline-input > .input-content > div > textarea {
+        resize: none;
+        height: 100%;
     }
 
     .inline-input > .input-content > div > svg {
@@ -503,31 +518,40 @@ section {
         color: var(--invalid);
     }
 
-    .inline-input > .input-content > div > input:valid, .inline-input > .input-content > div > select:valid {
+    .inline-input > .input-content > div > input:valid, .inline-input > .input-content > div > select:valid, 
+    .inline-input > .input-content > div > textarea:valid {
         border-bottom: 3px solid var(--valid);
     }
-    .inline-input > .input-content > div > input:invalid, .inline-input > .input-content > div > select:invalid {
+    .inline-input > .input-content > div > input:invalid, .inline-input > .input-content > div > select:invalid,
+    .inline-input > .input-content > div > textarea:invalid {
         border-bottom: 3px solid var(--invalid);
     }
-    .inline-input > .input-content > div > input:valid ~ svg.valid, .inline-input > .input-content > div > select:valid ~ svg.valid {
+    .inline-input > .input-content > div > input:valid ~ svg.valid, .inline-input > .input-content > div > select:valid ~ svg.valid,
+    .inline-input > .input-content > div > textarea:valid ~ svg.valid {
         display: block;
     }
-    .inline-input > .input-content > div > input:invalid ~ svg.valid, .inline-input > .input-content > div > select:invalid ~ svg.valid  {
+    .inline-input > .input-content > div > input:invalid ~ svg.valid, .inline-input > .input-content > div > select:invalid ~ svg.valid,
+    .inline-input > .input-content > div > textarea:invalid ~ svg.valid  {
         display: none;
     }
-    .inline-input > .input-content > div > input:valid ~ svg.invalid, .inline-input > .input-content > div > select:valid ~ svg.invalid  {
+    .inline-input > .input-content > div > input:valid ~ svg.invalid, .inline-input > .input-content > div > select:valid ~ svg.invalid,
+    .inline-input > .input-content > div > textarea:valid ~ svg.invalid  {
         display: none;
     }
-    .inline-input > .input-content > div > input:invalid ~ svg.invalid, .inline-input > .input-content > div > select:invalid ~ svg.invalid  {
+    .inline-input > .input-content > div > input:invalid ~ svg.invalid, .inline-input > .input-content > div > select:invalid ~ svg.invalid,
+    .inline-input > .input-content > div > textarea:invalid ~ svg.invalid  {
         display: block;
     }
-    .inline-input > .input-content > div:has(input:disabled) > svg, .inline-input > .input-content > div:has(select:disabled) > svg {
+    .inline-input > .input-content > div:has(input:disabled) > svg, .inline-input > .input-content > div:has(select:disabled) > svg,
+    .inline-input > .input-content > div:has(textarea:disabled) > svg {
         display: none;
     }
-    .inline-input > .input-content > div:has(input:disabled) > svg.disabled, .inline-input > .input-content > div:has(select:disabled) > svg.disabled {
+    .inline-input > .input-content > div:has(input:disabled) > svg.disabled, .inline-input > .input-content > div:has(select:disabled) > svg.disabled,
+    .inline-input > .input-content > div:has(textarea:disabled) > svg.disabled {
         display: block;
     }
-    .inline-input > .input-content > div > input:not(:disabled) ~ svg.disabled, .inline-input > .input-content > div > select:not(:disabled) ~ svg.disabled {
+    .inline-input > .input-content > div > input:enabled ~ svg.disabled, .inline-input > .input-content > div > select:enabled ~ svg.disabled,
+    .inline-input > .input-content > div > textarea:enabled ~ svg.disabled {
         display: none;
     }
     .inline-input > .input-content:has(.multiselect) > div:not(:has(.check.on)) > svg.valid {
@@ -538,13 +562,18 @@ section {
     }
 
     .inline-input > .input-content > div > input:disabled, 
-    .inline-input > .input-content > div > select:disabled {
+    .inline-input > .input-content > div > select:disabled,
+    .inline-input > .input-content > div > textarea:disabled {
         border-bottom: 3px solid rgb(20, 20, 20) !important;
         color: #6c6c6c;
         background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.5) 75%, transparent 75%, transparent);
         background-size: 20px 20px;
         background-repeat: repeat;
         cursor: not-allowed;
+    }
+
+    .inline-input > .input-content > div > textarea:disabled {
+        border-color: rgb(89, 89, 89) !important;
     }
     
     .file-input > .input-content > div {
@@ -606,7 +635,7 @@ section {
     .file-input:has(input:disabled) > .input-content > div > svg.disabled {
         display: block;
     }
-    .file-input:has(input:not(:disabled)) > .input-content > div > svg.disabled {
+    .file-input:has(input:enabled) > .input-content > div > svg.disabled {
         display: none;
     }
 
