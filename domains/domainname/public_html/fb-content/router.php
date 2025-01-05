@@ -59,6 +59,6 @@ if (count($segments) <= count($keys)) {
 function show404($url)
 {
     http_response_code(404);
-    // include $url . "/fb-functions/error/error-404.html";
+    include $url . "/fb-functions/error/error-404.html";
     exit;
 }
