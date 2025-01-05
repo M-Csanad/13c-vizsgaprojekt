@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.14/dist/lenis.css" />
 
   <!--root stylesheet-->
-  <link rel="stylesheet" href="./fb-content/assets/css/root.css" />
+  <link rel="stylesheet" href="/fb-content/assets/css/root.css" />
 
   <!--casual stylesheets-->
   <link rel="stylesheet" href="http://localhost//fb-content/assets/css/box.css" />

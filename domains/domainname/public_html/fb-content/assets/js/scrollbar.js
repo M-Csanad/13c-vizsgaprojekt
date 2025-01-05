@@ -6,6 +6,7 @@ function scrollHandler(e) {
     document.documentElement.clientHeight;
   currentScrollTop = document.documentElement.scrollTop;
   scrollPercentage = (currentScrollTop / maxScroll) * 100;
+  if (isNaN(scrollPercentage)) scrollPercentage = 0;
   if (document.documentElement.scrollTop > 500) {
     document.body.classList.add("top-show");
   } else {

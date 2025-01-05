@@ -3,18 +3,18 @@ include_once 'init.php';
 
 // Kategória ellenőrzés
 function isValidCategory($name) {
-    $result = selectData("SELECT 1 FROM category WHERE TRIM(category.name) LIKE CONVERT(? using utf8mb4) COLLATE utf8mb4_general_ci", reverse_format_str($name), "s");
-    return typeOf($result, "SUCCESS");
+    $result = selectData("SELECT category.id FROM category WHERE category.slug=?", $name, "s");
+    return $result;
 }
 
 // Alategória ellenőrzés
 function isValidSubcategory($name, $parents) {
-    $result = selectData("SELECT 1 FROM subcategory INNER JOIN category ON subcategory.category_id = category.id WHERE TRIM(subcategory.name) LIKE CONVERT(? using utf8mb4) AND TRIM(category.name) LIKE CONVERT(? using utf8mb4)", [reverse_format_str($name), reverse_format_str($parents[0])], "ss");
-    return typeOf($result, "SUCCESS");
+    $result = selectData("SELECT subcategory.id FROM subcategory INNER JOIN category ON subcategory.category_id = category.id WHERE category.slug=? AND subcategory.slug=?", [$parents[0], $name], "ss");
+    return $result;
 }
 
 // Termék ellenőrzés
 function isValidProduct($name, $parents) {
-    $result = selectData("SELECT 1 FROM product_page WHERE product_page.link_slug=CONVERT(? using utf8mb4)", implode("/", $parents)."/$name","s");
-    return typeOf($result, "SUCCESS");
+    $result = selectData("SELECT product.id FROM product_page WHERE product_page.link_slug=?", implode("/", $parents)."/$name","s");
+    return $result;
 }

@@ -22,6 +22,10 @@ $validationMap = [
 // pl. www.teszt.com/elso/masodik/szegmens, akkor a szülőket beletesszük ebbe.
 $parents = [];
 
+// A validált elemek (pl. kategória vagy alkategória) azonosítóját eltároljuk,
+// hogy az oldalakon fel tudjuk használni a lekérdezéselhez.
+$ids = [];
+
 // Minden szegmensen végigmegyünk
 foreach ($segments as $level => $segment) {
     $key = array_keys($validationMap)[$level] ?? null;
@@ -32,12 +36,13 @@ foreach ($segments as $level => $segment) {
     $validationFunction = $validationMap[$key][0];
     $page = $validationMap[$key][1];
 
-    if (!call_user_func_array($validationFunction, [$segment, $parents])) {
+    $result = call_user_func_array($validationFunction, [$segment, $parents]);
+    if (!typeOf($result, "SUCCESS")) {
         show404($_SERVER["DOCUMENT_ROOT"]);
-
     }
 
     $parents[] = $segment;
+    $ids[] = $result["message"][0]["id"];
 }
 
 // A betöltendő oldal elérési útvonalának kinyerése
@@ -54,6 +59,6 @@ if (count($segments) <= count($keys)) {
 function show404($url)
 {
     http_response_code(404);
-    // include $url . "/fb-functions/error/error-404.html";
+    include $url . "/fb-functions/error/error-404.html";
     exit;
 }

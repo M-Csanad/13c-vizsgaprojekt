@@ -86,7 +86,7 @@ function getCategoryContent()
 
 
             $category_slug = generateSlug($category_name);
-            $category_url = "./" . $category_slug . "/";
+            $category_url = "/" . $category_slug . "/";
 
             if (!isset($category_content[$category_name])) {
                 $category_content[$category_name] = [

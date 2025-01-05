@@ -75,7 +75,7 @@ window.addEventListener("load", () => {
                 isAnimating = false;
                 gsap.set(".block", { visibility: "hidden" });
             });
-        }, 250)
+        }, 100)
     });
 });
 

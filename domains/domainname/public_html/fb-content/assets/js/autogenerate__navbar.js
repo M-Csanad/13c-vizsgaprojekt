@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
     subContentContainer.style.opacity = "1";
     subContentContainer.style.position = "relative";
 
-    let delay = 200;
+    let delay = 100;
     setTimeout(() => {
       document
         .querySelectorAll(".fb-nav-subcontent-frame")
