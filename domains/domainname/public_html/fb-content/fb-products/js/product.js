@@ -63,7 +63,7 @@ function updateDynamicBackground() {
 
   if (activeImage) {
     const color = getDominantColor(activeImage);
-    activeImage.parentElement.style.boxShadow = `0px 0px 150px ${color}`;
+    activeImage.parentElement.style.boxShadow = `0px 0px 150px ${color}88`;
   }
 }
 
