@@ -48,8 +48,8 @@
         // Mivel a termékek is és a képek is növekvő sorrendbe vannak
         // rendezve a product.id alapján, így a lista index-szel
         // is el tudjuk érni a hozzá tartozó képeket
-        $products[$index]["thumbnail_image"] = $images[$product["id"] - 1]["thumbnail_image"];
-        $products[$index]["secondary_image"] = $images[$product["id"] - 1]["secondary_image"];
+        $products[$index]["thumbnail_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $images[$product["id"] - 1]["thumbnail_image"]);
+        $products[$index]["secondary_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $images[$product["id"] - 1]["secondary_image"]);
     }
 ?>
 <!DOCTYPE html>
@@ -77,8 +77,8 @@
     <script defer src="/fb-content/assets/js/autogenerate__footer.js"></script>
 
     <!--ionicons-->
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </head>
 <body>
     <div class=transition><div class=transition-text><div class=hero><div class=char>F</div><div class=char>l</div><div class=char>o</div><div class=char>r</div><div class=char>e</div><div class=char>n</div><div class=char>s</div><div class=char> </div><div class=char>B</div><div class=char>o</div><div class=char>t</div><div class=char>a</div><div class=char>n</div><div class=char>i</div><div class=char>c</div><div class=char>a</div></div><div class=quote><div class=char>"</div><div class=char>A</div><div class=char> </div><div class=char>l</div><div class=char>e</div><div class=char>g</div><div class=char>n</div><div class=char>a</div><div class=char>g</div><div class=char>y</div><div class=char>o</div><div class=char>b</div><div class=char>b</div><div class=char> </div><div class=char>g</div><div class=char>a</div><div class=char>z</div><div class=char>d</div><div class=char>a</div><div class=char>g</div><div class=char>s</div><div class=char>á</div><div class=char>g</div><div class=char> </div><div class=char>a</div><div class=char>z</div><div class=char> </div><div class=char>e</div><div class=char>g</div><div class=char>é</div><div class=char>s</div><div class=char>z</div><div class=char>s</div><div class=char>é</div><div class=char>g</div><div class=char>.</div><div class=char>"</div><div class=char> </div><div class=char>-</div><div class=char> </div><div class=char>V</div><div class=char>e</div><div class=char>r</div><div class=char>g</div><div class=char>i</div><div class=char>l</div><div class=char>i</div><div class=char>u</div><div class=char>s</div></div></div><div class="layer layer-0"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-1"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-2"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-3"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div></div>
@@ -172,7 +172,35 @@
                     <?php foreach ($products as $product): ?>
                         <div class="card">
                             <div class="card-image">
-                                <a href="/<?= htmlspecialchars($product["link_slug"]); ?>"><img src="<?= htmlspecialchars($product["thumbnail_image"]); ?>" alt="" /></a>
+                                <a href="/<?= htmlspecialchars($product["link_slug"]); ?>">
+                                    <?php $resolutions = [1920, 1440, 1024, 768]; ?>
+                                    <picture>
+                                        <?php foreach ($resolutions as $index=>$resolution): ?>
+                                            <source type="image/avif" srcset="<?= $product["thumbnail_image"] ?>-<?= $resolution ?>px.avif 1x" media="(min-width: <?= $resolution ?>px)">
+                                            <source type="image/webp" srcset="<?= $product["thumbnail_image"] ?>-<?= $resolution ?>px.webp 1x" media="(min-width: <?= $resolution ?>px)">
+                                            <source type="image/jpeg" srcset="<?= $product["thumbnail_image"] ?>-<?= $resolution ?>px.jpg 1x" media="(min-width: <?= $resolution ?>px)">
+                                        <?php endforeach; ?>
+                                        <!-- Fallback -->
+                                        <img 
+                                        src="<?= $product["thumbnail_image"] ?>-<?= end($resolutions) ?>px.webp" 
+                                        alt="<?= htmlspecialchars($product['name']) ?>" 
+                                        loading="lazy"
+                                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw">
+                                    </picture>
+                                    <picture class="secondary">
+                                        <?php foreach ($resolutions as $index=>$resolution): ?>
+                                            <source type="image/avif" srcset="<?= $product["secondary_image"] ?>-<?= $resolution ?>px.avif 1x" media="(min-width: <?= $resolution ?>px)">
+                                            <source type="image/webp" srcset="<?= $product["secondary_image"] ?>-<?= $resolution ?>px.webp 1x" media="(min-width: <?= $resolution ?>px)">
+                                            <source type="image/jpeg" srcset="<?= $product["secondary_image"] ?>-<?= $resolution ?>px.jpg 1x" media="(min-width: <?= $resolution ?>px)">
+                                        <?php endforeach; ?>
+                                        <!-- Fallback -->
+                                        <img 
+                                        src="<?= $product["secondary_image"] ?>-<?= end($resolutions) ?>px.webp" 
+                                        alt="<?= htmlspecialchars($product['name']) ?>" 
+                                        loading="lazy"
+                                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw">
+                                    </picture>
+                                </a>
                             <div class="button-wrapper">
                                 <button class="quick-add">
                                 <div>Kosárba</div>

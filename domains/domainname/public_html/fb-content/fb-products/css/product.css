@@ -67,7 +67,7 @@ main.body-main {
 
   & > .wrapper {
     position: sticky;
-    top: 1rem;
+    top: 112px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -78,7 +78,7 @@ main.body-main {
   & > .wrapper > .images {
     width: 100%;
     max-height: calc(
-      100vh - calc(calc(calc(var(--navimage-h) + 45px) + 12px) + 32px)
+      100vh - calc(calc(calc(var(--navimage-h) + 45px) + 12px) + 132px)
     );
     aspect-ratio: 3 / 4;
     box-shadow: 0px 0px 150px transparent;
