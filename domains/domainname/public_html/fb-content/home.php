@@ -256,40 +256,40 @@ session_start();
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <!--root stylesheet-->
-  <link rel="stylesheet" href="./fb-content/assets/css/root.css" />
+  <link rel="stylesheet" href="/fb-content/assets/css/root.css" />
 
   <!--casual stylesheets-->
-  <link rel="stylesheet" href="./fb-content/assets/css/box.css" />
-  <link rel="stylesheet" href="./fb-content/assets/css/font.css" />
+  <link rel="stylesheet" href="/fb-content/assets/css/box.css" />
+  <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
   <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
 
   <!--main stylesheet-->
-  <link rel="stylesheet" href="./fb-content/fb-home/css/main.css" media="all" />
-  <link rel="stylesheet" href="./fb-content/fb-home/css/main_media.css" media="all" />
+  <link rel="stylesheet" href="/fb-content/fb-home/css/main.css" media="all" />
+  <link rel="stylesheet" href="/fb-content/fb-home/css/main_media.css" media="all" />
 
   <!--footer stylesheets-->
-  <link rel="stylesheet" href="./fb-content/assets/css/footer.css" media="all" />
-  <script src="./fb-content/assets/js/autogenerate__footer.js" defer></script>
+  <link rel="stylesheet" href="/fb-content/assets/css/footer.css" media="all" />
+  <script src="/fb-content/assets/js/autogenerate__footer.js" defer></script>
 
   <!--swiper bundle-->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/10.0.4/swiper-bundle.min.js"
     integrity="sha512-0N/5ZOjfsh3niel+5dRD40HQkFOWaxoVzqMVAHnmAO2DC3nY/TFB7OYTaPRAFJ571IRS/XRsXGb2XyiFLFeu1g=="
     crossorigin="anonymous" referrerpolicy="no-referrer" defer></script>
-  <script type="text/javascript" src="./fb-content/fb-home/js/swiper.js" defer></script>
-  <script type="text/javascript" src="./fb-content/fb-home/js/swiperThumbs.js" defer></script>
+  <script type="text/javascript" src="/fb-content/fb-home/js/swiper.js" defer></script>
+  <script type="text/javascript" src="/fb-content/fb-home/js/swiperThumbs.js" defer></script>
 
   <!--video restart-->
-  <script src="./fb-content/fb-home/js/videoMouseHover.js" defer></script>
-  <script src="./fb-content/fb-home/js/videoContentScroll.js" defer></script>
+  <script src="/fb-content/fb-home/js/videoMouseHover.js" defer></script>
+  <script src="/fb-content/fb-home/js/videoContentScroll.js" defer></script>
 
   <!--parallax-->
-  <script src="./fb-content/fb-home/js/parallaxEffect.js" defer></script>
-  <script src="./fb-content/fb-home/js/imageParallaxGallery.js" defer></script>
-  <script src="./fb-content/fb-home/js/movingGradientEffect.js" defer></script>
+  <script src="/fb-content/fb-home/js/parallaxEffect.js" defer></script>
+  <script src="/fb-content/fb-home/js/imageParallaxGallery.js" defer></script>
+  <script src="/fb-content/fb-home/js/movingGradientEffect.js" defer></script>
 
   <!--page transition-->
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
-  <script defer src="./fb-content/assets/js/page_transition.js"></script>
+  <script defer src="/fb-content/assets/js/page_transition.js"></script>
 
 </head>
 
@@ -437,18 +437,18 @@ session_start();
 
           <video id="welcomeVideo" preload="auto" loading="lazy" autoplay muted loop>
             <!-- WebM formátum (VP9 kodek) -->
-            <source src="./fb-content/assets/media/videos/home/1920x1080_30Fps_VP9.webm" type="video/webm"
+            <source src="/fb-content/assets/media/videos/home/1920x1080_30Fps_VP9.webm" type="video/webm"
               media="(min-width: 1920px)">
-            <source src="./fb-content/assets/media/videos/home/1280x720_30Fps_VP9.webm" type="video/webm"
+            <source src="/fb-content/assets/media/videos/home/1280x720_30Fps_VP9.webm" type="video/webm"
               media="(min-width: 1280px)">
-            <source src="./fb-content/assets/media/videos/home/640x360_30Fps_VP9.webm" type="video/webm">
+            <source src="/fb-content/assets/media/videos/home/640x360_30Fps_VP9.webm" type="video/webm">
 
             <!-- MP4 formátum (H.264 kodek) -->
-            <source src="./fb-content/assets/media/videos/home/1920x1080_30Fps_H264.mp4" type="video/mp4"
+            <source src="/fb-content/assets/media/videos/home/1920x1080_30Fps_H264.mp4" type="video/mp4"
               media="(min-width: 1920px)">
-            <source src="./fb-content/assets/media/videos/home/1280x720_30Fps_H264.mp4" type="video/mp4"
+            <source src="/fb-content/assets/media/videos/home/1280x720_30Fps_H264.mp4" type="video/mp4"
               media="(min-width: 1280px)">
-            <source src="./fb-content/assets/media/videos/home/640x360_30Fps_H264.mp4" type="video/mp4">
+            <source src="/fb-content/assets/media/videos/home/640x360_30Fps_H264.mp4" type="video/mp4">
 
             Az Ön böngészője nem támogatja a videó lejátszást.
           </video>
@@ -458,7 +458,7 @@ session_start();
         <div class="videoContent_wrapper">
           <div class="videoContent_scrollable">
             <div class="videoContent_card-content">
-              <img src="./fb-content/assets/media/images/logos/herbalLogo_white.png" alt="Florens Botanica Logo" />
+              <img src="/fb-content/assets/media/images/logos/herbalLogo_white.png" alt="Florens Botanica Logo" />
             </div>
             <div class="videoContent_card-content">
               <p class="__t03-law1">
@@ -488,7 +488,7 @@ session_start();
             <div class="swiper-slide">
               <div class="swiper-card_wrapper">
                 <div class="card-image">
-                  <img src="./fb-content/media/img/testImg/testProduct01.jpg" alt="" loading="lazy"/>
+                  <img src="/fb-content/media/img/testImg/testProduct01.jpg" alt="" loading="lazy"/>
                   <button class="book-now">Kosárba</button>
                 </div>
                 <div class="swiper-card">
@@ -510,10 +510,10 @@ session_start();
 
                     <div class="card-footer">
                       <div class="cast">
-                        <img src="./fb-content/media/img/icons/vegan.png" alt="#" loading="lazy" />
-                        <img src="./fb-content/media/img/icons/bpa-free.png" alt="#" loading="lazy" />
-                        <img src="./fb-content/media/img/icons/serum.png" alt="#" loading="lazy" />
-                        <img src="./fb-content/media/img/icons/gluten-free.png" alt="#" loading="lazy" />
+                        <img src="/fb-content/media/img/icons/vegan.png" alt="#" loading="lazy" />
+                        <img src="/fb-content/media/img/icons/bpa-free.png" alt="#" loading="lazy" />
+                        <img src="/fb-content/media/img/icons/serum.png" alt="#" loading="lazy" />
+                        <img src="/fb-content/media/img/icons/gluten-free.png" alt="#" loading="lazy" />
                       </div>
                       <div class="actions">
                         <button class="more-info">Bővebb információ</button>
@@ -526,7 +526,7 @@ session_start();
             <div class="swiper-slide">
               <div class="swiper-card_wrapper">
                 <div class="card-image">
-                  <img src="./fb-content/media/img/testImg/testProduct02.jpg" alt="" />
+                  <img src="/fb-content/media/img/testImg/testProduct02.jpg" alt="" />
                   <button class="book-now">Kosárba</button>
                 </div>
                 <div class="swiper-card">
@@ -547,12 +547,12 @@ session_start();
 
                     <div class="card-footer">
                       <div class="cast">
-                        <img src="./fb-content/media/img/icons/vegan.png" alt="#" />
-                        <img src="./fb-content/media/img/icons/bpa-free.png" alt="#" />
-                        <img src="./fb-content/media/img/icons/serum.png" alt="#" />
-                        <img src="./fb-content/media/img/icons/pollen.png" alt="#" />
-                        <img src="./fb-content/media/img/icons/peanut-free.png" alt="#" />
-                        <img src="./fb-content/media/img/icons/honeycomb.png" alt="#" />
+                        <img src="/fb-content/media/img/icons/vegan.png" alt="#" />
+                        <img src="/fb-content/media/img/icons/bpa-free.png" alt="#" />
+                        <img src="/fb-content/media/img/icons/serum.png" alt="#" />
+                        <img src="/fb-content/media/img/icons/pollen.png" alt="#" />
+                        <img src="/fb-content/media/img/icons/peanut-free.png" alt="#" />
+                        <img src="/fb-content/media/img/icons/honeycomb.png" alt="#" />
                       </div>
                       <div class="actions">
                         <button class="more-info">Bővebb információ</button>
@@ -565,7 +565,7 @@ session_start();
             <div class="swiper-slide">
               <div class="swiper-card_wrapper">
                 <div class="card-image">
-                  <img src="./fb-content/media/img/testImg/testProduct03.jpg" alt="" />
+                  <img src="/fb-content/media/img/testImg/testProduct03.jpg" alt="" />
                   <button class="book-now">Kosárba</button>
                 </div>
                 <div class="swiper-card">
@@ -586,9 +586,9 @@ session_start();
 
                     <div class="card-footer">
                       <div class="cast">
-                        <img src="./fb-content/media/img/icons/vegan.png" alt="#" />
-                        <img src="./fb-content/media/img/icons/bpa-free.png" alt="#" />
-                        <img src="./fb-content/media/img/icons/serum.png" alt="#" />
+                        <img src="/fb-content/media/img/icons/vegan.png" alt="#" />
+                        <img src="/fb-content/media/img/icons/bpa-free.png" alt="#" />
+                        <img src="/fb-content/media/img/icons/serum.png" alt="#" />
                       </div>
                       <div class="actions">
                         <button class="more-info">Bővebb információ</button>
@@ -690,26 +690,26 @@ session_start();
               <picture>
                 <!-- AVIF formátum -->
                 <source type="image/avif" srcset="
-        ./fb-content/assets/media/images/site/home/HerbsOnDesk-3840px.avif 3840w,
-        ./fb-content/assets/media/images/site/home/HerbsOnDesk-2560px.avif 2560w,
-        ./fb-content/assets/media/images/site/home/HerbsOnDesk-1920px.avif 1920w,
-        ./fb-content/assets/media/images/site/home/HerbsOnDesk-1024px.avif 1024w
+        /fb-content/assets/media/images/site/home/HerbsOnDesk-3840px.avif 3840w,
+        /fb-content/assets/media/images/site/home/HerbsOnDesk-2560px.avif 2560w,
+        /fb-content/assets/media/images/site/home/HerbsOnDesk-1920px.avif 1920w,
+        /fb-content/assets/media/images/site/home/HerbsOnDesk-1024px.avif 1024w
       " sizes="(max-width: 1024px) 1024px,
              (max-width: 1920px) 1920px,
              (max-width: 2560px) 2560px,
              3840px" />
                 <!-- WebP formátum -->
                 <source type="image/webp" srcset="
-        ./fb-content/assets/media/images/site/home/HerbsOnDesk-3840px.webp 3840w,
-        ./fb-content/assets/media/images/site/home/HerbsOnDesk-2560px.webp 2560w,
-        ./fb-content/assets/media/images/site/home/HerbsOnDesk-1920px.webp 1920w,
-        ./fb-content/assets/media/images/site/home/HerbsOnDesk-1024px.webp 1024w
+        /fb-content/assets/media/images/site/home/HerbsOnDesk-3840px.webp 3840w,
+        /fb-content/assets/media/images/site/home/HerbsOnDesk-2560px.webp 2560w,
+        /fb-content/assets/media/images/site/home/HerbsOnDesk-1920px.webp 1920w,
+        /fb-content/assets/media/images/site/home/HerbsOnDesk-1024px.webp 1024w
       " sizes="(max-width: 1024px) 1024px,
              (max-width: 1920px) 1920px,
              (max-width: 2560px) 2560px,
              3840px" />
                 <!-- Alapértelmezett JPG -->
-                <img src="./fb-content/media/img/HerbsOnDesk-1024px.jpg" alt="Gyógynövények asztalon kis üvegcsékben"
+                <img src="/fb-content/media/img/HerbsOnDesk-1024px.jpg" alt="Gyógynövények asztalon kis üvegcsékben"
                   loading="lazy" />
               </picture>
             </div>
@@ -717,26 +717,26 @@ session_start();
               <picture>
                 <!-- AVIF formátum -->
                 <source type="image/avif" srcset="
-        ./fb-content/assets/media/images/site/home/HerbsInHands-3840px.avif 3840w,
-        ./fb-content/assets/media/images/site/home/HerbsInHands-2560px.avif 2560w,
-        ./fb-content/assets/media/images/site/home/HerbsInHands-1920px.avif 1920w,
-        ./fb-content/assets/media/images/site/home/HerbsInHands-1024px.avif 1024w
+        /fb-content/assets/media/images/site/home/HerbsInHands-3840px.avif 3840w,
+        /fb-content/assets/media/images/site/home/HerbsInHands-2560px.avif 2560w,
+        /fb-content/assets/media/images/site/home/HerbsInHands-1920px.avif 1920w,
+        /fb-content/assets/media/images/site/home/HerbsInHands-1024px.avif 1024w
       " sizes="(max-width: 1024px) 1024px,
              (max-width: 1920px) 1920px,
              (max-width: 2560px) 2560px,
              3840px" />
                 <!-- WebP formátum -->
                 <source type="image/webp" srcset="
-        ./fb-content/assets/media/images/site/home/HerbsInHands-3840px.webp 3840w,
-        ./fb-content/assets/media/images/site/home/HerbsInHands-2560px.webp 2560w,
-        ./fb-content/assets/media/images/site/home/HerbsInHands-1920px.webp 1920w,
-        ./fb-content/assets/media/images/site/home/HerbsInHands-1024px.webp 1024w
+        /fb-content/assets/media/images/site/home/HerbsInHands-3840px.webp 3840w,
+        /fb-content/assets/media/images/site/home/HerbsInHands-2560px.webp 2560w,
+        /fb-content/assets/media/images/site/home/HerbsInHands-1920px.webp 1920w,
+        /fb-content/assets/media/images/site/home/HerbsInHands-1024px.webp 1024w
       " sizes="(max-width: 1024px) 1024px,
              (max-width: 1920px) 1920px,
              (max-width: 2560px) 2560px,
              3840px" />
                 <!-- Alapértelmezett JPG -->
-                <img src="./fb-content/assets/media/images/site/home/HerbsInHands-1024px.jpg"
+                <img src="/fb-content/assets/media/images/site/home/HerbsInHands-1024px.jpg"
                   alt="Gyógynövények hölgy kezében" loading="lazy" />
               </picture>
             </div>
