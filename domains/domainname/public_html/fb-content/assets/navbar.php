@@ -125,9 +125,9 @@ if($isLoggedIn){
 $base_url = "http://localhost";
 $logo_url = htmlspecialchars("$base_url/fb-content/assets/media/images/logos/herbalLogo_mini_white.png");
 $menu_items = [
-    ['name' => 'Categories', 'id' => 'fb-navlink-category', 'url' => '#'],
-    ['name' => 'About us', 'url' => "$base_url/about-us/"],
-    ['name' => 'Privacy Policy', 'url' => "$base_url/privacy-policy"]
+    ['name' => 'Kategóriák', 'id' => 'fb-navlink-category', 'url' => '#'],
+    ['name' => 'Rólunk', 'url' => "$base_url/about-us/"],
+    ['name' => 'Adatvédelmi Nyilatkozat', 'url' => "$base_url/privacy-policy"]
 ];
 
 

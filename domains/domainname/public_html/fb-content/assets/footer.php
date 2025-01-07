@@ -4,25 +4,25 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 $base_url = "http://localhost";
 $footerData = [
     'logo' => "$base_url/fb-content/assets/media/images/logos/herbalLogo_white.png",
-    'description' => 'We bring the healing power of nature into modern wellness, offering pure, Ayurveda-inspired products for balanced health and well-being.',
+    'description' => 'A természet gyógyító erejét hozzuk el a modern wellness világába, tiszta, ájurvéda által inspirált termékeket kínálva a kiegyensúlyozott egészségért és jólétért.',
     'sections' => [
-        'Website' => [
-            ['text' => 'Home', 'url' => "$base_url"],
-            ['text' => 'Categories', 'url' => "$base_url#categoryGallery"],
-            ['text' => 'Privacy Policy', 'url' => '#'],
-            ['text' => 'About us', 'url' => '#'],
-            ['text' => 'Copyright', 'url' => '#'],
+        'Hasznos oldalak' => [
+            ['text' => 'Főoldal', 'url' => "$base_url"],
+            ['text' => 'Kategóriák', 'url' => "$base_url#categoryGallery"],
+            ['text' => 'Adatvédelem', 'url' => "$base_url/privacy-policy"],
+            ['text' => 'Rólunk', 'url' => "$base_url/about-us"],
+            ['text' => 'Szerzői jog', 'url' => '#'],
         ],
-        'Our Team' => [
-            ['name' => 'Csanad', 'url' => '#', 'icon' => 'construct-outline'],
+        'Csapatunk' => [
+            ['name' => 'Csanád', 'url' => '#', 'icon' => 'construct-outline'],
             ['name' => 'Máté', 'url' => '#', 'icon' => 'construct-outline'],
         ],
         'Sitemap' => [
-            ['text' => 'Search & Sitemap', 'url' => '#'],
-            ['text' => 'Sitemap_pages', 'url' => '#'],
+            ['text' => 'Keresés & Sitemap', 'url' => '#'],
+            ['text' => 'Sitemap oldalak', 'url' => '#'],
         ],
     ],
-    'copyright' => 'Copyright © 2024-2025 Florens Botanica, Sole Proprietor. The brand name "Florens Botanica" and company logo of the website and all design and text content are also individually created. All rights reserved.'
+    'copyright' => 'Copyright © 2024-2025 Florens Botanica, Egyéni Vállalkozó. A "Florens Botanica" márkanév és a cég logója, valamint a weboldal összes dizájn- és szöveges tartalma egyedileg készült. Minden jog fenntartva.'
 ];
 header('Content-Type: application/json');
 echo json_encode($footerData);
