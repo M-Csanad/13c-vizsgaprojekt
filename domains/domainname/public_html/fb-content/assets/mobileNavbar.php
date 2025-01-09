@@ -1,11 +1,23 @@
 <?php
 
-include_once __DIR__ . '/../../config.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . "/../../../.ext/init.php";
 $loggerPath = BASE_PATH . '/error_logger.php';
 $filePath = BASE_PATH . '/../../../.ext/db_connect.php';
 
 
+// Felhasználó adatainak lekérdezése
+$isLoggedIn = false;
+$result = getUserData();
+if (typeOf($result, "SUCCESS")) {
+    $user = $result["message"];
+    $isLoggedIn = true;
+}
 
+if ($loggerPath === false) {
+    throw new Exception("Az error_logger.php fájl nem található.");
+}
+include_once $loggerPath;
 function fetchCategories($conn)
 {
     $sql = "SELECT c.id, c.name AS category_name, s.name AS subcategory_name
@@ -41,7 +53,8 @@ $categories = fetchCategories($conn);
 $conn->close();
 ?>
 <div class="navbar">
-    <ul id="main-menu" class="menu">
+
+    <ul id="main-menu" class="menu first-menu">
         <li class="menu-item __t01-mew2" data-target="shop-all">
             <p class="__t01-mew2">Minden termék</p> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"
                 width="25" height="25" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -62,6 +75,37 @@ $conn->close();
         <li class="menu-item __t01-mew2"><a href="privacy-policy.php">Jogi nyilatkozat</a></li>
 
     </ul>
+    <div id="menu_footerItem_container">
+        <div id="interfaceIcons_mobile">
+            <div class="icon_container">
+                <div class="icon_wrapper">
+                    <?php if ($isLoggedIn): ?>
+                        <!-- Profil ikon jelenik meg, ha be van jelentkezve -->
+                        <a class="menu_iconLink" id="profileLink_icon" href="/settings" title="Profil">
+                            <div class="profile-pic">
+                                <img src="<?= htmlspecialchars($pfpURL); ?>" alt="Profilkép" />
+                            </div>
+                            <p>Profil</p>
+                        </a>
+                    <?php else: ?>
+                        <!-- Login ikon jelenik meg, ha nincs bejelentkezve -->
+                        <a class="menu_iconLink" href="/login" title="Login">
+                            <svg width="30px" height="30px" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="9" r="3.5" stroke="#fff" stroke-width="0.8" />
+                                <circle cx="12" cy="12" r="10" stroke="#fff" stroke-width="0.8" />
+                                <path
+                                    d="M17.9691 20C17.81 17.1085 16.9247 15 11.9999 15C7.07521 15 6.18991 17.1085 6.03076 20"
+                                    stroke="#fff" stroke-width="0.8" stroke-linecap="round" />
+                            </svg>
+                            <p>Bejelentkezés</p>
+                        </a>
+                    <?php endif; ?>
+                </div>
+
+            </div>
+        </div>
+    </div>
 
     <div id="shop-all" class="submenu">
         <button class="back" data-back>
@@ -111,7 +155,7 @@ $conn->close();
                         </svg>
                     </div>
                     <div class="back-text">
-                        <p class="__t01-mew2">Vissza a kategóriákhoz</p>
+                        <p class="__t01-mew2">Vissza</p>
                     </div>
                 </button>
                 <ul class="menu">
@@ -127,6 +171,8 @@ $conn->close();
             </div>
         <?php endif; ?>
     <?php endforeach; ?>
+
+
 </div>
 
 </div>

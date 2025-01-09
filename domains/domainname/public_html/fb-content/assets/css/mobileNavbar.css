@@ -37,13 +37,24 @@
   border-radius: 20px;
 }
 
-.menu {
+.menu:not(.first-menu) {
   list-style: none;
   padding: 0;
   margin: 0;
-
+  top: 8.4rem;
   position: relative;
-  top: 0;
+  width: 96%;
+  height: 72%;
+  overflow-y: auto;
+  z-index: 1;
+  transition: transform 0.4s ease-in-out;
+}
+
+.first-menu {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  position: relative;
   width: 96%;
   height: 72%;
   overflow-y: auto;
@@ -85,8 +96,6 @@
   background: var(--dark_tertiary);
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   z-index: 2;
   transform: translateX(100%);
   transition: transform 0.4s ease-in-out;
@@ -107,9 +116,9 @@
 }
 
 .back {
-  position: absolute;
-  top: 2.4rem;
-  left: 20px;
+  position: relative;
+  top: 7.2rem;
+
   color: white;
   background: none;
   border: none;
@@ -127,18 +136,69 @@
 .back .back-logo {
   padding-right: 12px;
 }
+.menu_iconLink {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+#menu_footerItem_container {
+  position: absolute;
+  bottom: 2.4rem;
+  left: 5%;
+}
+
+#menu_footerItem_container .icon_wrapper a {
+  display: flex;
+  justify-content: space-around;
+}
+
+#menu_footerItem_container .icon_wrapper a p {
+  display: flex;
+  margin: 0 12px;
+  justify-content: space-around;
+}
+
+@media (max-width: 1024px) {
+  #interfaceIcons {
+    position: relative;
+    right: auto;
+    width: auto;
+  }
+}
 
 @media (max-width: 768px) {
+  #fb-navbar {
+    height: 100px;
+  }
   #fb-navTopWrapper {
     display: flex;
-    justify-content: space-around !important;
+    justify-content: space-between !important;
     align-items: center;
     padding: 0 2.4rem;
+  }
+  .hamburger-icon {
+    position: relative;
+    left: 10%;
+  }
+  #interfaceIcons {
+    position: relative;
+    right: 10%;
+    width: auto;
+  }
+
+  #interfaceIcons .login_icon_wrapper {
+    display: none;
   }
 
   .fb-nav-links-wrapper-mini,
   .fb-nav-content-container {
     display: none !important;
+  }
+
+  #logo_linkNav {
+    display: none;
   }
 
   .hamburger-icon {
