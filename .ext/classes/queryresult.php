@@ -1,41 +1,66 @@
 <?php
-class QueryResult {
-    public $message;
-    public $type;
+include_once "result.php";
+
+/**
+ * Osztály egy SQL művelet eredményének hatékony tárolására.
+ */
+class QueryResult extends Result {
+
+    // Nyilvános tulajdonságok
     public $code;
-    public $contentType;
+    public $affectedRows;
+    public $lastInsertId;
+    public $query;
+    public $queryType = self::REGULAR;
 
-    private $types = ["SUCCESS", "ERROR", "EMPTY", "NO_AFFECT", "DENIED"];
+    public const REGULAR = 0;
+    public const PREPARED = 1;
 
-    function __construct($type, $message, $code = null, $contentType = null)
-    {
-        if (!in_array($type, $this->types)) {
-            throw new InvalidArgumentException("Nem támogatott válasz típus!");
-        }
+    // Privát tulajdonságok
+    private const QUERY_TYPES = [
+        self::REGULAR => "REGULAR (non-prepared)",
+        self::PREPARED => "PREPARED",
+    ];
 
-        $this->type = $type;
-        $this->message = $message;
+    public function __construct(int $type, mixed $message, string $query = null, mixed $params = null, ?int $code = null, int $affectedRows = 0, ?int $lastInsertId = null) {
+        parent::__construct($type, $message);
+
         $this->code = $code;
-        $this->contentType = $contentType;
-    }
+        $this->affectedRows = $affectedRows;
+        $this->lastInsertId = $lastInsertId;
 
-    public function isError() {
-        return $this->type === "ERROR";
-    }
+        if (!is_null($params)) {
+            $this->queryType = self::PREPARED;
 
-    public function isEmpty() {
-        return $this->type === "EMPTY";
-    }
+            if (!is_array($params)) {
+                $params = [$params];
+            }
 
-    public function isSuccess() {
-        return $this->type === "SUCCESS";
-    }
+            $offset = 0;
+            foreach ($params as $param) {
+                $placeholderPos = strpos($query, "?", $offset);
 
-    public function isTypeOf($type = null) {
-        if (!in_array($type, $this->types)) {
-            throw new InvalidArgumentException("Nem támogatott válasz típus az isTypeOf függvényben!");
+                if ($placeholderPos === false) {
+                    break;
+                }
+
+                $query = substr_replace($query, strval($param), $placeholderPos, 1);
+                $offset += $placeholderPos + mb_strlen(strval($param));
+            }
         }
 
-        return $this->type === $type;
+        $this->query = $query;
+    }
+
+    // Tömbbé konvertálás
+    public function toArray(): array {
+        $base = parent::toArray();
+
+        $base['rowsAffected'] = $this->affectedRows;
+        $base['lastInsertId'] = $this->lastInsertId;
+        $base['query'] = $this->query;
+        $base['queryType'] = self::QUERY_TYPES[$this->queryType];
+
+        return $base;
     }
 }
