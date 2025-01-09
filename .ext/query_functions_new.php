@@ -178,7 +178,7 @@ function updateData($query, $parameters = null, $typeString = null): QueryResult
         }
         return new QueryResult(
             type: Result::NO_AFFECT,
-            message: true,
+            message: false,
             query: $query,
             params: $parameters,
             affectedRows: $affectedRows,
