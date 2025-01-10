@@ -65,7 +65,7 @@ function authenticate_user($username, $password) {
             return new Result(Result::DENIED, "Érvénytelen felhasználónév, vagy jelszó.");
         }
         else {
-            return ["message" => $user, "type" => "SUCCESS"];
+            return new Result(Result::SUCCESS, $user);
         }
     }
     else {
