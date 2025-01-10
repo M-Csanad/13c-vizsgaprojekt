@@ -29,6 +29,7 @@ class Result {
      * @param int $type A válasz típusa. Lehet: SUCCESS, ERROR, EMPTY, NO_AFFECT, vagy DENIED.
      * @param mixed $message Az eredmény üzenete. Ez bármilyen adat lehet.
      *
+     * @return Result Az új példány.
      * @throws InvalidArgumentException Ha a megadott típus nem támogatott.
      */
     function __construct(int $type, mixed $message)
@@ -48,7 +49,6 @@ class Result {
         return !is_null($type) && !empty($type) && in_array($type, array_keys(self::TYPES), true);
     }
 
-    // Használati függvények
 
     /**
      * Ellenőrzi, hogy az eredmény sikertelen-e.
@@ -90,7 +90,11 @@ class Result {
         return $this->type === $type;
     }
 
-    // Tömbbé konvertálás
+    /**
+     * Egy Result példányt asszociációs tömbbé alakít.
+     * 
+     * @return array Az átalakított tömb.
+     */
     public function toArray(): array {
         return [
             "type" => self::TYPES[$this->type],
@@ -98,7 +102,11 @@ class Result {
         ];
     }
 
-    // JSON-re konvertálás
+    /**
+     * Egy Result példányt JSON stringgé alakít.
+     * 
+     * @return string Az átalakított tömb.
+     */
     public function toJSON(): string {
         return json_encode($this->toArray(), JSON_UNESCAPED_UNICODE);
     }
