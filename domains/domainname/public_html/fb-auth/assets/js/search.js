@@ -60,6 +60,8 @@ function initializeSearch(search) {
         { name: "price" },
         { name: "stock" },
         { name: "tags", multiple: true },
+        { name: "benefits-container", multiple: true },
+        { name: "side-effects-container", multiple: true },
       ],
       template: (product) => {
         if (!product.category || !product.subcategory) {
@@ -216,17 +218,21 @@ function initializeSearch(search) {
   }
   // A keresési találatra történő kattintás kezelése
   async function itemClickHandler(item, fields, outputData = {}) {
-    // Módosításkor a kitöltendő mezők az outputData alapján töltődnek ki
+    // Háttér inputok beállítása
     fields.forEach((field) => {
       const input = search.querySelector(`input[name=${searchType}_${field}]`);
       if (input) input.value = item[field];
     });
-
+    
+    // Módosításkor a kitöltendő mezők az outputData alapján töltődnek ki
     if (outputData.fields) {
       outputData.fields.forEach(({ field, value }) => {
         const input = parentForm.querySelector(`[name=${field}]`);
         if (input) {
           if (value) {
+
+            // Ha a value egy tömb, akkor checkboxokhoz, vagy selecthez tartoznak,
+            // Ezért itt végigmegyünk rajtuk és rákattintunk a megfelelő elemre
             if (Array.isArray(value)) {
               for (let id of value) {
                 let clickElement = input.querySelector(`input[value="${id}"]`);
@@ -235,7 +241,10 @@ function initializeSearch(search) {
                 clickElement.click();
               }
             } else {
+              // Ebben az esetben az input csak egy sima mező vagy select,
+              // Emiatt ellátjuk értékkel és egy change eseményt is indítunk (category select)
               input.value = value;
+
               if (input.disabled) input.disabled = false;
               input.dispatchEvent(new Event("change"));
             }
@@ -254,6 +263,7 @@ function initializeSearch(search) {
     }
   }
 
+  // Aktív jogosultság opciójának letiltása
   function disableRoleOption(role) {
     let currentRoleOption = inputGrid.querySelector(`option[value='${role}']`);
 
@@ -263,6 +273,7 @@ function initializeSearch(search) {
     currentRoleOption.disabled = true;
   }
 
+  // Egy select elem első érvényes opciójának kiválasztása
   function selectFirstValidOption(element) {
     if (element.value) {
       element.querySelector("option:checked").selected = false;
@@ -287,6 +298,7 @@ function initializeSearch(search) {
     );
   }
 
+  // Letiltott elemek visszakapcsolása
   function enableDisabledInputs() {
     const disabledInputs = inputGrid.querySelectorAll(
       "input:disabled, select:disabled"
@@ -296,17 +308,26 @@ function initializeSearch(search) {
     });
   }
 
+  // Automatikusan kitöltött elemek kiürítése
   function clearAutofillFields() {
+    // Mezők megszerzése
     const fields = searchConfig[searchType].autofillFields;
+    
     for (let field of fields) {
       let element = parentForm.querySelector(`[name=${field.name}]`);
       if (element) {
+
+        // Ha több mező van, akkor rányomunk minden bejelölt elemre
         if (field.multiple) {
-          element.querySelectorAll("input:checked").forEach((e) => e.click());
-          return;
+          element.querySelectorAll("input:checked, .check.on").forEach((e) => e.click());
+          continue;
         }
 
+        // Ha alapból le van tiltva az elem, akkor letiltjuk
         if (field.disabledByDefault) element.disabled = true;
+
+        // Ha legördülőmenü, akkor az első érvényes elemet kiválasztjuk
+        // Egyébként pedig kiürítjük
         if (element.nodeName == "SELECT") {
           selectFirstValidOption(element);
           element.dispatchEvent(new Event("change"));
@@ -317,6 +338,7 @@ function initializeSearch(search) {
     }
   }
 
+  // Legördülőmenük letiltása
   function disableSelectInputs() {
     inputGrid.querySelectorAll("select").forEach((e) => (e.disabled = true));
   }

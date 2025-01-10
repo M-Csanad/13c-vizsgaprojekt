@@ -26,5 +26,5 @@ function makeReview($reviewData) {
     session_start();
     if (!isset($_SESSION["user_id"])) return new Result(Result::ERROR, "Értékelni csak bejelentkezett felhasználó tud!");
 
-    return updateData("INSERT INTO review (user_id, product_id, rating, description, title) VALUES (?, ?, ?, ?, ?);", [$_SESSION["user_id"], $product["id"], $reviewData["rating"], $reviewData["review-body"], $reviewData["review-title"]], "iidss");;
+    return updateData("INSERT INTO review (user_id, product_id, rating, description, title) VALUES (?, ?, ?, ?, ?);", [$_SESSION["user_id"], $product["id"], doubleval($reviewData["rating"]), $reviewData["review-body"], $reviewData["review-title"]], "iidss");;
 }
