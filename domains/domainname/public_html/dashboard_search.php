@@ -1,7 +1,7 @@
 <?php
 
 if ($_SERVER["REQUEST_METHOD"] != "POST") {
-    echo json_encode("Hibás metódus! Várt: GET, Aktuális: ".$_SERVER["REQUEST_METHOD"], JSON_UNESCAPED_UNICODE);
+    echo json_encode("Hibás metódus! Várt: POST, Aktuális: ".$_SERVER["REQUEST_METHOD"], JSON_UNESCAPED_UNICODE);
     header("bad request", true, 400);
     return;
 }

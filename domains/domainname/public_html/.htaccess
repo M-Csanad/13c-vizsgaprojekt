@@ -53,6 +53,9 @@ RewriteRule ^review$ /review.php [L]
 ###/ Statikus átirányítások
 
 ### Dinamikus átirányítások
+RewriteCond %{REQUEST_URI} ^/api/ [NC]
+RewriteRule ^api/(.*)$ /api_router.php [L]
+
 RewriteCond %{REQUEST_URI} ^/fb-auth/ [OR]
 RewriteCond %{REQUEST_URI} ^/fb-admin/
 RewriteRule ^ - [L]
