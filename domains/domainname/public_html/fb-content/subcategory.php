@@ -32,9 +32,10 @@
             product ON product_image.product_id = product.id
         INNER JOIN 
             product_page ON product_page.product_id = product.id
+        WHERE product_page.subcategory_id=?
         GROUP BY 
             product.id, product.name
-        ORDER BY product.id ASC;");
+        ORDER BY product.id ASC;", $ids[1], 'i');
 
     if ($result->isError()) {
         include "http://localhost/fb-functions/error/error-404.html";
@@ -44,12 +45,11 @@
 
     // A termékekhez hozzácsatoljuk a képeket
     foreach ($products as $index=>$product) {
-
         // Mivel a termékek is és a képek is növekvő sorrendbe vannak
         // rendezve a product.id alapján, így a lista index-szel
         // is el tudjuk érni a hozzá tartozó képeket
-        $products[$index]["thumbnail_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $images[$product["id"] - 1]["thumbnail_image"]);
-        $products[$index]["secondary_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $images[$product["id"] - 1]["secondary_image"]);
+        $products[$index]["thumbnail_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $images[$index]["thumbnail_image"]);
+        $products[$index]["secondary_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $images[$index]["secondary_image"]);
     }
 ?>
 <!DOCTYPE html>
@@ -194,8 +194,9 @@
                                             <source type="image/jpeg" srcset="<?= $product["secondary_image"] ?>-<?= $resolution ?>px.jpg 1x" media="(min-width: <?= $resolution ?>px)">
                                         <?php endforeach; ?>
                                         <!-- Fallback -->
+                                        <source type="image/jpeg" srcset="<?= $product["secondary_image"] ?>.jpg 1x" media="(min-width: 0px)">
                                         <img 
-                                        src="<?= $product["secondary_image"] ?>-<?= end($resolutions) ?>px.webp" 
+                                        src="<?= $product["secondary_image"] ?>.jpg" 
                                         alt="<?= htmlspecialchars($product['name']) ?>" 
                                         loading="lazy"
                                         sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw">

@@ -28,6 +28,15 @@ function validateQueryAndParameters($query, $parameters, $typeString) {
 }
 
 function executeStatement($db, $query, $parameters, $typeString) {
+    if (getTypeString($parameters) !== $typeString) {
+        return new QueryResult(
+            type: Result::ERROR,
+            message: "A típus string nem egyezik meg a tényleges típusokkal. Kapott: ".getTypeString($parameters),
+            query: $query, 
+            params: $parameters
+        );
+    }
+
     $statement = $db->prepare($query);
     if (!$statement) {
         return new QueryResult(
@@ -35,15 +44,6 @@ function executeStatement($db, $query, $parameters, $typeString) {
             message: $db->error,
             code: $db->errno,
             query: $query,
-            params: $parameters
-        );
-    }
-
-    if (getTypeString($parameters) !== $typeString) {
-        return new QueryResult(
-            type: Result::ERROR,
-            message: "A típus string nem egyezik meg a tényleges típusokkal.",
-            query: $query, 
             params: $parameters
         );
     }

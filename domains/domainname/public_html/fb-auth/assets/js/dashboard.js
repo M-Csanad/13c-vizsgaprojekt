@@ -454,9 +454,11 @@ async function populateOptions(select, category, table) {
 }
 
 function setHiddenInput(select) {
+  let selected = select.querySelector("option:checked");
+  if (!selected) return;
   let value =
     select.children.length > 0
-      ? select.querySelector("option:checked").dataset.id
+      ? selected.dataset.id
       : "null";
   select.closest("div").querySelector("input[type=hidden]").value = value;
 }
@@ -480,8 +482,14 @@ document
     select.addEventListener("change", async () => {
       setHiddenInput(select);
       if (subcategorySelect) {
-        await populateOptions(subcategorySelect, select.value, "subcategory");
-        setHiddenInput(subcategorySelect);
+        subcategorySelect.dispatchEvent(new CustomEvent("change", {detail: {shouldPopulate: true}}));
       }
     });
   });
+
+document.querySelectorAll("select[data-table=subcategory]").forEach(select => select.addEventListener("change", async (e) => {
+  if (e.detail && e.detail.shouldPopulate) {
+    await populateOptions(select, select.closest('.input-grid').querySelector("select[name=category]").value, "subcategory");
+  }
+  setHiddenInput(select);
+}))

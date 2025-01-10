@@ -21,7 +21,7 @@ function register($username, $password, $email, $firstname, $lastname) {
             return new Result(Result::DENIED, "Ez a felhasználónév már foglalt.");
         }
         else {
-            return ["message" => $error, "type" => "ERROR"];
+            return $result;
         }
     }
     else return new Result(Result::SUCCESS, "Sikeres regisztráció.");

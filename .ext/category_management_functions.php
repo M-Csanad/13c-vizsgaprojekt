@@ -33,8 +33,7 @@ function createCategory($categoryData)
         return $result;
     }
 
-    $categoryID = $result->message;
-    $categoryData["id"] = $categoryID;
+    $categoryData["id"] = $result->lastInsertId;
 
     $result = createCategoryDirectory($categoryData, $images);
 
@@ -68,7 +67,7 @@ function createCategoryDirectory($categoryData, $images)
     $categoryDirURI = getCategoryDir($categoryData);
 
     if (!createDirectory($categoryDirURI)) {
-        return new Result(Result::ERROR, "A mappa létrehozása sikertelen.");
+        return new Result(Result::ERROR, "A mappa létrehozása sikertelen. URI: ".$categoryDirURI);
     }
 
     $paths = array();
@@ -85,7 +84,7 @@ function createCategoryDirectory($categoryData, $images)
         }
     }
 
-    return ["message" => $paths, "type" => "SUCCESS"];
+    return new Result(Result::SUCCESS, $paths);
 }
 
 
@@ -104,7 +103,7 @@ function uploadCategoryData($categoryData)
 
     if (!$isMainCategory) {
         array_push($fields, "category_id");
-        array_push($values, $categoryData["parent_category_id"]);
+        array_push($values, intval($categoryData["parent_category_id"]));
         $types .= "i";
     }
     $slug = format_str($categoryData["name"]);
@@ -160,7 +159,7 @@ function removeCategory($categoryData)
     $result = removeCategoryFromDB($categoryData);
     if ($result->isError()) {
         return $result;
-    } else if ($result->isNo_affect()) {
+    } else if ($result->isOfType(Result::NO_AFFECT)) {
         return new Result(Result::ERROR, "A törlendő kategória nem létezik az adatbázisban!");
     }
 
@@ -169,7 +168,7 @@ function removeCategory($categoryData)
     if (!$result) {
         return new Result(Result::ERROR, "A mappa törlése sikertelen volt!.");
     } else {
-        return ["message" => $result, "type" => "SUCCESS"];
+        return new Result(Result::SUCCESS, "A mappa sikeresen törölve.");
     }
 }
 
@@ -213,7 +212,7 @@ function updateCategoryDirectory($categoryData, $images)
         }
     }
 
-    return ["message" => $paths, "type" => "SUCCESS"];
+    return new Result(Result::SUCCESS, $paths);
 }
 
 function updateCategoryData($categoryData, $images)

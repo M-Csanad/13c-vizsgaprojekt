@@ -169,8 +169,8 @@
             "original_name" => $_POST['product_name'],
             "name" => $_POST['name'],
             "description" => $_POST['description'],
-            "price" => $_POST['price'],
-            "stock" => $_POST['stock']
+            "price" => intval($_POST['price']),
+            "stock" => intval($_POST['stock'])
         );
 
         if (isset($_POST["tags"])) $productData["tags"] = $_POST['tags'];
@@ -236,7 +236,7 @@
             $message = "<div class='success'>Termék oldal sikeresen létrehozva!</div>";
         }
         else {
-            $message = "<div class='error'>A termék oldal létrehozása sikertelen! {$result['message']}</div>";
+            $message = "<div class='error'>A termék oldal létrehozása sikertelen! {$result->message}</div>";
         }
     }
 
@@ -248,7 +248,7 @@
             $message = "<div class='success'>A termék oldal sikeresen törölve.</div>";
         }
         else {
-            $message = "<div class='error'>A termék oldal törlése sikertelen! {$result['message']}</div>";
+            $message = "<div class='error'>A termék oldal törlése sikertelen! {$result->message}</div>";
         }
     }
 
@@ -268,11 +268,11 @@
         );
 
         $result = modifyProductPage($productPageData, $categoryData);
-        if (!isError($result)) {
+        if (!$result->isError()) {
             $message = "<div class='success'>A termék oldal módosítva.</div>";
         }
         else {
-            $message = "<div class='error'>A termék oldal módosítása sikertelen! {$result['message']}</div>";
+            $message = "<div class='error'>A termék oldal módosítása sikertelen! {$result->toJSON()}</div>";
         }
     }
     
@@ -280,7 +280,7 @@
     if (isset($_POST['modify_role'])) {
         $userId = intval($_POST['user_id']);
         $role = $_POST['role'];
-        if (typeOf(modifyRole($userId, $role), "SUCCESS")) {
+        if (modifyRole($userId, $role)->isSuccess()) {
             $message = "<div class='success'>Sikeres művelet!</div>";
         }
         else {

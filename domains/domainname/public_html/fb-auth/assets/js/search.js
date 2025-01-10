@@ -145,17 +145,17 @@ function initializeSearch(search) {
       if (response.ok) {
         let data = await response.json();
 
-        if (data.type == "ERROR") {
+        if (data.typeAsString == "ERROR") {
           console.log("Hiba a kereséskor: " + data.message);
         }
 
-        if (data.type == "SUCCESS") {
+        if (data.typeAsString == "SUCCESS") {
           lastContentfulSearchTerm = input;
         } else {
           isSearchEnabled = false;
         }
 
-        if (data.type == "EMPTY") {
+        if (data.typeAsString == "EMPTY") {
           toggleDropdown(false);
           return;
         } else {

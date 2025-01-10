@@ -12,6 +12,7 @@ class QueryResult extends Result {
     public $lastInsertId;
     public $query;
     public $queryType = self::REGULAR;
+    public $params;
 
     public const REGULAR = 0;
     public const PREPARED = 1;
@@ -47,6 +48,7 @@ class QueryResult extends Result {
         // (Debug funkció)
         if (!is_null($params)) {
             $this->queryType = self::PREPARED;
+            $this->params = $params;
 
             if (!is_array($params)) {
                 $params = [$params];
@@ -79,6 +81,7 @@ class QueryResult extends Result {
         $base['lastInsertId'] = $this->lastInsertId;
         $base['query'] = $this->query;
         $base['queryType'] = self::QUERY_TYPES[$this->queryType];
+        $base['params'] = $this->params;
 
         return $base;
     }

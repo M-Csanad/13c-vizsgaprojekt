@@ -44,7 +44,7 @@ function createProductPage($productData, $productPageData, $productCategoryData)
             // return new Result(Result::ERROR, "Ilyen termék oldal már létezik.");
         }
         else {
-            return ["message" => "Sikertelen feltöltés a product_page táblába. ({$result->message})", "type" => "ERROR"];
+            return new Result(Result::ERROR, "Sikertelen feltöltés a product_page táblába: {$result->toJSON()}");
         }
     }
 
@@ -59,5 +59,5 @@ function removeProductPage($id) {
 function modifyProductPage($pageData, $categoryData) {
     $newSlug = getLinkSlug($pageData["page_title"], $categoryData);
     $data = array($newSlug["link_slug"], $pageData["category_id"], $pageData["subcategory_id"], $pageData["page_content"], $pageData["id"]);
-    return updateData("UPDATE product_page SET link_slug=?, category_id=?, subcategory_id=?, page_content=? WHERE product_page.id=?", $data, "siis");
+    return updateData("UPDATE product_page SET link_slug=?, category_id=?, subcategory_id=?, page_content=? WHERE product_page.id=?", $data, "siisi");
 }

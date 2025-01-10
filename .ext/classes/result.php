@@ -7,6 +7,7 @@ class Result {
     // Publikus tulajdonságok
     public $message;
     public $type;
+    public $typeAsString;
 
     public const SUCCESS = 1;
     public const ERROR = 2;
@@ -40,6 +41,7 @@ class Result {
         }
 
         $this->type = $type;
+        $this->typeAsString = self::TYPES[$this->type];
         $this->message = $message;
     }
 

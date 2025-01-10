@@ -14,7 +14,7 @@ function createProductDirectory($productData)
     $productDirURI = getProductDir($productData);
 
     if (!createDirectory($productDirURI)) {
-        return new Result(Result::ERROR, "Ilyen nevű termék már létezik a fájlrendszerben.");
+        return new Result(Result::ERROR, "Ilyen nevű termék már létezik a fájlrendszerben. (URL: ".$productDirURI.")");
     }
 
     $images = ['thumbnail_image'];
@@ -47,7 +47,7 @@ function createProductDirectory($productData)
         }
     }
 
-    return ["message" => $paths, "type" => "SUCCESS"];
+    return new Result(Result::SUCCESS, $paths);
 }
 
 function saveFile($file, $directory, $filename)
@@ -97,10 +97,10 @@ function uploadProductImages($paths)
             return $result;
         }
 
-        array_push($insertIds, $result->message);
+        array_push($insertIds, $result->lastInsertId);
     }
 
-    return ["message" => $insertIds, "type" => "SUCCESS"];
+    return new Result(Result::SUCCESS, $insertIds);
 }
 
 // A A termékképek és a termék összekapcsolása `product_image` táblába való feltöltéssel
@@ -123,7 +123,7 @@ function connectProductTags($id, $tags)
     $typeString = "";
 
     foreach ($tags as $tag) {
-        array_push($values, $tag, $id);
+        array_push($values, intval($tag), intval($id));
         $typeString .= "ii";
     }
 
@@ -140,7 +140,7 @@ function connectProductHealthEffects($id, $productHealthEffectsData)
         $typeString = "";
 
         foreach ($effects as $effect) {
-            array_push($values, $effect, $id);
+            array_push($values, intval($effect), intval($id));
             $typeString .= "ii";
         }
 
@@ -168,42 +168,42 @@ function createProduct($productData, $productPageData, $productCategoryData, $pr
     // Adatfeltölés a product táblába
     $result = uploadProductData($productData);
     if ($result->isSuccess()) {
-        $productData["id"] = $result->message;
-        $productPageData["product_id"] = $result->message;
+        $productData["id"] = $result->lastInsertId;
+        $productPageData["product_id"] = $result->lastInsertId;
     } else if (isError($result)) {
         if ($result->code === 1062) {
             return new Result(Result::ERROR, "Ilyen termék már létezik az adatbázisban.");
         } else {
-            return ["message" => "Sikertelen feltöltés a product táblába. ({$result->message})", "type" => "ERROR"];
+            return $result;
         }
     } else {
-        return new Result(Result::ERROR, "Sikertelen feltöltés az adatbázisba: {$result['message']}");
+        return new Result(Result::ERROR, "Sikertelen feltöltés az adatbázisba: {$result->toJSON()}");
     }
 
     // Termékképek mentése a fájlrendszerbe
     $result = createProductDirectory($productData);
     if (!$result->isSuccess()) {
-        return new Result(Result::ERROR, "Sikertelen képfeltöltés. ({$result['message']})");
+        return new Result(Result::ERROR, "Sikertelen képfeltöltés: {$result->toJSON()}");
     }
     $paths = $result->message;
 
     // URL-ek feltöltése az adatbázisba
     $result = uploadProductImages($paths);
     if (!$result->isSuccess()) {
-        return new Result(Result::ERROR, "Sikertelen feltöltés az image táblába. ({$result['message']})");
+        return new Result(Result::ERROR, "Sikertelen feltöltés az image táblába: {$result->toJSON()}");
     }
     $insertIds = $result->message;
 
     $result = connectProductImages($insertIds, $productData['id']);
     if (!$result->isSuccess()) {
-        return ["message" => "Sikertelen feltöltés a product_image táblába. ({$result->message})", "type" => "ERROR"];
+        return new Result(Result::ERROR, "Sikertelen feltöltés a product_image táblába: {$result->toJSON()}");
     }
 
     // Címkék feltöltése - product_tag
     if (isset($productData['tags'])) {
         $result = connectProductTags($productData['id'], $productData['tags']);
         if (!$result->isSuccess()) {
-            return ["message" => "Sikertelen feltöltés a product_tag táblába. ({$result->message})", "type" => "ERROR"];
+            return new Result(Result::ERROR, "Sikertelen feltöltés a product_tag táblába: {$result->toJSON()}");
         }
     }
 
@@ -211,7 +211,7 @@ function createProduct($productData, $productPageData, $productCategoryData, $pr
     if (!empty($productHealthEffectsData)) {
         $result = connectProductHealthEffects($productData['id'], $productHealthEffectsData);
         if (!$result->isSuccess()) {
-            return ["message" => "Sikertelen feltöltés a product_health_effect táblába. ({$result->message})", "type" => "ERROR"];
+            return new Result(Result::ERROR, "Sikertelen feltöltés a product_health_effect táblába: {$result->toJSON()}");
         }
     }
 
@@ -298,7 +298,7 @@ function updateProductHealthEffect($id, $productHealthEffectsData)
     foreach ($productHealthEffectsData as $type => $effects) {
         foreach ($effects as $effectId) {
             array_push($placeholders, "(?, ?)");
-            array_push($values, $id, $effectId);
+            array_push($values, intval($id), intval($effectId));
             $typeString .= "ii";
         }
     }
@@ -306,7 +306,7 @@ function updateProductHealthEffect($id, $productHealthEffectsData)
     $query = "INSERT INTO product_health_effect (product_id, health_effect_id) VALUES " . implode(", ", $placeholders);
     $result = updateData($query, $values, $typeString);
     if ($result->isError()) {
-        return ["message" => "Sikertelen felvitel: " . $result->message, "type" => "ERROR"];
+        return $result;
     }
 
     return new Result(Result::SUCCESS, "Sikeres törlés.");
@@ -330,7 +330,7 @@ function updateProductTags($productData)
 
     foreach ($productData["tags"] as $tag) {
         array_push($placeholders, "(?, ?)");
-        array_push($values, $productData["id"], $tag);
+        array_push($values, $productData["id"], intval($tag));
         $typeString .= "ii";
     }
 
@@ -348,7 +348,7 @@ function updateProductPage($data, $table = null)
     if (!$table)
         return new Result(Result::ERROR, "Hiányzó táblázat paraméter.");
 
-    if (typeOf(selectData("SELECT product_page.id FROM product_page WHERE product_page.{$table}_id=?;", $data["id"], "i"), "EMPTY")) {
+    if (selectData("SELECT product_page.id FROM product_page WHERE product_page.{$table}_id=?;", $data["id"], "i")->isEmpty()) {
         return new Result(Result::SUCCESS, "Nincsenek ez alá a kategória alá tartozó termékoldalak.");
     }
 
@@ -361,7 +361,7 @@ function updateProductPage($data, $table = null)
 
     $result = selectData("SELECT product_page.id, product_page.link_slug FROM product_page WHERE product_page.{$table}_id=?", $data["id"], "i");
     if (!$result->isSuccess()) {
-        return ["message" => "Sikertelen lekérdezés: " . $result->message, "type" => "ERROR"];
+        return $result;
     }
 
     $pages = $result->message;
@@ -392,7 +392,7 @@ function updateProductPage($data, $table = null)
     $result = updateData($query, [...$slugs, $data["name"]], $typeString . "s");
 
     if ($result->isError()) {
-        return ["message" => "Sikertelen módosítás: " . $result['message'], "type" => "ERROR"];
+        return $result;
     }
 
     return new Result(Result::SUCCESS, "Sikeres módosítás.");
@@ -400,11 +400,10 @@ function updateProductPage($data, $table = null)
 
 function updateProductImages($productData, $images, $paths)
 {
-    if (count($paths) == 0)
-        return false;
-
-    if (
-        count(array_filter($images, function ($e) {
+    if (count($paths) == 0 || count($images) == 0) {
+        return new Result(Result::ERROR, "Nincs kép vagy elérési útvonal.");
+    }
+    if (count(array_filter($images, function ($e) {
             return $e["name"] == "product_image";
         })) > 0
     ) {
@@ -441,19 +440,19 @@ function updateProductImages($productData, $images, $paths)
         if ($image["name"] == "thumbnail_image" || $image["name"] == "product_image") {
 
             $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, getOrientation($path), "image"], "sss");
-            if ($result->isError() || $result->lastInsertId) {
+            if ($result->isError() || !$result->lastInsertId) {
                 return $result;
             }
 
-            array_push($ids, $result->message);
+            array_push($ids, $result->lastInsertId);
         } else if ($image["name"] == "product_video") {
 
             $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, "horizontal", "video"], "sss");
-            if ($result->isError() || $result->lastInsertId) {
+            if ($result->isError() || !$result->lastInsertId) {
                 return $result;
             }
 
-            array_push($ids, $result->message);
+            array_push($ids, $result->lastInsertId);
         }
     }
 
@@ -482,7 +481,7 @@ function updateProductData($productData, $images, $paths, $productHealthEffectsD
 
     $result = updateData($query, $values, "siisi");
     if ($result->isError()) {
-        return new Result(Result::ERROR, "Sikertelen frissítés.");
+        return new Result(Result::ERROR, "Sikertelen frissítés: ". $result->toJSON());
     }
 
     $result = updateProductPage($productData, "product");
@@ -500,7 +499,11 @@ function updateProductData($productData, $images, $paths, $productHealthEffectsD
         return $result;
     }
 
-    return updateProductImages($productData, $images, $paths);
+    if (count($images) > 0 && count($paths) > 0) {
+        return updateProductImages($productData, $images, $paths);
+    }
+
+    return $result;
 }
 
 function updateProductDirectory($productData, $images)
@@ -560,7 +563,8 @@ function updateProductDirectory($productData, $images)
         }
 
     }
-    return ["message" => $paths, "type" => "SUCCESS"];
+
+    return new Result(Result::SUCCESS, $paths);
 }
 
 function updateProduct($productData, $productHealthEffectsData)
