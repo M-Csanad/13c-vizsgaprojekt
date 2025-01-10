@@ -64,7 +64,7 @@ class QueryResult extends Result {
 
                 // Kicseréljük a kérdőjelet és növeljük az eltolást.
                 $query = substr_replace($query, strval($param), $placeholderPos, 1);
-                $offset += $placeholderPos + mb_strlen(strval($param));
+                $offset = $placeholderPos + mb_strlen(strval($param));
             }
         }
 
