@@ -4,8 +4,8 @@
 
     $isLoggedIn = false;
     $result = getUserData();
-    if (typeOf($result, "SUCCESS")) {
-      $user = $result["message"][0];
+    if ($result->isSuccess()) {
+      $user = $result->message[0];
       $isLoggedIn = true;
 
       if ($user["role"] !== "Administrator") {
@@ -20,15 +20,15 @@
 
 
     $result = selectData("SELECT * FROM health_effect");
-    if (typeOf($result, "ERROR")) {
+    if ($result->isError()) {
         $healthEffectError = "Nem sikerült betölteni az egészségügyi hatásokat.";
     }
     else {
-        if (!is_array($result["message"])) {
+        if (!is_array($result->message)) {
             $healthEffectError = "Nincsenek megadva egészségügyi hatások.";
         }
         else {
-            $healthEffects = $result["message"];
+            $healthEffects = $result->message;
 
             $benefits = array_filter($healthEffects, function ($e) {return $e["benefit"] == 1;});
             $sideEffects = array_filter($healthEffects, function ($e) {return $e["benefit"] == 0;});
@@ -36,10 +36,10 @@
     }
 
     $result = selectData("SELECT * FROM tag;");
-    if (typeOf($result, "SUCCESS")) {
-        $tags = $result["message"];
+    if ($result->isSuccess()) {
+        $tags = $result->message;
     }
-    else if (typeOf($result, "EMPTY")){
+    else if ($result->isEmpty()){
         $tags = "Nincsenek allergének felvéve.";
     }
 
@@ -61,11 +61,11 @@
 
         $result = createCategory($categoryData);
 
-        if (typeOf($result, "SUCCESS")) {
+        if ($result->isSuccess()) {
             $message = "<div class='success'>Kategória sikeresen létrehozva!</div></div>";
         }
         else {
-            $message = "<div class='error'>A kategória létrehozása sikertelen! {$result["message"]}</div></div>";
+            $message = "<div class='error'>A kategória létrehozása sikertelen! {$result->message}</div></div>";
         }
 
     }
@@ -84,11 +84,11 @@
             );
             $result = removeCategory($categoryData);
 
-            if (typeOf($result, "SUCCESS")) {
+            if ($result->isSuccess()) {
                 $message = "<div class='success'>A kategória sikeresen törölve.</div></div>";
             }
             else {
-                $message = "<div class='error'>A kategória törlése sikertelen! {$result["message"]}</div></div>";
+                $message = "<div class='error'>A kategória törlése sikertelen! {$result->message}</div></div>";
             }
         }
     }
@@ -112,11 +112,11 @@
 
         $result = updateCategory($categoryData);
         
-        if (!typeOf($result, "ERROR")) {
+        if (!$result->isError()) {
             $message = "<div class='success'>A kategória sikeresen módosítva.</div></div>";
         }
         else {
-            $message = "<div class='error'>A kategória módosítása sikertelen! {$result["message"]}</div></div>";
+            $message = "<div class='error'>A kategória módosítása sikertelen! {$result->message}</div></div>";
         }
     }
 
@@ -154,11 +154,11 @@
 
         $result = createProduct($productData, $productPageData, $productCategoryData, $productHealthEffectsData);
 
-        if (!typeOf($result, "ERROR")) {
+        if (!$result->isError()) {
             $message = "<div class='success'>Termék sikeresen létrehozva!</div></div>";
         }
         else {
-            $message = "<div class='error'>A termék létrehozása sikertelen! {$result["message"]}</div></div>";
+            $message = "<div class='error'>A termék létrehozása sikertelen! {$result->message}</div></div>";
         }
     }
 
@@ -184,11 +184,11 @@
         }
 
         $result = updateProduct($productData, $productHealthEffectsData);
-        if (!typeOf($result, "ERROR")) {
+        if (!$result->isError()) {
             $message = "<div class='success'>Termék sikeresen módosítva!</div></div>";
         }
         else {
-            $message = "<div class='error'>A termék módosítása sikertelen! {$result["message"]}</div></div>";
+            $message = "<div class='error'>A termék módosítása sikertelen! {$result->message}</div></div>";
         }
     }
     
@@ -201,11 +201,11 @@
 
         $result = removeProduct($productData);
 
-        if (!typeOf($result, "ERROR")) {
+        if (!$result->isError()) {
             $message = "<div class='success'>A termék sikeresen törölve.</div>";
         }
         else {
-            $message = "<div class='error'>A termék törlése sikertelen! {$result["message"]}</div>";
+            $message = "<div class='error'>A termék törlése sikertelen! {$result->message}</div>";
         }
     }
 
@@ -232,7 +232,7 @@
         );
 
         $result = createProductPage($productData, $productPageData, $productCategoryData);
-        if (!typeOf($result, "ERROR")) {
+        if (!$result->isError()) {
             $message = "<div class='success'>Termék oldal sikeresen létrehozva!</div>";
         }
         else {

@@ -9,8 +9,8 @@ $filePath = BASE_PATH . '/../../../.ext/db_connect.php';
 $isLoggedIn = false;
 $result = getUserData();
 
-if (typeOf($result, "SUCCESS")) {
-    $user = $result["message"];
+if ($result->isSuccess()) {
+    $user = $result->message;
     $isLoggedIn = true;
 }
 
@@ -120,7 +120,7 @@ function getCategoryContent()
 
 $category_content = getCategoryContent();
 if ($isLoggedIn) {
-    $user = $result["message"][0];
+    $user = $result->message[0];
     $pfpURL = $user["pfp_uri"];
 }
 // Navigációs elemek

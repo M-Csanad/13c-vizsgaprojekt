@@ -45,7 +45,7 @@ if (isset($_POST['login'])) {
         session_start();
         $result = login($username, $password, $rememberMe);
 
-        if (typeOf($result, "SUCCESS")) {
+        if ($result->isSuccess()) {
             $message = "Sikeres bejelentkezés";
         } else {
             $message = "Hibás felhasználónév, vagy jelszó.";

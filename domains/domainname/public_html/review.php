@@ -26,8 +26,8 @@ foreach ($fields as $field) {
 $values["HTTP_REFERER"] = $_SERVER["HTTP_REFERER"];
 
 $result = makeReview($values);
-if (!typeOf($result, "SUCCESS")) {
-    echo json_encode(["message" => "Hiba történt a feltöltés során: ".$result["message"], "type" => "ERROR"]);
+if (!$result->isSuccess()) {
+    echo json_encode(["message" => "Hiba történt a feltöltés során: ".$result->message, "type" => "ERROR"]);
     header("bad request", true, 400);
 }
 

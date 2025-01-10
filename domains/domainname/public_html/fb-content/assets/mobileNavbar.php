@@ -9,8 +9,8 @@ $filePath = BASE_PATH . '/../../../.ext/db_connect.php';
 // Felhasználó adatainak lekérdezése
 $isLoggedIn = false;
 $result = getUserData();
-if (typeOf($result, "SUCCESS")) {
-    $user = $result["message"];
+if ($result->isSuccess()) {
+    $user = $result->message;
     $isLoggedIn = true;
 }
 

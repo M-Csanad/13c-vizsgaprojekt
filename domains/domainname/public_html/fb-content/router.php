@@ -37,12 +37,12 @@ foreach ($segments as $level => $segment) {
     $page = $validationMap[$key][1];
 
     $result = call_user_func_array($validationFunction, [$segment, $parents]);
-    if (!typeOf($result, "SUCCESS")) {
+    if (!$result->isSuccess()) {
         show404($_SERVER["DOCUMENT_ROOT"]);
     }
 
     $parents[] = $segment;
-    $ids[] = $result["message"][0]["id"];
+    $ids[] = $result->message[0]["id"];
 }
 
 // A betöltendő oldal elérési útvonalának kinyerése

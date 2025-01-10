@@ -17,7 +17,7 @@ function createCategory($categoryData)
     include_once "init.php";
 
     if (hasUploadError()) {
-        return ["message" => "Hiba merült fel a feltöltés során.", "type" => "ERROR"];
+        return new Result(Result::ERROR, "Hiba merült fel a feltöltés során.");
     }
 
     $images = array();
@@ -29,29 +29,29 @@ function createCategory($categoryData)
         array_push($images, "thumbnail_video");
 
     $result = uploadCategoryData($categoryData);
-    if (!typeOf($result, "SUCCESS")) {
+    if (!$result->isSuccess()) {
         return $result;
     }
 
-    $categoryID = $result["message"];
+    $categoryID = $result->message;
     $categoryData["id"] = $categoryID;
 
     $result = createCategoryDirectory($categoryData, $images);
 
-    if (typeOf($result, "ERROR")) {
+    if ($result->isError()) {
         return $result;
     }
 
-    $paths = $result["message"];
+    $paths = $result->message;
     if (hasError($paths))
-        return ["message" => "Hiba a fájlok mozgatásakor.", "type" => "ERROR"];
+        return new Result(Result::ERROR, "Hiba a fájlok mozgatásakor.");
 
     foreach ($images as $i => $image) {
         $categoryData[$image] = $paths[$i];
     }
 
     $result = uploadCategoryImages($categoryData);
-    if (typeOf($result, "ERROR")) {
+    if ($result->isError()) {
         return $result;
     }
 
@@ -59,7 +59,7 @@ function createCategory($categoryData)
         optimizeImage($paths[$i]);
     }
 
-    return ["message" => "Kategória sikeresen létrehozva!", "type" => "SUCCESS"];
+    return new Result(Result::SUCCESS, "Kategória sikeresen létrehozva!");
 }
 
 
@@ -68,7 +68,7 @@ function createCategoryDirectory($categoryData, $images)
     $categoryDirURI = getCategoryDir($categoryData);
 
     if (!createDirectory($categoryDirURI)) {
-        return ["message" => "A mappa létrehozása sikertelen.", "type" => "ERROR"];
+        return new Result(Result::ERROR, "A mappa létrehozása sikertelen.");
     }
 
     $paths = array();
@@ -81,7 +81,7 @@ function createCategoryDirectory($categoryData, $images)
         } else if ($name == "thumbnail_video") {
             array_push($paths, null);
         } else {
-            return ["message" => "Hiba a fájl mozgatásakor ($name).", "type" => "ERROR"];
+            return new Result(Result::ERROR, "Hiba a fájl mozgatásakor ($name).");
         }
     }
 
@@ -158,16 +158,16 @@ function removeCategory($categoryData)
 
     // A kategória törlése az adatbázisból
     $result = removeCategoryFromDB($categoryData);
-    if (typeOf($result, "ERROR")) {
+    if ($result->isError()) {
         return $result;
-    } else if (typeOf($result, "NO_AFFECT")) {
-        return ["message" => "A törlendő kategória nem létezik az adatbázisban!", "type" => "ERROR"];
+    } else if ($result->isNo_affect()) {
+        return new Result(Result::ERROR, "A törlendő kategória nem létezik az adatbázisban!");
     }
 
     // A kategória mappájának törlése
     $result = removeCategoryDirectory($categoryData);
     if (!$result) {
-        return ["message" => "A mappa törlése sikertelen volt!.", "type" => "ERROR"];
+        return new Result(Result::ERROR, "A mappa törlése sikertelen volt!.");
     } else {
         return ["message" => $result, "type" => "SUCCESS"];
     }
@@ -281,13 +281,13 @@ function updateCategory($categoryData)
     if (count($images) > 0) {
         $result = updateCategoryDirectory($categoryData, $images);
 
-        if (typeOf($result, "ERROR")) {
+        if ($result->isError()) {
             return $result;
         }
 
-        $paths = $result["message"];
+        $paths = $result->message;
         if (hasError($paths)) {
-            return ["message" => "A képek mozgatásakor hiba merült fel.", "type" => "ERROR"];
+            return new Result(Result::ERROR, "A képek mozgatásakor hiba merült fel.");
         }
 
         for ($i = 0; $i < count($images); $i++) {
@@ -296,12 +296,12 @@ function updateCategory($categoryData)
     }
 
     $result = updateCategoryData($categoryData, $images);
-    if (typeOf($result, "ERROR")) {
+    if ($result->isError()) {
         return $result;
     }
 
     $result = updateProductPage($categoryData, $categoryData["type"]);
-    if (!typeOf($result, "SUCCESS")) {
+    if (!$result->isSuccess()) {
         return $result;
     }
 
@@ -311,5 +311,5 @@ function updateCategory($categoryData)
         }
     }
 
-    return ["message" => "Sikeres módosítás!", "type" => "SUCCESS"];
+    return new Result(Result::SUCCESS, "Sikeres módosítás!");
 }

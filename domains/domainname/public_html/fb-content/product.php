@@ -5,8 +5,8 @@
     // Felhasználó adatainak lekérdezése
     $isLoggedIn = false;
     $result = getUserData();
-    if (typeOf($result, "SUCCESS")) {
-      $user = $result["message"];
+    if ($result->isSuccess()) {
+      $user = $result->message;
       $isLoggedIn = true;
     }
 
@@ -19,65 +19,65 @@
     $result = selectData("SELECT product.*, product_page.id as page_id, product_page.created_at, product_page.last_modified, product_page.page_title, product_page.page_content, category.name AS category_name, subcategory.name AS subcategory_name FROM product_page INNER JOIN product ON product_page.product_id=product.id INNER JOIN category ON product_page.category_id=category.id INNER JOIN subcategory ON product_page.subcategory_id=subcategory.id WHERE product_page.link_slug LIKE ?", [$slug], "s");
     
     // Ha nem sikeres, akkor 404 oldal betöltése
-    if (!typeOf($result, "SUCCESS")) {
+    if (!$result->isSuccess()) {
       http_response_code(404);
       include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
       exit;
     }
-    $product = $result["message"][0];
+    $product = $result->message[0];
 
 
     // Termékképek lekérése
     $result = selectData("SELECT image.uri FROM image INNER JOIN product_image ON product_image.image_id=image.id WHERE product_image.product_id=?", $product["id"], "i");
     
     // Ha nem sikeres, akkor 404 oldal betöltése
-    if (!typeOf($result, "SUCCESS")) {
+    if (!$result->isSuccess()) {
       http_response_code(404);
       include $_SERVER["DOCUMENT_ROOT"] . "/fb-content/error-404.html";
       exit;
     }
-    $images = $result["message"];
+    $images = $result->message;
 
 
     // Címkék lekérése
     $result = selectData("SELECT tag.icon_uri, tag.name FROM tag INNER JOIN product_tag ON product_tag.tag_id=tag.id WHERE product_tag.product_id=?", $product["id"], "i");
     
     // Ha nem sikeres, akkor 404 oldal betöltése
-    if (typeOf($result, "ERROR")) {
+    if ($result->isError()) {
       logError("Sikertelen termék címke lekérdezés: " . json_encode($result), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
       http_response_code(404);
       include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
       exit;
     }
-    $tags = ($result["type"] == "EMPTY") ? "Nincsenek termékhez csatolt címkék." : $result["message"];
+    $tags = ($result->type == "EMPTY") ? "Nincsenek termékhez csatolt címkék." : $result->message;
     
 
     // Egészségügyi hatások lekérdezése
     $result = selectData("SELECT * FROM health_effect INNER JOIN product_health_effect ON product_health_effect.health_effect_id=health_effect.id WHERE product_health_effect.product_id=?", $product['id'], "i");
 
-    if (typeOf($result, "ERROR")) {
+    if ($result->isError()) {
       logError("Sikertelen termék hatások lekérdezés: " . json_encode($result), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
       http_response_code(404);
       include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
       exit;
     }
 
-    if (is_array($result["message"])) {
-      $benefits = array_filter($result["message"], function ($e) {return $e["benefit"] == 1;});
-      $side_effects = array_filter($result["message"], function ($e) {return $e["benefit"] == 0;});
+    if (is_array($result->message)) {
+      $benefits = array_filter($result->message, function ($e) {return $e["benefit"] == 1;});
+      $side_effects = array_filter($result->message, function ($e) {return $e["benefit"] == 0;});
     }
   
 
     // Értékelések lekérdezése
     $result = selectData("SELECT review.id, review.user_id, review.product_id, review.rating, review.description, review.title, DATE(review.created_at) AS created_at, user.id, user.email, user.user_name, user.password_hash, user.role, user.cookie_id, user.cookie_expires_at, user.first_name, user.last_name, user.pfp_uri, user.created_at AS user_created_at FROM review INNER JOIN user ON review.user_id = user.id WHERE product_id=?", $product["id"], "i");
 
-    if (typeOf($result, "ERROR")) {
+    if ($result->isError()) {
       logError("Sikertelen termék értékelés lekérdezés: ".json_encode($result), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
       http_response_code(404);
       include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
       exit;
     }
-    $reviews = $result["message"];
+    $reviews = $result->message;
     
     if (is_array($reviews)) {
       $reviewNum = count($reviews);

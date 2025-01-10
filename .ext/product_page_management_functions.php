@@ -38,16 +38,18 @@ function createProductPage($productData, $productPageData, $productCategoryData)
     
     $productPageData["product_id"] = $productData["id"];
     $result = uploadProductPageData($productPageData);
-    if (typeOf($result, "ERROR")) {
-        if ($result["code"] === 1062) { // Duplicate entry hiba
-            return ["message" => "Ilyen termék oldal már létezik.", "type" => "ERROR"];
+    if ($result->isError()) {
+        if ($result->code === 1062) { // Duplicate entry hiba
+            return new Result(Result::ERROR, "Ilyen termék oldal már létezik.");
+            // return new Result(Result::ERROR, "Ilyen termék oldal már létezik.");
         }
         else {
-            return ["message" => "Sikertelen feltöltés a product_page táblába. ({$result["message"]})", "type" => "ERROR"];
+            return ["message" => "Sikertelen feltöltés a product_page táblába. ({$result->message})", "type" => "ERROR"];
         }
     }
 
-    return ["message" => "Sikeres termék oldal létrehozás.", "type" => "SUCCESS"];
+    // return new Result(Result::SUCCESS, "Sikeres termék oldal létrehozás.");
+    return new Result(Result::SUCCESS, "Sikeres termék oldal létrehozás.");
 }
 
 function removeProductPage($id) {

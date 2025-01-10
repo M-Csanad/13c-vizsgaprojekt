@@ -3,7 +3,7 @@ function register($username, $password, $email, $firstname, $lastname) {
     include_once "init.php";
 
     if (!$username || !$password || !$email || !$firstname || !$lastname) {
-        return ["message" => "Kérjük töltse ki az összes mezőt!", "type" => "ERROR"];
+        return new Result(Result::ERROR, "Kérjük töltse ki az összes mezőt!");
     }
     
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -12,43 +12,43 @@ function register($username, $password, $email, $firstname, $lastname) {
     $result = updateData("INSERT INTO user (user_name, email, password_hash, first_name, last_name, pfp_uri) 
                           VALUES (?, ?, ?, ?, ?, ?)", [$username, $email, $passwordHash, $firstname, $lastname, $pfp], "ssssss");
                           
-    if (typeOf($result, "ERROR")) {
-        $error = $result["message"];
+    if ($result->isError()) {
+        $error = $result->message;
         if (str_contains($error, 'email')) {
-            return ["message" => "Ez az E-mail cím már foglalt.", "type" => "DENIED"];
+            return new Result(Result::DENIED, "Ez az E-mail cím már foglalt.");
         }
         else if (str_contains($error, 'user_name')) {
-            return ["message" => "Ez a felhasználónév már foglalt.", "type" => "DENIED"];
+            return new Result(Result::DENIED, "Ez a felhasználónév már foglalt.");
         }
         else {
             return ["message" => $error, "type" => "ERROR"];
         }
     }
-    else return ["message" => "Sikeres regisztráció.", "type" => "SUCCESS"];
+    else return new Result(Result::SUCCESS, "Sikeres regisztráció.");
 }
 
 function login($username, $password, $rememberMe) {
     
     if (!$username || !$password) {
-        return ["message" => "Kérjük töltse ki az összes mezőt!", "type" => "ERROR"];
+        return new Result(Result::ERROR, "Kérjük töltse ki az összes mezőt!");
     }
     
     include_once "init.php";
 
     $result = authenticate_user($username, $password);
-    if (!typeOf($result, "SUCCESS")) {
+    if (!$result->isSuccess()) {
         return $result;
     }
 
-    $user = $result["message"];
+    $user = $result->message;
     setSessionData($user);
     if ($rememberMe) {
         $result = bindCookie($user["id"]);
-        if (!typeOf($result, "SUCCESS")) {
+        if (!$result->isSuccess()) {
             return $result;
         }
     }
-    return ["message" => "Sikeres süti felvitel.", "type" => "SUCCESS"];
+    return new Result(Result::SUCCESS, "Sikeres süti felvitel.");
 }
 
 function authenticate_user($username, $password) {
@@ -59,10 +59,10 @@ function authenticate_user($username, $password) {
                           FROM user 
                           WHERE user.user_name = ?", $username, "s");
 
-    if (typeOf($result, "SUCCESS")) {
-        $user = $result["message"][0];
+    if ($result->isSuccess()) {
+        $user = $result->message[0];
         if (!password_verify($password, $user['password_hash'])) {
-            return ["message" => "Érvénytelen felhasználónév, vagy jelszó.", "type" => "DENIED"];
+            return new Result(Result::DENIED, "Érvénytelen felhasználónév, vagy jelszó.");
         }
         else {
             return ["message" => $user, "type" => "SUCCESS"];

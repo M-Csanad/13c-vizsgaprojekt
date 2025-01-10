@@ -5,8 +5,8 @@ include_once "../../../../.ext/init.php";
 
 $isLoggedIn = false;
 $result = getUserData();
-if (typeOf($result, "SUCCESS")) {
-    $user = $result["message"][0];
+if ($result->isSuccess()) {
+    $user = $result->message[0];
 
     // Ha be van jelentkezve, akkor kijelentkeztetjük
     header("Location: ./logout");

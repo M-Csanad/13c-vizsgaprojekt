@@ -47,11 +47,11 @@ if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
 
         $result = register($username, $password, $email, $firstname, $lastname);
 
-        if (typeOf($result, "SUCCESS")) {
+        if ($result->isSuccess()) {
             $message = "Sikeres regisztráció!";
         }
         else {
-           $message = $result["message"];
+           $message = $result->message;
            header("Unauthorized", true, 401);
         }
     }

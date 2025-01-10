@@ -4,8 +4,8 @@
 
     $isLoggedIn = false;
     $result = getUserData();
-    if (typeOf($result, "SUCCESS")) {
-      $user = $result["message"][0];
+    if ($result->isSuccess()) {
+      $user = $result->message[0];
       $isLoggedIn = true;
 
       $curDate = new DateTime();

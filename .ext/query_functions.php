@@ -1,99 +1,154 @@
 <?php
-function selectData($query, $parameters = null, $typeString = null) {
+include_once 'classes/queryresult.php';
+include_once "init.php";
+
+function getTypeString($params) {
+    $types = '';
+    foreach ($params as $p) {
+        $types .= is_null($p) ? 's' : gettype($p)[0];
+    }
+    return mb_strtolower($types);
+}
+
+function validateQueryAndParameters($query, $parameters, $typeString) {
+    if (!$query) {
+        return new QueryResult(Result::ERROR, "Üres lekérdezés.", $query, $parameters);
+    }
+
+    if ($parameters && !$typeString) {
+        return new QueryResult(
+            type: Result::ERROR, 
+            message: "Előkészített lekérdezéshez adja meg a paramétertípusokat.", 
+            query: $query,
+            params: $parameters
+        );
+    }
+
+    return new Result(Result::SUCCESS, "A bemeneti adatok megfelelőek.");
+}
+
+function executeStatement($db, $query, $parameters, $typeString) {
+    $statement = $db->prepare($query);
+    if (!$statement) {
+        return new QueryResult(
+            type: Result::ERROR,
+            message: $db->error,
+            code: $db->errno,
+            query: $query,
+            params: $parameters
+        );
+    }
+
+    if (getTypeString($parameters) !== $typeString) {
+        return new QueryResult(
+            type: Result::ERROR,
+            message: "A típus string nem egyezik meg a tényleges típusokkal.",
+            query: $query, 
+            params: $parameters
+        );
+    }
+
+    $statement->bind_param($typeString, ...$parameters);
+    $statement->execute();
+    return $statement;
+}
+
+function selectData($query = null, $parameters = null, $typeString = null): QueryResult {
     try {
-        if (!$query) {
-            return ["message" => "Üres paraméter(ek).", "type" => "ERROR"];
+        $validationResult = validateQueryAndParameters($query, $parameters, $typeString);
+        if ($validationResult->isError()) {
+            return $validationResult;
         }
 
-        include_once "init.php";
         $db = db_connect();
-
         if ($parameters) {
-
-            if (!$typeString) {
-                return ["message" => "Előkészített lekérdezéshez adja meg a paramétertípusokat.", "type" => "ERROR"];
-            }
-
             if (!is_array($parameters)) {
                 $parameters = [$parameters];
             }
 
-            $statement = $db->prepare($query);
-            if (!$statement) {
-                return ["message" => $db->error, "type" => "ERROR"];
+            $statement = executeStatement($db, $query, $parameters, $typeString);
+            if ($statement instanceof QueryResult) {
+                db_disconnect($db);
+                return $statement;
             }
-
-            $types = '';
-            foreach ($parameters as $parameter) {
-                $types .= is_null($parameter) ? 's' : gettype($parameter)[0];
-            }
-
-            if ($types != $typeString) {
-                return ["message" => "A típus string nem egyezik meg a tényleges típusokkal.".$query, "type" => "ERROR"];
-            }
-
-            $statement->bind_param($typeString, ...$parameters);
-            $statement->execute();
+            
             $result = $statement->get_result();
             $statement->close();
         } else {
             $result = $db->query($query);
             if ($db->errno) {
-                return ["message" => $db->error, "type" => "ERROR"];
+                db_disconnect($db);
+                return new QueryResult(
+                    type: Result::ERROR,
+                    message: $db->error,
+                    code: $db->errno,
+                    query: $query
+                );
             }
         }
 
         db_disconnect($db);
 
         if ($result->num_rows > 0) {
-            return ["message" => $result->fetch_all(MYSQLI_ASSOC), "type" => "SUCCESS", "contentType" => "ARRAY"];
+            return new QueryResult(
+                type: Result::SUCCESS,
+                message: $result->fetch_all(MYSQLI_ASSOC),
+                query: $query,
+                params: $parameters
+            );
         }
 
-        return ["message" => "Nincs találat!", "type" => "EMPTY"];
+        return new QueryResult(
+            type: Result::EMPTY,
+            message: "Nincs találat!",
+            query: $query,
+            params: $parameters
+        );
     } catch (Exception $e) {
-        return ["message" => $e->getMessage(), "code" => $e->getCode(), "type" => "ERROR"];
+        return new QueryResult(
+            type: Result::ERROR,
+            message: $e->getMessage(),
+            code: $e->getCode(),
+            query: $query,
+            params: $parameters
+        );
     }
 }
 
 
-function updateData($query, $parameters = null, $typeString = null) {
+function updateData($query, $parameters = null, $typeString = null): QueryResult {
     try {
-        if (!$query || !$typeString) return ["message" => "Üres paraméter(ek).", "type" => "ERROR"];
+        $validationResult = validateQueryAndParameters($query, $parameters, $typeString);
+        if ($validationResult->isError()) {
+            return $validationResult;
+        }
 
-        include_once "init.php";
         $db = db_connect();
-
         if ($parameters) {
-            if (!$typeString) {
-                return ["message" => "Előkészített lekérdezéshez adja meg a paramétertípusokat.", "type" => "ERROR"];
-            }
-
             if (!is_array($parameters)) {
                 $parameters = [$parameters];
             }
 
-            $statement = $db->prepare($query);
-
-            if (!$statement) {
-                return ["message" => $db->error, "type" => "ERROR"];
+            $statement = executeStatement($db, $query, $parameters, $typeString);
+            if ($statement instanceof QueryResult) {
+                db_disconnect($db);
+                return $statement;
             }
 
-            $typeString = '';
-            foreach ($parameters as $parameter) {
-                $typeString .= is_null($parameter) ? 's' : gettype($parameter)[0];
-            }
-
-            $statement->bind_param($typeString, ...$parameters);
-            $statement->execute();
             $affectedRows = $statement->affected_rows;
             $insertId = $statement->insert_id;
-
             $statement->close();
         } else {
             $db->query($query);
 
             if ($db->errno) {
-                return ["message" => $db->error, "type" => "ERROR"];
+                db_disconnect($db);
+                return new QueryResult(
+                    type: Result::ERROR,
+                    message: $db->error,
+                    code: $db->errno,
+                    query: $query
+                );
             }
 
             $affectedRows = $db->affected_rows;
@@ -104,12 +159,37 @@ function updateData($query, $parameters = null, $typeString = null) {
 
         if ($affectedRows > 0) {
             if (str_contains($query, "INSERT")) {
-                return ["message" => $insertId, "type" => "SUCCESS", "contentType" => "INT"];
+                return new QueryResult(
+                    type: Result::SUCCESS,
+                    message: true,
+                    query: $query,
+                    params: $parameters,
+                    affectedRows: $affectedRows,
+                    lastInsertId: $insertId
+                );
             }
-            return ["message" => true, "type" => "SUCCESS"];
+            return new QueryResult(
+                type: Result::SUCCESS,
+                message: true,
+                query: $query,
+                params: $parameters,
+                affectedRows: $affectedRows,
+            );
         }
-        return ["message" => false, "type" => "NO_AFFECT"];
+        return new QueryResult(
+            type: Result::NO_AFFECT,
+            message: false,
+            query: $query,
+            params: $parameters,
+            affectedRows: $affectedRows,
+        );
     } catch (Exception $e) {
-        return ["message" => $e->getMessage(), "code" => $e->getCode(), "type" => "ERROR"];
+        return new QueryResult(
+            type: Result::ERROR,
+            message: $e->getMessage(),
+            code: $e->getCode(),
+            query: $query,
+            params: $parameters
+        );
     }
 }

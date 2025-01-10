@@ -3,19 +3,19 @@
 
     $result = selectData("SELECT subcategory.*, category.name as category_name, category.slug AS category_slug FROM subcategory INNER JOIN category ON subcategory.category_id=category.id WHERE subcategory.id=?", $ids[1], "i");
 
-    if (!typeOf($result, "SUCCESS")) {
+    if (!$result->isSuccess()) {
         include "http://localhost/fb-functions/error/error-404.html";
     }
 
-    $subcategoryData = $result["message"][0];
+    $subcategoryData = $result->message[0];
 
     $result = selectData("SELECT product.*, product_page.link_slug FROM product_page INNER JOIN product ON product_page.product_id = product.id WHERE product_page.subcategory_id=? ORDER BY product.id ASC;", $ids[1], "i");
-    if (typeOf($result, "ERROR")) {
+    if ($result->isError()) {
         include "http://localhost/fb-functions/error/error-404.html";
         exit();
     }
     
-    $products = $result["message"];
+    $products = $result->message;
 
     $result = selectData("SELECT
             product.id AS product_id,
@@ -36,11 +36,11 @@
             product.id, product.name
         ORDER BY product.id ASC;");
 
-    if (typeOf($result, "ERROR")) {
+    if ($result->isError()) {
         include "http://localhost/fb-functions/error/error-404.html";
         exit();
     }
-    $images = $result["message"];
+    $images = $result->message;
 
     // A termékekhez hozzácsatoljuk a képeket
     foreach ($products as $index=>$product) {

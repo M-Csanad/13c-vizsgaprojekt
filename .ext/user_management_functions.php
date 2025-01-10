@@ -16,7 +16,7 @@ function getUserData($userId = null) {
     }
     
     if (!isset($userId) && !isset($_COOKIE["rememberMe"]) && !isset($_SESSION["user_id"])) {
-        return ["message" => "Nem található azonosító az eszközön.", "type" => "ERROR"];
+        return new Result(Result::ERROR, "Nem található azonosító az eszközön.");
     }
     
     
@@ -40,8 +40,8 @@ function getUserData($userId = null) {
                                 FROM user
                                 WHERE user.cookie_id = ?", $cookieToken, "s");
 
-        if (typeOf($result, "SUCCESS")) {
-            $user = $result["message"][0];
+        if ($result->isSuccess()) {
+            $user = $result->message[0];
 
             // Leellenőrizzük, hogy érvényes-e még a süti.
             if (time() < $user['cookie_expires_at']) {
@@ -55,7 +55,7 @@ function getUserData($userId = null) {
                     FROM user WHERE user.id = ?", $userId, "i");
             }
             else {
-                return ["message" => "A használt süti lejárt.", "type" => "ERROR"];
+                return new Result(Result::ERROR, "A használt süti lejárt.");
             }
         } else {
             return $result;

@@ -6,16 +6,16 @@
 
         $result = getUserData($_SESSION['user_id']);
         
-        if (typeOf($result, "ERROR")) {
-            echo "<div class='error'>", $result["message"], "</div>";
+        if ($result->isError()) {
+            echo "<div class='error'>", $result->message, "</div>";
             exit();
         }
-        else if (typeOf($result, "EMPTY")) { // Ha nincs olyan user, akinek az id-ja megegyezik a SESSION-ben lévővel
+        else if ($result->isEmpty()) { // Ha nincs olyan user, akinek az id-ja megegyezik a SESSION-ben lévővel
             header("Location: ./");
             exit();
         }
 
-        $user = $result["message"];
+        $user = $result->message;
         $curDate = new DateTime();
         $createDate = new DateTime($user["created_at"]);
         $accountAge = $curDate -> diff($createDate) -> days;

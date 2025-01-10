@@ -7,9 +7,9 @@
   *
   * @param array $userId A felhasználó, akihez a sütit szeretnénk kapcsolni.
   *
-  * @return void
+  * @return Result
   */
-function bindCookie($userId)
+function bindCookie($userId): Result
 {
     include_once "init.php";
     $cookieToken = hash('sha256', bin2hex(random_bytes(32)));
@@ -20,9 +20,9 @@ function bindCookie($userId)
                           cookie_expires_at = ? 
                           WHERE user.id = ?", [$cookieToken, $expireUnix, $userId], "sii");
 
-    if (typeOf($result, "SUCCESS")) {
+    if ($result->isSuccess()) {
         setcookie('rememberMe', $cookieToken, $expireUnix, '/', '', false, false); // 1 hétig érvényes süti létrehozása
-        return ["message" => "Sikeres süti felvitel.", "type" => "SUCCESS"];
+        return new Result(Result::SUCCESS, "Sikeres süti felvitel.");
     }
     else {
         return $result;
@@ -49,7 +49,7 @@ function removeCookie($cookieToken)
     // A süti törlése az adatbázisból
     $result = updateData("UPDATE user  SET cookie_id = NULL,  cookie_expires_at = NULL WHERE user.cookie_id = ?", $cookieToken, "s");
     
-    return (typeOf($result, "SUCCESS")) ? ["message" => "Sikeres süti törlés.", "type" => "SUCCESS"] : $result;
+    return ($result->isSuccess()) ? ["message" => "Sikeres süti törlés.", "type" => "SUCCESS"] : $result;
 }
 
 function setSessionData($user)

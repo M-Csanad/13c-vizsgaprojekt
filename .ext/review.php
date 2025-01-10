@@ -15,16 +15,16 @@ function makeReview($reviewData) {
         INNER JOIN subcategory ON product_page.subcategory_id=subcategory.id 
         WHERE product_page.link_slug=?", $slug, "s");
 
-    if (!typeOf($result, "SUCCESS")) {
-        return ["message" => "Ismeretlen termék.", "type" => "ERROR"];
+    if (!$result->isSuccess()) {
+        return new Result(Result::ERROR, "Ismeretlen termék.");
         exit;
     }
-    $product = $result["message"][0];
+    $product = $result->message[0];
 
 
     // Ellenőrizzük, hogy bejelentkezett felhasználó értékelt-e.
     session_start();
-    if (!isset($_SESSION["user_id"])) return ["message" => "Értékelni csak bejelentkezett felhasználó tud!", "type" => "ERROR"];
+    if (!isset($_SESSION["user_id"])) return new Result(Result::ERROR, "Értékelni csak bejelentkezett felhasználó tud!");
 
     return updateData("INSERT INTO review (user_id, product_id, rating, description, title) VALUES (?, ?, ?, ?, ?);", [$_SESSION["user_id"], $product["id"], $reviewData["rating"], $reviewData["review-body"], $reviewData["review-title"]], "iidss");;
 }
