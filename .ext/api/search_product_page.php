@@ -34,5 +34,3 @@ $matches = selectData("SELECT product_page.id, product_page.page_title AS name, 
                         array_fill(0, 3, $searchTerm), "sss");
 
 echo json_encode($matches, JSON_UNESCAPED_UNICODE);
-
-?>

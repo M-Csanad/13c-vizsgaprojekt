@@ -137,9 +137,12 @@ function initializeSearch(search) {
     data.append("search_term", input);
     if (input.length > 0) {
       const response = await fetch(
-        `../../dashboard_search.php`,
+        `/api/auth/dashboard-search`,
         {
           method: "POST",
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+          },
           body: data,
         }
       );

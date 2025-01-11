@@ -22,7 +22,7 @@ switch ($searchType) {
             return;
         }
 
-        include_once $_SERVER["DOCUMENT_ROOT"]."/../../../.ext/misc/search_category.php";
+        include_once "search_category.php";
         break;
     
     case 'product_page':
@@ -32,7 +32,7 @@ switch ($searchType) {
             return;
         }
 
-        include_once $_SERVER["DOCUMENT_ROOT"]."/../../../.ext/misc/search_product_page.php";
+        include_once "search_product_page.php";
         break;
 
     case 'product':
@@ -42,7 +42,7 @@ switch ($searchType) {
             return;
         }
 
-        include_once $_SERVER["DOCUMENT_ROOT"]."/../../../.ext/misc/search_product.php";
+        include_once "search_product.php";
         break;
 
     case 'user':
@@ -52,7 +52,7 @@ switch ($searchType) {
             return;
         }
 
-        include_once $_SERVER["DOCUMENT_ROOT"]."/../../../.ext/misc/search_user.php";
+        include_once "search_user.php";
         break;
     
     case 'get_categories':
@@ -62,7 +62,7 @@ switch ($searchType) {
             return;
         }
 
-        include_once $_SERVER["DOCUMENT_ROOT"]."/../../../.ext/misc/get_categories.php";
+        include_once "get_categories.php";
         break;
     default:
         # code...

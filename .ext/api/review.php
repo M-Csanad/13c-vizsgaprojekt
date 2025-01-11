@@ -1,7 +1,6 @@
 <?php
-include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
-include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/review.php';
-include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/result_functions.php';
+include_once __DIR__.'/../review_functions.php';
+include_once __DIR__.'/../result_functions.php';
 
 if ($_SERVER["REQUEST_METHOD"] != "PUT") {
     echo json_encode(["message" => "Hibás metódus! Várt: PUT, Aktuális: ".$_SERVER["REQUEST_METHOD"], "type" => "ERROR"], JSON_UNESCAPED_UNICODE);

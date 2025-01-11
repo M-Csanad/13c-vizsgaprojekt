@@ -86,7 +86,7 @@ function initializeSearch(search) {
             toggleLoader(true);
 
             try {
-                const response = await fetch(`../../../../.ext/misc/search_${searchType}.php`, {
+                const response = await fetch(`../../../../.ext/api/search_${searchType}.php`, {
                     method: "POST",
                     body: data
                 });

@@ -21,5 +21,3 @@ if ($table) {
     }
     echo json_encode($matches, JSON_UNESCAPED_UNICODE);
 }
-
-?>

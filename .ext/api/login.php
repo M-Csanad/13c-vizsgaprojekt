@@ -1,6 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
-include_once "../../../../.ext/init.php";
+include_once __DIR__."/../init.php";
 // Ha az űrlapot elküldték (post metódussal), a bejelentkezési logika fut le
 if (isset($_POST['login'])) {
     $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';

@@ -55,8 +55,11 @@ form.addEventListener('submit', async function (event) {
 
           const data = new FormData(form);
           data.append("register", "1");
-          const response = await fetch("./fb-auth/_register.php", {
+          const response = await fetch("/api/auth/register", {
             method: "POST",
+            headers: {
+              'X-Requested-With': 'XMLHttpRequest'
+            },
             body: data
           })
 

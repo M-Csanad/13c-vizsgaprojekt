@@ -1,6 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
-include_once "../../../../.ext/init.php";
+include_once __DIR__."/../init.php";
 
 if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
     $message = "";
