@@ -145,7 +145,10 @@ $menu_items = [
 <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
 <link rel="stylesheet" href="/fb-content/assets/css/navbar.css" media="all" />
 <link rel="stylesheet" href="/fb-content/assets/css/mobileNavbar.css" media="all">
-<script src="/fb-content/assets/js/autogenerate__navbar.js" defer></script>
+<link rel="stylesheet" href="/fb-content/assets/css/cart.css">
+
+<script defer type="module" src="/fb-content/assets/js/cart.js"></script>
+<script defer type="module" src="/fb-content/assets/js/autogenerate__navbar.js"></script>
 
 <nav id="fb-navbar" class="fb-sticky" data-category='<?= json_encode($category_content); ?>'>
     <div id="fb-navTopWrapper" class="fb-nav-links-wrapper">
@@ -184,7 +187,7 @@ $menu_items = [
                     </a>
                 </div>
                 <div class="icon_wrapper">
-                    <a title="Kosár">
+                    <a title="Kosár" class="cart-open">
                         <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -239,6 +242,58 @@ $menu_items = [
                 </div>
             </a>
         <?php endforeach; ?>
+    </div>
+</div>
+
+<div class="cart-background"></div>
+<div class="cart">
+    <div class="cart-close">
+        <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x-lg" viewBox="0 0 16 16">
+            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+        </svg>
+    </div>
+    <header>
+        <div class="title">Kosár</div>
+        <div class="cart-count">3 elem</div>
+    </header>
+    <div class="cart-main" data-lenis-prevent>
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+    </div>
+    <div class="cart-bottom-button">
+        <button>
+            <div class="text">
+                TOVÁBB A FIZETÉSHEZ
+            </div>
+            <div class="text-separator">
+                -
+            </div>
+            <div class="price">
+                8000 FT
+            </div>
+        </button>
     </div>
 </div>
 

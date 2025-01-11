@@ -1,3 +1,5 @@
+import Cart from "./cart.js";
+
 document.addEventListener("DOMContentLoaded", function () {
   const navLink = document.getElementById("fb-navlink-category");
   const subContentContainer = document.getElementById("fb-subcontentContainer");
@@ -67,4 +69,6 @@ document.addEventListener("DOMContentLoaded", function () {
     hamburgerMenu.classList.toggle("hidden");
     hamburgerMenu.classList.toggle("active");
   });
+
+  const cart = new Cart();
 });
