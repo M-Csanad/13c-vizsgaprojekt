@@ -10,6 +10,18 @@
   z-index: 999999;
   font-family: "Times New Roman", Times, serif;
 
+  & > .transition-background {
+    background-color: var(--dark_quaternary);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    visibility: hidden;
+    opacity: 0;
+    will-change: opacity;
+  }
+
   & > .layer {
     position: absolute;
     top: 0;
@@ -19,23 +31,25 @@
     display: flex;
     flex-direction: row;
     z-index: 2;
+    overflow:hidden;
   }
 
   & > .layer > .transition-row {
     flex: 1;
     display: flex;
+    justify-content: stretch;
   }
-
+  
   & > .layer > .transition-row .block {
     transform-origin: top;
   }
-
+  
   & .block {
     pointer-events: all;
     flex: 1;
     transform: scaleY(1);
     margin-inline: -0.5px;
-    will-change: transform;
+    will-change: transform, opacity;
   }
 
   & > .layer-0 {

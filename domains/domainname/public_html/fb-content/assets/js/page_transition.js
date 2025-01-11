@@ -130,47 +130,19 @@ function revealPageTransition(inParams) {
 
 function animatePageTransition(outParams) {
     return new Promise((resolve) => {
-        gsap.set(".block", { visibility: "visible", scaleY: 0 });
+        gsap.set(".transition-background", { opacity: 0, visibility: "visible"});
+        gsap.set(".hero > .char, .quote > .char", { opacity: 0, y: "0%" });
 
-        gsap.to(".layer-3 .block", { 
-            ...outParams,
-        });
-        gsap.to(".layer-2 .block", { 
-            ...outParams,
-            delay: 0.1,
-        });
-        gsap.to(".layer-1 .block", { 
-            ...outParams,
-            delay: 0.2,
-        });
-        gsap.to(".layer-0 .block", { 
-            ...outParams,
-            delay: 0.25,
+        gsap.to(".transition-background", { 
+            opacity: 1,
+            duration: 0.3,
+            ease: outParams.ease
+        })
+        gsap.to(".hero > .char, .quote > .char", {
+            opacity: 1,
+            duration: 0.3,
+            ease: outParams.ease,
             onComplete: resolve
         });
-        gsap.to(".hero > .char", {
-            y: "0%",
-            stagger: {
-                each: 0.01,
-                from: "start",
-                grid: "auto",
-                axis: "x"
-            },
-            duration: 1,
-            ease: outParams.ease,
-            delay: 0.4
-        });
-        gsap.to(".quote > .char", {
-            y: "0%",
-            stagger: {
-                each: 0.005,
-                from: "start",
-                grid: "auto",
-                axis: "x"
-            },
-            duration: 0.5,
-            ease: outParams.ease,
-            delay: 0.6
-        })
     });
 }
