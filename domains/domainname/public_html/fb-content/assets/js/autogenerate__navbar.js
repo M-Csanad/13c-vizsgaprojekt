@@ -1,4 +1,5 @@
 import Cart from "./cart.js";
+import Search from "./search.js";
 
 document.addEventListener("DOMContentLoaded", function () {
   const navLink = document.getElementById("fb-navlink-category");
@@ -69,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
     hamburgerMenu.classList.toggle("hidden");
     hamburgerMenu.classList.toggle("active");
   });
-
+  
+  const search = new Search;
   const cart = new Cart();
 });
