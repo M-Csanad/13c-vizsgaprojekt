@@ -1,7 +1,7 @@
 <?php
 
 /**
-  * **Elhelyez egy sütit** a felhasználó számítógépén, és az azonosítót feltölti az adatbázisba.
+  * **Elhelyeziaz EMlékezz rám sütit** a felhasználó számítógépén, és az azonosítót feltölti az adatbázisba.
   *
   * A süti elhelyezése után az azonosító és a érvényességi idő feltöltésre kerülnek a megadott *user.id*-vel rendelkező felhasználóhoz.
   *

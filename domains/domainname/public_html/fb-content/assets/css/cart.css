@@ -1,3 +1,19 @@
+@font-face {
+    font-family: "Playfair Display";
+    src: url("../../assets/font/PlayfairDisplay-VariableFont_wght.woff2") format("woff2");
+    /* font-weight: 100 900; A betűtípus vastagsági tartománya */
+    font-style: normal;
+    font-display: swap;
+}
+  
+@font-face {
+    font-family: "Roboto";
+    src: url("../../assets/font/Roboto-Regular.woff2") format("woff2");
+    /* font-weight: 100 900; A betűtípus vastagsági tartománya */
+    font-style: normal;
+    font-display: swap;
+}
+
 .cart {
     position: fixed;
     z-index: 10001;
@@ -11,6 +27,11 @@
     transform: translateX(100%);
     visibility: hidden;
     will-change: transform;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    overflow: hidden;
     
     & > * {
         box-sizing: border-box;
@@ -18,7 +39,22 @@
 
     & > .cart-main {
         overflow-y: auto;
-        max-height: 80dvh;
+        height: 100%;
+    }
+
+    & > .cart-main > .cart-empty {
+        display: none;
+    }
+
+    & > .cart-main > .cart-empty:not(.hidden) {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        font-size: 18px;
+        color: #949494;
     }
 
     & > .cart-close {
@@ -54,6 +90,72 @@
     
     & > .cart-close:hover > svg {
         fill: #f0f0f0;
+    }
+
+    & > .cart-logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 250px;
+        height: 250px;
+        transform: translate(-35%, -20%) rotate(35deg);
+        opacity: 0.1;
+    }
+
+    & > header > .title {
+        font-family: Playfair Display;
+        color: white;
+        text-align: center;
+        font-size: 40px;
+        margin-bottom: 0.5rem;
+    }
+
+    & > header > .cart-count {
+        text-align: center;
+        color: #c4c4c4;
+        margin-bottom: 2rem;
+    }
+
+    & > .cart-bottom-button {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-inline: 1rem;
+    }
+
+    & > .cart-bottom-button > a {
+        border: 2px solid rgb(197, 255, 110);
+        color: rgb(197, 255, 110);
+        background-color: transparent;
+        width: 100%;
+        border-radius: 30px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 16px;
+        padding: 1rem 2.5rem;
+        transition: background-color 0.3s ease;
+        font-family: Roboto;
+        cursor: pointer;
+        letter-spacing: 1px;
+        text-decoration: none;
+    }
+
+    & > .cart-bottom-button > a > .price {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        gap: 2px;
+    }
+    
+    & > .cart-bottom-button > a > .price > .currency {
+        font-size: 15px;
+    }
+
+    & > .cart-bottom-button > a:hover {
+        background-color: rgba(197, 255, 110, 0.096);
     }
 }
 .modal-background {

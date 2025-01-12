@@ -49,6 +49,10 @@ window.addEventListener("load", () => {
     document.querySelectorAll("a").forEach((link) => {
         if (!link.href || link.href.includes("#")) return;
         link.addEventListener("click", (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                return; // CTRL + kattintás esetén marad az alap működés
+            }
+
             e.preventDefault();
             
             if (isAnimating) return;

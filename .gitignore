@@ -29,6 +29,7 @@ debug/
 *.log
 *.logs
 *.tmp
+*.todo
 
 # Külső függőségek
 node_modules/

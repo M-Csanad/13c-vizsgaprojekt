@@ -16,7 +16,7 @@ function getUserData($userId = null) {
     }
     
     if (!isset($userId) && !isset($_COOKIE["rememberMe"]) && !isset($_SESSION["user_id"])) {
-        return new Result(Result::ERROR, "Nem található azonosító az eszközön.");
+        return new Result(Result::EMPTY, "Nem található azonosító az eszközön.");
     }
     
     

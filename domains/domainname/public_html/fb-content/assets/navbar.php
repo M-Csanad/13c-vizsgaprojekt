@@ -190,12 +190,7 @@ $menu_items = [
                 </div>
                 <div class="icon_wrapper">
                     <a title="Kosár" class="cart-open">
-                        <svg width="40px" height="40px" viewBox="0 0 24 24" fill="none"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M6.29977 5H21L19 12H7.37671M20 16H8L6 3H3M9 20C9 20.5523 8.55228 21 8 21C7.44772 21 7 20.5523 7 20C7 19.4477 7.44772 19 8 19C8.55228 19 9 19.4477 9 20ZM20 20C20 20.5523 19.5523 21 19 21C18.4477 21 18 20.5523 18 20C18 19.4477 18.4477 19 19 19C19.5523 19 20 19.4477 20 20Z"
-                                stroke="#ffffff" stroke-width="0.8" stroke-linecap="round" stroke-linejoin="round" />
-                        </svg>
+                        <svg width="34px" height="34px" viewBox="0 0 1024 1063.18" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M93.09 288.038h846.197V888.94c-.106 86.33-70.062 156.287-156.383 156.393h-533.42C163.15 1045.227 93.195 975.27 93.09 888.95v-.01zm799.652 46.546H139.637V888.94c.08 60.635 49.212 109.768 109.84 109.847h533.42c60.634-.08 109.767-49.212 109.846-109.84v-.008zM761.484 444.43H714.94V266.628c0-109.766-88.984-198.75-198.75-198.75s-198.75 88.984-198.75 198.75V444.43h-46.544V266.628c0-135.472 109.822-245.295 245.295-245.295s245.296 109.822 245.296 245.295z"/></svg>
                     </a>
                 </div>
                 <div class="icon_wrapper login_icon_wrapper">
@@ -266,25 +261,40 @@ $menu_items = [
             <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
         </svg>
     </div>
+    <svg class="cart-logo" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m4.05108 8.9199c.04175-.51955.47556-.9199.99679-.9199h13.90423c.5213 0 .9551.40035.9968.9199l.8775 10.9199c.0935 1.164-.8258 2.1602-1.9936 2.1602h-13.66564c-1.16773 0-2.08711-.9962-1.99357-2.1602z"/><path d="m16 11v-5c0-2.20914-1.7909-4-4-4-2.20914 0-4 1.79086-4 4v5"/></g></svg>
     <header>
         <div class="title">Kosár</div>
-        <div class="cart-count">3 elem</div>
+        <div class="cart-count">0 elem</div>
     </header>
     <div class="cart-main" data-lenis-prevent>
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam quasi omnis eveniet animi molestias corporis sit saepe provident, quaerat eos eius veritatis quia? Eveniet aut, quod voluptatum minus libero saepe.
+        <div class="cart-empty">
+            <span>Még nincsenek termékek a kosárban.</span>
+        </div>
+        <div class="cart-item">
+            <div class="item-image"></div>
+            <div class="item-body">
+                <div class="item-name"></div>
+                <div class="item-info">
+                    <div class="item-count"></div>
+                    <div class="item-price"></div>
+                </div>
+                <div class="item-remove"></div>
+            </div>
+        </div>
     </div>
     <div class="cart-bottom-button">
-        <button>
+        <a href="/checkout">
             <div class="text">
-                TOVÁBB A FIZETÉSHEZ
+                FIZETÉS
             </div>
             <div class="text-separator">
                 -
             </div>
             <div class="price">
-                8000 FT
+                <div class="value">8000</div>    
+                <div class="currency">Ft</div>
             </div>
-        </button>
+        </a>
     </div>
 </div>
 

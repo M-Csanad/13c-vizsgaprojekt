@@ -313,6 +313,10 @@
 .icon_container .icon_wrapper a {
   color: var(--light_main);
   text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
 }
 .icon_container .icon_wrapper .profile-pic {
   position: relative;

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Jan 05. 20:25
+-- Létrehozás ideje: 2025. Jan 12. 20:13
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -31,9 +31,12 @@ USE `florens_botanica`;
 
 CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
-  `order_id` int(11) DEFAULT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `session_id` varchar(255) DEFAULT NULL,
   `product_id` int(11) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL
+  `quantity` int(11) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `modified_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
@@ -192,8 +195,9 @@ INSERT INTO `image` (`id`, `uri`, `orientation`, `media_type`) VALUES
 --
 
 CREATE TABLE `order` (
-  `session_id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL COMMENT 'Vendég rendelések miatt lehet NULL is a user_id',
+  `cart_id` int(11) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `phone` int(11) DEFAULT NULL,
   `first_name` varchar(255) DEFAULT NULL,
@@ -594,8 +598,8 @@ INSERT INTO `user` (`id`, `email`, `user_name`, `password_hash`, `role`, `cookie
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `cart_ibfk_1` (`order_id`),
-  ADD KEY `cart_ibfk_2` (`product_id`);
+  ADD KEY `cart_ibfk_2` (`product_id`),
+  ADD KEY `user_id` (`user_id`);
 
 --
 -- A tábla indexei `category`
@@ -626,8 +630,9 @@ ALTER TABLE `image`
 -- A tábla indexei `order`
 --
 ALTER TABLE `order`
-  ADD PRIMARY KEY (`session_id`),
-  ADD KEY `order_ibfk_1` (`user_id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_ibfk_1` (`user_id`),
+  ADD KEY `cart_id` (`cart_id`);
 
 --
 -- A tábla indexei `product`
@@ -733,6 +738,12 @@ ALTER TABLE `image`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
+-- AUTO_INCREMENT a táblához `order`
+--
+ALTER TABLE `order`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `product`
 --
 ALTER TABLE `product`
@@ -766,7 +777,7 @@ ALTER TABLE `product_tag`
 -- AUTO_INCREMENT a táblához `review`
 --
 ALTER TABLE `review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
 
 --
 -- AUTO_INCREMENT a táblához `subcategory`
@@ -794,8 +805,8 @@ ALTER TABLE `user`
 -- Megkötések a táblához `cart`
 --
 ALTER TABLE `cart`
-  ADD CONSTRAINT `cart_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order` (`session_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cart_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `delivery_info`
@@ -807,7 +818,8 @@ ALTER TABLE `delivery_info`
 -- Megkötések a táblához `order`
 --
 ALTER TABLE `order`
-  ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `order_ibfk_2` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `product_health_effect`
