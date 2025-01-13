@@ -9,9 +9,11 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
+session_start();
+
 $data = json_decode(file_get_contents('php://input'), true);
 
-if (isset($data['url'])) {
+if (isset($data['url']) && isset($data['qty'])) {
     $segments = explode('/', ltrim($data['url'], '/'));
 
     // Ha nem 3 elemű az URL, akkor biztos, hogy nem termék
@@ -43,14 +45,84 @@ if (isset($data['url'])) {
     }
 
     $productId = $result->message[0]['id'];
+    
+    // A készlet lekérdezése
+    $result = selectData('SELECT CAST(stock AS INT) AS stock FROM product WHERE product.id=?', $productId, 'i');
+    if (!$result->isSuccess()) {
+        http_response_code(404);
+        $result = new Result(Result::ERROR, 'Nem található a készlet.');
+        echo $result->toJSON();
+        exit();
+    }
+    
+    // Ellenőrizzük a mennyiséget
+    $stock = $result->message[0]['stock'];
+    $quantity = $data['qty'];
+
+    if ($quantity > $stock || $quantity < 1) {
+        http_response_code(405);
+        $result = new Result(Result::ERROR, 'A megadott mennyiség nem megfelelő.');
+        echo $result->toJSON();
+        exit();
+    }
+
+    if (!isset($_SESSION['cart'])) {
+        http_response_code(404);
+        $result = new Result(Result::ERROR, 'Nem található a kosár.');
+        echo $result->toJSON();
+        exit();
+    }
 
     // Felhasználó adatainak lekérése, ha van
     $isLoggedIn = false;
     $user = getUserData();
-    if ($user->isSuccess()) $isLoggedIn=true;
+    if ($user->isSuccess()) {
+        $isLoggedIn=true;
+        $user = $user->message[0];
+    }
     
-    // TODO cart tábla feltöltése
-    echo json_encode($user);
+    // Ha be van jelentkezve, akkor az adatbázissal és a sessionnel dolgozunk
+    if ($isLoggedIn) {
+
+        // Adatbázis frissítése
+        $result = updateData('INSERT INTO cart(user_id, product_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity), modified_at = NOW();', [intval($user['id']), intval($productId), intval($quantity)], 'iii');
+        if (!$result->isSuccess()) {
+            http_response_code(500);
+            echo $result->toJSON();
+            exit();
+        }
+        
+
+        // Session kosár frissítése
+        $foundExistingRow = false;
+        foreach ($_SESSION['cart'] as &$row) {
+            if ($row['user_id'] == $user['id'] && $row['product_id'] == $productId) {
+                $row['quantity'] += $quantity;
+                $foundExistingRow = true;
+                break;
+            }
+        }
+        unset($row); // Referenciát töröljük, mivel PHP-ban megmaradna
+
+        // Ha még nem volt olyan termék a kosárban, akkor hozzáadjuk
+        if (!$foundExistingRow) {
+            $_SESSION['cart'][] = [
+                'user_id' => $user['id'],
+                'product_id' => $productId,
+                'quantity' => $quantity
+            ];
+        }
+
+        $result = new Result(Result::SUCCESS, 'Very good my brother');
+        echo $result->toJSON();
+    }
+    // Ha nincs bejelentkezve, akkor sütikkel és sessionnel dolgozunk
+    else {
+        http_response_code(501);
+        $result = new Result(Result::ERROR, 'Vendégeket még nem fogadok');
+        echo $result->toJSON();
+        exit();
+    }
     
 } else {
     http_response_code(405);

@@ -459,6 +459,14 @@ hr {
   color: #bdbdbd;
 }
 
+.input-group {
+  display: flex;
+  flex-direction: row;
+  height: 40px;
+  align-items: center;
+  gap: 1rem;
+}
+
 .add-to-cart {
   margin-top: 1rem;
   display: flex;

@@ -1,0 +1,58 @@
+.number-field {
+    display: flex;
+    height: 100%;
+    align-items: center ;
+    background-color: #272727;
+    outline: 2px solid transparent;
+    height: 30px;
+    font-size: 16px;
+    color: rgb(224, 224, 224);
+    border: 1px solid transparent;
+    transition: border-color 0.3s ease, background-color 0.3s ease, outline 0.3s ease;
+}
+.number-field:hover:not(:has(div:hover)), .number-field:focus-within {
+    border: 1px solid #505050;
+    background-color: #303030;
+}
+
+.number-field > input {
+    width: 60px;
+    outline: none;
+    height: 100%;
+    border: none;
+    border-block: 1px solid #494949;
+    background-color: transparent;
+    color: white;
+    text-align: center;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.number-field > input::-webkit-outer-spin-button,
+.number-field > input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+.number-field > input[type=number] {
+  -moz-appearance: textfield;
+}
+
+.number-field > div {
+    font-family: Consolas;
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    justify-content: center;
+    line-height: 26px;
+    font-size: 20px;
+    border: 1px solid #505050;
+    user-select: none;
+    cursor: pointer;
+    transition:background-color 0.3s ease;
+    color: rgb(197, 197, 197);
+}
+
+.number-field > div:hover {
+    background-color: #303030;
+}

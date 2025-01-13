@@ -17,6 +17,7 @@ $API = $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/api';
 // Végpontok és a kérést kezelő PHP fájl elérési útvonala
 $routes = [
     '/api/cart/add' => $API.'/cart_add.php',
+    '/api/cart/get' => $API.'/cart_get.php',
     '/api/cart/remove' => $API.'/cart_remove.php',
     '/api/cart/update' => $API.'/cart_update.php',
     '/api/cart/upload' => $API.'/cart_upload.php',

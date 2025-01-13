@@ -1,4 +1,3 @@
-import Cart from "./cart.js";
 import Search from "./search.js";
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -71,6 +70,5 @@ document.addEventListener("DOMContentLoaded", function () {
     hamburgerMenu.classList.toggle("active");
   });
   
-  const search = new Search;
-  const cart = new Cart();
+  const search = new Search();
 });

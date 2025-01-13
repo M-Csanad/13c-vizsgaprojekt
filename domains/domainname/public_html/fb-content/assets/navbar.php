@@ -148,8 +148,12 @@ $menu_items = [
 <link rel="stylesheet" href="/fb-content/assets/css/cart.css">
 <link rel="stylesheet" href="/fb-content/assets/css/search.css">
 
+<script type="module" src="/fb-content/assets/js/cart.js"></script>
+<script type="module">
+    import Cart from "/fb-content/assets/js/cart.js";
+    const cart = new Cart();
+</script>
 <script defer type="module" src="/fb-content/assets/js/search.js"></script>
-<script defer type="module" src="/fb-content/assets/js/cart.js"></script>
 <script defer type="module" src="/fb-content/assets/js/autogenerate__navbar.js"></script>
 
 <nav id="fb-navbar" class="fb-sticky" data-category='<?= json_encode($category_content); ?>'>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Jan 12. 20:13
+-- Létrehozás ideje: 2025. Jan 13. 21:35
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -36,7 +36,7 @@ CREATE TABLE `cart` (
   `product_id` int(11) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `modified_at` timestamp NULL DEFAULT NULL
+  `modified_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
@@ -598,6 +598,7 @@ INSERT INTO `user` (`id`, `email`, `user_name`, `password_hash`, `role`, `cookie
 --
 ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `unique_user_product` (`user_id`,`product_id`),
   ADD KEY `cart_ibfk_2` (`product_id`),
   ADD KEY `user_id` (`user_id`);
 

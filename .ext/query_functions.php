@@ -24,6 +24,27 @@ function validateQueryAndParameters($query, $parameters, $typeString) {
         );
     }
 
+    if (is_array($parameters)) {
+        if (substr_count($query, '?') !== count($parameters)) {
+            return new QueryResult(
+                type: Result::ERROR, 
+                message: "A paraméterek száma nem egyezik meg pontosan a várt számmal.", 
+                query: $query,
+                params: $parameters
+            );
+        }
+    }
+    else {
+        if (substr_count($query, '?') !== 1) {
+            return new QueryResult(
+                type: Result::ERROR, 
+                message: "A paraméterek száma nem egyezik meg pontosan a várt számmal.", 
+                query: $query,
+                params: $parameters
+            );
+        }
+    }
+
     return new Result(Result::SUCCESS, "A bemeneti adatok megfelelőek.");
 }
 
