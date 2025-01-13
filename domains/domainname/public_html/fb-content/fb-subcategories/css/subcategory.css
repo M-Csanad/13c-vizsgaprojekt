@@ -184,7 +184,7 @@ main {
 
 .products {
     flex-grow: 1;
-    max-width: 1500px;
+    max-width: min(1500px, 100%);
     padding-inline: 1rem;
 
     & > .topbar-wrapper {
@@ -523,11 +523,11 @@ main {
     }
 
     .card-body > .price > .price-currency {
-        font-size: min(2cqw, 20px);
+        font-size: min(3cqw, 20px);
     }
 
     .card-body > .review-count {
-        font-size: min(2cqw, 14px);
+        font-size: min(3cqw, 14px);
         color: #dddd;
     }
 
