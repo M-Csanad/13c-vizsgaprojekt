@@ -36,9 +36,11 @@ else {
         if ($result->isEmpty()) {
             $_SESSION['cart'] = [];
         }
+        else {
+            // Egyéb esetben pedig csak hozzárendeljük a Sessionhöz az adatbázis tartalmát
+            $_SESSION['cart'] = $result->message;
+        }
 
-        // Egyéb esetben pedig csak hozzárendeljük a Sessionhöz az adatbázis tartalmát
-        $_SESSION['cart'] = $result->message;
         echo json_encode($_SESSION['cart'], JSON_UNESCAPED_UNICODE);
     }
     else {
