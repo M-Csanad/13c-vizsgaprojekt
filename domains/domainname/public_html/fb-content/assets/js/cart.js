@@ -1,3 +1,5 @@
+import Popup from './popup.js';
+
 const randomId = () => "el-" + (Math.random() + 1).toString(36).substring(7);
 const APIFetch = async (url, method, body = null) => {
     try {
@@ -43,6 +45,15 @@ class Cart {
 
             // Megvárjuk a tartalom letöltését
             await fetchPromise;
+
+            // Ha szükséges a kosarakat egyesíteni, akkor megkérdezzük a usert.
+            if (this.data.type == "PROMPT") {
+                const title = this.data.message.title;
+                const description = this.data.message.description;
+                const mergePrompt = new Popup(title, description, '/api/cart/merge');
+
+                mergePrompt.open();
+            }
 
             // UI frissítése
             await this.updateUI();
@@ -168,7 +179,7 @@ class Cart {
     }
 
     async updateUI() {
-        console.log(this.data);
+        // console.log(this.data);
     }
 }
 

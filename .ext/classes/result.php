@@ -14,6 +14,7 @@ class Result {
     public const EMPTY = 3;
     public const NO_AFFECT = 4;
     public const DENIED = 5;
+    public const PROMPT = 6;
 
     // Rejtett tulajdonságok
     private const TYPES = [
@@ -21,7 +22,8 @@ class Result {
         self::ERROR => "ERROR", 
         self::EMPTY => "EMPTY", 
         self::NO_AFFECT => "NO_AFFECT", 
-        self::DENIED => "DENIED"
+        self::DENIED => "DENIED",
+        self::PROMPT => "PROMPT"
     ];
 
     /**

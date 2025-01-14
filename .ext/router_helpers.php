@@ -15,6 +15,6 @@ function isValidSubcategory($name, $parents) {
 
 // Termék ellenőrzés
 function isValidProduct($name, $parents) {
-    $result = selectData("SELECT product_page.product_id AS id FROM product_page WHERE product_page.link_slug=?", implode("/", $parents)."/$name","s");
+    $result = selectData("SELECT product_page.product_id AS id, product_page.id AS page_id FROM product_page WHERE product_page.link_slug=?", implode("/", $parents)."/$name","s");
     return $result;
 }

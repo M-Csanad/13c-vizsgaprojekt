@@ -135,7 +135,9 @@ $menu_items = [
 <link rel="stylesheet" href="/fb-content/assets/css/mobileNavbar.css" media="all">
 <link rel="stylesheet" href="/fb-content/assets/css/cart.css">
 <link rel="stylesheet" href="/fb-content/assets/css/search.css">
+<link rel="stylesheet" href="/fb-content/assets/css/popup.css">
 
+<script type="module" src="/fb-content/assets/js/popup.js"></script>
 <script type="module" src="/fb-content/assets/js/cart.js"></script>
 <script type="module">
     import Cart from "/fb-content/assets/js/cart.js";

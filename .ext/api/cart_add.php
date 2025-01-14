@@ -45,18 +45,22 @@ if (isset($data['url']) && isset($data['qty'])) {
     }
 
     $productId = $result->message[0]['id'];
+    $pageId = $result->message[0]['page_id'];
     
-    // A készlet lekérdezése
-    $result = selectData('SELECT CAST(stock AS INT) AS stock FROM product WHERE product.id=?', $productId, 'i');
+    // A termék lekérdezése
+    $result = selectData('SELECT CAST(product.stock AS INT) AS stock, product.name, CAST(product.unit_price AS INT) AS unit_price, 
+        product_page.link_slug FROM product_page INNER JOIN product ON product_page.product_id=product.id 
+        WHERE product_page.id=?', $pageId, 'i');
     if (!$result->isSuccess()) {
         http_response_code(404);
-        $result = new Result(Result::ERROR, 'Nem található a készlet.');
+        $result = new Result(Result::ERROR, 'Nem található a termék.');
         echo $result->toJSON();
         exit();
     }
+    $product = $result->message[0];
     
     // Ellenőrizzük a mennyiséget
-    $stock = $result->message[0]['stock'];
+    $stock = $product['stock'];
     $quantity = $data['qty'];
 
     if ($quantity > $stock || $quantity < 1) {
@@ -83,45 +87,50 @@ if (isset($data['url']) && isset($data['qty'])) {
     
     // Ha be van jelentkezve, akkor az adatbázissal és a sessionnel dolgozunk
     if ($isLoggedIn) {
-
         // Adatbázis frissítése
-        $result = updateData('INSERT INTO cart(user_id, product_id, quantity) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity), modified_at = NOW();', [intval($user['id']), intval($productId), intval($quantity)], 'iii');
+        $result = updateData('INSERT INTO cart(user_id, product_id, quantity, page_id) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity), modified_at = NOW();', [intval($user['id']), intval($productId), intval($quantity), intval($pageId)], 'iiii');
         if (!$result->isSuccess()) {
             http_response_code(500);
             echo $result->toJSON();
             exit();
         }
         
-
+        $result = new Result(Result::SUCCESS, 'Sikeresen hozzáadva');
+        echo $result->toJSON();
+    }
+    // Ha nincs bejelentkezve, akkor sütikkel és sessionnel dolgozunk
+    else {
         // Session kosár frissítése
         $foundExistingRow = false;
         foreach ($_SESSION['cart'] as &$row) {
-            if ($row['user_id'] == $user['id'] && $row['product_id'] == $productId) {
+            if ($row['product_id'] == $productId) {
                 $row['quantity'] += $quantity;
+                $row['modified_at'] = date("Y-m-d H:i:s", time());
                 $foundExistingRow = true;
                 break;
             }
         }
         unset($row); // Referenciát töröljük, mivel PHP-ban megmaradna
-
+    
         // Ha még nem volt olyan termék a kosárban, akkor hozzáadjuk
         if (!$foundExistingRow) {
             $_SESSION['cart'][] = [
-                'user_id' => $user['id'],
                 'product_id' => $productId,
-                'quantity' => $quantity
+                'name' => $product['name'],
+                'quantity' => $quantity,
+                'unit_price' => $product['unit_price'],
+                'stock' => $stock,
+                'link_slug' => $product['link_slug'],
+                'page_id' => $pageId,
+                'created_at' => date("Y-m-d H:i:s", time()),
+                'modified_at' => date("Y-m-d H:i:s", time()),
             ];
         }
 
-        $result = new Result(Result::SUCCESS, $_SESSION['cart']);
+        setCartCookie();
+
+        $result = new Result(Result::SUCCESS, 'Sikeresen hozzáadva');
         echo $result->toJSON();
-    }
-    // Ha nincs bejelentkezve, akkor sütikkel és sessionnel dolgozunk
-    else {
-        http_response_code(501);
-        $result = new Result(Result::ERROR, 'Vendégeket még nem fogadok');
-        echo $result->toJSON();
-        exit();
     }
     
 } else {

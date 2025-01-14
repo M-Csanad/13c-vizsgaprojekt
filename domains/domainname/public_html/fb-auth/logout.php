@@ -12,6 +12,7 @@ if (isset($_COOKIE['rememberMe'])) {
 
 // Új session indítása, hogy egy sikeres kijelentkezési üzenetet tároljon
 session_start();
+session_regenerate_id(true);
 $_SESSION['successful_logout'] = true; // Beállítja, hogy a kijelentkezés sikeres volt
 
 // Átirányítás a főoldalra a kijelentkezés után

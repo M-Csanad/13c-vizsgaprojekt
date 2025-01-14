@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Jan 13. 21:35
+-- Létrehozás ideje: 2025. Jan 14. 21:00
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -32,12 +32,20 @@ USE `florens_botanica`;
 CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
-  `session_id` varchar(255) DEFAULT NULL,
-  `product_id` int(11) DEFAULT NULL,
-  `quantity` int(11) DEFAULT NULL,
+  `product_id` int(11) NOT NULL,
+  `page_id` int(11) DEFAULT NULL,
+  `quantity` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `modified_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `cart`
+--
+
+INSERT INTO `cart` (`id`, `user_id`, `product_id`, `page_id`, `quantity`, `created_at`, `modified_at`) VALUES
+(1, 1, 4, 4, 3, '2025-01-14 16:20:54', '2025-01-14 16:31:14'),
+(2, 1, 5, 5, 3, '2025-01-14 16:24:00', '2025-01-14 16:43:19');
 
 -- --------------------------------------------------------
 
@@ -600,7 +608,8 @@ ALTER TABLE `cart`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `unique_user_product` (`user_id`,`product_id`),
   ADD KEY `cart_ibfk_2` (`product_id`),
-  ADD KEY `user_id` (`user_id`);
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `page_id` (`page_id`);
 
 --
 -- A tábla indexei `category`
@@ -778,7 +787,7 @@ ALTER TABLE `product_tag`
 -- AUTO_INCREMENT a táblához `review`
 --
 ALTER TABLE `review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `subcategory`
@@ -807,7 +816,8 @@ ALTER TABLE `user`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `cart_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `cart_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `cart_ibfk_4` FOREIGN KEY (`page_id`) REFERENCES `product_page` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `delivery_info`

@@ -15,36 +15,37 @@ function validateQueryAndParameters($query, $parameters, $typeString) {
         return new QueryResult(Result::ERROR, "Üres lekérdezés.", $query, $parameters);
     }
 
-    if ($parameters && !$typeString) {
-        return new QueryResult(
-            type: Result::ERROR, 
-            message: "Előkészített lekérdezéshez adja meg a paramétertípusokat.", 
-            query: $query,
-            params: $parameters
-        );
-    }
-
-    if (is_array($parameters)) {
-        if (substr_count($query, '?') !== count($parameters)) {
+    if ($parameters) {
+        if (!$typeString) {
             return new QueryResult(
                 type: Result::ERROR, 
-                message: "A paraméterek száma nem egyezik meg pontosan a várt számmal.", 
+                message: "Előkészített lekérdezéshez adja meg a paramétertípusokat.", 
                 query: $query,
                 params: $parameters
             );
         }
-    }
-    else {
-        if (substr_count($query, '?') !== 1) {
-            return new QueryResult(
-                type: Result::ERROR, 
-                message: "A paraméterek száma nem egyezik meg pontosan a várt számmal.", 
-                query: $query,
-                params: $parameters
-            );
+
+        if (is_array($parameters)) {
+            if (substr_count($query, '?') !== count($parameters)) {
+                return new QueryResult(
+                    type: Result::ERROR, 
+                    message: "A paraméterek száma nem egyezik meg pontosan a várt számmal.", 
+                    query: $query,
+                    params: $parameters
+                );
+            }
+        }
+        else {
+            if (substr_count($query, '?') !== 1) {
+                return new QueryResult(
+                    type: Result::ERROR, 
+                    message: "A paraméterek száma nem egyezik meg pontosan a várt számmal.", 
+                    query: $query,
+                    params: $parameters
+                );
+            }
         }
     }
-
     return new Result(Result::SUCCESS, "A bemeneti adatok megfelelőek.");
 }
 
