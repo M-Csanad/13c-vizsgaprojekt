@@ -13,7 +13,7 @@ function bindCookie($userId): Result
 {
     include_once "init.php";
     $cookieToken = hash('sha256', bin2hex(random_bytes(32)));
-    $expireTime = 7 * 24 * 60 * 60; // Lejárás ideje másodpercben
+    $expireTime = 3 * 24 * 60 * 60; // Lejárás ideje másodpercben
     $expireUnix = time() + $expireTime;
     $result = updateData("UPDATE user 
                           SET cookie_id = ?, 
@@ -58,4 +58,5 @@ function setSessionData($user)
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['user_name'] = $user['user_name'];
     $_SESSION['role'] = $user['role'];
+    $_SESSION['expires_at'] = time() + 3 * 24 * 60 * 60;
 }

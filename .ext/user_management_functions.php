@@ -14,6 +14,13 @@ function getUserData($userId = null) {
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
+
+    if (isset($_SESSION['expires_at']) && $_SESSION['expires_at'] < time()) {
+        session_destroy();
+        session_regenerate_id();
+
+        return new Result(Result::ERROR, "A munkamenet lejárt vagy érvénytelen.");
+    }
     
     if (!isset($userId) && !isset($_COOKIE["rememberMe"]) && !isset($_SESSION["user_id"])) {
         return new Result(Result::EMPTY, "Nem található azonosító az eszközön.");
