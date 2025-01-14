@@ -47,7 +47,7 @@ class Cart {
             // UI frissítése
             await this.updateUI();
         } catch (err) {
-            console.error("Initialization error:", err);
+            console.error(err);
         }
     }
 
