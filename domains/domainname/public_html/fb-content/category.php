@@ -1,4 +1,7 @@
-<?php session_start(); ?>
+<?php 
+include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
+include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
+?>
 <!DOCTYPE html>
 <html lang="en">
 

@@ -1,14 +1,7 @@
 <?php
-    include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
     include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/init.php';
-    
-    // Felhasználó adatainak lekérdezése
-    $isLoggedIn = false;
-    $result = getUserData();
-    if ($result->isSuccess()) {
-      $user = $result->message;
-      $isLoggedIn = true;
-    }
+    include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
 
     $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
     $segments = explode('/', $uri); // 0: category, 1: subcategory, 2: product

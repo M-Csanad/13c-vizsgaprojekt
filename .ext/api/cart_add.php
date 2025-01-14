@@ -113,7 +113,7 @@ if (isset($data['url']) && isset($data['qty'])) {
             ];
         }
 
-        $result = new Result(Result::SUCCESS, 'Very good my brother');
+        $result = new Result(Result::SUCCESS, $_SESSION['cart']);
         echo $result->toJSON();
     }
     // Ha nincs bejelentkezve, akkor sütikkel és sessionnel dolgozunk

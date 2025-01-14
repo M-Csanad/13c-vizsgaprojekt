@@ -1,5 +1,6 @@
 <?php
-    session_start();
+    include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
+    include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
 
     $result = selectData("SELECT subcategory.*, category.name as category_name, category.slug AS category_slug FROM subcategory INNER JOIN category ON subcategory.category_id=category.id WHERE subcategory.id=?", $ids[1], "i");
 

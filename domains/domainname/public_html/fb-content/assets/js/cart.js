@@ -142,6 +142,7 @@ class Cart {
         });
 
         if (result.ok) {
+            await this.fetchCartData();
             await this.updateUI();
         } else {
             console.log(result);

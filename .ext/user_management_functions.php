@@ -16,8 +16,11 @@ function getUserData($userId = null) {
     }
 
     if (isset($_SESSION['expires_at']) && $_SESSION['expires_at'] < time()) {
+        session_unset();
         session_destroy();
-        session_regenerate_id();
+        setcookie('PHPSESSID', '', time() - 3600, '/');
+        session_start();
+        session_regenerate_id(true);
 
         return new Result(Result::ERROR, "A munkamenet lejárt vagy érvénytelen.");
     }

@@ -1,6 +1,6 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
-session_start();
+include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
 ?>
 
 <!DOCTYPE html>

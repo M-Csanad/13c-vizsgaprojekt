@@ -3,17 +3,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . "/../../../.ext/init.php";
 $loggerPath = BASE_PATH . '/error_logger.php';
 $filePath = BASE_PATH . '/../../../.ext/db_connect.php';
-
-
-// Felhasználó adatainak lekérdezése
-$isLoggedIn = false;
-$result = getUserData();
-
-if ($result->isSuccess()) {
-    $user = $result->message;
-    $isLoggedIn = true;
-}
-
 if ($loggerPath === false) {
     throw new Exception("Az error_logger.php fájl nem található.");
 }
@@ -120,7 +109,6 @@ function getCategoryContent()
 
 $category_content = getCategoryContent();
 if ($isLoggedIn) {
-    $user = $result->message[0];
     $pfpURL = $user["pfp_uri"];
 }
 // Navigációs elemek
