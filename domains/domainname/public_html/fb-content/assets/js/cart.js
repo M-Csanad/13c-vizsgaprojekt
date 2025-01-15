@@ -50,20 +50,27 @@ class Cart {
             if (this.data.type == "PROMPT") {
                 const title = this.data.message.title;
                 const description = this.data.message.description;
-                const mergePrompt = new Popup(title, description, (response) => {
-                    console.log(response);
+
+                // Létrehozzuk a felugró ablakot
+                const mergePrompt = new Popup(title, description, async (response) => {
+                    await this.handleCartMerge(response);
+                    await this.updateUI();
                 });
 
+                // Megnyitjuk a felugró ablakot
                 mergePrompt.open();
             }
+            else {
+                // UI frissítése, ha nincs felugró ablak
+                await this.updateUI();
+            }
 
-            // UI frissítése
-            await this.updateUI();
         } catch (err) {
             console.error(err);
         }
     }
 
+    // Függvény, amelynek szerepe az oldal betöltésének megvárása
     waitForLoad() {
         return new Promise((resolve) => {
             if (document.readyState === "complete") {
@@ -74,6 +81,7 @@ class Cart {
         });
     }
 
+    // DOM elemek megkeresése
     initDOM() {
         // Kosár ablak
         this.domElement = document.querySelector(".cart");
@@ -182,6 +190,19 @@ class Cart {
 
     async updateUI() {
         // console.log(this.data);
+    }
+
+    async handleCartMerge(response) {
+        const mergeResponse = await APIFetch("/api/cart/merge", "PUT", {response: response});
+
+        if (mergeResponse.ok) {
+
+            // Csak akkor kérjük le ismét az atadokat, ha azt meg is változtattuk
+            await this.fetchCartData();
+        }
+        else {
+            console.log(mergeResponse);
+        }
     }
 }
 

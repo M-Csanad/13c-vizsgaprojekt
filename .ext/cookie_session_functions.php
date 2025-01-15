@@ -76,3 +76,15 @@ function setCartCookie($value = null) {
 
     setcookie('cart', json_encode($data, JSON_UNESCAPED_UNICODE), time() + 7 * 24 * 60 * 60, '/', '', false, true);
 }
+
+function removeCartCookieSession() {
+    if (!isset($_COOKIE['cart'])) {
+        return new Result(Result::ERROR, "Nincs kosár süti");
+    }
+
+    setcookie('cart', '', time() - 3600, '/', '', false, true);
+    unset($_COOKIE['cart']);
+    unset($_SESSION['cart']);
+
+    return new Result(Result::SUCCESS, "Sikeres törlés");
+}

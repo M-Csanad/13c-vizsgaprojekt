@@ -44,22 +44,21 @@ class Popup {
         this.okButton.addEventListener("click", this.confirm.bind(this));
         this.noButton.addEventListener("click", this.decline.bind(this));
 
-        this.keyListener = window.addEventListener("keydown", (e) => {
+        this.keyListener = window.addEventListener("keydown", async (e) => {
             if (document.body.contains(this.domElement) && e.code == "Escape") {
-              this.close();
+                await this.onReply(false);
+                this.close();
             }
         });
     }
 
     async confirm() {
-        this.onReply(true);
-
+        await this.onReply(true);
         this.close();
     }
 
     async decline() {
-        this.onReply(false);
-
+        await this.onReply(false);
         this.close();
     }
 
