@@ -67,6 +67,8 @@
     width: 85%;
     text-align: center;
     padding-inline: 1rem;
+    padding-bottom: 3.5rem;
+    padding-top: 1rem;
 }
 
 .button-group-wrapper {
@@ -97,18 +99,6 @@
     position: relative;
 }
 
-.dots {
-    height: 30px;
-    width: 50px;
-    margin-block: 0.5rem 0.6rem ;
-    background: radial-gradient(circle closest-side,white 80%,#0000 90%) 0%   50%,
-           radial-gradient(circle closest-side,white 80%,#0000 90%) 50%  50%,
-           radial-gradient(circle closest-side,white 80%,#0000 90%) 100% 50%;
-    background-size: calc(100%/3) 13.4px;
-    background-repeat: no-repeat;
-    animation: dots 1s infinite linear;
-}
-
 .button-group > .confirm {
     background-color: #2885d1;
     color: white;
@@ -130,21 +120,3 @@
 .button-group > .cancel:hover {
     border: 3px solid rgb(204, 204, 204);
 }
-
- @keyframes dots{
-    20% {
-       background-position: 0%   0%, 50%  50%,100%  50%;
-    }
- 
-    40% {
-       background-position: 0% 100%, 50%   0%,100%  50%;
-    }
- 
-    60% {
-       background-position: 0%  50%, 50% 100%,100%   0%;
-    }
- 
-    80% {
-       background-position: 0%  50%, 50%  50%,100% 100%;
-    }
- }

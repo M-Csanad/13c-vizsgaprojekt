@@ -3,9 +3,12 @@ class Popup {
     visible = false;
     ease = "power3.inOut";
 
-    constructor(title, message, endpoint) {
+    constructor(title, message, onReply) {
         if (!gsap) throw new Error("A GSAP nem található");
         if (!lenis) throw new Error("A Lenis nem található");
+
+        if (typeof onReply != 'function') throw new Error("Kérlek egy függvényt adj meg");
+        this.onReply = onReply;
 
         this.domElement = document.createElement("div");
         this.domElement.id = randomId();
@@ -19,7 +22,6 @@ class Popup {
             </div>
             <h2 class='popup-message'>${title}</h2>
             <div class='popup-description'>${message}</div>
-            <div class="dots"></div>
             <div class='button-group-wrapper'>
             <div class='button-group'>
                 <button class='confirm'>
@@ -50,10 +52,14 @@ class Popup {
     }
 
     async confirm() {
+        this.onReply(true);
+
         this.close();
     }
 
     async decline() {
+        this.onReply(false);
+
         this.close();
     }
 

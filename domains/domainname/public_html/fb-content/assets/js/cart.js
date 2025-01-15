@@ -50,7 +50,9 @@ class Cart {
             if (this.data.type == "PROMPT") {
                 const title = this.data.message.title;
                 const description = this.data.message.description;
-                const mergePrompt = new Popup(title, description, '/api/cart/merge');
+                const mergePrompt = new Popup(title, description, (response) => {
+                    console.log(response);
+                });
 
                 mergePrompt.open();
             }
