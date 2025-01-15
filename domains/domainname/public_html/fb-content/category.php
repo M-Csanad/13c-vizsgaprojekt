@@ -22,6 +22,9 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
 
   <link rel="stylesheet" href="http://localhost//fb-content/fb-categories/css/category-cards.css" />
 
+  <link rel="stylesheet" href="/fb-content/fb-products/css/numberfield.css">
+  <script src="/fb-content/fb-products/js/numberfield.js"></script>
+
   <!--page transition-->
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script defer src="/fb-content/assets/js/page_transition.js"></script>

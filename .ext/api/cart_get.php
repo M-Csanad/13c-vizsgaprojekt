@@ -53,11 +53,15 @@ else {
     if ($isLoggedIn) {
         $result = selectData("SELECT CAST(cart.product_id AS INT) AS product_id, 
             CAST(cart.quantity AS INT) AS quantity, CAST(product.stock AS INT) AS stock, cart.created_at, cart.modified_at,
-            product.name, product.unit_price, product_page.link_slug, product_page.id
+            product.name, product.unit_price, product_page.link_slug, cart.page_id, 
+            ( 
+                SELECT DISTINCT image.uri FROM image INNER JOIN product_image ON product_image.image_id=image.id 
+                WHERE product_image.product_id=cart.product_id AND image.uri LIKE '%thumbnail%' LIMIT 1
+            ) AS thumbnail_uri 
             FROM cart INNER JOIN product ON cart.product_id=product.id 
             INNER JOIN product_page ON cart.page_id=product_page.id 
             WHERE cart.user_id=?;", intval($user['id']), "i");
-
+                    
         if ($result->isError()) {
             http_response_code(500);
             echo json_encode(new Result(Result::ERROR, "Hiba merült fel a kosár lekérdezése során."));
@@ -80,7 +84,7 @@ else {
         $_SESSION['cart'] = [];
         setCartCookie();
 
-        $result = new Result(Result::EMPTY, "A kosár üres.");
+        $result = new Result(Result::SUCCESS, $_SESSION['cart']);
         echo $result->toJSON();
     }
 }

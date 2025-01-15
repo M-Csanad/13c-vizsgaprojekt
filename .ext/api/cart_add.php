@@ -48,9 +48,14 @@ if (isset($data['url']) && isset($data['qty'])) {
     $pageId = $result->message[0]['page_id'];
     
     // A termék lekérdezése
-    $result = selectData('SELECT CAST(product.stock AS INT) AS stock, product.name, CAST(product.unit_price AS INT) AS unit_price, 
-        product_page.link_slug FROM product_page INNER JOIN product ON product_page.product_id=product.id 
-        WHERE product_page.id=?', $pageId, 'i');
+    $result = selectData("SELECT CAST(product.stock AS INT) AS stock, product.name, CAST(product.unit_price AS INT) AS unit_price, 
+        product_page.link_slug, 
+        ( 
+            SELECT DISTINCT image.uri FROM image INNER JOIN product_image ON product_image.image_id=image.id 
+            WHERE product_image.product_id=? AND image.uri LIKE '%thumbnail%' LIMIT 1
+        ) AS thumbnail_uri  
+        FROM product_page INNER JOIN product ON product_page.product_id=product.id 
+        WHERE product_page.id=?", [$productId, $pageId], 'ii');
     if (!$result->isSuccess()) {
         http_response_code(404);
         $result = new Result(Result::ERROR, 'Nem található a termék.');
@@ -122,6 +127,7 @@ if (isset($data['url']) && isset($data['qty'])) {
                 'stock' => $stock,
                 'link_slug' => $product['link_slug'],
                 'page_id' => $pageId,
+                'thumbnail_uri' => $product['thumbnail_uri'],
                 'created_at' => date("Y-m-d H:i:s", time()),
                 'modified_at' => date("Y-m-d H:i:s", time()),
             ];

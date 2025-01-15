@@ -1,6 +1,6 @@
 .number-field {
     display: flex;
-    height: 100%;
+    width: 120px;
     align-items: center ;
     background-color: #272727;
     outline: 2px solid transparent;
@@ -10,15 +10,19 @@
     border: 1px solid transparent;
     transition: border-color 0.3s ease, background-color 0.3s ease, outline 0.3s ease;
 }
+
+.number-field > * {
+    box-sizing: border-box;
+}
+
 .number-field:hover:not(:has(div:hover)), .number-field:focus-within {
-    border: 1px solid #505050;
     background-color: #303030;
 }
 
 .number-field > input {
     width: 60px;
     outline: none;
-    height: 100%;
+    height: 30px;
     border: none;
     border-block: 1px solid #494949;
     background-color: transparent;
@@ -40,7 +44,8 @@
 
 .number-field > div {
     font-family: Consolas;
-    height: 100%;
+    height: 30px;
+    width: 30px;
     aspect-ratio: 1 / 1;
     display: flex;
     justify-content: center;

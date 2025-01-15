@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Jan 14. 21:00
+-- Létrehozás ideje: 2025. Jan 15. 19:56
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -38,14 +38,6 @@ CREATE TABLE `cart` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `modified_at` timestamp NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
-
---
--- A tábla adatainak kiíratása `cart`
---
-
-INSERT INTO `cart` (`id`, `user_id`, `product_id`, `page_id`, `quantity`, `created_at`, `modified_at`) VALUES
-(1, 1, 4, 4, 3, '2025-01-14 16:20:54', '2025-01-14 16:31:14'),
-(2, 1, 5, 5, 3, '2025-01-14 16:24:00', '2025-01-14 16:43:19');
 
 -- --------------------------------------------------------
 

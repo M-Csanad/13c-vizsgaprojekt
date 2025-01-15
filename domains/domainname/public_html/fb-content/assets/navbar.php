@@ -264,17 +264,6 @@ $menu_items = [
         <div class="cart-empty">
             <span>Még nincsenek termékek a kosárban.</span>
         </div>
-        <div class="cart-item">
-            <div class="item-image"></div>
-            <div class="item-body">
-                <div class="item-name"></div>
-                <div class="item-info">
-                    <div class="item-count"></div>
-                    <div class="item-price"></div>
-                </div>
-                <div class="item-remove"></div>
-            </div>
-        </div>
     </div>
     <div class="cart-bottom-button">
         <a href="/checkout">

@@ -1,26 +1,30 @@
-const subtractButton = document.querySelector(".number-field-subtract");
-const addButton = document.querySelector(".number-field-add");
-const valueInput = document.querySelector(".number-field > input");
+document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("number-field-subtract")) {
+        handleQuantityChange(event.target, -1);
+    }
 
-const minQuantity = 1;
-const maxQuantity = valueInput.getAttribute("max") ?? 1; // Alap érték, a készlettől függ
+    if (event.target.classList.contains("number-field-add")) {
+        handleQuantityChange(event.target, 1);
+    }
+});
 
-let quantity = minQuantity;
+const handleQuantityChange = (button, change) => {
+    const numberField = button.closest(".number-field");
 
-const updateQuantity = () => {
+    const valueInput = numberField.querySelector("input");
+
+    let quantity = parseInt(valueInput.value);
+
+    const minQuantity = parseInt(valueInput.getAttribute("min")) || 1;
+    const maxQuantity = parseInt(valueInput.getAttribute("max")) || Infinity;
+
+    quantity += change;
+
+    if (quantity < minQuantity) {
+        quantity = minQuantity;
+    } else if (quantity > maxQuantity) {
+        quantity = maxQuantity;
+    }
+
     valueInput.value = quantity;
-}
-
-subtractButton.addEventListener("click", () => {
-    if (quantity - 1 >= minQuantity) {
-        quantity--;
-    }
-    updateQuantity();
-});
-
-addButton.addEventListener("click", () => {
-    if (quantity + 1 <= maxQuantity) {
-        quantity++;
-    }
-    updateQuantity();
-});
+};

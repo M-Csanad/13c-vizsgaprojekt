@@ -46,9 +46,12 @@ window.addEventListener("load", () => {
         ease: ease
     }
 
-    document.querySelectorAll("a").forEach((link) => {
-        if (!link.href || link.href.includes("#")) return;
-        link.addEventListener("click", (e) => {
+    document.addEventListener("click", (e) => {
+        if (e.target.nodeName === "A") {
+            const link = e.target;
+
+            if (!link.href || link.href.includes("#")) return;
+
             if (e.ctrlKey || e.metaKey) {
                 return; // CTRL + kattintás esetén marad az alap működés
             }
@@ -70,8 +73,35 @@ window.addEventListener("load", () => {
                     window.location.href = href;
                 });
             }
-        });
+        }
     });
+
+    // document.querySelectorAll("a").forEach((link) => {
+    //     if (!link.href || link.href.includes("#")) return;
+    //     link.addEventListener("click", (e) => {
+    //         if (e.ctrlKey || e.metaKey) {
+    //             return; // CTRL + kattintás esetén marad az alap működés
+    //         }
+
+    //         e.preventDefault();
+            
+    //         if (isAnimating) return;
+
+    //         isAnimating = true;
+    //         const href = link.href;
+
+    //         if (href.includes("dashboard")) {
+    //             window.location.href = href;
+    //             return;
+    //         }
+
+    //         if (href && !href.startsWith("#") && href !== window.location.pathname) {
+    //             animatePageTransition(outParams).then(() => {
+    //                 window.location.href = href;
+    //             });
+    //         }
+    //     });
+    // });
 
     Promise.all(imagePromises).then(() => {
         setTimeout(() => {
