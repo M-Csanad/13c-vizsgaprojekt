@@ -316,7 +316,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
 }
 .icon_container .icon_wrapper .profile-pic {
   position: relative;

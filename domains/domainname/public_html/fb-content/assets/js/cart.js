@@ -187,7 +187,7 @@ class Cart {
                         </div>
                     </div>
                 </div>
-                ${index % 2 == 0 ? "<hr>": ""}`;
+                <hr>`;
             });
         }
 
