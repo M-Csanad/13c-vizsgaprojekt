@@ -33,7 +33,7 @@
     box-sizing: border-box;
     overflow: hidden;
     
-    & > * {
+    & * {
         box-sizing: border-box;
     }
 
@@ -43,7 +43,7 @@
         position: relative;
         display: flex;
         flex-direction: column;
-        gap: 2rem;
+        gap: 1rem;
     }
 
     & > .cart-main > .cart-empty {
@@ -134,7 +134,6 @@
         border: 2px solid transparent;
         cursor: pointer;
         transition: background-color 0.2s ease, border-color 0.2s ease;
-
     }
     
     & > .cart-main > .cart-item > .item-body > .item-remove > svg {
@@ -142,7 +141,7 @@
         height: 100%;
         fill: #b9b9b9;
         z-index: 999;
-        transition: fill 0.2s ease, rotate 0.2s ease;
+        transition: fill 0.2s ease;
     }
     
     & > .cart-main > .cart-item > .item-body > .item-remove:hover {
@@ -151,7 +150,6 @@
     
     & > .cart-main > .cart-item > .item-body > .item-remove:hover > svg {
         fill: #ff1515;
-        rotate: 10deg;
     }
 
     & > .cart-close {

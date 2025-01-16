@@ -129,6 +129,15 @@ class Cart {
         this.cartAddButtons.forEach((button) =>
             button.addEventListener("click", this.add.bind(this))
         );
+        this.cartContainer.addEventListener("click", async (e) => {
+            
+            if (e.target.closest('.item-remove')) {
+                const product = e.target.closest('.cart-item');
+                const index = Array.from(this.cartContainer.children).filter(e => e.nodeName != "HR").indexOf(product);
+
+                await this.remove(index);
+            }
+        })
     }
 
     updateUI() {
@@ -273,8 +282,8 @@ class Cart {
         }
     }
 
-    async remove() {
-        
+    async remove(index) {
+        console.log(index);
     }
 
     async changeCount() {

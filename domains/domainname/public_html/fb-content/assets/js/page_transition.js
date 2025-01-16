@@ -47,8 +47,8 @@ window.addEventListener("load", () => {
     }
 
     document.addEventListener("click", (e) => {
-        if (e.target.nodeName === "A") {
-            const link = e.target;
+        if (e.target.nodeName === "A" || e.target.closest('a')) {
+            const link = e.target.closest('a');
 
             if (!link.href || link.href.includes("#")) return;
 
