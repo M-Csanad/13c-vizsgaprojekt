@@ -4,7 +4,7 @@ include_once __DIR__.'/../router_helpers.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     http_response_code(405);
-    $result = new Result(Result::ERROR, 'Hibás metódus! Várt: POST');
+    $result = new Result(Result::ERROR, 'Hibás metódus! Várt: GET');
     echo $result->toJSON();
     exit();
 }

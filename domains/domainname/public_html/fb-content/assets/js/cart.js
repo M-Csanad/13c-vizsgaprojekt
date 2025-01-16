@@ -111,10 +111,10 @@ class Cart {
         this.cartCount = this.domElement.querySelector(".cart-count");
 
         // Kosár elemek
-        this.cartContainer = this.domElement.querySelector(".cart-main");
+        this.cartContainer = this.domElement.querySelector(".cart-items");
 
         // Üres kosár elem
-        this.emptyMessage = this.cartContainer.querySelector(".cart-empty");
+        this.emptyMessage = this.domElement.querySelector(".cart-empty");
 
         // GSAP ellenőrzés
         if (!gsap) throw new Error("A GSAP nem található");
@@ -140,57 +140,56 @@ class Cart {
         })
     }
 
-    updateUI() {
+    // Teljesen lefrissíti a kosár felhasználói felületét (Nincsen animálva)
+    updateUI(flushContainer = true) {
         this.cartCount.innerHTML = `${this.data.length} elem`;
+        this.setEmptyMessageVisibility(this.data.length == 0 ? "visible" : "hidden");
+        
+        if (!flushContainer) return;
+
         this.cartContainer.innerHTML = "";
+        this.data.forEach(product => {
+            const thumbnail_uri = product.thumbnail_uri.split('.')[0];
 
-        if (this.data.length == 0) {
-            this.setEmptyMessageVisibility("visible")
-        }
-        else {
-            this.setEmptyMessageVisibility("hidden");
-            this.data.forEach((product, index) => {
-                const thumbnail_uri = product.thumbnail_uri.split('.')[0];
-
-                this.cartContainer.innerHTML += 
-                `<div class="cart-item">
-                    <div class="item-image">
-                        <a href="http://localhost/${product.link_slug}">
-                        <picture>
-                            <source type="image/avif" srcset="${thumbnail_uri}-768px.avif 1x" media="(min-width: 768px)">
-                            <source type="image/webp" srcset="${thumbnail_uri}-768px.webp 1x" media="(min-width: 768px)">
-                            <source type="image/jpeg" srcset="${thumbnail_uri}-768px.jpg 1x" media="(min-width: 768px)">
-                            <img 
-                            src="${thumbnail_uri}.jpg" 
-                            alt="${product.name}" 
-                            loading="lazy">
-                        </picture>
-                        </a>
+            this.cartContainer.innerHTML += 
+            `<div class="cart-item">
+                <div class="wrapper">
+                <div class="item-image">
+                    <a href="http://localhost/${product.link_slug}">
+                    <picture>
+                        <source type="image/avif" srcset="${thumbnail_uri}-768px.avif 1x" media="(min-width: 768px)">
+                        <source type="image/webp" srcset="${thumbnail_uri}-768px.webp 1x" media="(min-width: 768px)">
+                        <source type="image/jpeg" srcset="${thumbnail_uri}-768px.jpg 1x" media="(min-width: 768px)">
+                        <img 
+                        src="${thumbnail_uri}.jpg" 
+                        alt="${product.name}" 
+                        loading="lazy">
+                    </picture>
+                    </a>
+                </div>
+                <div class="item-body">
+                    <div class="item-info">
+                        <div class="item-name">${product.name}</div>
+                        <div class="item-price">
+                            <div class="value">${product.unit_price}</div>
+                            <div class="currency">Ft</div>
+                        </div>
+                        </div>
+                    <div class="number-field">
+                        <div class="number-field-subtract">-</div>
+                        <input type="number" name="product-quantity" class="product-quantity" placeholder="Darab" max="${product.stock}" min="1" value="${product.quantity}">
+                        <div class="number-field-add">+</div>
                     </div>
-                    <div class="item-body">
-                        <div class="item-info">
-                            <div class="item-name">${product.name}</div>
-                            <div class="item-price">
-                                <div class="value">${product.unit_price}</div>
-                                <div class="currency">Ft</div>
-                            </div>
-                            </div>
-                        <div class="number-field">
-                            <div class="number-field-subtract">-</div>
-                            <input type="number" name="product-quantity" class="product-quantity" placeholder="Darab" max="${product.stock}" min="1" value="${product.quantity}">
-                            <div class="number-field-add">+</div>
-                        </div>
-                        <div class="item-remove">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                                <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
-                            </svg>
-                        </div>
+                    <div class="item-remove">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                        </svg>
                     </div>
                 </div>
-                <hr>`;
-            });
-        }
-
+                </div>
+            </div>
+            <hr>`;
+        });
     }
 
     open() {
@@ -283,7 +282,36 @@ class Cart {
     }
 
     async remove(index) {
-        console.log(index);
+        const product = this.data[index];
+
+        const result = await APIFetch("/api/cart/remove", "DELETE", { id: product.product_id });
+        if (result.ok) {
+            await this.fetchCartData();
+            const removedProduct = Array.from(this.cartContainer.children).filter(e => e.nodeName != "HR")[index];
+            const separator = removedProduct.nextElementSibling;
+            
+            gsap.to(separator, {
+                marginTop: '-34px',
+                opacity: 0,
+                duration: 0.6,
+                ease: this.ease
+            });
+            gsap.to(removedProduct, {
+                height: 0,
+                opacity: 0,
+                duration: 0.6,
+                ease: this.ease,
+                onComplete: () => {
+                    separator.remove();
+                    removedProduct.remove();
+
+                    this.updateUI(false); // Nem töröljük ki a kártyákat
+                }
+            });
+
+        } else {
+            throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());
+        }
     }
 
     async changeCount() {
