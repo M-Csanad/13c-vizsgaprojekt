@@ -94,7 +94,6 @@
     <link rel="stylesheet" href="/fb-content/fb-products/css/product.css" />
     <link rel="stylesheet" href="/fb-content/fb-products/css/numberfield.css">
     <link rel="stylesheet" href="/fb-content/assets/css/footer.css">
-    <link rel="stylesheet" href="/fb-content/fb-products/css/reviewform.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="shortcut icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/footer.css" media="all" />
@@ -106,7 +105,6 @@
     <script defer src="/fb-content/assets/js/lenis.js"></script>
     <script defer src="/fb-content/assets/js/scrollbar.js"></script>
     <script defer src="/fb-content/fb-products/js/reviewform.js"></script>
-    <script defer src="/fb-content/fb-products/js/numberfield.js"></script>
     <script defer src="/fb-content/assets/js/autogenerate__footer.js"></script>
 
     <!--ionicons-->
@@ -203,7 +201,7 @@
           <label for="product-quantity">Mennyiség:</label>
           <div class="number-field">
             <div class="number-field-subtract">-</div>
-            <input type="number" name="product-quantity" class="product-quantity" placeholder="Darab" max="<?= htmlspecialchars($product['stock']); ?>" min="1" value="1">
+            <input disabled type="number" name="product-quantity" class="product-quantity" placeholder="Darab" max="<?= htmlspecialchars($product['stock']); ?>" min="1" value="1">
             <div class="number-field-add">+</div>
           </div>
         </div>

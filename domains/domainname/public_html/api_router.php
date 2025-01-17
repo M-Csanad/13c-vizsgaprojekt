@@ -20,7 +20,6 @@ $routes = [
     '/api/cart/get' => $API.'/cart_get.php',
     '/api/cart/remove' => $API.'/cart_remove.php',
     '/api/cart/update' => $API.'/cart_update.php',
-    '/api/cart/upload' => $API.'/cart_upload.php',
     '/api/cart/merge' => $API.'/cart_merge.php',
     '/api/review' => $API.'/review.php',
     '/api/auth/dashboard-search' => $API.'/dashboard_search.php',

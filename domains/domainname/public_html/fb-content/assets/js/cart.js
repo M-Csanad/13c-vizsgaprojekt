@@ -1,6 +1,8 @@
 import Popup from './popup.js';
 
 const randomId = () => "el-" + (Math.random() + 1).toString(36).substring(7);
+
+// Segédfüggvény API kérésekhez
 const APIFetch = async (url, method, body = null) => {
     try {
         const params = {
@@ -22,11 +24,14 @@ const APIFetch = async (url, method, body = null) => {
 
 class Cart {
     isOpen = false;
+    url = window.location.pathname;
+
+    data = null;
+    cartPrice = 0;
+    lastFetchResultType = null;
+
     ease = "power2.inOut";
     ease2 = "power3.inOut";
-    url = window.location.pathname;
-    data = null;
-    lastFetchResultType = null;
 
     constructor() {
         this.init();
@@ -116,6 +121,9 @@ class Cart {
         // Üres kosár elem
         this.emptyMessage = this.domElement.querySelector(".cart-empty");
 
+        // Összeg elem
+        this.priceContainer = this.domElement.querySelector(".price > .value");
+
         // GSAP ellenőrzés
         if (!gsap) throw new Error("A GSAP nem található");
         if (!lenis) throw new Error("A Lenis nem található");
@@ -123,27 +131,53 @@ class Cart {
 
     
     // UI metódusok
+    // Eseménykezelők létrehozása
     bindEvents() {
         this.openButton.addEventListener("click", this.open.bind(this));
         this.closeButton.addEventListener("click", this.close.bind(this));
         this.cartAddButtons.forEach((button) =>
             button.addEventListener("click", this.add.bind(this))
         );
-        this.cartContainer.addEventListener("click", async (e) => {
-            
-            if (e.target.closest('.item-remove')) {
-                const product = e.target.closest('.cart-item');
-                const index = Array.from(this.cartContainer.children).filter(e => e.nodeName != "HR").indexOf(product);
 
+        this.cartContainer.addEventListener("click", async (e) => {
+            if (e.target.closest('.item-remove')) {
+                const index = this.getProductDOMIndex(e);
                 await this.remove(index);
+                return;
+            }
+            
+            if (e.target.closest('.number-field-add')) {
+                e.stopPropagation();
+
+                const index = this.getProductDOMIndex(e);
+                const currentElement = e.target.closest('.number-field').querySelector('.product-quantity');
+
+                await this.changeCount('+', index, currentElement.value, currentElement.getAttribute('max'));
+                return;
+            }
+
+            if (e.target.closest('.number-field-subtract')) {
+                e.stopPropagation();
+
+                const index = this.getProductDOMIndex(e);
+                const currentElement = e.target.closest('.number-field').querySelector('.product-quantity');
+
+                await this.changeCount('-', index, currentElement.value, currentElement.getAttribute('max'));
+                return;
             }
         })
+    }
+
+    // Segédfüggvény a termék indexének kinyeréséhez (index a kosár adatok tömbjében)
+    getProductDOMIndex(clickEvent) {
+        return Array.from(this.cartContainer.children).filter(e => e.nodeName != "HR").indexOf(clickEvent.target.closest('.cart-item'));
     }
 
     // Teljesen lefrissíti a kosár felhasználói felületét (Nincsen animálva)
     updateUI(flushContainer = true) {
         this.cartCount.innerHTML = `${this.data.length} elem`;
         this.setEmptyMessageVisibility(this.data.length == 0 ? "visible" : "hidden");
+        this.priceContainer.innerHTML = this.cartPrice;
         
         if (!flushContainer) return;
 
@@ -177,7 +211,7 @@ class Cart {
                         </div>
                     <div class="number-field">
                         <div class="number-field-subtract">-</div>
-                        <input type="number" name="product-quantity" class="product-quantity" placeholder="Darab" max="${product.stock}" min="1" value="${product.quantity}">
+                        <input type="number" disabled name="product-quantity" class="product-quantity" placeholder="Darab" max="${product.stock}" min="1" value="${product.quantity}">
                         <div class="number-field-add">+</div>
                     </div>
                     <div class="item-remove">
@@ -192,6 +226,7 @@ class Cart {
         });
     }
 
+    // Kinyitja a kosarat
     open() {
         if (this.isOpen) return;
 
@@ -212,6 +247,7 @@ class Cart {
         });
     }
 
+    // Bezárja a kosarat
     close() {
         if (!this.isOpen) return;
 
@@ -233,6 +269,7 @@ class Cart {
         });
     }
 
+    // A "Kosár üres" üzenet megjelenési állapotát változtatja
     setEmptyMessageVisibility(visibility) {
         if (visibility != "hidden" && visibility != "visible") throw new Error(`Ismeretlen láthatóság (${visibility})`);
 
@@ -266,6 +303,7 @@ class Cart {
     }
 
     // Backend metódusok
+    // Hozzáad egy terméket a kosárhoz
     async add() {
         const result = await APIFetch("/api/cart/add", "POST", {
             url: this.url,
@@ -281,6 +319,7 @@ class Cart {
         }
     }
 
+    // Kitöröl egy terméket a kosárból
     async remove(index) {
         const product = this.data[index];
 
@@ -314,10 +353,31 @@ class Cart {
         }
     }
 
-    async changeCount() {
+    // Meglévő kosár elem mennyiségét változtatja
+    async changeCount(operation = '+', index, currentValue, maxValue) {
+        const product = this.data[index];
+        const productElement = Array.from(this.cartContainer.children).filter(e=>e.nodeName!="HR")[index];
+        
+        if (operation != '+' && operation != '-') throw new Error("Ismeretlen művelet a changeCount függvényben: "+ operation)
+
+        const change = 1 * (operation == '-' ? -1 : 1);
+        if (Number(currentValue) + change > Number(maxValue) || Number(currentValue) + change < 1) return;
+
+        const result = await APIFetch("/api/cart/update", "PUT", { operation: operation, product_id: product.product_id });
+        if (result.ok) {
+            const input = productElement.querySelector(".number-field-" + (operation == '+' ? 'add' : 'subtract'));
+            handleQuantityChange(input, change);
+            
+            await this.fetchCartData();
+            this.updateUI(false);
+        }
+        else {
+            console.log(result)
+        }
         
     }
 
+    // Lekéri a kosár tartalmát
     async fetchCartData() {
         const result = await APIFetch("/api/cart/get", "GET");
 
@@ -325,11 +385,13 @@ class Cart {
             const data = await result.json();
             this.data = data.message;
             this.lastFetchResultType = data.type;
+            this.cartPrice = this.data.reduce((a, b) => a + (b.unit_price * b.quantity), 0);
         } else {
             throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());
         }
     }
 
+    // Egyesíti a kosarat (vendég -> felhasználó)
     async handleCartMerge(response) {
         const mergeResponse = await APIFetch("/api/cart/merge", "PUT", {response: response});
 

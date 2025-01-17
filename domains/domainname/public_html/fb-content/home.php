@@ -262,8 +262,6 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
   <link rel="stylesheet" href="/fb-content/assets/css/box.css" />
   <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
   <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
-  <link rel="stylesheet" href="/fb-content/fb-products/css/numberfield.css">
-  <script defer src="/fb-content/fb-products/js/numberfield.js"></script>
 
   <!--main stylesheet-->
   <link rel="stylesheet" href="/fb-content/fb-home/css/main.css" media="all" />

@@ -67,7 +67,6 @@
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="shortcut icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/footer.css" media="all" />
-    <link rel="stylesheet" href="/fb-content/fb-products/css/numberfield.css">
     
     <script defer src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" ></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -77,8 +76,7 @@
     <script defer type="module" src="/fb-content/assets/js/filterwindow.js"></script>
     <script defer type="module" src="/fb-content/fb-subcategories/js/subcategory.js"></script>
     <script defer src="/fb-content/assets/js/autogenerate__footer.js"></script>
-    <script defer src="/fb-content/fb-products/js/numberfield.js"></script>
-
+    
     <!--ionicons-->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>

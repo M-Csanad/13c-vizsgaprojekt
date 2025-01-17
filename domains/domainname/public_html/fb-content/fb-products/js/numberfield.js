@@ -1,11 +1,12 @@
 document.addEventListener("click", (event) => {
-    if (event.target.classList.contains("number-field-subtract")) {
+    if (event.target.closest('.number-field-add')) {
+        handleQuantityChange(event.target, 1);
+    }
+
+    if (event.target.closest('.number-field-subtract')) {
         handleQuantityChange(event.target, -1);
     }
 
-    if (event.target.classList.contains("number-field-add")) {
-        handleQuantityChange(event.target, 1);
-    }
 });
 
 const handleQuantityChange = (button, change) => {
