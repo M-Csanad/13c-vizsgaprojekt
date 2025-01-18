@@ -284,4 +284,9 @@ $menu_items = [
     </div>
 </div>
 
+<div class="gradient-blur">
+    <div></div>
+    <div></div>
+</div>
+
 <script src="http://localhost/fb-content/assets/js/mobileNavbar.js"></script>
