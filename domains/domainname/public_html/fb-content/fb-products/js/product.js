@@ -376,7 +376,7 @@ window.addEventListener("load", () => {
   updateScrollbar(productImageScrollbar, productImageCarousel);
 
   document.getElementById("top-button").addEventListener("click", () => {
-    scrollTo({ top: 0, behavior: "smooth" });
+    lenis.scrollTo("top");
   });
   setTimeout(() => {
     updateDynamicBackground();

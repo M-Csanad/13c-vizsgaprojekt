@@ -1,0 +1,73 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: "Playfair Display";
+    src: url("../../assets/font/PlayfairDisplay-VariableFont_wght.woff2") format("woff2");
+    /* font-weight: 100 900; A betűtípus vastagsági tartománya */
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Roboto";
+    src: url("../../assets/font/Roboto-Regular.woff2") format("woff2");
+    /* font-weight: 100 900; A betűtípus vastagsági tartománya */
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    --background: #050505;
+    --background-light: #1d1d1d;
+    --text: #ffffff;
+    --border: #2b2b2b;
+}
+
+html {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+body {
+    background-color: var(--background-light);
+    color: var(--text);
+    min-height: 100vh;
+    font-family: Arial;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+    --is-mobile: 0;
+}
+
+main {
+    width: 100%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+
+    & > form {
+        flex-grow: 1;
+    }
+
+    & > form > header {
+        font-size: 40px;
+    }
+
+    & > .order-details {
+        border-radius: 5px;
+        width: 500px;
+        background-color: #292929;
+    }
+}
+
+header {
+    font-family: Playfair Display;
+}

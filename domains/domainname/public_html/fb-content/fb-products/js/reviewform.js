@@ -3,98 +3,107 @@ const isMobile = (getComputedStyle(document.body).getPropertyValue("--is-mobile"
 const form = document.querySelector(".review-form");
 const reviewStarsContainer = document.querySelector(".review-form-stars");
 const reviewStars = document.querySelectorAll(".review-form .star");
-const hiddenInput = reviewStarsContainer.querySelector("[name=stars-input]");
+let hiddenInput = null;
+if (reviewStarsContainer) {
+  hiddenInput = reviewStarsContainer.querySelector("[name=stars-input]");
+}
 const reviewSubmitter = document.querySelector(".review-form > .submit");
 
 const sendButton = document.querySelector(".send-button");
 
-sendButton.addEventListener("mouseenter", () => {
-  sendButton.classList.add("hovered");
-})
-
-sendButton.addEventListener("mouseleave", () => {
-  sendButton.classList.remove("hovered");
-})
-
-sendButton.addEventListener("click", () => {
-  sendButton.classList.remove("hovered");
-  sendButton.classList.add("sent");
-  sendButton.classList.add("unsuccessful")
-})
+if (sendButton) {
+  sendButton.addEventListener("mouseenter", () => {
+    sendButton.classList.add("hovered");
+  })
+  
+  sendButton.addEventListener("mouseleave", () => {
+    sendButton.classList.remove("hovered");
+  })
+  
+  sendButton.addEventListener("click", () => {
+    sendButton.classList.remove("hovered");
+    sendButton.classList.add("sent");
+    sendButton.classList.add("unsuccessful")
+  })
+}
 
 let isActive = false;
 let isSet = false;
 
-reviewSubmitter.addEventListener("click", async () => {
-  let title = form.querySelector("input[type=text]");
-  let body = form.querySelector("textarea");
-  let rating = hiddenInput.value;
-
-  if (rating == "null") {
-    reviewStarsContainer.classList.add("invalid");
-    return;
-  }
+if (reviewSubmitter) {
+  reviewSubmitter.addEventListener("click", async () => {
+    let title = form.querySelector("input[type=text]");
+    let body = form.querySelector("textarea");
+    let rating = hiddenInput.value;
   
-  if (!title.value) {
-    title.classList.add("invalid");
-    return;
-  }
-
-  if (!body.value) {
-    body.classList.add("invalid");
-    return;
-  }
-
-  const response = await fetch("../../../review", {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      "review-title": title.value,
-      "review-body": body.value,
-      "rating": rating
-    })
-  });
-  
-  if (response.ok) {
-    reviewSubmitter.classList.remove("unsuccessful");
-    reviewSubmitter.classList.add("successful");
-  }
-  else {
-    reviewSubmitter.classList.remove("successful");
-    reviewSubmitter.classList.add("unsuccessful");
-  }
-});
-
-reviewStarsContainer.addEventListener("mouseleave", () => {
-  if (hiddenInput.value && hiddenInput.value !== "null") {
-    if (!isSet) {
-      setStarsFromValue(parseFloat(hiddenInput.value)); // Biztosítjuk, hogy az érték float típusú
+    if (rating == "null") {
+      reviewStarsContainer.classList.add("invalid");
+      return;
     }
-  } else {
-    resetStars(); // Alapállapotba állítja a csillagokat
-  }
-  isActive = false;
-});
-
-reviewStarsContainer.addEventListener("mouseenter", () => {
-  isActive = true; // Aktiválja az állapotot, ha az egér belép a csillagba
-});
-
-reviewStars.forEach((star) => {
-  if (!isMobile) {
-    star.addEventListener("click", (e) => handleClick(e, star));
-  }
-  star.addEventListener("mousemove", (e) => {
-    throttleHandleStarMove(star, e)
-  });
-  star.addEventListener("mouseenter", (e) => {
-    if (!isSet) {
-      resetStars();
+    
+    if (!title.value) {
+      title.classList.add("invalid");
+      return;
+    }
+  
+    if (!body.value) {
+      body.classList.add("invalid");
+      return;
+    }
+  
+    const response = await fetch("../../../review", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        "review-title": title.value,
+        "review-body": body.value,
+        "rating": rating
+      })
+    });
+    
+    if (response.ok) {
+      reviewSubmitter.classList.remove("unsuccessful");
+      reviewSubmitter.classList.add("successful");
+    }
+    else {
+      reviewSubmitter.classList.remove("successful");
+      reviewSubmitter.classList.add("unsuccessful");
     }
   });
-});
+}
+
+if (reviewStarsContainer && reviewStars) {
+  reviewStarsContainer.addEventListener("mouseleave", () => {
+    if (hiddenInput.value && hiddenInput.value !== "null") {
+      if (!isSet) {
+        setStarsFromValue(parseFloat(hiddenInput.value)); // Biztosítjuk, hogy az érték float típusú
+      }
+    } else {
+      resetStars(); // Alapállapotba állítja a csillagokat
+    }
+    isActive = false;
+  });
+  
+  reviewStarsContainer.addEventListener("mouseenter", () => {
+    isActive = true; // Aktiválja az állapotot, ha az egér belép a csillagba
+  });
+  
+  reviewStars.forEach((star) => {
+    if (!isMobile) {
+      star.addEventListener("click", (e) => handleClick(e, star));
+    }
+    star.addEventListener("mousemove", (e) => {
+      throttleHandleStarMove(star, e)
+    });
+    star.addEventListener("mouseenter", (e) => {
+      if (!isSet) {
+        resetStars();
+      }
+    });
+  });
+}
 
 // Egérmozgás kezelése egy csillag fölött
 function handleStarMove(star, mouseEvent) {
@@ -221,10 +230,12 @@ function setStarsFromValue(value) {
 }
 
 const requiredFields = ["stars-input", "review-title", "review-body"];
-for (let field of requiredFields) {
-  const input = form.querySelector(`[name=${field}]`);
-  if (input.getAttribute("type") != "hidden") {
-    input.addEventListener("input", formChangeHandler);
+if (form) {
+  for (let field of requiredFields) {
+    const input = form.querySelector(`[name=${field}]`);
+    if (input.getAttribute("type") != "hidden") {
+      input.addEventListener("input", formChangeHandler);
+    }
   }
 }
 
