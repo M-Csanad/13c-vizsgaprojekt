@@ -385,7 +385,9 @@ class Cart {
             const data = await result.json();
             this.data = data.message;
             this.lastFetchResultType = data.type;
-            this.cartPrice = this.data.reduce((a, b) => a + (b.unit_price * b.quantity), 0);
+            if (data.type == "SUCCESS") {
+                this.cartPrice = this.data.reduce((a, b) => a + (b.unit_price * b.quantity), 0);
+            }
         } else {
             throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());
         }

@@ -9,7 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     exit();
 }
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Felhasználó adatainak lekérése, ha van
 $isLoggedIn = false;
@@ -37,7 +39,7 @@ else if (isset($_COOKIE['cart']) && !empty(json_decode($_COOKIE['cart'], true)))
         if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
             $_SESSION['cart'] = $cartData;
         }
-    
+        
         $result = new Result(Result::SUCCESS, $_COOKIE['cart']);
         echo $result->toJSON();
     }
@@ -83,7 +85,7 @@ else {
     else {
         $_SESSION['cart'] = [];
         setCartCookie();
-
+        
         $result = new Result(Result::SUCCESS, $_SESSION['cart']);
         echo $result->toJSON();
     }

@@ -50,8 +50,8 @@ main {
     max-width: 1200px;
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     gap: 1rem;
+    padding: 1rem;
 
     & > form {
         flex-grow: 1;
@@ -70,4 +70,259 @@ main {
 
 header {
     font-family: Playfair Display;
+    margin-bottom: 1rem;
+}
+
+form > section {
+    padding-block: 1rem;
+
+    & > header {
+        color: rgb(224, 224, 224);
+        font-size: 25px;
+        margin-bottom: 1rem;
+        position: relative;
+    }
+
+    & > header::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        top: calc(100% + 2px);
+        height: 1px;
+        background: linear-gradient(to right,rgb(224, 224, 224), transparent);
+    }
+}
+
+.input-group-inline {
+    display: flex;
+    gap: 0.5rem;
+
+    & > .input-group {
+        width: 50%;
+    }
+}
+
+.input-group {
+    margin-bottom: 0.5rem;
+    position: relative;
+    height: 50px;
+    
+    & > .input-body {
+        width: 100%;
+        height: 50px;
+        border-radius: 5px;
+        border: 1px solid rgb(55, 55, 55);
+        position: absolute;
+        top: 0;
+        left: 0;
+        min-width: 0px;
+        outline: 2px solid transparent;
+        transition: outline 0.3s ease;
+        padding: 0.5rem;
+    }
+
+    & > .input-body:has(input:focus-within) {
+        outline: 2px solid grey;
+    }
+
+    & input, select {
+        padding: 0.5rem;
+        padding-top: 1.6rem;
+        font-family: Roboto;
+        font-size: 16px;
+        line-height: 20px;
+        position: absolute;
+        color: white;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+    }
+
+    & select {
+        padding: 0.3rem;
+        padding-top: 1.4rem;
+        /* color-scheme: dark; */
+    }
+
+    & option {
+        /* color-scheme: dark; */
+        color: black;
+    }
+
+    & label {
+        position: absolute;
+        pointer-events: none;
+        user-select: none;
+        top: calc(50% - 8px);
+        left: 0.5rem;
+        width: 100%;
+        height: 16px;
+        color: rgb(176, 176, 176);
+        font-size: 14px;
+        will-change: transform, font-size;
+        transition: transform 0.3s ease, font-size 0.3s ease;
+    }
+
+    & label.focus {
+        transform: translateY(-8px);
+        font-size: 12px;
+    }
+
+}
+
+.purchase-type-radios {
+    display: flex;
+    flex-direction: row;
+    margin-block: 1rem;
+}
+
+.purchase-type-radios > .radio {
+    padding: 0.5rem;
+    width: 50%;
+    text-align: center;
+    font-size: 18px;
+    color: #d5d5d5;
+    border-bottom: 2px solid grey;
+    transition: border-color 0.3s ease;
+}
+
+.purchase-type-radios > .radio.checked {
+    color: white;
+    border-color: #d5d5d5;
+}
+    
+.order-details {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    gap: 2rem;
+    font-family: Roboto;
+
+    & > header {
+        color: white;
+        font-size: 25px;
+        position: relative;
+    }
+    & > header::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        width: 100%;
+        top: calc(100% + 2px);
+        height: 1px;
+        background: linear-gradient(to right,rgb(224, 224, 224), transparent);
+    }
+
+    & > .items {
+        width: 100%;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        overflow-y: auto;
+        max-height: 440px;
+    }
+
+    & .item {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
+    }
+
+    & .item > .item-image {
+        position: relative;
+        width: 80px;
+        height: 80px;
+    }
+
+    & .item > .item-image > picture {
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+
+    & .item > .item-image > picture > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    & .item-info {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    & .item-name {
+        font-family: Playfair Display;
+        font-size: 22px;
+    }
+
+    & .item-price, .price {
+        display: flex;
+        flex-direction: row;
+        gap: 0.2rem;
+        height: 18px;
+    }
+    
+    & .quantity {
+        display: flex;
+        flex-direction: row;
+        align-items: flex-end;
+        flex-grow: 1;
+        color: #d5d5d5;
+    }
+    
+    & .value {
+        font-size: 18px;
+    }
+
+    & .currency {
+        font-size: 14px;
+        line-height: 26px;
+        color: rgb(187, 187, 187);
+    }
+
+    & .price {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        color: #eeeeee;
+    }
+
+    & .inline-group {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 1rem;
+    }
+
+    & .tax {
+        font-style: italic;
+        color: rgb(187, 187, 187);
+    }
+
+    & .total {
+        padding: 0;
+        padding-top: 1rem;
+    }
+
+    & .total .value, .total .label {
+        font-size: 20px;
+        color: white;
+        font-weight: bold;
+    }
+
+    & .total .currency {
+        line-height: 30px;
+        font-size: 16px;
+    }
 }
