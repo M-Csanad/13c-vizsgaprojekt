@@ -66,7 +66,7 @@
     <div class=transition><div class=transition-background></div><div class=transition-text><div class=hero><div class=char>F</div><div class=char>l</div><div class=char>o</div><div class=char>r</div><div class=char>e</div><div class=char>n</div><div class=char>s</div><div class=char> </div><div class=char>B</div><div class=char>o</div><div class=char>t</div><div class=char>a</div><div class=char>n</div><div class=char>i</div><div class=char>c</div><div class=char>a</div></div><div class=quote><div class=char>"</div><div class=char>A</div><div class=char> </div><div class=char>l</div><div class=char>e</div><div class=char>g</div><div class=char>n</div><div class=char>a</div><div class=char>g</div><div class=char>y</div><div class=char>o</div><div class=char>b</div><div class=char>b</div><div class=char> </div><div class=char>g</div><div class=char>a</div><div class=char>z</div><div class=char>d</div><div class=char>a</div><div class=char>g</div><div class=char>s</div><div class=char>á</div><div class=char>g</div><div class=char> </div><div class=char>a</div><div class=char>z</div><div class=char> </div><div class=char>e</div><div class=char>g</div><div class=char>é</div><div class=char>s</div><div class=char>z</div><div class=char>s</div><div class=char>é</div><div class=char>g</div><div class=char>.</div><div class=char>"</div><div class=char> </div><div class=char>-</div><div class=char> </div><div class=char>V</div><div class=char>e</div><div class=char>r</div><div class=char>g</div><div class=char>i</div><div class=char>l</div><div class=char>i</div><div class=char>u</div><div class=char>s</div></div></div><div class="layer layer-0"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-1"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-2"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-3"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div></div>
 
     <main>
-        <form>
+        <form class="checkout-form">
             <header>Megrendelés</header>
             <div class="input-group">
                 <div class="input-body">
@@ -90,7 +90,7 @@
                 <div class="input-group">
                     <div class="input-body">
                         <label for="email">E-mail</label>
-                        <input type="text" name="email" id="email" required placeholder="">
+                        <input type="text" name="email" id="email" required placeholder="pelda@example.com">
                         <div class="status">
                             <div class="error">
                                 <div class="message"></div>
@@ -102,8 +102,8 @@
                 <div class="input-group-inline">
                     <div class="input-group">
                         <div class="input-body">
-                            <label for="last_name">Vezetéknév</label>
-                            <input type="text" name="last_name" id="last_name" required placeholder="">
+                            <label for="last-name">Vezetéknév</label>
+                            <input type="text" name="last-name" id="last-name" required placeholder="pl. Minta">
                             <div class="status">
                                 <div class="error">
                                     <div class="message"></div>
@@ -114,8 +114,8 @@
                     </div>
                     <div class="input-group">
                         <div class="input-body">
-                            <label for="last_name">Keresztnév</label>
-                            <input type="text" name="first_name" id="first_name" required placeholder="">
+                            <label for="first-name">Keresztnév</label>
+                            <input type="text" name="first-name" id="first-name" required placeholder="pl. Károly">
                             <div class="status">
                                 <div class="error">
                                     <div class="message"></div>
@@ -128,7 +128,7 @@
                 <div class="input-group">
                     <div class="input-body">
                         <label for="phone">Telefonszám</label>
-                        <input type="tel" name="phone" id="phone" required placeholder="">
+                        <input type="tel" name="phone" id="phone" required placeholder="pl. +36 30 123 1234">
                         <div class="status">
                             <div class="error">
                                 <div class="message"></div>
@@ -143,8 +143,8 @@
                 <div class="input-group-inline">
                     <div class="input-group">
                         <div class="input-body">
-                            <label for="phone">Irányítószám</label>
-                            <input type="tel" name="phone" id="phone" required placeholder="">
+                            <label for="zip-code">Irányítószám</label>
+                            <input type="text" name="zip-code" id="zip-code" required placeholder="pl. 8248">
                             <div class="status">
                                 <div class="error">
                                     <div class="message"></div>
@@ -155,8 +155,8 @@
                     </div>
                     <div class="input-group">
                         <div class="input-body">
-                            <label for="phone">Település</label>
-                            <input type="tel" name="phone" id="phone" required placeholder="">
+                            <label for="city">Település</label>
+                            <input type="text" name="city" id="city" required placeholder="pl. Nemesvámos">
                             <div class="status">
                                 <div class="error">
                                     <div class="message"></div>
@@ -169,8 +169,8 @@
                 <div class="input-group-inline">
                     <div class="input-group">
                         <div class="input-body">
-                            <label for="phone">Utca</label>
-                            <input type="tel" name="phone" id="phone" required placeholder="">
+                            <label for="street">Utca</label>
+                            <input type="text" name="street" id="street" required placeholder="pl. Fő">
                             <div class="status">
                                 <div class="error">
                                     <div class="message"></div>
@@ -181,8 +181,8 @@
                     </div>
                     <div class="input-group">
                         <div class="input-body">
-                            <label for="phone">Házszám</label>
-                            <input type="tel" name="phone" id="phone" required placeholder="">
+                            <label for="house-number">Házszám</label>
+                            <input type="number" name="house-number" id="house-number" required placeholder="pl. 28">
                             <div class="status">
                                 <div class="error">
                                     <div class="message"></div>
@@ -199,14 +199,15 @@
                     <input type="checkbox" name="same-address" id="same-address">
                     <label for="same-address">A számlázási adatok megegyeznek a szállítási adatokkal</label>
                 </div>
-                <div class="purchase-type-radios">
+                <div class="purchase-type-radios" id="purchase-types">
                     <div class="radio checked">Magánszemélyként rendelek</div>
                     <div class="radio">Cégként rendelek</div>
+                    <div class="border"></div>
                 </div>
                 <div class="input-group">
                     <div class="input-body">
-                        <label for="phone">Számlázási név</label>
-                        <input type="tel" name="phone" id="phone" required placeholder="">
+                        <label for="billing-name">Számlázási név</label>
+                        <input type="text" name="billing-name" id="billing-name" required placeholder="pl. Kovács Károly">
                         <div class="status">
                             <div class="error">
                                 <div class="message"></div>
@@ -218,8 +219,8 @@
                 <div class="input-group-inline">
                     <div class="input-group">
                         <div class="input-body">
-                            <label for="phone">Irányítószám</label>
-                            <input type="tel" name="phone" id="phone" required placeholder="">
+                            <label for="billing-zip">Irányítószám</label>
+                            <input type="text" name="billing-zip" id="billing-zip" required placeholder="pl. 8200">
                             <div class="status">
                                 <div class="error">
                                     <div class="message"></div>
@@ -230,8 +231,8 @@
                     </div>
                     <div class="input-group">
                         <div class="input-body">
-                            <label for="phone">Település</label>
-                            <input type="tel" name="phone" id="phone" required placeholder="">
+                            <label for="billing-city">Település</label>
+                            <input type="text" name="billing-city" id="billing-city" required placeholder="pl. Veszprém">
                             <div class="status">
                                 <div class="error">
                                     <div class="message"></div>
@@ -244,8 +245,8 @@
                 <div class="input-group-inline">
                     <div class="input-group">
                         <div class="input-body">
-                            <label for="phone">Utca</label>
-                            <input type="tel" name="phone" id="phone" required placeholder="">
+                            <label for="billing-street">Utca</label>
+                            <input type="text" name="billing-street" id="billing-street" required placeholder="pl. Iskola">
                             <div class="status">
                                 <div class="error">
                                     <div class="message"></div>
@@ -256,8 +257,8 @@
                     </div>
                     <div class="input-group">
                         <div class="input-body">
-                            <label for="phone">Házszám</label>
-                            <input type="tel" name="phone" id="phone" required placeholder="">
+                            <label for="billing-house-number">Házszám</label>
+                            <input type="text" name="billing-house-number" id="billing-house-number" required placeholder="pl. 4">
                             <div class="status">
                                 <div class="error">
                                     <div class="message"></div>
@@ -269,8 +270,8 @@
                 </div>
                 <div class="input-group">
                     <div class="input-body">
-                        <label for="phone">Adószám</label>
-                        <input type="tel" name="phone" id="phone" required placeholder="">
+                        <label for="tax-number">Adószám</label>
+                        <input type="text" name="tax-number" id="tax-number" required placeholder="pl. 12345678-2-10">
                         <div class="status">
                             <div class="error">
                                 <div class="message"></div>

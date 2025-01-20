@@ -111,8 +111,8 @@ form > section {
     & > .input-body {
         width: 100%;
         height: 50px;
-        border-radius: 5px;
         border: 1px solid rgb(55, 55, 55);
+        border-radius: 5px;
         position: absolute;
         top: 0;
         left: 0;
@@ -141,6 +141,9 @@ form > section {
         left: 0;
         width: 100%;
         height: 100%;
+        opacity: 0;
+        will-change: opacity;
+        transition: opacity 0.3s ease;
     }
 
     & select {
@@ -173,29 +176,45 @@ form > section {
         font-size: 12px;
     }
 
+    & label.focus ~ select, label.focus ~ input {
+        opacity: 1;
+    }
 }
 
 .purchase-type-radios {
     display: flex;
     flex-direction: row;
     margin-block: 1rem;
+    position: relative;
+
+    & > .radio {
+        padding: 0.5rem;
+        cursor: pointer;
+        width: 50%;
+        text-align: center;
+        font-size: 18px;
+        color: #858585; 
+        transition: color 0.5s ease;
+        user-select: none;
+    }
+
+    & > .radio.checked {
+        color: white;
+        cursor: auto;
+    }
+
+    & > .border {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        height: 2px;
+        width: 100%;
+        --left: 0%;
+        --right: calc(var(--left) + 50%);
+        background: linear-gradient(to right, #858585 var(--left), white var(--left), white var(--right), #858585 var(--right));
+    }
 }
 
-.purchase-type-radios > .radio {
-    padding: 0.5rem;
-    width: 50%;
-    text-align: center;
-    font-size: 18px;
-    color: #d5d5d5;
-    border-bottom: 2px solid grey;
-    transition: border-color 0.3s ease;
-}
-
-.purchase-type-radios > .radio.checked {
-    color: white;
-    border-color: #d5d5d5;
-}
-    
 .order-details {
     padding: 1rem;
     display: flex;
