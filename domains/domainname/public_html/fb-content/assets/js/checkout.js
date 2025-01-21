@@ -69,34 +69,116 @@ class Checkout {
         this.formDOM = document.querySelector('.checkout-form');
         if (!this.formDOM) throw new Error("Nincs rendelési űrlap");
 
+        this.validationRules = {
+            email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+            zipCode: /^[1-9]{1}[0-9]{4}$/,
+            name: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
+            phone: /^(\+36|06)(\d{9})$/,
+            houseNumber: (e) => e > 0
+        };
+        
         this.form = {
-            "sections": {
-                "autofill": this.formDOM.querySelector('#autofill'),
-                "customer": {
-                    "email": this.formDOM.querySelector('#email'),
-                    "lastName": this.formDOM.querySelector("#last-name"),
-                    "firstName": this.formDOM.querySelector("#first-name"),
-                    "phone": this.formDOM.querySelector("#phone")
+            "autofill": this.formDOM.querySelector('#autofill'),
+        
+            "customer": {
+                "email": {
+                    "dom": this.formDOM.querySelector('#email'),
+                    "errorMessage": "Érvénytelen e-mail cím",
+                    get value() { return this.dom.value || undefined; }
                 },
-                "delivery": {
-                    "zipCode": this.formDOM.querySelector("#zip-code"),
-                    "city": this.formDOM.querySelector("#city"),
-                    "street": this.formDOM.querySelector("#street"),
-                    "houseNumber": this.formDOM.querySelector("#house-number"),
+                "lastName": {
+                    "dom": this.formDOM.querySelector("#last-name"),
+                    "errorMessage": "Érvénytelen vezetéknév",
+                    get value() { return this.dom.value || undefined; }
                 },
-                "billing": {
-                    "sameAddress": this.formDOM.querySelector("#same-address"),
-                    "purchaseTypes": this.formDOM.querySelector("#purchase-types"),
-                    "name": this.formDOM.querySelector("#billing-name"),
-                    "zipCode": this.formDOM.querySelector("#billing-zip"),
-                    "city": this.formDOM.querySelector("#billing-city"),
-                    "street": this.formDOM.querySelector("#billing-street"),
-                    "houseNumber": this.formDOM.querySelector("#billing-house-number"),
+                "firstName": {
+                    "dom": this.formDOM.querySelector("#first-name"),
+                    "errorMessage": "Érvénytelen keresztnév",
+                    get value() { return this.dom.value || undefined; }
+                },
+                "phone": {
+                    "dom": this.formDOM.querySelector("#phone"),
+                    "errorMessage": "Érvénytelen telefonszám",
+                    get value() { return this.dom.value || undefined; }
+                }
+            },
+        
+            "delivery": {
+                "zipCode": {
+                    "dom": this.formDOM.querySelector("#zip-code"),
+                    "errorMessage": "Érvénytelen irányítószám.",
+                    get value() { return this.dom.value || undefined; }
+                },
+                "city": {
+                    "dom": this.formDOM.querySelector("#city"),
+                    "errorMessage": "A város mező nem lehet üres",
+                    get value() { return this.dom.value || undefined; }
+                },
+                "street": {
+                    "dom": this.formDOM.querySelector("#street"),
+                    "errorMessage": "Az utca mező nem lehet üres",
+                    get value() { return this.dom.value || undefined; }
+                },
+                "houseNumber": {
+                    "dom": this.formDOM.querySelector("#house-number"),
+                    "errorMessage": "Érvénytelen házszám (pozitív egész számnak kell lennie)",
+                    get value() { return this.dom.value || undefined; }
+                }
+            },
+        
+            "billing": {
+                "sameAddress": {
+                    "dom": this.formDOM.querySelector("#same-address"),
+                    get value() { return this.dom.checked || undefined; }
+                },
+                "purchaseTypes": {
+                    "dom": this.formDOM.querySelector("#purchase-types"),
+                    get value() { return this.dom.value || undefined; }
+                },
+                "name": {
+                    "dom": this.formDOM.querySelector("#billing-name"),
+                    "errorMessage": "Érvénytelen számlázási név",
+                    get value() { return this.dom.value || undefined; }
+                },
+                "zipCode": {
+                    "dom": this.formDOM.querySelector("#billing-zip"),
+                    "errorMessage": "Érvénytelen irányítószám",
+                    get value() { return this.dom.value || undefined; },
+                },
+                "city": {
+                    "dom": this.formDOM.querySelector("#billing-city"),
+                    "errorMessage": "A város mező nem lehet üres",
+                    get value() { return this.dom.value || undefined; }
+                },
+                "street": {
+                    "dom": this.formDOM.querySelector("#billing-street"),
+                    "errorMessage": "Az utca mező nem lehet üres",
+                    get value() { return this.dom.value || undefined; }
+                },
+                "houseNumber": {
+                    "dom": this.formDOM.querySelector("#billing-house-number"),
+                    "errorMessage": "Érvénytelen házszám (pozitív egész számnak kell lennie)",
+                    get value() { return this.dom.value || undefined; }
+                },
+                "taxNumber": {
+                    "dom": this.formDOM.querySelector("#tax-number"),
+                    "errorMessage": "Érvénytelen adószám",
+                    get value() { return this.dom.value || undefined; }
                 }
             }
         };
 
         this.handleAutofillFocus();
+    }
+
+    validateField(section, name) {
+        const field = this.form[section][name] || undefined;
+        if (!field) return false;
+
+        const validator = this.validationRules[name];
+        const value = field.value;
+        const error = field.errorMessage;
+        return (typeof validator == 'function') ? validator(value)?null:error : validator.test(value)?null:error;
     }
 
     // Eseménykezelők

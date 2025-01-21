@@ -237,6 +237,7 @@
     }
 
     & > .cart-bottom-button > a {
+        visibility: initial;
         border: 2px solid rgb(197, 255, 110);
         color: rgb(197, 255, 110);
         background-color: transparent;

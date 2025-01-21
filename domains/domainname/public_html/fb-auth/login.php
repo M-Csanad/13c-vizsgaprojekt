@@ -55,7 +55,7 @@ if ($result->isSuccess()) {
                     <div class="input-group">
                         <label for="username">Felhasználónév</label>
                         <input type="text" class="empty" name="username" id="username" autocomplete="username" required
-                            placeholder="" oninput="validateUserNameInput()"
+                            placeholder=""
                             value="">
                     </div>
                     <div class="input-group">

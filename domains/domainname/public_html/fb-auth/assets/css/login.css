@@ -132,9 +132,7 @@ form {
         border-bottom: 3px solid var(--text-light);
     }
 
-    .input-group:has(input:not(.empty)):has(input:valid), 
-    /* .input-group:has(input.autofilled),  */
-    .input-group:has(input:-webkit-autofill) {
+    .input-group:has(input:not(.empty)):has(input:valid) {
         border-bottom: 3px solid var(--valid) !important;
     }
     .input-group:has(input:not(.empty)):has(input:invalid) {
