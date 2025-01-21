@@ -124,6 +124,9 @@ class Cart {
         // Összeg elem
         this.priceContainer = this.domElement.querySelector(".price > .value");
 
+        // Vásárlás gomb
+        this.checkoutButton = this.priceContainer.closest('a');
+
         // GSAP ellenőrzés
         if (!gsap) throw new Error("A GSAP nem található");
         if (!lenis) throw new Error("A Lenis nem található");
@@ -175,9 +178,14 @@ class Cart {
 
     // Teljesen lefrissíti a kosár felhasználói felületét (Nincsen animálva)
     updateUI(flushContainer = true) {
+        const isCartEmpty = this.data.length == 0;
+
+        if (!isCartEmpty) this.priceContainer.innerHTML = this.cartPrice;
+
         this.cartCount.innerHTML = `${this.data.length} elem`;
-        this.setEmptyMessageVisibility(this.data.length == 0 ? "visible" : "hidden");
-        this.priceContainer.innerHTML = this.cartPrice;
+        this.setElementVisibility(this.emptyMessage, isCartEmpty ? "visible" : "hidden");
+        this.setElementVisibility(this.checkoutButton, isCartEmpty ? "hidden" : "visible");
+
         
         if (!flushContainer) return;
 
@@ -270,18 +278,26 @@ class Cart {
     }
 
     // A "Kosár üres" üzenet megjelenési állapotát változtatja
-    setEmptyMessageVisibility(visibility) {
+    setElementVisibility(element, visibility) {
+        if (!element) throw new Error("Nincs elem megadva!");
+        
         if (visibility != "hidden" && visibility != "visible") throw new Error(`Ismeretlen láthatóság (${visibility})`);
-
-        if (this.emptyMessage.style.visibility == visibility) return;
+        
+        console.log(element, visibility, getComputedStyle(element).visibility)
+        if (getComputedStyle(element).visibility == visibility) return;
 
         if (!this.isOpen) {
-            this.emptyMessage.style.visibility = visibility;
+            if (visibility == "visible") {
+                gsap.set(element, { opacity: 1, scale: 1, visibility: "visible" });
+            }
+            else {
+                gsap.set(element, { opacity: 0, scale: 0, visibility: "hidden" });
+            }
         }
         else {
             if (visibility == "visible") {
-                gsap.set(this.emptyMessage, { opacity: 0, scale: 0, visibility: "visible" });
-                gsap.to(this.emptyMessage, {
+                gsap.set(element, { opacity: 0, scale: 0, visibility: "visible" });
+                gsap.to(element, {
                     opacity: 1,
                     scale: 1,
                     ease: this.ease,
@@ -289,13 +305,13 @@ class Cart {
                 });
             }
             else {
-                gsap.to(this.emptyMessage, {
+                gsap.to(element, {
                     opacity: 0,
                     scale: 0,
                     ease: this.ease,
                     duration: 0.4,
                     onComplete: () => {
-                        this.emptyMessage.style.visibility = "hidden"; // Itt nem GSAP-pal állítom, mert csak egy tulajdonságot állítok
+                        element.style.visibility = "hidden"; // Itt nem GSAP-pal állítom, mert csak egy tulajdonságot állítok
                     }
                 });
             }

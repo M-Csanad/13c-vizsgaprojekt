@@ -47,6 +47,7 @@
     }
 
     & > .cart-main > .cart-empty {
+        visibility: initial;
         position: absolute;
         top: 0;
         left: 0;
