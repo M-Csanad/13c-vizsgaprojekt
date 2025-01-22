@@ -78,8 +78,10 @@ class Checkout {
         };
         
         this.form = {
-            "autofill": this.formDOM.querySelector('#autofill'),
-        
+            "autofill": {
+                "dom": this.formDOM.querySelector('#autofill'),
+                get value() { return this.dom.value || undefined }
+            },
             "customer": {
                 "email": {
                     "dom": this.formDOM.querySelector('#email'),
@@ -129,10 +131,12 @@ class Checkout {
             "billing": {
                 "sameAddress": {
                     "dom": this.formDOM.querySelector("#same-address"),
+                    "noValidate": true,
                     get value() { return this.dom.checked || undefined; }
                 },
                 "purchaseTypes": {
                     "dom": this.formDOM.querySelector("#purchase-types"),
+                    "noValidate": true,
                     get value() { return this.dom.value || undefined; }
                 },
                 "name": {
@@ -171,19 +175,42 @@ class Checkout {
         this.handleAutofillFocus();
     }
 
-    validateField(section, name) {
-        const field = this.form[section][name] || undefined;
+    validateField(section, name = null) {
+        const field = name ? this.form[section][name] || undefined : this.form[section] || undefined;
         if (!field) return false;
 
         const validator = this.validationRules[name];
         const value = field.value;
         const error = field.errorMessage;
+
+        if (!value) return error;
         return (typeof validator == 'function') ? validator(value)?null:error : validator.test(value)?null:error;
     }
 
     // Eseménykezelők
     bindEvents() {
         document.addEventListener("click", (e) => this.handleClickEvents(e));
+
+        for (let section in this.form) {
+            if (this.form[section].dom) {
+                let element = this.form[section];
+                if (element.noValidate) continue;
+
+                element.dom.addEventListener("focusout", () => {
+                    const valid = this.validateField(section);
+                    console.log(section, valid);
+                });
+            }
+            else {
+                for (let field in this.form[section]) {
+                    let element = this.form[section][field];
+                    element.dom.addEventListener("focusout", () => {
+                        const valid = this.validateField(section, field);
+                        console.log(section + " " + field, valid);
+                    });
+                }
+            }
+        }
     }
     
     handleClickEvents(e) {

@@ -120,6 +120,7 @@ form > section {
         outline: 2px solid transparent;
         transition: outline 0.3s ease;
         padding: 0.5rem;
+        background-color: var(--background-light) !important;
     }
 
     & > .input-body:has(input:focus-within) {
@@ -133,8 +134,8 @@ form > section {
         font-size: 16px;
         line-height: 20px;
         position: absolute;
-        color: white;
-        background-color: transparent;
+        color: white !important;
+        background-color: transparent !important;
         border: none;
         outline: none;
         bottom: 0;
@@ -158,6 +159,7 @@ form > section {
     }
 
     & label {
+        z-index: 10;
         position: absolute;
         pointer-events: none;
         user-select: none;
@@ -168,18 +170,46 @@ form > section {
         color: rgb(176, 176, 176);
         font-size: 14px;
         will-change: transform, font-size;
-        transition: transform 0.3s ease, font-size 0.3s ease;
+        transition: transform 0.3s ease;
+        transform-origin: left;
+        backface-visibility: hidden;
     }
 
     & label.focus {
-        transform: translateY(-8px);
-        font-size: 12px;
+        transform: translateY(-10px) translateZ(0);
     }
 
     & label.focus ~ select, label.focus ~ input {
         opacity: 1;
     }
 }
+
+/* AUTOFILL CSS FIX */
+.input-group input:-webkit-autofill,
+.input-group input:-webkit-autofill:hover,
+.input-group input:-webkit-autofill:focus,
+.input-group input:-webkit-autofill:active,
+.input-group select:-webkit-autofill,
+.input-group select:-webkit-autofill:hover,
+.input-group select:-webkit-autofill:focus,
+.input-group select:-webkit-autofill:active {
+    -webkit-text-fill-color: white !important;
+    -webkit-box-shadow: 0 0 0px 100000px var(--background-light) inset !important;
+    caret-color: white !important; /* For cursor color */
+    background-color: var(--background-light) !important;
+}
+
+.input-group input,
+.input-group select {
+    color-scheme: dark;
+    background-color: var(--background-light) !important;
+}
+
+.input-group option {
+    background-color: var(--background-light);
+    color: white !important;
+}
+/* END AUTOFILL CSS FIX*/
 
 .purchase-type-radios {
     display: flex;
