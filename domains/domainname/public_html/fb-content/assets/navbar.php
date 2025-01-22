@@ -271,7 +271,7 @@ $menu_items = [
     <div class="cart-bottom-button">
         <a href="/checkout">
             <div class="text">
-                FIZETÉS
+                TOVÁBB
             </div>
             <div class="text-separator">
                 -

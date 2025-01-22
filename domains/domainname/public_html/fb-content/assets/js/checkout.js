@@ -1,5 +1,5 @@
 // Segédfüggvény API kérésekhez
-const APIFetch = async (url, method, body = null) => {
+const APIFetch = async (url, method, body = null, encode = true) => {
     try {
         const params = {
             method: method,
@@ -8,7 +8,7 @@ const APIFetch = async (url, method, body = null) => {
             }
         };
 
-        if (body) params.body = JSON.stringify(body);
+        if (body) params.body = (encode) ? JSON.stringify(body) : body;
 
         const response = await fetch(url, params);
 
@@ -22,6 +22,7 @@ class Checkout {
     orderData;
     cartData;
     form;
+    orderPlaced = false;
 
     constructor() {
         if (!gsap) {
@@ -65,13 +66,14 @@ class Checkout {
 
     // DOM elemek megkeresése
     initDOM() {
-
+        this.paymentButton = document.querySelector('.payment-button');
+        
         this.formDOM = document.querySelector('.checkout-form');
         if (!this.formDOM) throw new Error("Nincs rendelési űrlap");
-
+        
         this.validationRules = {
             email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-            zipCode: /^[1-9]{1}[0-9]{4}$/,
+            zipCode: /^[1-9]{1}[0-9]{3}$/,
             name: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
             phone: /^(\+36|06)(\d{9})$/,
             houseNumber: (e) => e > 0
@@ -132,12 +134,12 @@ class Checkout {
                 "sameAddress": {
                     "dom": this.formDOM.querySelector("#same-address"),
                     "noValidate": true,
-                    get value() { return this.dom.checked || undefined; }
+                    get value() { return this.dom.checked || false; }
                 },
                 "purchaseTypes": {
                     "dom": this.formDOM.querySelector("#purchase-types"),
                     "noValidate": true,
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom.querySelector(".checked").innerHTML || "Magánszemélyként rendelek"; }
                 },
                 "name": {
                     "dom": this.formDOM.querySelector("#billing-name"),
@@ -171,7 +173,7 @@ class Checkout {
                 }
             }
         };
-
+        
         this.handleAutofillFocus();
     }
 
@@ -183,6 +185,7 @@ class Checkout {
         const value = field.value;
         const error = field.errorMessage;
 
+        if (!validator) return null;
         if (!value) return error;
         return (typeof validator == 'function') ? validator(value)?null:error : validator.test(value)?null:error;
     }
@@ -190,6 +193,14 @@ class Checkout {
     // Eseménykezelők
     bindEvents() {
         document.addEventListener("click", (e) => this.handleClickEvents(e));
+
+        document.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
+
+        this.paymentButton.addEventListener("click", async () => {
+            if (this.orderPlaced) return;
+
+            const result = await this.placeOrder();
+        })
 
         for (let section in this.form) {
             if (this.form[section].dom) {
@@ -204,6 +215,8 @@ class Checkout {
             else {
                 for (let field in this.form[section]) {
                     let element = this.form[section][field];
+                    if (element.noValidate) continue;
+
                     element.dom.addEventListener("focusout", () => {
                         const valid = this.validateField(section, field);
                         console.log(section + " " + field, valid);
@@ -214,10 +227,6 @@ class Checkout {
     }
     
     handleClickEvents(e) {
-        if (e.target.closest('.input-group')) {
-            this.handleInputGroupFocus(e);
-        }
-
         if (e.target.closest('.purchase-type-radios')) {
             this.handlePurchaseTypeRadios(e);
         }
@@ -235,13 +244,15 @@ class Checkout {
     }
 
     handleInputGroupFocus(e) {
-        const inputGroup = e.target.closest('.input-group');
+        const inputGroup = e;
         const label = inputGroup.querySelector('label');
         const input = inputGroup.querySelector('input, select');
 
-        if (input.nodeName !== "SELECT") label.classList.add('focus');
+        input.addEventListener("focus", () => {
+            if (input.nodeName !== "SELECT") label.classList.add('focus');
+        });
 
-        inputGroup.addEventListener("focusout", () => {
+        input.addEventListener("focusout", () => {
             if (input.value === "") label.classList.remove('focus');
         });
     }
@@ -282,7 +293,20 @@ class Checkout {
 
     // Backend metódusok
     async placeOrder() {
+        this.orderPlaced = true;
 
+        const data = new FormData(this.formDOM);
+        data.append("same-address", this.form.billing.sameAddress.value);
+        data.append("purchase-type", this.form.billing.purchaseTypes.value);
+        
+        const result = await APIFetch("/api/order/place", "POST", data, false);
+
+        if (result.ok) {
+            const data = await result.json();
+            console.log(data);
+        } else {
+            throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());
+        }
     }
 
     // Lekéri a kosár tartalmát

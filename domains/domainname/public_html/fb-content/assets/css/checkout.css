@@ -145,6 +145,7 @@ form > section {
         opacity: 0;
         will-change: opacity;
         transition: opacity 0.3s ease;
+        border-radius: 5px;
     }
 
     & select {
@@ -175,11 +176,11 @@ form > section {
         backface-visibility: hidden;
     }
 
-    & label.focus {
+    & label.focus, &:focus-within label {
         transform: translateY(-10px) translateZ(0);
     }
 
-    & label.focus ~ select, label.focus ~ input {
+    & label.focus ~ select, label.focus ~ input, &:focus-within label ~ select, &:focus-within label ~ input{
         opacity: 1;
     }
 }
@@ -373,5 +374,28 @@ form > section {
     & .total .currency {
         line-height: 30px;
         font-size: 16px;
+    }
+
+    & .payment-button {
+        background-color: transparent;
+        color: rgb(171, 255, 87);
+        border: 2px solid rgb(171, 255, 87);
+        font-family: Roboto;
+        letter-spacing: 2px;
+        font-size: 18px;
+        text-transform: uppercase;
+        padding-block: 0.8rem;
+        border-radius: 5px;
+        outline: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+    }
+
+    & .payment-button:hover {
+        background-color: rgba(171, 255, 87, 0.105);
+    }
+
+    & .payment-button:active {
+        background-color: rgba(171, 255, 87, 0.037);
     }
 }
