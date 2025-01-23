@@ -1,5 +1,6 @@
 <?php
-include_once __DIR__.'/../init.php';
+include_once __DIR__.'/../result_functions.php';
+include_once __DIR__.'/../order_functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -34,8 +35,14 @@ $validationRules = [
     "sameAddress" => [
         "noValidate" => true,
     ],
-    "purchaseTypes" => [
+    "purchaseType" => [
         "noValidate" => true,
+    ],
+    "companyName" => [
+        "callback" => function ($value) {
+            return mb_strlen($value) > 0;
+        },
+        "errorMessage" => "Érvénytelen cégnév"
     ],
     "taxNumber" => [
         "pattern" => '/^\d{8}-\d{1,2}-\d{2}$/',
@@ -44,39 +51,76 @@ $validationRules = [
 ];
 
 $formFields = [
-    "email" => $_POST['email'] ?? null,
-    "lastName" => $_POST['last-name'] ?? null,
-    "firstName" => $_POST['first-name'] ?? null,
-    "phone" => $_POST['phone'] ?? null,
-    "zipCode" => $_POST['zip-code'] ?? null,
-    "city" => $_POST['city'] ?? null,
-    "street" => $_POST['street'] ?? null,
-    "houseNumber" => $_POST['house-number'] ?? null,
-    "sameAddress" => isset($_POST['same-address']) ? true : false,
-    "purchaseTypes" => $_POST['purchase-types'] ?? 'Magánszemélyként rendelek',
-    "billingName" => $_POST['billing-name'] ?? null,
-    "billingZipCode" => $_POST['billing-zip'] ?? null,
-    "billingCity" => $_POST['billing-city'] ?? null,
-    "billingStreet" => $_POST['billing-street'] ?? null,
-    "billingHouseNumber" => $_POST['billing-house-number'] ?? null,
-    "taxNumber" => $_POST['tax-number'] ?? null,
+    "company" => [
+        "companyName" => $_POST['company-name'] ?? null,
+        "taxNumber" => $_POST['tax-number'] ?? null,
+    ],
+    "purchaseType" => $_POST['purchase-type'] ?? "Magánszemélyként rendelek",
+    "customer" => [
+        "email" => $_POST['email'] ?? null,
+        "lastName" => $_POST['last-name'] ?? null,
+        "firstName" => $_POST['first-name'] ?? null,
+        "phone" => $_POST['phone'] ?? null,
+    ],
+    "delivery" => [
+        "zipCode" => $_POST['zip-code'] ?? null,
+        "city" => $_POST['city'] ?? null,
+        "street" => $_POST['street'] ?? null,
+        "houseNumber" => $_POST['house-number'] ?? null,
+    ],
+    "billing" => [
+        "sameAddress" => $_POST['same-address'] === "true" ? true : false,
+        "zipCode" => $_POST['billing-zip'] ?? null,
+        "city" => $_POST['billing-city'] ?? null,
+        "street" => $_POST['billing-street'] ?? null,
+        "houseNumber" => $_POST['billing-house-number'] ?? null,
+    ]
 ];
 
 function validateForm($fields, $rules) {
-    foreach ($fields as $key => $value) {
-        if (isset($rules[$key])) {
-            $rule = $rules[$key];
+    foreach ($fields as $section => $sectionFields) {
+
+        // Ha ugyanaz a számlázási cím mint a szállítási, akkor nem kell validálni a számlázásit.
+        if ($section === "billing" && $fields['billing']['sameAddress']) {
+            continue;
+        }
+
+        if ($section === "company" && $fields['purchaseType'] === "Magánszemélyként rendelek") {
+            continue;
+        }
+
+        // Ha nem tömb, akkor csak egy elemű a szekció
+        if (!is_array($sectionFields)) {
+            $rule = $rules[$section];
 
             if (isset($rule['noValidate']) && $rule['noValidate']) {
                 continue;
             }
 
-            if (isset($rule['pattern']) && !preg_match($rule['pattern'], $value)) {
-                return $rule['errorMessage'];
+            if (isset($rule['pattern']) && !preg_match($rule['pattern'], $sectionFields)) {
+                return $rule['errorMessage'] . " ($section)";
             }
 
-            if (isset($rule['callback']) && !$rule['callback']($value)) {
-                return $rule['errorMessage'];
+            if (isset($rule['callback']) && !$rule['callback']($sectionFields)) {
+                return $rule['errorMessage'] . " ($section)";
+            }
+        }
+
+        foreach ($sectionFields as $key => $value) {
+            if (isset($rules[$key])) {
+                $rule = $rules[$key];
+
+                if (isset($rule['noValidate']) && $rule['noValidate']) {
+                    continue;
+                }
+
+                if (isset($rule['pattern']) && !preg_match($rule['pattern'], $value)) {
+                    return $rule['errorMessage'] . " ($section - $key)";
+                }
+
+                if (isset($rule['callback']) && !$rule['callback']($value)) {
+                    return $rule['errorMessage'] . " ($section - $key)";
+                }
             }
         }
     }
@@ -84,6 +128,7 @@ function validateForm($fields, $rules) {
     return null;
 }
 
+// Értékek validálása
 $error = validateForm($formFields, $validationRules);
 
 if ($error) {
@@ -93,5 +138,6 @@ if ($error) {
     exit();
 }
 
-$result = new Result(Result::SUCCESS, "Minden mező érvényes!");
+// Rendelés leadása
+$result = newOrder($formFields);
 echo $result->toJSON();

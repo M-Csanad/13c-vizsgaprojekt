@@ -76,6 +76,7 @@ class Checkout {
             zipCode: /^[1-9]{1}[0-9]{3}$/,
             name: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
             phone: /^(\+36|06)(\d{9})$/,
+            taxNumber: /^\d{8}-\d{1,2}-\d{2}$/,
             houseNumber: (e) => e > 0
         };
         
@@ -83,6 +84,23 @@ class Checkout {
             "autofill": {
                 "dom": this.formDOM.querySelector('#autofill'),
                 get value() { return this.dom.value || undefined }
+            },
+            "purchaseTypes": {
+                "dom": this.formDOM.querySelector("#purchase-types"),
+                "noValidate": true,
+                get value() { return this.dom.querySelector(".checked").innerHTML || "Magánszemélyként rendelek"; }
+            },
+            "company": {
+                "name": {
+                    "dom": this.formDOM.querySelector("#company-name"),
+                    "errorMessage": "Érvénytelen cégnév",
+                    get value() { return this.dom.value || undefined; }
+                },
+                "taxNumber": {
+                    "dom": this.formDOM.querySelector("#tax-number"),
+                    "errorMessage": "Érvénytelen adószám",
+                    get value() { return this.dom.value || undefined; }
+                }
             },
             "customer": {
                 "email": {
@@ -136,16 +154,6 @@ class Checkout {
                     "noValidate": true,
                     get value() { return this.dom.checked || false; }
                 },
-                "purchaseTypes": {
-                    "dom": this.formDOM.querySelector("#purchase-types"),
-                    "noValidate": true,
-                    get value() { return this.dom.querySelector(".checked").innerHTML || "Magánszemélyként rendelek"; }
-                },
-                "name": {
-                    "dom": this.formDOM.querySelector("#billing-name"),
-                    "errorMessage": "Érvénytelen számlázási név",
-                    get value() { return this.dom.value || undefined; }
-                },
                 "zipCode": {
                     "dom": this.formDOM.querySelector("#billing-zip"),
                     "errorMessage": "Érvénytelen irányítószám",
@@ -164,11 +172,6 @@ class Checkout {
                 "houseNumber": {
                     "dom": this.formDOM.querySelector("#billing-house-number"),
                     "errorMessage": "Érvénytelen házszám (pozitív egész számnak kell lennie)",
-                    get value() { return this.dom.value || undefined; }
-                },
-                "taxNumber": {
-                    "dom": this.formDOM.querySelector("#tax-number"),
-                    "errorMessage": "Érvénytelen adószám",
                     get value() { return this.dom.value || undefined; }
                 }
             }
@@ -262,6 +265,7 @@ class Checkout {
 
         const radio = e.target.closest('.radio');
         const group = radio.parentElement;
+        const target = this.formDOM.querySelector(group.dataset.target);
         const border = group.querySelector(".border");
         const index = Array.from(group.children).filter(el => el.className !== 'border').indexOf(radio);
         const left = `${index * 50}%`;
@@ -280,8 +284,23 @@ class Checkout {
                 onComplete: () => this.isPurchaseRadioAnimating = false
             });
 
-            if (index === 0) {
-                
+            if (!target) return;
+
+            if (index === 1) {
+                gsap.to(target, {
+                    height: "auto",
+                    opacity: 1,
+                    duration: 0.5,
+                    ease: "power2.inOut"
+                });
+            }
+            else {
+                gsap.to(target, {
+                    height: 0,
+                    opacity: 0,
+                    duration: 0.5,
+                    ease: "power2.inOut"
+                });
             }
         }
     }
@@ -297,10 +316,11 @@ class Checkout {
 
         const data = new FormData(this.formDOM);
         data.append("same-address", this.form.billing.sameAddress.value);
-        data.append("purchase-type", this.form.billing.purchaseTypes.value);
+        data.append("purchase-type", this.form.purchaseTypes.value);
         
         const result = await APIFetch("/api/order/place", "POST", data, false);
 
+        this.orderPlaced = false;
         if (result.ok) {
             const data = await result.json();
             console.log(data);

@@ -85,6 +85,44 @@
                     </div>
                 </div>
             </div>
+            <div class="purchase-type-radios" id="purchase-types" data-target=".company-section">
+                <div class="radio checked">Magánszemélyként rendelek</div>
+                <div class="radio">Cégként rendelek</div>
+                <div class="border"></div>
+            </div>
+            <section class="hideable company-section">
+                <div class="section-wrapper">
+                    <header>Cég adatai</header>
+                    <div class="hideable-inputs">
+                        <div class="input-group-inline">
+                            <div class="input-group" tabindex="-1">
+                                <div class="input-body" tabindex="-1">
+                                    <label for="company-name">Cégnév</label>
+                                    <input type="text" name="company-name" id="company-name" required placeholder="A megrendelő cég neve" tabindex="1">
+                                    <div class="status">
+                                        <div class="error">
+                                            <div class="message"></div>
+                                        </div>
+                                            <div class="success"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group" tabindex="-1">
+                                <div class="input-body" tabindex="-1">
+                                    <label for="tax-number">Adószám</label>
+                                    <input type="text" name="tax-number" id="tax-number" required placeholder="pl. 12345678-2-10" tabindex="1">
+                                    <div class="status">
+                                        <div class="error">
+                                            <div class="message"></div>
+                                        </div>
+                                            <div class="success"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
             <section>
                 <header>Személyes adatok</header>
                 <div class="input-group" tabindex="-1">
@@ -199,84 +237,56 @@
                     <input type="checkbox" name="same-address" id="same-address" tabindex="1">
                     <label for="same-address">A számlázási adatok megegyeznek a szállítási adatokkal</label>
                 </div>
-                <div class="purchase-type-radios" id="purchase-types">
-                    <div class="radio checked">Magánszemélyként rendelek</div>
-                    <div class="radio">Cégként rendelek</div>
-                    <div class="border"></div>
-                </div>
-                <div class="input-group" tabindex="-1">
-                    <div class="input-body" tabindex="-1">
-                        <label for="billing-name">Számlázási név</label>
-                        <input type="text" name="billing-name" id="billing-name" required placeholder="pl. Kovács Károly" tabindex="1">
-                        <div class="status">
-                            <div class="error">
-                                <div class="message"></div>
-                            </div>
-                                <div class="success"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group-inline" tabindex="-1">
-                    <div class="input-group" tabindex="-1">
-                        <div class="input-body" tabindex="-1">
-                            <label for="billing-zip">Irányítószám</label>
-                            <input type="text" name="billing-zip" id="billing-zip" required placeholder="pl. 8200" tabindex="1">
-                            <div class="status">
-                                <div class="error">
-                                    <div class="message"></div>
+                    <div class="input-group-inline" tabindex="-1">
+                        <div class="input-group" tabindex="-1">
+                            <div class="input-body" tabindex="-1">
+                                <label for="billing-zip">Irányítószám</label>
+                                <input type="text" name="billing-zip" id="billing-zip" required placeholder="pl. 8200" tabindex="1">
+                                <div class="status">
+                                    <div class="error">
+                                        <div class="message"></div>
+                                    </div>
+                                    <div class="success"></div>
                                 </div>
-                                <div class="success"></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="input-group" tabindex="-1">
-                        <div class="input-body" tabindex="-1">
-                            <label for="billing-city">Település</label>
-                            <input type="text" name="billing-city" id="billing-city" required placeholder="pl. Veszprém" tabindex="1">
-                            <div class="status">
-                                <div class="error">
-                                    <div class="message"></div>
+                        <div class="input-group" tabindex="-1">
+                            <div class="input-body" tabindex="-1">
+                                <label for="billing-city">Település</label>
+                                <input type="text" name="billing-city" id="billing-city" required placeholder="pl. Veszprém" tabindex="1">
+                                <div class="status">
+                                    <div class="error">
+                                        <div class="message"></div>
+                                    </div>
+                                    <div class="success"></div>
                                 </div>
-                                <div class="success"></div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="input-group-inline" tabindex="-1">
-                    <div class="input-group" tabindex="-1">
-                        <div class="input-body" tabindex="-1">
-                            <label for="billing-street">Utca</label>
-                            <input type="text" name="billing-street" id="billing-street" required placeholder="pl. Iskola" tabindex="1">
-                            <div class="status">
-                                <div class="error">
-                                    <div class="message"></div>
+                    <div class="input-group-inline" tabindex="-1">
+                        <div class="input-group" tabindex="-1">
+                            <div class="input-body" tabindex="-1">
+                                <label for="billing-street">Utca</label>
+                                <input type="text" name="billing-street" id="billing-street" required placeholder="pl. Iskola" tabindex="1">
+                                <div class="status">
+                                    <div class="error">
+                                        <div class="message"></div>
+                                    </div>
+                                    <div class="success"></div>
                                 </div>
-                                <div class="success"></div>
                             </div>
                         </div>
-                    </div>
-                    <div class="input-group" tabindex="-1">
-                        <div class="input-body" tabindex="-1">
-                            <label for="billing-house-number">Házszám</label>
-                            <input type="text" name="billing-house-number" id="billing-house-number" required placeholder="pl. 4" tabindex="1">
-                            <div class="status">
-                                <div class="error">
-                                    <div class="message"></div>
+                        <div class="input-group" tabindex="-1">
+                            <div class="input-body" tabindex="-1">
+                                <label for="billing-house-number">Házszám</label>
+                                <input type="text" name="billing-house-number" id="billing-house-number" required placeholder="pl. 4" tabindex="1">
+                                <div class="status">
+                                    <div class="error">
+                                        <div class="message"></div>
+                                    </div>
+                                    <div class="success"></div>
                                 </div>
-                                <div class="success"></div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="input-group" tabindex="-1">
-                    <div class="input-body" tabindex="-1">
-                        <label for="tax-number">Adószám</label>
-                        <input type="text" name="tax-number" id="tax-number" required placeholder="pl. 12345678-2-10" tabindex="1">
-                        <div class="status">
-                            <div class="error">
-                                <div class="message"></div>
-                            </div>
-                                <div class="success"></div>
                         </div>
                     </div>
                 </div>
