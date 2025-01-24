@@ -180,31 +180,44 @@ class Checkout {
         this.handleAutofillFocus();
     }
 
+    // Beviteli mező validálása
     validateField(section, name = null) {
+        // A mező lekérdezése a paraméterek alapján
         const field = name ? this.form[section][name] || undefined : this.form[section] || undefined;
         if (!field) return false;
 
+        // Validátor függvény, Aktuális érték és hibaüzenet megszerzése
         const validator = this.validationRules[name];
         const value = field.value;
         const error = field.errorMessage;
 
+        // Változók ellenőrzése
         if (!validator) return null;
         if (!value) return error;
+
+        // Érték validálása
         return (typeof validator == 'function') ? validator(value)?null:error : validator.test(value)?null:error;
     }
 
     // Eseménykezelők
     bindEvents() {
+        // Kattintási események
         document.addEventListener("click", (e) => this.handleClickEvents(e));
 
+        // Beviteli mező fókusz eseményei
         document.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
 
+        // Szállítási és számlázási cím megyegyezik
+        this.form.billing.sameAddress.dom.addEventListener("input", this.handleSameAddressInput.bind(this));
+
+        // Rendelés gomb kattintás
         this.paymentButton.addEventListener("click", async () => {
             if (this.orderPlaced) return;
 
             const result = await this.placeOrder();
         })
 
+        // Beviteli mezők validálási eseményei
         for (let section in this.form) {
             if (this.form[section].dom) {
                 let element = this.form[section];
@@ -265,7 +278,10 @@ class Checkout {
 
         const radio = e.target.closest('.radio');
         const group = radio.parentElement;
+
         const target = this.formDOM.querySelector(group.dataset.target);
+        const inputs = target.querySelectorAll("input, select");
+
         const border = group.querySelector(".border");
         const index = Array.from(group.children).filter(el => el.className !== 'border').indexOf(radio);
         const left = `${index * 50}%`;
@@ -287,6 +303,7 @@ class Checkout {
             if (!target) return;
 
             if (index === 1) {
+                inputs.forEach(e => e.disabled = false);
                 gsap.to(target, {
                     height: "auto",
                     opacity: 1,
@@ -299,9 +316,42 @@ class Checkout {
                     height: 0,
                     opacity: 0,
                     duration: 0.5,
-                    ease: "power2.inOut"
+                    ease: "power2.inOut",
+                    onComplete: () => {
+                        inputs.forEach(e => e.disabled = true);
+                    }
                 });
             }
+        }
+    }
+
+    handleSameAddressInput(e) {
+        const checked = this.form.billing.sameAddress.value;
+        const parent = e.target.parentElement;
+        const targetSelector = parent.dataset.target;
+        const targetElement = targetSelector ? parent.closest('section').querySelector(targetSelector) : parent.nextElementSibling;
+
+        const inputs = targetElement.querySelectorAll('input, select');
+
+        if (checked) {
+            gsap.to(targetElement, {
+                opacity:0,
+                height: 0,
+                duration: 0.5,
+                ease: 'power2.inOut',
+                onComplete: () => {
+                    inputs.forEach(e => e.disabled = true);
+                }
+            });
+        }
+        else {
+            inputs.forEach(e => e.disabled = false);
+            gsap.to(targetElement, {
+                opacity: 1,
+                height: 'auto',
+                duration: 0.5,
+                ease: 'power2.inOut'
+            });
         }
     }
 

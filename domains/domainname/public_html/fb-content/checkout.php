@@ -98,7 +98,7 @@
                             <div class="input-group" tabindex="-1">
                                 <div class="input-body" tabindex="-1">
                                     <label for="company-name">Cégnév</label>
-                                    <input type="text" name="company-name" id="company-name" required placeholder="A megrendelő cég neve" tabindex="1">
+                                    <input disabled type="text" name="company-name" id="company-name" required placeholder="A megrendelő cég neve" tabindex="1">
                                     <div class="status">
                                         <div class="error">
                                             <div class="message"></div>
@@ -110,7 +110,7 @@
                             <div class="input-group" tabindex="-1">
                                 <div class="input-body" tabindex="-1">
                                     <label for="tax-number">Adószám</label>
-                                    <input type="text" name="tax-number" id="tax-number" required placeholder="pl. 12345678-2-10" tabindex="1">
+                                    <input disabled type="text" name="tax-number" id="tax-number" required placeholder="pl. 12345678-2-10" tabindex="1">
                                     <div class="status">
                                         <div class="error">
                                             <div class="message"></div>
@@ -233,10 +233,11 @@
             </section>
             <section>
                 <header>Számlázási cím</header>
-                <div class="input-group-check">
+                <div class="input-group-check" data-target=".input-group-hideable">
                     <input type="checkbox" name="same-address" id="same-address" tabindex="1">
                     <label for="same-address">A számlázási adatok megegyeznek a szállítási adatokkal</label>
                 </div>
+                <div class="input-group-hideable">
                     <div class="input-group-inline" tabindex="-1">
                         <div class="input-group" tabindex="-1">
                             <div class="input-body" tabindex="-1">

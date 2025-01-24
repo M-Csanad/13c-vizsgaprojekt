@@ -103,7 +103,12 @@ form > section.hideable > .section-wrapper {
     padding-block: 0.5rem;
     padding-inline: 0.5rem;
 }
-form > *:not(section.hideable) {
+
+form > section:has(.input-group-hideable) > * {
+    padding: 0.5rem;
+}
+
+form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     margin-inline: 0.5rem;
 }
 
@@ -114,6 +119,14 @@ form > *:not(section.hideable) {
     & > .input-group {
         width: 50%;
     }
+}
+
+.input-group-hideable {
+    overflow: hidden;
+}
+
+.input-group-check {
+    user-select: none;
 }
 
 .input-group {
