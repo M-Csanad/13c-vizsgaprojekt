@@ -26,10 +26,8 @@ $validationRules = [
         "pattern" => '/^(\+36|06)(\d{9})$/',
         "errorMessage" => "Érvénytelen telefonszám"
     ],
-    "houseNumber" => [
-        "callback" => function ($value) {
-            return is_numeric($value) && $value > 0;
-        },
+    "streetHouse" => [
+        "pattern" => '/^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(?:\/[A-Z]+)?$/',
         "errorMessage" => "Érvénytelen házszám (pozitív egész számnak kell lennie)"
     ],
     "sameAddress" => [
@@ -65,15 +63,13 @@ $formFields = [
     "delivery" => [
         "zipCode" => $_POST['zip-code'] ?? null,
         "city" => $_POST['city'] ?? null,
-        "street" => $_POST['street'] ?? null,
-        "houseNumber" => $_POST['house-number'] ?? null,
+        "streetHouse" => $_POST['street-house'] ?? null,
     ],
     "billing" => [
         "sameAddress" => $_POST['same-address'] === "true" ? true : false,
         "zipCode" => $_POST['billing-zip'] ?? null,
         "city" => $_POST['billing-city'] ?? null,
-        "street" => $_POST['billing-street'] ?? null,
-        "houseNumber" => $_POST['billing-house-number'] ?? null,
+        "streetHouse" => $_POST['billing-street-house'] ?? null,
     ]
 ];
 
@@ -140,4 +136,6 @@ if ($error) {
 
 // Rendelés leadása
 $result = newOrder($formFields);
-echo $result->toJSON();
+if (!$result->isSuccess()) {
+    
+}

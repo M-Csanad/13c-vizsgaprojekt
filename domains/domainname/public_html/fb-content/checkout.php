@@ -204,29 +204,15 @@
                         </div>
                     </div>
                 </div>
-                <div class="input-group-inline" tabindex="-1">
-                    <div class="input-group" tabindex="-1">
-                        <div class="input-body" tabindex="-1">
-                            <label for="street">Utca</label>
-                            <input type="text" name="street" id="street" required placeholder="pl. Fő" tabindex="1">
-                            <div class="status">
-                                <div class="error">
-                                    <div class="message"></div>
-                                </div>
-                                <div class="success"></div>
+                <div class="input-group" tabindex="-1">
+                    <div class="input-body" tabindex="-1">
+                        <label for="street-house">Utca és házszám</label>
+                        <input type="text" name="street-house" id="street-house" required placeholder="pl. Fő utca 29/B" tabindex="1">
+                        <div class="status">
+                            <div class="error">
+                                <div class="message"></div>
                             </div>
-                        </div>
-                    </div>
-                    <div class="input-group" tabindex="-1">
-                        <div class="input-body" tabindex="-1">
-                            <label for="house-number">Házszám</label>
-                            <input type="number" name="house-number" id="house-number" required placeholder="pl. 28" tabindex="1">
-                            <div class="status">
-                                <div class="error">
-                                    <div class="message"></div>
-                                </div>
-                                <div class="success"></div>
-                            </div>
+                            <div class="success"></div>
                         </div>
                     </div>
                 </div>
@@ -264,29 +250,15 @@
                             </div>
                         </div>
                     </div>
-                    <div class="input-group-inline" tabindex="-1">
-                        <div class="input-group" tabindex="-1">
-                            <div class="input-body" tabindex="-1">
-                                <label for="billing-street">Utca</label>
-                                <input type="text" name="billing-street" id="billing-street" required placeholder="pl. Iskola" tabindex="1">
-                                <div class="status">
-                                    <div class="error">
-                                        <div class="message"></div>
-                                    </div>
-                                    <div class="success"></div>
+                    <div class="input-group" tabindex="-1">
+                        <div class="input-body" tabindex="-1">
+                            <label for="billing-street-house">Utca és házszám</label>
+                            <input type="text" name="billing-street-house" id="billing-street-house" required placeholder="pl. Fő utca 29/B" tabindex="1">
+                            <div class="status">
+                                <div class="error">
+                                    <div class="message"></div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="input-group" tabindex="-1">
-                            <div class="input-body" tabindex="-1">
-                                <label for="billing-house-number">Házszám</label>
-                                <input type="text" name="billing-house-number" id="billing-house-number" required placeholder="pl. 4" tabindex="1">
-                                <div class="status">
-                                    <div class="error">
-                                        <div class="message"></div>
-                                    </div>
-                                    <div class="success"></div>
-                                </div>
+                                <div class="success"></div>
                             </div>
                         </div>
                     </div>

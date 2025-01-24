@@ -77,7 +77,7 @@ class Checkout {
             name: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
             phone: /^(\+36|06)(\d{9})$/,
             taxNumber: /^\d{8}-\d{1,2}-\d{2}$/,
-            houseNumber: (e) => e > 0
+            streetHouse: /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(?:\/[A-Z]+)?$/
         };
         
         this.form = {
@@ -136,14 +136,9 @@ class Checkout {
                     "errorMessage": "A város mező nem lehet üres",
                     get value() { return this.dom.value || undefined; }
                 },
-                "street": {
-                    "dom": this.formDOM.querySelector("#street"),
-                    "errorMessage": "Az utca mező nem lehet üres",
-                    get value() { return this.dom.value || undefined; }
-                },
-                "houseNumber": {
-                    "dom": this.formDOM.querySelector("#house-number"),
-                    "errorMessage": "Érvénytelen házszám (pozitív egész számnak kell lennie)",
+                "streetHouse": {
+                    "dom": this.formDOM.querySelector("#street-house"),
+                    "errorMessage": "Hibás utca és házszám",
                     get value() { return this.dom.value || undefined; }
                 }
             },
@@ -164,14 +159,9 @@ class Checkout {
                     "errorMessage": "A város mező nem lehet üres",
                     get value() { return this.dom.value || undefined; }
                 },
-                "street": {
-                    "dom": this.formDOM.querySelector("#billing-street"),
-                    "errorMessage": "Az utca mező nem lehet üres",
-                    get value() { return this.dom.value || undefined; }
-                },
-                "houseNumber": {
-                    "dom": this.formDOM.querySelector("#billing-house-number"),
-                    "errorMessage": "Érvénytelen házszám (pozitív egész számnak kell lennie)",
+                "streetHouse": {
+                    "dom": this.formDOM.querySelector("#billing-street-house"),
+                    "errorMessage": "Hibás utca és házszám",
                     get value() { return this.dom.value || undefined; }
                 }
             }
@@ -373,7 +363,7 @@ class Checkout {
         this.orderPlaced = false;
         if (result.ok) {
             const data = await result.json();
-            console.log(data);
+            console.log("Sikeres rendelés");
         } else {
             throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());
         }

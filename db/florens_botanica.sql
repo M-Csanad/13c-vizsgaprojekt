@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Jan 15. 19:56
+-- Létrehozás ideje: 2025. Jan 24. 21:26
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -89,6 +89,7 @@ CREATE TABLE `delivery_info` (
   `user_id` int(11) DEFAULT NULL,
   `phone` int(11) DEFAULT NULL,
   `company_name` varchar(255) DEFAULT NULL,
+  `tax_number` varchar(20) DEFAULT NULL,
   `country` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT NULL,
   `zip` int(11) DEFAULT NULL,
@@ -197,20 +198,69 @@ INSERT INTO `image` (`id`, `uri`, `orientation`, `media_type`) VALUES
 CREATE TABLE `order` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL COMMENT 'Vendég rendelések miatt lehet NULL is a user_id',
-  `cart_id` int(11) DEFAULT NULL,
   `email` varchar(255) DEFAULT NULL,
   `phone` int(11) DEFAULT NULL,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
   `company_name` varchar(255) DEFAULT NULL,
-  `country` varchar(255) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL,
-  `zip` int(11) DEFAULT NULL,
-  `billing_address` varchar(255) DEFAULT NULL,
+  `tax_number` varchar(20) DEFAULT NULL,
+  `billing_address` varchar(255) DEFAULT NULL COMMENT 'NULL, ha megegyezik a szállítási címmel',
   `delivery_address` varchar(255) DEFAULT NULL,
-  `completed_at` timestamp NOT NULL DEFAULT current_timestamp() COMMENT 'NULL, ha nyitott a rendelés',
+  `completed_at` timestamp NULL DEFAULT NULL COMMENT 'NULL, ha nyitott a rendelés',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `order_item`
+--
+
+CREATE TABLE `order_item` (
+  `id` int(11) NOT NULL,
+  `order_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `quantity` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- Eseményindítók `order_item`
+--
+DELIMITER $$
+CREATE TRIGGER `after_order_item_delete` AFTER DELETE ON `order_item` FOR EACH ROW BEGIN
+    UPDATE product
+    SET stock = stock + OLD.quantity
+    WHERE id = OLD.product_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_order_item_insert` AFTER INSERT ON `order_item` FOR EACH ROW BEGIN
+    UPDATE product
+    SET stock = stock - NEW.quantity
+    WHERE id = NEW.product_id;
+END
+$$
+DELIMITER ;
+DELIMITER $$
+CREATE TRIGGER `after_order_item_update` AFTER UPDATE ON `order_item` FOR EACH ROW BEGIN
+    IF OLD.product_id = NEW.product_id THEN
+        UPDATE product
+        SET stock = stock - (NEW.quantity - OLD.quantity)
+        WHERE id = OLD.product_id;
+    ELSE
+        UPDATE product
+        SET stock = stock + OLD.quantity
+        WHERE id = OLD.product_id;
+        
+        UPDATE product
+        SET stock = stock - NEW.quantity
+        WHERE id = NEW.product_id;
+    END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -586,7 +636,7 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `email`, `user_name`, `password_hash`, `role`, `cookie_id`, `cookie_expires_at`, `first_name`, `last_name`, `pfp_uri`, `created_at`) VALUES
-(1, '13c-blank@ipari.vein.hu', 'admin', '$2y$10$ZkZHsn0wcwOPzVBBFXfqTe0tjYFoUyLWc2OS/3L5t.fD1ag.FJFrm', 'Administrator', NULL, NULL, 'Máté', 'Blank', 'https://ui-avatars.com/api/?name=Blank+Máté&background=9CB5A6&bold=true&format=svg', '2024-11-02 13:27:24'),
+(1, '13c-blank@ipari.vein.hu', 'admin', '$2y$10$GYHbnzKZf8jPKEN/8F.Zn.nFQSmDtJhx8NDdpO3NHQOVA.TfeypuS', 'Administrator', NULL, NULL, 'Máté', 'Blank', 'https://ui-avatars.com/api/?name=Blank+Máté&background=9CB5A6&bold=true&format=svg', '2024-11-02 13:27:24'),
 (2, 'teszt-elek@gmail.com', 'teszt-elek', '$2y$10$.BZLWK4qrkNB7jVCWxpkyeCpo/wRGMA/7QmSb7j4MnSZc/Ez4huMa', 'Guest', NULL, NULL, 'Elek', 'Teszt', 'https://ui-avatars.com/api/?name=Teszt+Elek&background=9CB5A6&bold=true&format=svg', '2024-11-26 17:24:56');
 
 --
@@ -633,8 +683,15 @@ ALTER TABLE `image`
 --
 ALTER TABLE `order`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `order_ibfk_1` (`user_id`),
-  ADD KEY `cart_id` (`cart_id`);
+  ADD KEY `order_ibfk_1` (`user_id`);
+
+--
+-- A tábla indexei `order_item`
+--
+ALTER TABLE `order_item`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- A tábla indexei `product`
@@ -746,6 +803,12 @@ ALTER TABLE `order`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT a táblához `order_item`
+--
+ALTER TABLE `order_item`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `product`
 --
 ALTER TABLE `product`
@@ -821,8 +884,14 @@ ALTER TABLE `delivery_info`
 -- Megkötések a táblához `order`
 --
 ALTER TABLE `order`
-  ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `order_ibfk_2` FOREIGN KEY (`cart_id`) REFERENCES `cart` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `order_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `order_item`
+--
+ALTER TABLE `order_item`
+  ADD CONSTRAINT `order_item_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE;
 
 --
 -- Megkötések a táblához `product_health_effect`
