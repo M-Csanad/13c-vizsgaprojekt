@@ -1,20 +1,75 @@
 /* Disable scrolling */
+@import url("../../assets/css/font.css");
+@import url("../../assets/css/root.css");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 html,
 body {
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  overflow-y: hidden;
+  overflow-x: auto;
   height: 100%;
+  background: var(--dark_primary);
 }
 
-.background {
+.mol-div {
+  aspect-ratio: 9 / 14;
+  height: 100vh;
+  max-width: calc(100vh * (9 / 14));
+  margin: 0 auto;
+  background: none;
+  overflow: hidden;
+}
+.mol-div::before {
+  content: "";
+  position: absolute;
+  height: 100vh;
+  margin: 0 auto;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; ugyanaz */
+  max-width: calc(100vh * (9 / 12));
+  background: url("../media/images/background_vertical.jpg") center/cover
+    no-repeat;
+
+  filter: var(--blur3) brightness(0.7);
+  z-index: 0;
+}
+.dark-filter {
+  position: absolute;
+  height: 100vh;
+  margin: 0 auto;
+  max-width: calc(100vh * (9 / 10));
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to left,
+    var(--dark_primary),
+    var(--dark_primary) 10%,
+    rgba(0, 0, 0, 0) 20%,
+    rgba(0, 0, 0, 0) 70%,
+    var(--dark_primary) 80%,
+    var(--dark_primary)
+  );
+}
+.mol-div-content {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  margin: 0 auto;
+  inset: 0; /* top:0; right:0; bottom:0; left:0; ugyanaz */
+}
+
+/* .background {
   position: fixed;
   top: 0;
   left: -5%;
   width: 110%;
   height: 110%;
-  background: url("../media/images/background_vertical.jpg") center/cover
-    no-repeat;
 
   filter: blur(10px) brightness(0.6) grayscale(0.4);
   z-index: -1;
@@ -24,7 +79,7 @@ body {
     background: url("../media/images/background_horizontal.jpg") center/cover
       no-repeat;
   }
-}
+} */
 body::before,
 body::after {
   content: "";
@@ -32,7 +87,7 @@ body::after {
   left: 0;
   width: 100%;
   height: 20%;
-  background: linear-gradient(to bottom, black, transparent);
+  background: linear-gradient(to bottom, var(--dark_primary), transparent);
   pointer-events: none;
   z-index: 0;
 }
@@ -40,7 +95,7 @@ body::after {
 body::after {
   top: auto;
   bottom: 0;
-  background: linear-gradient(to top, black, transparent);
+  background: linear-gradient(to top, var(--dark_primary), transparent);
 }
 
 @media (min-width: 320px) {
@@ -50,35 +105,129 @@ body::after {
     padding: 0;
     overflow: hidden;
     height: 100vh;
+    width: 100% !important;
     display: flex;
     justify-content: center;
     align-items: center;
     position: relative;
+    inset: 0;
     z-index: 5;
   }
 
   .halo {
-    position: absolute;
-    min-width: 300px;
-    min-height: 300px;
-    width: 60vw;
-    height: 60vw;
-    max-width: 80vh;
-    max-height: 80vh;
+    position: relative;
+    width: calc(70vh * (9 / 14));
+    height: calc(70vh * (9 / 14));
     border: 15px solid rgb(255, 255, 255);
     border-radius: 50%;
     box-shadow: 0 0 55px rgb(255, 255, 255);
-    transition: opacity 0.2s, box-shadow 0.2s;
+    -webkit-transition: border 0.2s, box-shadow 0.2s ease;
+    -moz-transition: border 0.2s, box-shadow 0.2s ease;
+    -o-transition: border 0.2s, box-shadow 0.2s ease;
+    -ms-transition: border 0.2s, box-shadow 0.2s ease;
+    transition: border 0.2s, box-shadow 0.2s ease;
     opacity: 1;
   }
 
   .halo.dimmed {
-    opacity: 0.6;
-    box-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+    opacity: 1;
+    border: 15px solid rgb(200, 200, 200);
+    box-shadow: 0 0 25px rgb(200, 200, 200);
   }
 
   .halo.vibrating {
-    opacity: 0.9;
-    box-shadow: 0 0 50px rgba(255, 255, 255, 0.65);
+    opacity: 1;
+    border: 15px solid rgb(150, 150, 150);
+    box-shadow: 0 0 50px rgb(150, 150, 150);
   }
+  /* pontok a monitoron */
+  .dot-grid-01 {
+    position: absolute;
+    z-index: 6;
+    top: 25%;
+    left: calc((6 * 20px) + 40px + 5%);
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(6, 20px); /* 5 oszlop, 10px méret */
+    grid-gap: 40px; /* Távolság a pontok között */
+  }
+
+  .dot-grid-02 {
+    position: absolute;
+    z-index: 6;
+    bottom: 0;
+    right: calc((3 * 10px) + 40px + 5%);
+    transform: translate(-50%, -50%);
+    display: grid;
+    grid-template-columns: repeat(3, 10px);
+    grid-gap: 40px;
+  }
+
+  .dot-grid .dot {
+    width: 8px;
+    height: 8px;
+    background-color: white;
+    border-radius: 50%;
+  }
+
+  .dot-grid .x-dot {
+    position: relative;
+    width: 8px;
+    height: 8px;
+    font-size: 20px;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spin 2s linear infinite;
+  }
+  .x-dot::before,
+  .x-dot::after {
+    content: "";
+    position: absolute;
+    width: 20px; /* X átlós vonalainak hossza */
+    height: 2px; /* Vonal vastagsága */
+    background-color: white; /* Vonal színe */
+    transform-origin: center;
+  }
+
+  .x-dot::before {
+    transform: rotate(45deg); /* Első vonal */
+  }
+
+  .x-dot::after {
+    transform: rotate(-45deg); /* Második vonal */
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+  .white-square {
+    position: absolute;
+    user-select: none;
+    z-index: 7;
+    background-color: white; /* Szín */
+  }
+  .square_01 {
+    top: 0%; /* Tetszőleges hely */
+    right: 5%; /* Tetszőleges hely */
+    text-transform: uppercase;
+    font-family: "Poppins";
+    font-weight: 700;
+    font-size: clamp(1.15rem, calc(2.4rem + 0.39vw), 4.5rem);
+    display: inline-block; /* Blokk szintű elem lesz */
+    writing-mode: vertical-lr; /* Karakterek függőleges elrendezése */
+    text-orientation: upright; /* A karakterek normál álló helyzetben maradnak */
+    margin: 0;
+    padding: 2rem 3.6rem;
+  }
+}
+
+@media (min-width: 1280px) {
 }
