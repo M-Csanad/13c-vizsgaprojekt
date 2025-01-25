@@ -1,3 +1,5 @@
+import Confetti from "./confetti.js";
+
 // Segédfüggvény API kérésekhez
 const APIFetch = async (url, method, body = null, encode = true) => {
     try {
@@ -64,8 +66,11 @@ class Checkout {
         });
     }
 
-    // DOM elemek megkeresése
+    // DOM elemek2megkeresése
     initDOM() {
+        this.resultOverlay = '.checkout-result-overlay';
+        this.confetti = new Confetti(this.resultOverlay);
+        
         this.paymentButton = document.querySelector('.payment-button');
         
         this.formDOM = document.querySelector('.checkout-form');
@@ -358,11 +363,57 @@ class Checkout {
         data.append("same-address", this.form.billing.sameAddress.value);
         data.append("purchase-type", this.form.purchaseTypes.value);
         
+        
         const result = await APIFetch("/api/order/place", "POST", data, false);
-
+        
         this.orderPlaced = false;
         if (result.ok) {
             const data = await result.json();
+
+            gsap.set(this.resultOverlay, {opacity: 0, visibility: "visible"});
+            gsap.to(this.resultOverlay, {
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.inOut",
+                onComplete: () => this.confetti.start()
+            })
+
+            gsap.to(".overlay-body > div, .overlay-body > p", {
+                opacity: 1,
+                stagger: 0.2,
+                duration: 1,
+                delay: 0.5,
+                ease: "power2.inOut"
+            });
+
+            gsap.to(".back-to-home", {
+                y: 0,
+                duration: 0.8,
+                delay: 0.5,
+                ease: "power2.inOut"
+            });
+
+            gsap.to('#flower-1', {
+                left: '-100px',
+                ease: "power2.inOut",
+                duration: 1,
+                delay: 0.6
+            });
+
+            gsap.to('#flower-2', {
+                right: '-200px',
+                ease: "power2.inOut",
+                duration: 1,
+                delay: 0.8
+            });
+
+            gsap.to('#flower-3', {
+                left: '-100px',
+                ease: "power2.inOut",
+                duration: 1,
+                delay: 0.9
+            });
+            // Konfetti
             console.log("Sikeres rendelés");
         } else {
             throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());

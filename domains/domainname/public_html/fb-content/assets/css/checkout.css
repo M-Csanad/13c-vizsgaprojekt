@@ -427,11 +427,128 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     }
 }
 
+.checkout-result-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    background-color: #1d1d1de0;
+    backdrop-filter: blur(3px);
+    visibility: hidden;
+
+    & * {
+        will-change: transform;
+    }
+
+    & .overlay-body {
+        padding: 1rem;
+    }
+
+    & .overlay-body > div, .overlay-body > p {
+        opacity: 0;
+    }
+
+    & .thank-you {
+        text-align: center;
+        font-size: 40px;
+        font-family: Playfair Display;
+        color: #86d72f;
+        margin-bottom: 2rem;
+    }
+
+    & p {
+        color: #dbdbdb;
+        font-size: 16px;
+        text-align: center;
+    }
+
+    & .from {
+        margin-top: 1rem;
+        text-align: right;
+        font-style: italic;
+        font-family: 'Times New Roman', Times, serif;
+    }
+    & .flower {
+        position: absolute;
+        width: 300px;
+        height: 600px;
+        opacity: 1;
+    }
+
+    & #flower-1 {
+        top: -150px;
+        left: -400px;
+        rotate: 15deg;
+        z-index: 3;
+    }
+
+    & #flower-2 {
+        top: -150px;
+        right: -400px;
+        rotate: -90deg;
+        filter: blur(5px) brightness(0.8);
+        z-index: 2;
+    }
+
+    & #flower-3 {
+        bottom: -150px;
+        left: -300px;
+        rotate: 30deg;
+        filter: blur(8px) brightness(0.5);
+        z-index: 1;
+    }
+
+    & .back-to-home {
+        transform: translateY(calc(100% + 2rem));
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.8rem;
+        text-decoration: none;
+        color: white;
+        border: 2px solid white;
+        padding: 1rem;
+        border-radius: 50px;
+        position: absolute;
+        bottom: 2rem;
+        transition: background-color 0.2s ease;
+    }
+
+    & .back-to-home > svg {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 2px;
+    }
+
+    & .back-to-home:hover {
+        background-color: rgba(255, 255, 255, 0.164);
+    }
+}
 @media screen and (min-width: 768px) {
     main {
         flex-direction: row;
     }
     .order-details {
         width: 500px;
+    }
+
+    .flower {
+        width: 400px !important;
+        height: 500px !important;
+    }
+
+    .checkout-result-overlay .thank-you {
+        font-size: 50px;
+    }
+
+    .checkout-result-overlay p {
+        font-size: 20px;
     }
 }

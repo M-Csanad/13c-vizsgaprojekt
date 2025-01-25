@@ -135,7 +135,4 @@ if ($error) {
 }
 
 // Rendelés leadása
-$result = newOrder($formFields);
-if (!$result->isSuccess()) {
-    
-}
+echo newOrder($formFields)->toJSON();
