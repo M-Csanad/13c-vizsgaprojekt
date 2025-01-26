@@ -65,6 +65,7 @@
 </head>
 <body>
     <div class=transition><div class=transition-background></div><div class=transition-text><div class=hero><div class=char>F</div><div class=char>l</div><div class=char>o</div><div class=char>r</div><div class=char>e</div><div class=char>n</div><div class=char>s</div><div class=char> </div><div class=char>B</div><div class=char>o</div><div class=char>t</div><div class=char>a</div><div class=char>n</div><div class=char>i</div><div class=char>c</div><div class=char>a</div></div><div class=quote><div class=char>"</div><div class=char>A</div><div class=char> </div><div class=char>l</div><div class=char>e</div><div class=char>g</div><div class=char>n</div><div class=char>a</div><div class=char>g</div><div class=char>y</div><div class=char>o</div><div class=char>b</div><div class=char>b</div><div class=char> </div><div class=char>g</div><div class=char>a</div><div class=char>z</div><div class=char>d</div><div class=char>a</div><div class=char>g</div><div class=char>s</div><div class=char>á</div><div class=char>g</div><div class=char> </div><div class=char>a</div><div class=char>z</div><div class=char> </div><div class=char>e</div><div class=char>g</div><div class=char>é</div><div class=char>s</div><div class=char>z</div><div class=char>s</div><div class=char>é</div><div class=char>g</div><div class=char>.</div><div class=char>"</div><div class=char> </div><div class=char>-</div><div class=char> </div><div class=char>V</div><div class=char>e</div><div class=char>r</div><div class=char>g</div><div class=char>i</div><div class=char>l</div><div class=char>i</div><div class=char>u</div><div class=char>s</div></div></div><div class="layer layer-0"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-1"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-2"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-3"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div></div>
+
     <div class="checkout-result-overlay">
         <svg class="flower" id="flower-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" fill="none"><path fill="#44911B" d="m8.02 29.6 1.14.39 1.35-3.9 4.02.42a.6.6 0 0 0 .66-.54.6.6 0 0 0-.54-.66l-3.74-.39a13.2 13.2 0 0 1 5.1-6.46l4.14.44a.6.6 0 0 0 .66-.54.6.6 0 0 0-.54-.66l-2.9-.31a14.4 14.4 0 0 0 4.02-6.03l.38-1.09a.6.6 0 0 0-.37-.77.6.6 0 0 0-.77.37l-.38 1.09a13.2 13.2 0 0 1-4.05 5.82l-1.7-3.5a.6.6 0 1 0-1.1.53l1.81 3.72a14.4 14.4 0 0 0-5.28 6.59l-1.31-2.69a.6.6 0 1 0-1.1.53l1.84 3.76z"/><path fill="#86D72F" d="M23.98 2a6.74 6.74 0 0 0-3.11 9 6.73 6.73 0 0 0 3.1-9M15.8 9.05l-1.81-3.72a4.23 4.23 0 0 0-1.95 5.65l1.8 3.72a4.23 4.23 0 0 0 1.96-5.65m-5.43 6.39-2.32-4.76a5.4 5.4 0 0 0-2.5 7.22l2.33 4.76a5.41 5.41 0 0 0 2.49-7.22m17.56.03-4.12-.43a4.22 4.22 0 0 0-4.64 3.76l4.12.43a4.22 4.22 0 0 0 4.64-3.76m-8.57 6.13 5.27.55a5.4 5.4 0 0 1-5.94 4.81l-5.27-.55a5.4 5.4 0 0 1 5.94-4.81"/></svg>
         <svg class="flower" id="flower-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none"><path fill="#44911B" d="m8.02 29.6 1.14.39 1.35-3.9 4.02.42a.6.6 0 0 0 .66-.54.6.6 0 0 0-.54-.66l-3.74-.39a13.2 13.2 0 0 1 5.1-6.46l4.14.44a.6.6 0 0 0 .66-.54.6.6 0 0 0-.54-.66l-2.9-.31a14.4 14.4 0 0 0 4.02-6.03l.38-1.09a.6.6 0 0 0-.37-.77.6.6 0 0 0-.77.37l-.38 1.09a13.2 13.2 0 0 1-4.05 5.82l-1.7-3.5a.6.6 0 1 0-1.1.53l1.81 3.72a14.4 14.4 0 0 0-5.28 6.59l-1.31-2.69a.6.6 0 1 0-1.1.53l1.84 3.76z"/><path fill="#86D72F" d="M23.98 2a6.74 6.74 0 0 0-3.11 9 6.73 6.73 0 0 0 3.1-9M15.8 9.05l-1.81-3.72a4.23 4.23 0 0 0-1.95 5.65l1.8 3.72a4.23 4.23 0 0 0 1.96-5.65m-5.43 6.39-2.32-4.76a5.4 5.4 0 0 0-2.5 7.22l2.33 4.76a5.41 5.41 0 0 0 2.49-7.22m17.56.03-4.12-.43a4.22 4.22 0 0 0-4.64 3.76l4.12.43a4.22 4.22 0 0 0 4.64-3.76m-8.57 6.13 5.27.55a5.4 5.4 0 0 1-5.94 4.81l-5.27-.55a5.4 5.4 0 0 1 5.94-4.81"/></svg>
@@ -82,6 +83,17 @@
         </a>
     </div>
 
+    <div class="checkout-error-overlay">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" id="checkout-error-icon" viewBox="0 0 16 16">
+        <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+        <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+        </svg>
+        <div class="overlay-body">
+            Hiba merült fel a rendelésed leadása során. Kérjük, ellenőrizd a mezők helyességét és próbáld meg újra, vagy keress meg minket. 
+        </div>
+        <button class="overlay-close">Újra próbálkozok</button>
+    </div>
+
     <main>
         <form class="checkout-form">
             <header>Megrendelés</header>
@@ -95,11 +107,12 @@
                         <option value="asd">asdasd</option>
                     </select>
                     <div class="status">
-                        <div class="error">
-                            <div class="message"></div>
-                        </div>
+                        <div class="error"></div>
                         <div class="success"></div>
                     </div>
+                </div>
+                <div class="message-wrapper">
+                    <div class="error-message"></div>
                 </div>
             </div>
             <div class="purchase-type-radios" id="purchase-types" data-target=".company-section">
@@ -117,11 +130,12 @@
                                     <label for="company-name">Cégnév</label>
                                     <input disabled type="text" name="company-name" id="company-name" required placeholder="A megrendelő cég neve" tabindex="1">
                                     <div class="status">
-                                        <div class="error">
-                                            <div class="message"></div>
-                                        </div>
+                                        <div class="error"></div>
                                             <div class="success"></div>
                                     </div>
+                                </div>
+                                <div class="message-wrapper">
+                                    <div class="error-message"></div>
                                 </div>
                             </div>
                             <div class="input-group" tabindex="-1">
@@ -129,11 +143,12 @@
                                     <label for="tax-number">Adószám</label>
                                     <input disabled type="text" name="tax-number" id="tax-number" required placeholder="pl. 12345678-2-10" tabindex="1">
                                     <div class="status">
-                                        <div class="error">
-                                            <div class="message"></div>
-                                        </div>
-                                            <div class="success"></div>
+                                        <div class="error"></div>
+                                        <div class="success"></div>
                                     </div>
+                                </div>
+                                <div class="message-wrapper">
+                                    <div class="error-message"></div>
                                 </div>
                             </div>
                         </div>
@@ -147,11 +162,12 @@
                         <label for="email">E-mail</label>
                         <input type="text" name="email" id="email" required placeholder="pelda@example.com" tabindex="1">
                         <div class="status">
-                            <div class="error">
-                                <div class="message"></div>
-                            </div>
-                                <div class="success"></div>
+                            <div class="error"></div>
+                            <div class="success"></div>
                         </div>
+                    </div>
+                    <div class="message-wrapper">
+                        <div class="error-message"></div>
                     </div>
                 </div>
                 <div class="input-group-inline" tabindex="-1">
@@ -160,11 +176,12 @@
                             <label for="last-name">Vezetéknév</label>
                             <input type="text" name="last-name" id="last-name" required placeholder="pl. Minta" tabindex="1">
                             <div class="status">
-                                <div class="error">
-                                    <div class="message"></div>
-                                </div>
+                                <div class="error"></div>
                                 <div class="success"></div>
                             </div>
+                        </div>
+                        <div class="message-wrapper">
+                            <div class="error-message"></div>
                         </div>
                     </div>
                     <div class="input-group" tabindex="-1">
@@ -172,11 +189,12 @@
                             <label for="first-name">Keresztnév</label>
                             <input type="text" name="first-name" id="first-name" required placeholder="pl. Károly" tabindex="1">
                             <div class="status">
-                                <div class="error">
-                                    <div class="message"></div>
-                                </div>
+                                <div class="error"></div>
                                 <div class="success"></div>
                             </div>
+                        </div>
+                        <div class="message-wrapper">
+                            <div class="error-message"></div>
                         </div>
                     </div>
                 </div>
@@ -185,11 +203,12 @@
                         <label for="phone">Telefonszám</label>
                         <input type="tel" name="phone" id="phone" required placeholder="pl. +36 30 123 1234" tabindex="1">
                         <div class="status">
-                            <div class="error">
-                                <div class="message"></div>
-                            </div>
-                                <div class="success"></div>
+                            <div class="error"></div>
+                            <div class="success"></div>
                         </div>
+                    </div>
+                    <div class="message-wrapper">
+                        <div class="error-message"></div>
                     </div>
                 </div>
             </section>
@@ -201,11 +220,12 @@
                             <label for="zip-code">Irányítószám</label>
                             <input type="text" name="zip-code" id="zip-code" required placeholder="pl. 8248" tabindex="1">
                             <div class="status">
-                                <div class="error">
-                                    <div class="message"></div>
-                                </div>
+                                <div class="error"></div>
                                 <div class="success"></div>
                             </div>
+                        </div>
+                        <div class="message-wrapper">
+                            <div class="error-message"></div>
                         </div>
                     </div>
                     <div class="input-group" tabindex="-1">
@@ -213,11 +233,12 @@
                             <label for="city">Település</label>
                             <input type="text" name="city" id="city" required placeholder="pl. Nemesvámos" tabindex="1">
                             <div class="status">
-                                <div class="error">
-                                    <div class="message"></div>
-                                </div>
+                                <div class="error"></div>
                                 <div class="success"></div>
                             </div>
+                        </div>
+                        <div class="message-wrapper">
+                            <div class="error-message"></div>
                         </div>
                     </div>
                 </div>
@@ -226,11 +247,12 @@
                         <label for="street-house">Utca és házszám</label>
                         <input type="text" name="street-house" id="street-house" required placeholder="pl. Fő utca 29/B" tabindex="1">
                         <div class="status">
-                            <div class="error">
-                                <div class="message"></div>
-                            </div>
+                            <div class="error"></div>
                             <div class="success"></div>
                         </div>
+                    </div>
+                    <div class="message-wrapper">
+                        <div class="error-message"></div>
                     </div>
                 </div>
             </section>
@@ -247,11 +269,12 @@
                                 <label for="billing-zip">Irányítószám</label>
                                 <input type="text" name="billing-zip" id="billing-zip" required placeholder="pl. 8200" tabindex="1">
                                 <div class="status">
-                                    <div class="error">
-                                        <div class="message"></div>
-                                    </div>
+                                    <div class="error"></div>
                                     <div class="success"></div>
                                 </div>
+                            </div>
+                            <div class="message-wrapper">
+                                <div class="error-message"></div>
                             </div>
                         </div>
                         <div class="input-group" tabindex="-1">
@@ -259,11 +282,12 @@
                                 <label for="billing-city">Település</label>
                                 <input type="text" name="billing-city" id="billing-city" required placeholder="pl. Veszprém" tabindex="1">
                                 <div class="status">
-                                    <div class="error">
-                                        <div class="message"></div>
-                                    </div>
+                                    <div class="error"></div>
                                     <div class="success"></div>
                                 </div>
+                            </div>
+                            <div class="message-wrapper">
+                                <div class="error-message"></div>
                             </div>
                         </div>
                     </div>
@@ -272,11 +296,12 @@
                             <label for="billing-street-house">Utca és házszám</label>
                             <input type="text" name="billing-street-house" id="billing-street-house" required placeholder="pl. Fő utca 29/B" tabindex="1">
                             <div class="status">
-                                <div class="error">
-                                    <div class="message"></div>
-                                </div>
+                                <div class="error"></div>
                                 <div class="success"></div>
                             </div>
+                        </div>
+                        <div class="message-wrapper">
+                            <div class="error-message"></div>
                         </div>
                     </div>
                 </div>
@@ -292,11 +317,11 @@
                     <div class="item">
                         <div class="item-image">
                             <picture>
-                                <source type="image/avif" srcset="<?= htmlspecialchars($thumbnail_uri); ?>-768px.avif 1x" media="(min-width: 768px)">
-                                <source type="image/webp" srcset="<?= htmlspecialchars($thumbnail_uri); ?>-768px.webp 1x" media="(min-width: 768px)">
-                                <source type="image/jpeg" srcset="<?= htmlspecialchars($thumbnail_uri); ?>-768px.jpg 1x" media="(min-width: 768px)">
+                                <source type="image/avif" srcset="<?= htmlspecialchars($thumbnail_uri); ?>-768px.avif 1x">
+                                <source type="image/webp" srcset="<?= htmlspecialchars($thumbnail_uri); ?>-768px.webp 1x">
+                                <source type="image/jpeg" srcset="<?= htmlspecialchars($thumbnail_uri); ?>-768px.jpg 1x">
                                 <img 
-                                src="<?= htmlspecialchars($thumbnail_uri); ?>.jpg" 
+                                src="<?= htmlspecialchars($thumbnail_uri); ?>-768px.jpg" 
                                 alt="<?= htmlspecialchars($item['name']); ?>" 
                                 loading="lazy">
                             </picture>

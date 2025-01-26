@@ -40,7 +40,7 @@ else if (isset($_COOKIE['cart']) && !empty(json_decode($_COOKIE['cart'], true)))
             $_SESSION['cart'] = $cartData;
         }
         
-        $result = new Result(Result::SUCCESS, $_COOKIE['cart']);
+        $result = new Result(Result::SUCCESS, $cartData);
         echo $result->toJSON();
     }
     else {

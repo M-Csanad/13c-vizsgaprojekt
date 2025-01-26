@@ -1,6 +1,7 @@
 <?php
 include_once __DIR__.'/../result_functions.php';
 include_once __DIR__.'/../order_functions.php';
+include_once __DIR__.'/../cart_functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     http_response_code(405);
@@ -135,4 +136,16 @@ if ($error) {
 }
 
 // Rendelés leadása
-echo newOrder($formFields)->toJSON();
+$result = newOrder($formFields);
+if (!$result->isSuccess()) {
+    echo $result->toJSON();
+    exit();
+}
+
+$result = clearCart();
+if (!$result->isSuccess()) {
+    echo $result->toJSON();
+    exit();
+}
+
+echo (new Result(Result::SUCCESS, "Sikeres rendelés."))->toJSON();

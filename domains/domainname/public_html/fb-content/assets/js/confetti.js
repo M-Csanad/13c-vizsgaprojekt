@@ -71,6 +71,10 @@ class ConfettiParticle {
         // Elfordulási szög frissítése
         this.rotation += this.rotationSpeed * dt * (0.5 + Math.random());
     }
+
+    handleCanvasResize() {
+        this.x = Math.random() * window.innerWidth;
+    }
 }
 
 class Confetti {
@@ -117,6 +121,7 @@ class Confetti {
         if (this.running) return;
         this.running = true;
 
+        this.particles.forEach(p => p.handleCanvasResize());
         requestAnimationFrame(this.drawHandler.bind(this));
 
         console.log("starting confetti");

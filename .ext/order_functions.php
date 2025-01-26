@@ -29,7 +29,7 @@ function newOrder($data) {
         return $result;
     }
 
-    return new Result(Result::SUCCESS, "Sikeres rendelés.");
+    return new Result(Result::SUCCESS, "Rendelés feltöltve.");
 }
 
 function getAddressFromComponents($zip, $city, $streetHouse) {
@@ -48,14 +48,23 @@ function createOrderRow($data) {
     $data['customer']["userId"] = $isLoggedIn ? $user['id'] : null;
 
     // A rendelés mezőinek és értékeinek kigyűjtése
-    $fields = ["user_id", "email", "phone", "first_name", "last_name", "delivery_address", "completed_at"];
+    $fields = [];
+    $values = [];
+    $typeString = '';
+
+    if ($isLoggedIn) {
+        $fields[] = "user_id";
+        $values[] = $data['customer']['userId'];
+        $typeString .= 'i';
+    }
+    $fields = ["email", "phone", "first_name", "last_name", "delivery_address", "completed_at"];
     $values = [
-        $data['customer']['userId'], $data['customer']['email'], $data['customer']['phone'], 
+        $data['customer']['email'], $data['customer']['phone'], 
         $data['customer']['firstName'], $data['customer']['lastName'], 
         getAddressFromComponents($data['delivery']['zipCode'], $data['delivery']['city'], $data['delivery']['streetHouse']),
         date("Y-m-d H:i:s", time())
     ];
-    $typeString = 'issssss';
+    $typeString = 'ssssss';
 
     // Céges rendelés esetén
     if ($data['purchaseType'] === "Cégként rendelek") {

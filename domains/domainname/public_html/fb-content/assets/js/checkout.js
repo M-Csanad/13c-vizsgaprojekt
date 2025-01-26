@@ -25,6 +25,7 @@ class Checkout {
     cartData;
     form;
     orderPlaced = false;
+    overlayOpen = false;
 
     constructor() {
         if (!gsap) {
@@ -66,10 +67,15 @@ class Checkout {
         });
     }
 
-    // DOM elemek2megkeresése
+    // DOM elemek megkeresése
     initDOM() {
-        this.resultOverlay = '.checkout-result-overlay';
-        this.confetti = new Confetti(this.resultOverlay);
+        this.resultOverlaySelector = '.checkout-result-overlay';
+        this.resultOverlay = document.querySelector(this.resultOverlaySelector);
+        this.confetti = new Confetti(this.resultOverlaySelector);
+
+        this.errorOverlaySelector = '.checkout-error-overlay';
+        this.errorOverlay = document.querySelector(this.errorOverlaySelector);
+        this.errorOverlayCloser = this.errorOverlay.querySelector(".overlay-close");
         
         this.paymentButton = document.querySelector('.payment-button');
         
@@ -80,14 +86,18 @@ class Checkout {
             email: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
             zipCode: /^[1-9]{1}[0-9]{3}$/,
             name: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
+            lastName: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
+            firstName: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
             phone: /^(\+36|06)(\d{9})$/,
             taxNumber: /^\d{8}-\d{1,2}-\d{2}$/,
+            city: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
             streetHouse: /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(?:\/[A-Z]+)?$/
         };
         
         this.form = {
             "autofill": {
                 "dom": this.formDOM.querySelector('#autofill'),
+                "noValidate": true,
                 get value() { return this.dom.value || undefined }
             },
             "purchaseTypes": {
@@ -171,8 +181,111 @@ class Checkout {
                 }
             }
         };
-        
+
         this.handleAutofillFocus();
+    }
+
+    openResultOverlay(resultType = "success") {
+        if (this.overlayOpen) return;
+        
+        this.overlayOpen = true;
+        lenis.stop();
+
+        if (resultType == "success") {
+            gsap.set(this.resultOverlay, {opacity: 0, visibility: "visible"});
+            gsap.to(this.resultOverlay, {
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.inOut",
+                onComplete: () => this.confetti.start()
+            })
+
+            gsap.to(this.resultOverlaySelector + " > .overlay-body > div, .overlay-body > p", {
+                opacity: 1,
+                stagger: 0.2,
+                duration: 1,
+                delay: 0.5,
+                ease: "power2.inOut"
+            });
+
+            gsap.to(".back-to-home", {
+                y: 0,
+                duration: 0.8,
+                delay: 0.5,
+                ease: "power2.inOut"
+            });
+
+            gsap.to('#flower-1', {
+                left: '-100px',
+                ease: "power2.inOut",
+                duration: 1,
+                delay: 0.6
+            });
+
+            gsap.to('#flower-2', {
+                right: '-200px',
+                ease: "power2.inOut",
+                duration: 1,
+                delay: 0.8
+            });
+
+            gsap.to('#flower-3', {
+                left: '-100px',
+                ease: "power2.inOut",
+                duration: 1,
+                delay: 0.9
+            });
+        }
+        else if (resultType == "error") {
+            gsap.set(this.errorOverlay, {opacity: 0, visibility: "visible"});
+            gsap.to(this.errorOverlay, {
+                opacity: 1,
+                duration: 0.8,
+                ease: "power2.inOut",
+            })
+
+            gsap.to('#checkout-error-icon', {
+                opacity: 1,
+                scale: 1,
+                duration: 0.5,
+                ease: "power2.inOut",
+                delay: 0.4
+            });
+
+            gsap.to(this.errorOverlaySelector + " > .overlay-body", {
+                opacity: 1,
+                duration: 0.5,
+                ease: "power2.inOut",
+                delay: 0.6
+            });
+
+            gsap.to(this.errorOverlaySelector + " > .overlay-close", {
+                y: 0,
+                duration: 0.5,
+                ease: "back",
+                delay: 0.8
+            });
+        }
+    }
+
+    closeErrorOverlay() {
+        if (!this.overlayOpen) return;
+
+        
+        gsap.to(this.errorOverlaySelector, {
+            opacity: 0,
+            duration: 0.8,
+            ease: "power2.inOut",
+            onComplete: () => {
+                lenis.start();
+
+                gsap.set(this.errorOverlaySelector, {visibility: "hidden"});
+                gsap.set(this.errorOverlaySelector + " > .overlay-close", {y:82});
+                gsap.set(this.errorOverlaySelector + " > .overlay-body", {opacity: 0});
+                gsap.set('#checkout-error-icon', {opacity: 0, scale: 0});
+            }
+        })
+        this.overlayOpen = false;
     }
 
     // Beviteli mező validálása
@@ -194,10 +307,52 @@ class Checkout {
         return (typeof validator == 'function') ? validator(value)?null:error : validator.test(value)?null:error;
     }
 
+    toggleFieldState(section, name = null, error) {
+        // A mező lekérdezése a paraméterek alapján
+        const field = name ? this.form[section][name] || undefined : this.form[section] || undefined;
+        if (!field) return false;
+
+        const errorWrapper = field.dom.closest('.input-group').querySelector('.message-wrapper');
+        const messageContainer = errorWrapper.querySelector(".error-message");
+        const validity = error ? "invalid" : "valid";
+        const oppositeValidity = error ? "valid" : "invalid";
+        const didValidityChange = field.dom.classList.contains(oppositeValidity) || field.dom.classList.length == 0;
+
+        if (!didValidityChange) return;
+
+        field.dom.classList.add(validity);
+        field.dom.classList.remove(oppositeValidity);
+        
+        console.log(field.dom, error);
+        if (error) {
+            messageContainer.innerHTML = error;
+
+            gsap.set(errorWrapper, {visibility: "visible"});
+            gsap.to(errorWrapper, {
+                height: 21,
+                opacity: 1,
+                ease: "power2.inOut",
+                duration: 0.3
+            });
+        }
+        else {
+            gsap.to(errorWrapper, {
+                height: 0,
+                opacity: 0,
+                ease: "power2.inOut",
+                duration: 0.3,
+                onComplete: () => {
+                    gsap.set(errorWrapper, {visibility: "hidden"});
+                }
+            })
+        }
+    }
+
     // Eseménykezelők
     bindEvents() {
         // Kattintási események
         document.addEventListener("click", (e) => this.handleClickEvents(e));
+        this.errorOverlayCloser.addEventListener("click", this.closeErrorOverlay.bind(this));
 
         // Beviteli mező fókusz eseményei
         document.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
@@ -219,8 +374,8 @@ class Checkout {
                 if (element.noValidate) continue;
 
                 element.dom.addEventListener("focusout", () => {
-                    const valid = this.validateField(section);
-                    console.log(section, valid);
+                    const error = this.validateField(section);
+                    this.toggleFieldState(section, null, error);
                 });
             }
             else {
@@ -229,8 +384,8 @@ class Checkout {
                     if (element.noValidate) continue;
 
                     element.dom.addEventListener("focusout", () => {
-                        const valid = this.validateField(section, field);
-                        console.log(section + " " + field, valid);
+                        const error = this.validateField(section, field);
+                        this.toggleFieldState(section, field, error);
                     });
                 }
             }
@@ -352,11 +507,44 @@ class Checkout {
 
     // Form validáció
     validateForm() {
+        let valid = true;
+        for (let section in this.form) {
+            if (section === "billing" && this.form.billing.sameAddress.value) {
+                continue;
+            }
+    
+            if (section === "company" && this.form.purchaseTypes.value == "Magánszemélyként rendelek") {
+                continue;
+            }
+            if (this.form[section].dom) {
+                let element = this.form[section];
+                if (element.noValidate) continue;
 
+                const error = this.validateField(section);
+                this.toggleFieldState(section, null, error);
+
+                if (error) valid = false;
+            }
+            else {
+                for (let field in this.form[section]) {
+                    let element = this.form[section][field];
+                    if (element.noValidate) continue;
+
+                    const error = this.validateField(section, field);
+                    this.toggleFieldState(section, field, error);
+
+                    if (error) valid = false;
+                }
+            }
+        }
+        return valid;
     }
 
     // Backend metódusok
     async placeOrder() {
+        const isValid = this.validateForm();
+        if (!isValid) return;
+
         this.orderPlaced = true;
 
         const data = new FormData(this.formDOM);
@@ -370,53 +558,11 @@ class Checkout {
         if (result.ok) {
             const data = await result.json();
 
-            gsap.set(this.resultOverlay, {opacity: 0, visibility: "visible"});
-            gsap.to(this.resultOverlay, {
-                opacity: 1,
-                duration: 0.8,
-                ease: "power2.inOut",
-                onComplete: () => this.confetti.start()
-            })
-
-            gsap.to(".overlay-body > div, .overlay-body > p", {
-                opacity: 1,
-                stagger: 0.2,
-                duration: 1,
-                delay: 0.5,
-                ease: "power2.inOut"
-            });
-
-            gsap.to(".back-to-home", {
-                y: 0,
-                duration: 0.8,
-                delay: 0.5,
-                ease: "power2.inOut"
-            });
-
-            gsap.to('#flower-1', {
-                left: '-100px',
-                ease: "power2.inOut",
-                duration: 1,
-                delay: 0.6
-            });
-
-            gsap.to('#flower-2', {
-                right: '-200px',
-                ease: "power2.inOut",
-                duration: 1,
-                delay: 0.8
-            });
-
-            gsap.to('#flower-3', {
-                left: '-100px',
-                ease: "power2.inOut",
-                duration: 1,
-                delay: 0.9
-            });
-            // Konfetti
-            console.log("Sikeres rendelés");
+            // Animáció
+            this.openResultOverlay("success");
         } else {
-            throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());
+            this.openResultOverlay('error');
+            // throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());
         }
     }
 

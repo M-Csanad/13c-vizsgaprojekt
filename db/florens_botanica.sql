@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Jan 24. 21:55
+-- Létrehozás ideje: 2025. Jan 26. 20:18
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -199,7 +199,7 @@ CREATE TABLE `order` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL COMMENT 'Vendég rendelések miatt lehet NULL is a user_id',
   `email` varchar(255) DEFAULT NULL,
-  `phone` int(11) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
   `company_name` varchar(255) DEFAULT NULL,
@@ -215,7 +215,7 @@ CREATE TABLE `order` (
 --
 DELIMITER $$
 CREATE TRIGGER `after_order_delete` AFTER DELETE ON `order` FOR EACH ROW BEGIN
-    DELETE FROM order_item WHERE order_id = OLD.id;
+    DELETE FROM order_item WHERE order_id IS NULL;
 END
 $$
 DELIMITER ;
@@ -228,7 +228,7 @@ DELIMITER ;
 
 CREATE TABLE `order_item` (
   `id` int(11) NOT NULL,
-  `order_id` int(11) NOT NULL,
+  `order_id` int(11) DEFAULT NULL,
   `product_id` int(11) NOT NULL,
   `quantity` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -900,7 +900,8 @@ ALTER TABLE `order`
 -- Megkötések a táblához `order_item`
 --
 ALTER TABLE `order_item`
-  ADD CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE NO ACTION;
+  ADD CONSTRAINT `order_item_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `order_item_ibfk_3` FOREIGN KEY (`order_id`) REFERENCES `order` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `product_health_effect`
