@@ -33,7 +33,7 @@ body {
   margin: 0 auto;
   inset: 0; /* top:0; right:0; bottom:0; left:0; ugyanaz */
   max-width: calc(100vh * (9 / 12));
-  background: url("../media/images/background_vertical.jpg") center/cover
+  background: url("../media/images/background_vertical_pg.jpg") center/cover
     no-repeat;
 
   filter: var(--blur3) brightness(0.7);
@@ -145,17 +145,17 @@ body::after {
     position: absolute;
     z-index: 6;
     top: 25%;
-    left: calc((6 * 20px) + 40px + 5%);
+    left: calc((8 * 10px) + 30px + 5%);
     transform: translate(-50%, -50%);
     display: grid;
-    grid-template-columns: repeat(6, 20px); /* 5 oszlop, 10px méret */
-    grid-gap: 40px; /* Távolság a pontok között */
+    grid-template-columns: repeat(8, 10px); /* 5 oszlop, 10px méret */
+    grid-gap: 30px; /* Távolság a pontok között */
   }
 
   .dot-grid-02 {
     position: absolute;
     z-index: 6;
-    bottom: 0;
+    bottom: -2%;
     right: calc((3 * 10px) + 40px + 5%);
     transform: translate(-50%, -50%);
     display: grid;
@@ -214,18 +214,140 @@ body::after {
     z-index: 7;
     background-color: white; /* Szín */
   }
-  .square_01 {
-    top: 0%; /* Tetszőleges hely */
+  .runes {
+    position: absolute;
+    color: white;
+    top: 15%; /* Tetszőleges hely */
     right: 5%; /* Tetszőleges hely */
     text-transform: uppercase;
     font-family: "Poppins";
-    font-weight: 700;
-    font-size: clamp(1.15rem, calc(2.4rem + 0.39vw), 4.5rem);
-    display: inline-block; /* Blokk szintű elem lesz */
-    writing-mode: vertical-lr; /* Karakterek függőleges elrendezése */
-    text-orientation: upright; /* A karakterek normál álló helyzetben maradnak */
+    font-weight: 200;
+    font-size: clamp(0.15rem, calc(1rem + 0.39vw), 4.5rem);
+    display: inline-block;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
     margin: 0;
-    padding: 2rem 3.6rem;
+    padding: 0;
+  }
+  .square_01 {
+    top: 0%; /* Tetszőleges hely */
+    right: 10%; /* Tetszőleges hely */
+    bottom: 15%; /* Tetszőleges hely */
+    width: 150px;
+    height: 330px;
+  }
+
+  .square_02 {
+    bottom: 15%; /* Tetszőleges hely */
+    left: 5%; /* Tetszőleges hely */
+    rotate: 90deg;
+    width: 8px;
+    height: 300px;
+  }
+  .square_03 {
+    bottom: 18%; /* Tetszőleges hely */
+    left: 20%; /* Tetszőleges hely */
+    rotate: 90deg;
+    width: 2px;
+    height: 200px;
+  }
+
+  .square_04 {
+    bottom: -3%; /* Tetszőleges hely */
+    left: 10%; /* Tetszőleges hely */
+    rotate: 90deg;
+    width: 60px;
+    height: 300px;
+  }
+
+  .paragraph_quoteL,
+  .paragraph_quoteR {
+    position: absolute;
+    user-select: none;
+    z-index: 7;
+    width: 300px;
+    color: white;
+
+    font-family: "Poppins";
+  }
+  .paragraph_quoteL {
+    border-left: 4px solid white;
+    padding-left: 10px;
+  }
+  .paragraph_quoteR {
+    border-right: 4px solid white;
+    padding-right: 10px;
+    text-align: right;
+  }
+  .paragraph_quoteL p,
+  .paragraph_quoteR p {
+    padding-left: 12px;
+    text-transform: lowercase;
+    font-style: italic;
+    font-weight: 100;
+    text-shadow: 1px 0px 5px black;
+  }
+
+  .quote01 {
+    top: 10%; /* Tetszőleges hely */
+    left: 5%; /* Tetszőleges hely */
+  }
+  .quote02 {
+    bottom: 33%; /* Tetszőleges hely */
+    right: 0; /* Tetszőleges hely */
+  }
+
+  #mainTitle {
+    position: absolute;
+    z-index: 7;
+    top: 30%;
+    left: 40%;
+    text-transform: uppercase;
+    font-family: "Poppins";
+    color: white;
+    font-weight: 700;
+    font-size: clamp(2.15rem, calc(4.8rem + 0.39vw), 5.5rem);
+    display: inline-block;
+    writing-mode: vertical-lr;
+    text-orientation: upright;
+    padding: 0;
+    margin: 0;
+    user-select: none;
+  }
+
+  #pfpImage_container {
+    position: absolute;
+    top: 50%;
+    transform: translate(0%, -50%);
+    z-index: 5;
+    display: flex;
+    gap: 20px;
+    width: calc(100vh * (9 / 14));
+    height: 100vh;
+    align-items: center;
+  }
+
+  .pfpImage_wrapper {
+    position: absolute;
+    width: calc(58vh * (9 / 14));
+    height: auto;
+    overflow: hidden;
+  }
+
+  .pfpImage_wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  #Profile_M {
+    left: 40%;
+    top: 38%;
+    width: calc(43vh * (9 / 14));
+  }
+  #Profile_B {
+    left: 7%;
+    top: 37%;
   }
 }
 

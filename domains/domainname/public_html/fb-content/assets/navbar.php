@@ -128,7 +128,7 @@ $base_url = "http://localhost";
 $logo_url = htmlspecialchars("$base_url/fb-content/assets/media/images/logos/herbalLogo_mini_white.png");
 $menu_items = [
     ['name' => 'Kategóriák', 'id' => 'fb-navlink-category', 'url' => '#'],
-    ['name' => 'Rólunk', 'url' => "$base_url/about-us/"],
+    ['name' => 'Rólunk', 'url' => "$base_url/about-us"],
     ['name' => 'Adatvédelmi Nyilatkozat', 'url' => "$base_url/privacy-policy"]
 ];
 
@@ -190,7 +190,10 @@ $menu_items = [
                 </div>
                 <div class="icon_wrapper">
                     <a title="Kosár" class="cart-open">
-                        <svg width="34px" height="34px" viewBox="0 0 1024 1063.18" xmlns="http://www.w3.org/2000/svg"><path fill="white" d="M93.09 288.038h846.197V888.94c-.106 86.33-70.062 156.287-156.383 156.393h-533.42C163.15 1045.227 93.195 975.27 93.09 888.95v-.01zm799.652 46.546H139.637V888.94c.08 60.635 49.212 109.768 109.84 109.847h533.42c60.634-.08 109.767-49.212 109.846-109.84v-.008zM761.484 444.43H714.94V266.628c0-109.766-88.984-198.75-198.75-198.75s-198.75 88.984-198.75 198.75V444.43h-46.544V266.628c0-135.472 109.822-245.295 245.295-245.295s245.296 109.822 245.296 245.295z"/></svg>
+                        <svg width="34px" height="34px" viewBox="0 0 1024 1063.18" xmlns="http://www.w3.org/2000/svg">
+                            <path fill="white"
+                                d="M93.09 288.038h846.197V888.94c-.106 86.33-70.062 156.287-156.383 156.393h-533.42C163.15 1045.227 93.195 975.27 93.09 888.95v-.01zm799.652 46.546H139.637V888.94c.08 60.635 49.212 109.768 109.84 109.847h533.42c60.634-.08 109.767-49.212 109.846-109.84v-.008zM761.484 444.43H714.94V266.628c0-109.766-88.984-198.75-198.75-198.75s-198.75 88.984-198.75 198.75V444.43h-46.544V266.628c0-135.472 109.822-245.295 245.295-245.295s245.296 109.822 245.296 245.295z" />
+                        </svg>
                     </a>
                 </div>
                 <div class="icon_wrapper login_icon_wrapper">
@@ -245,12 +248,16 @@ $menu_items = [
 <div class="modal-background"></div>
 <div class="search">
     <div class="search-input">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search search-button" viewBox="0 0 16 16">
-            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-search search-button" viewBox="0 0 16 16">
+            <path
+                d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
         </svg>
         <input type="text" name="search_term" placeholder="Keresés">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-lg search-close" viewBox="0 0 16 16">
-            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+            class="bi bi-x-lg search-close" viewBox="0 0 16 16">
+            <path
+                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
         </svg>
     </div>
 </div>
@@ -258,10 +265,17 @@ $menu_items = [
 <div class="cart">
     <div class="cart-close">
         <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x-lg" viewBox="0 0 16 16">
-            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+            <path
+                d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
         </svg>
     </div>
-    <svg class="cart-logo" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"><path d="m4.05108 8.9199c.04175-.51955.47556-.9199.99679-.9199h13.90423c.5213 0 .9551.40035.9968.9199l.8775 10.9199c.0935 1.164-.8258 2.1602-1.9936 2.1602h-13.66564c-1.16773 0-2.08711-.9962-1.99357-2.1602z"/><path d="m16 11v-5c0-2.20914-1.7909-4-4-4-2.20914 0-4 1.79086-4 4v5"/></g></svg>
+    <svg class="cart-logo" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="white" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+            <path
+                d="m4.05108 8.9199c.04175-.51955.47556-.9199.99679-.9199h13.90423c.5213 0 .9551.40035.9968.9199l.8775 10.9199c.0935 1.164-.8258 2.1602-1.9936 2.1602h-13.66564c-1.16773 0-2.08711-.9962-1.99357-2.1602z" />
+            <path d="m16 11v-5c0-2.20914-1.7909-4-4-4-2.20914 0-4 1.79086-4 4v5" />
+        </g>
+    </svg>
     <header>
         <div class="title">Kosár</div>
         <div class="cart-count">0 elem</div>
@@ -291,7 +305,7 @@ $menu_items = [
                 -
             </div>
             <div class="price">
-                <div class="value">8000</div>    
+                <div class="value">8000</div>
                 <div class="currency">Ft</div>
             </div>
         </a>
