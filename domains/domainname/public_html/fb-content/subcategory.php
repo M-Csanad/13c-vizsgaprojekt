@@ -144,11 +144,11 @@
             <section class="products">
                 <div class="topbar-wrapper">
                     <div class="info">
-                        <div class="category">
+                        <a class="category" href="/<?= htmlspecialchars($subcategoryData["category_slug"]); ?>">
                             <?= htmlspecialchars($subcategoryData["category_name"]); ?>
-                        </div>
+                        </a>
                         <header>
-                            <?= htmlspecialchars($subcategoryData["name"]); ?>
+                            <?= htmlspecialchars($subcategoryData["name"]); ?> <span style="font-size: 18px; color: #dddddd; font-family: Roboto">- <?= htmlspecialchars($subcategoryData['product_count']); ?> termék</span>
                         </header>
                         <div class="subname">
                             <?= htmlspecialchars($subcategoryData["subname"]); ?>

@@ -412,7 +412,7 @@ main {
     }
   
     & > .button-wrapper > .quick-add:hover::before {
-      transform: translateX(10%);
+      transform: translateX(3%);
     }
   
     & > .button-wrapper > .quick-add:active {

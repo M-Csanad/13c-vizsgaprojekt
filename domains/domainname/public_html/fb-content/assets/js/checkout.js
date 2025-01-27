@@ -562,7 +562,6 @@ class Checkout {
             this.openResultOverlay("success");
         } else {
             this.openResultOverlay('error');
-            // throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());
         }
     }
 
