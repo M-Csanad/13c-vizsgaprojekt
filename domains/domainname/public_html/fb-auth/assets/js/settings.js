@@ -1,3 +1,5 @@
+import AutofillForm from "./autofill-form.js";
+
 const isMobile = (getComputedStyle(document.body).getPropertyValue("--is-mobile") == "1") || (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
 let pageLinks;
 let pages;
@@ -31,6 +33,8 @@ window.addEventListener("load", () => {
   let saveButtons = document.querySelectorAll(".save");
   let editButtons = document.querySelectorAll(".edit");
   let dyk = document.querySelector(".didyouknow");
+
+  document.querySelectorAll('.autofill-form').forEach(form => new AutofillForm(form.classList[0], form));
 
   saveButtons.forEach((e) =>
     e.addEventListener("click", () => {

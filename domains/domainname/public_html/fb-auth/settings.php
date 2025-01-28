@@ -28,12 +28,18 @@
     <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/settings.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/inputs.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/autofill-form.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="shortcut icon" href="./fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.14/dist/lenis.css" />
 
+    <script defer src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" ></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script defer src="/fb-content/assets/js/lenis.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="/fb-content/assets/js/page_transition.js"></script>
-    <script src="./fb-auth/assets/js/settings.js" defer></script>
+    <script defer type="module" src="./fb-auth/assets/js/settings.js"></script>
 </head>
 <body>
     <div class=transition><div class=transition-background></div><div class=transition-text><div class=hero><div class=char>F</div><div class=char>l</div><div class=char>o</div><div class=char>r</div><div class=char>e</div><div class=char>n</div><div class=char>s</div><div class=char> </div><div class=char>B</div><div class=char>o</div><div class=char>t</div><div class=char>a</div><div class=char>n</div><div class=char>i</div><div class=char>c</div><div class=char>a</div></div><div class=quote><div class=char>"</div><div class=char>A</div><div class=char> </div><div class=char>l</div><div class=char>e</div><div class=char>g</div><div class=char>n</div><div class=char>a</div><div class=char>g</div><div class=char>y</div><div class=char>o</div><div class=char>b</div><div class=char>b</div><div class=char> </div><div class=char>g</div><div class=char>a</div><div class=char>z</div><div class=char>d</div><div class=char>a</div><div class=char>g</div><div class=char>s</div><div class=char>á</div><div class=char>g</div><div class=char> </div><div class=char>a</div><div class=char>z</div><div class=char> </div><div class=char>e</div><div class=char>g</div><div class=char>é</div><div class=char>s</div><div class=char>z</div><div class=char>s</div><div class=char>é</div><div class=char>g</div><div class=char>.</div><div class=char>"</div><div class=char> </div><div class=char>-</div><div class=char> </div><div class=char>V</div><div class=char>e</div><div class=char>r</div><div class=char>g</div><div class=char>i</div><div class=char>l</div><div class=char>i</div><div class=char>u</div><div class=char>s</div></div></div><div class="layer layer-0"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-1"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-2"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div><div class="layer layer-3"><div class="row-1 transition-row"><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div><div class=block></div></div></div></div>
@@ -177,7 +183,133 @@
                         <div class="dyk-text">Ön <b><?php echo $accountAge ?></b> napja a Florens Botanica tagja! Köszönjük, hogy minket választott.</div>
                     </div>
                 </div>
-                <div class="content-page"></div> <!-- Automatikus kitöltés -->
+                <div class="content-page"> <!-- Automatikus kitöltés -->
+                    <div class="content-main">
+                        <div class="page-title">
+                            Automatikus kitöltés
+                        </div>
+                        <div class="divider">Szállítási cím</div>
+                        <div class="cards">
+                            <div class="add-field">+</div>
+                        </div>
+                        <div class="form-wrapper">
+                            <form class="autofill-delivery autofill-form">
+                                <div class="form-body-wrapper">
+                                    <header>Új szállítási cím</header>
+                                    <p class="form-description">Gyakran használt címeit elmentheti, hogy gördülékenyebb legyen a rendelés folyamata.</p>
+                                    <div class="input-group" tabindex="-1">
+                                        <div class="input-body" tabindex="-1">
+                                            <label for="autofill-name">Megnevezés</label>
+                                            <input type="text" name="autofill-name" id="autofill-name" required placeholder="A mentett adatok címe" tabindex="1">
+                                        </div>
+                                        <div class="message-wrapper">
+                                            <div class="error-message"></div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="input-group-inline" tabindex="-1">
+                                        <div class="input-group" tabindex="-1">
+                                            <div class="input-body" tabindex="-1">
+                                                <label for="billing-zip">Irányítószám</label>
+                                                <input type="text" name="billing-zip" id="billing-zip" required placeholder="pl. 8200" tabindex="1">
+                                            </div>
+                                            <div class="message-wrapper">
+                                                <div class="error-message"></div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group" tabindex="-1">
+                                            <div class="input-body" tabindex="-1">
+                                                <label for="billing-city">Település</label>
+                                                <input type="text" name="billing-city" id="billing-city" required placeholder="pl. Veszprém" tabindex="1">
+                                            </div>
+                                            <div class="message-wrapper">
+                                                <div class="error-message"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group" tabindex="-1">
+                                        <div class="input-body" tabindex="-1">
+                                            <label for="billing-street-house">Utca és házszám</label>
+                                            <input type="text" name="billing-street-house" id="billing-street-house" required placeholder="pl. Fő utca 29/B" tabindex="1">
+                                        </div>
+                                        <div class="message-wrapper">
+                                            <div class="error-message"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-close">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button type="button" class="form-save">Mentés</button>
+                                    <button type="button" class="form-cancel">Mégse</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="divider">Számlázási cím</div>
+                        <div class="cards">
+                            <div class="add-field">+</div>
+                        </div>
+                        <div class="form-wrapper">
+                            <form class="autofill-billing autofill-form">
+                                <div class="form-body-wrapper">
+                                    <header>Új számlázási cím</header>
+                                    <p class="form-description">Gyakran használt címeit elmentheti, hogy gördülékenyebb legyen a rendelés folyamata.</p>
+                                    <div class="input-group" tabindex="-1">
+                                        <div class="input-body" tabindex="-1">
+                                            <label for="autofill-name-billing">Megnevezés</label>
+                                            <input type="text" name="autofill-name-billing" id="autofill-name-billing" required placeholder="A mentett adatok címe" tabindex="1">
+                                        </div>
+                                        <div class="message-wrapper">
+                                            <div class="error-message"></div>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="input-group-inline" tabindex="-1">
+                                        <div class="input-group" tabindex="-1">
+                                            <div class="input-body" tabindex="-1">
+                                                <label for="billing-zip">Irányítószám</label>
+                                                <input type="text" name="billing-zip" id="billing-zip" required placeholder="pl. 8200" tabindex="1">
+                                            </div>
+                                            <div class="message-wrapper">
+                                                <div class="error-message"></div>
+                                            </div>
+                                        </div>
+                                        <div class="input-group" tabindex="-1">
+                                            <div class="input-body" tabindex="-1">
+                                                <label for="billing-city">Település</label>
+                                                <input type="text" name="billing-city" id="billing-city" required placeholder="pl. Veszprém" tabindex="1">
+                                            </div>
+                                            <div class="message-wrapper">
+                                                <div class="error-message"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group" tabindex="-1">
+                                        <div class="input-body" tabindex="-1">
+                                            <label for="billing-street-house">Utca és házszám</label>
+                                            <input type="text" name="billing-street-house" id="billing-street-house" required placeholder="pl. Fő utca 29/B" tabindex="1">
+                                        </div>
+                                        <div class="message-wrapper">
+                                            <div class="error-message"></div>
+                                        </div>
+                                    </div>
+                                    <div class="form-close">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="bi bi-x-lg" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="action-buttons">
+                                    <button type="button" class="form-save">Mentés</button>
+                                    <button type="button" class="form-cancel">Mégse</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
                 <div class="content-page"></div> <!-- Rendeléseim -->
                 <div class="content-page"></div> <!-- Jelszó -->
             </div>
