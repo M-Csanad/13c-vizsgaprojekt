@@ -323,7 +323,6 @@ class Checkout {
         field.dom.classList.add(validity);
         field.dom.classList.remove(oppositeValidity);
         
-        console.log(field.dom, error);
         if (error) {
             messageContainer.innerHTML = error;
 
@@ -373,7 +372,7 @@ class Checkout {
                 let element = this.form[section];
                 if (element.noValidate) continue;
 
-                element.dom.addEventListener("focusout", () => {
+                element.dom.addEventListener("change", () => {
                     const error = this.validateField(section);
                     this.toggleFieldState(section, null, error);
                 });
@@ -383,7 +382,7 @@ class Checkout {
                     let element = this.form[section][field];
                     if (element.noValidate) continue;
 
-                    element.dom.addEventListener("focusout", () => {
+                    element.dom.addEventListener("change", () => {
                         const error = this.validateField(section, field);
                         this.toggleFieldState(section, field, error);
                     });
@@ -399,14 +398,17 @@ class Checkout {
     }
 
     handleAutofillFocus() {
-        document.querySelectorAll(".input-group").forEach(el => {
-            const label = el.querySelector('label');
-            const input = el.querySelector('input, select');
-
-            if (!input) return;
-
-            if (input.value !== "") label.classList.add('focus');
-        });
+        setTimeout(() => {
+            document.querySelectorAll(".input-group").forEach(el => {
+                const label = el.querySelector('label');
+                const input = el.querySelector('input, select');
+    
+                if (!input) return;
+    
+                console.log(input.value, input);
+                if (input.value !== "") label.classList.add('focus');
+            });
+        }, 10);
     }
 
     handleInputGroupFocus(e) {

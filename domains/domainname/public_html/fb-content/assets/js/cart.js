@@ -279,11 +279,11 @@ class Cart {
 
     // A "Kosár üres" üzenet megjelenési állapotát változtatja
     setElementVisibility(element, visibility) {
+        // Paraméterek ellenőrzése
         if (!element) throw new Error("Nincs elem megadva!");
-        
         if (visibility != "hidden" && visibility != "visible") throw new Error(`Ismeretlen láthatóság (${visibility})`);
-        
-        console.log(element, visibility, getComputedStyle(element).visibility)
+
+        // Ha már az az elem láthatósága, mint amit beadtunk, akkor nem történik semmi
         if (getComputedStyle(element).visibility == visibility) return;
 
         if (!this.isOpen) {
