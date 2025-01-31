@@ -18,7 +18,7 @@ if (isset($data['url']) && isset($data['qty'])) {
 
     // Ha nem 3 elemű az URL, akkor biztos, hogy nem termék
     if (count($segments) !== 3) {
-        http_response_code(405);
+        http_response_code(400);
         $result = new Result(Result::ERROR, 'Hibás URL');
         echo $result->toJSON();
         exit();
@@ -31,14 +31,14 @@ if (isset($data['url']) && isset($data['qty'])) {
     // Termék azonosító lekérése
     $result = isValidProduct($product, $parents);
     if ($result->isError()) {
-        http_response_code(405);
+        http_response_code(400);
         $result = new Result(Result::ERROR, 'Hibás lekérdezés');
         echo $result->toJSON();
         exit();
     }
 
     if ($result->isEmpty()) {
-        http_response_code(405);
+        http_response_code(400);
         $result = new Result(Result::ERROR, 'Ismeretlen termék');
         echo $result->toJSON();
         exit();
@@ -69,7 +69,7 @@ if (isset($data['url']) && isset($data['qty'])) {
     $quantity = $data['qty'];
 
     if ($quantity > $stock || $quantity < 1) {
-        http_response_code(405);
+        http_response_code(400);
         $result = new Result(Result::ERROR, 'A megadott mennyiség nem megfelelő.');
         echo $result->toJSON();
         exit();
@@ -140,7 +140,7 @@ if (isset($data['url']) && isset($data['qty'])) {
     }
     
 } else {
-    http_response_code(405);
+    http_response_code(400);
     $result = new Result(Result::ERROR, 'Hiányos kérés');
     echo $result->toJSON();
     exit();

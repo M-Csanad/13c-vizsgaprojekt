@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Jan 26. 20:18
+-- Létrehozás ideje: 2025. Jan 31. 18:34
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -22,6 +22,36 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `florens_botanica` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
 USE `florens_botanica`;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `autofill_billing`
+--
+
+CREATE TABLE `autofill_billing` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `zip` int(11) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `street_house` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Tábla szerkezet ehhez a táblához `autofill_delivery`
+--
+
+CREATE TABLE `autofill_delivery` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `zip` int(11) NOT NULL,
+  `city` varchar(255) NOT NULL,
+  `street_house` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
 
@@ -77,25 +107,6 @@ INSERT INTO `category` (`id`, `name`, `subname`, `description`, `thumbnail_image
 (13, 'A Konyha Ízei', 'Az Ízek Harmóniája', 'Hozd ki a legtöbbet a konyhából természetes fűszerekkel és gyógyhatású kiegészítőkkel! Ebben a kategóriában ízletes és egészséges megoldások várnak, amelyek nemcsak ételeidet teszik különlegessé, hanem az egészségedet is támogatják.', 'http://localhost/fb-content/fb-categories/media/images/category-13/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-13/thumbnail_image_horizontal.jpg', NULL, 0, 'a-konyha-ízei'),
 (14, 'A Szív Egészsége', 'A Szív Ereje', 'Támogasd szíved egészségét természetes megoldásokkal! Ebben a kategóriában olyan kiegészítőket találsz, amelyek segítik a keringést, erősítik az érrendszert és hozzájárulnak a szív optimális működéséhez. Adj lendületet az élet ritmusának!', 'http://localhost/fb-content/fb-categories/media/images/category-14/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-14/thumbnail_image_horizontal.jpg', NULL, 0, 'a-sziv-egeszsege'),
 (15, 'Az Erdő Ajándéka', 'Az Erdő Kincsei', 'Fedezd fel az erdő gazdagságát! Ebben a kategóriában erdei gombák, gyógynövények, gyümölcsök, mézek és aromaterápiás termékek várnak, hogy természetes módon támogassák egészségedet és kényeztessék érzékeidet. Hozd el otthonodba az erdő ajándékait!', 'http://localhost/fb-content/fb-categories/media/images/category-15/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-15/thumbnail_image_horizontal.jpg', NULL, 0, 'az-erdo-ajandeka');
-
--- --------------------------------------------------------
-
---
--- Tábla szerkezet ehhez a táblához `delivery_info`
---
-
-CREATE TABLE `delivery_info` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) DEFAULT NULL,
-  `phone` int(11) DEFAULT NULL,
-  `company_name` varchar(255) DEFAULT NULL,
-  `tax_number` varchar(20) DEFAULT NULL,
-  `country` varchar(255) DEFAULT NULL,
-  `city` varchar(255) DEFAULT NULL,
-  `zip` int(11) DEFAULT NULL,
-  `billing_address` varchar(255) DEFAULT NULL,
-  `delivery_address` varchar(255) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 -- --------------------------------------------------------
 
@@ -654,6 +665,20 @@ INSERT INTO `user` (`id`, `email`, `user_name`, `password_hash`, `role`, `cookie
 --
 
 --
+-- A tábla indexei `autofill_billing`
+--
+ALTER TABLE `autofill_billing`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- A tábla indexei `autofill_delivery`
+--
+ALTER TABLE `autofill_delivery`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- A tábla indexei `cart`
 --
 ALTER TABLE `cart`
@@ -668,13 +693,6 @@ ALTER TABLE `cart`
 --
 ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
-
---
--- A tábla indexei `delivery_info`
---
-ALTER TABLE `delivery_info`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `delivery_info_ibfk_1` (`user_id`);
 
 --
 -- A tábla indexei `health_effect`
@@ -777,6 +795,18 @@ ALTER TABLE `user`
 --
 
 --
+-- AUTO_INCREMENT a táblához `autofill_billing`
+--
+ALTER TABLE `autofill_billing`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT a táblához `autofill_delivery`
+--
+ALTER TABLE `autofill_delivery`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT a táblához `cart`
 --
 ALTER TABLE `cart`
@@ -787,12 +817,6 @@ ALTER TABLE `cart`
 --
 ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
-
---
--- AUTO_INCREMENT a táblához `delivery_info`
---
-ALTER TABLE `delivery_info`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `health_effect`
@@ -877,18 +901,24 @@ ALTER TABLE `user`
 --
 
 --
+-- Megkötések a táblához `autofill_billing`
+--
+ALTER TABLE `autofill_billing`
+  ADD CONSTRAINT `autofill_billing_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Megkötések a táblához `autofill_delivery`
+--
+ALTER TABLE `autofill_delivery`
+  ADD CONSTRAINT `autofill_delivery_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
 -- Megkötések a táblához `cart`
 --
 ALTER TABLE `cart`
   ADD CONSTRAINT `cart_ibfk_2` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `cart_ibfk_3` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `cart_ibfk_4` FOREIGN KEY (`page_id`) REFERENCES `product_page` (`id`) ON DELETE SET NULL ON UPDATE CASCADE;
-
---
--- Megkötések a táblához `delivery_info`
---
-ALTER TABLE `delivery_info`
-  ADD CONSTRAINT `delivery_info_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Megkötések a táblához `order`

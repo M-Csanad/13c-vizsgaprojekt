@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
 
 $data = json_decode(file_get_contents("php://input"), true);
 if (!isset($data['operation']) || !isset($data['product_id']) || !is_int($data['product_id'])) {
-    http_response_code(405);
+    http_response_code(400);
     $result = new Result(Result::ERROR, 'Üres vagy hibás paraméter');
     echo $result->toJSON();
     exit();

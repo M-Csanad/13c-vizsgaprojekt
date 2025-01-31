@@ -81,7 +81,7 @@ class Confetti {
     running = false;
     ease = "power2.inOut";
 
-    particleCount =100;
+    particleCount = 80;
     particles = [];
 
     elapsedTime;
