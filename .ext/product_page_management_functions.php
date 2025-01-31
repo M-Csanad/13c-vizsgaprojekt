@@ -41,14 +41,12 @@ function createProductPage($productData, $productPageData, $productCategoryData)
     if ($result->isError()) {
         if ($result->code === 1062) { // Duplicate entry hiba
             return new Result(Result::ERROR, "Ilyen termék oldal már létezik.");
-            // return new Result(Result::ERROR, "Ilyen termék oldal már létezik.");
         }
         else {
             return new Result(Result::ERROR, "Sikertelen feltöltés a product_page táblába: {$result->toJSON()}");
         }
     }
 
-    // return new Result(Result::SUCCESS, "Sikeres termék oldal létrehozás.");
     return new Result(Result::SUCCESS, "Sikeres termék oldal létrehozás.");
 }
 

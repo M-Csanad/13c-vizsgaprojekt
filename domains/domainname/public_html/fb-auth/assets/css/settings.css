@@ -422,6 +422,7 @@ body {
 
 .add-field {
     display: flex;
+    user-select: none;
     justify-content: center;
     align-items: center;
     cursor: pointer;
@@ -438,8 +439,8 @@ body {
 }
 
 .add-field:hover {
-    background-color: #2e2e2e;
-    border-color: #494949;
+    background-color: rgb(48, 64, 24);
+    border-color: #85c838;
     color: white;
 }
 

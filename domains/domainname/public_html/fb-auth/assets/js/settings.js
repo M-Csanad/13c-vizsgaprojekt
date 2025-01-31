@@ -269,4 +269,6 @@ window.addEventListener("load", () => {
   setHoverStyle(logout, "#b92424");
   setHoverStyle(dashboard, "#2797ca");
   setHoverStyle(dyk, "#5dbc55");
+  
+  document.querySelectorAll(".add-field").forEach(e => setHoverStyle(e, "#85f838"));
 });
