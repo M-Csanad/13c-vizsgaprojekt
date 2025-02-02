@@ -97,24 +97,6 @@
     <main>
         <form class="checkout-form">
             <header>Megrendelés</header>
-            <div class="input-group" tabindex="-1">
-                <div class="input-body" tabindex="-1">
-                    <label for="autofill">Mentett adatok</label>
-                    <select name="autofill" id="autofill">
-                        <option value="asd">asdasd</option>
-                        <option value="asd">asdasd</option>
-                        <option value="asd">asdasd</option>
-                        <option value="asd">asdasd</option>
-                    </select>
-                    <div class="status">
-                        <div class="error"></div>
-                        <div class="success"></div>
-                    </div>
-                </div>
-                <div class="message-wrapper">
-                    <div class="error-message"></div>
-                </div>
-            </div>
             <div class="purchase-type-radios" id="purchase-types" data-target=".company-section">
                 <div class="radio checked">Magánszemélyként rendelek</div>
                 <div class="radio">Cégként rendelek</div>
@@ -214,6 +196,21 @@
             </section>
             <section>
                 <header>Szállítási cím</header>
+                <div class="input-group" tabindex="-1">
+                    <div class="input-body" tabindex="-1">
+                        <label for="delivery-autofill">Automatikus kitöltés</label>
+                        <select name="autofill" id="delivery-autofill">
+                            <option value="def"></option>
+                        </select>
+                        <div class="status">
+                            <div class="error"></div>
+                            <div class="success"></div>
+                        </div>
+                    </div>
+                    <div class="message-wrapper">
+                        <div class="error-message"></div>
+                    </div>
+                </div>
                 <div class="input-group-inline" tabindex="-1">
                     <div class="input-group" tabindex="-1">
                         <div class="input-body" tabindex="-1">
@@ -263,6 +260,21 @@
                     <label for="same-address">A számlázási adatok megegyeznek a szállítási adatokkal</label>
                 </div>
                 <div class="input-group-hideable">
+                    <div class="input-group" tabindex="-1">
+                        <div class="input-body" tabindex="-1">
+                            <label for="billing-autofill">Automatikus kitöltés</label>
+                            <select name="autofill" id="billing-autofill">
+                                <option value="def"></option>
+                            </select>
+                            <div class="status">
+                                <div class="error"></div>
+                                <div class="success"></div>
+                            </div>
+                        </div>
+                        <div class="message-wrapper">
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
                     <div class="input-group-inline" tabindex="-1">
                         <div class="input-group" tabindex="-1">
                             <div class="input-body" tabindex="-1">

@@ -36,6 +36,7 @@ class Checkout {
             // Megvárjuk a tartalom letöltését
             await fetchPromise;
 
+            this.generateAutofillOptions();
         } catch (err) {
             console.error(err);
         }
@@ -80,11 +81,6 @@ class Checkout {
         };
         
         this.form = {
-            "autofill": {
-                "dom": this.formDOM.querySelector('#autofill'),
-                "noValidate": true,
-                get value() { return this.dom?.value }
-            },
             "purchaseTypes": {
                 "dom": this.formDOM.querySelector("#purchase-types"),
                 "noValidate": true,
@@ -126,6 +122,11 @@ class Checkout {
             },
         
             "delivery": {
+                "autofill": {
+                    "dom": this.formDOM.querySelector('#delivery-autofill'),
+                    "noValidate": true,
+                    get value() { return this.dom?.value }
+                },
                 "zipCode": {
                     "dom": this.formDOM.querySelector("#zip-code"),
                     "errorMessage": "Érvénytelen irányítószám.",
@@ -149,6 +150,11 @@ class Checkout {
                     "noValidate": true,
                     get value() { return this.dom.checked || false; }
                 },
+                "autofill": {
+                    "dom": this.formDOM.querySelector('#billing-autofill'),
+                    "noValidate": true,
+                    get value() { return this.dom?.value }
+                },
                 "zipCode": {
                     "dom": this.formDOM.querySelector("#billing-zip"),
                     "errorMessage": "Érvénytelen irányítószám",
@@ -168,6 +174,45 @@ class Checkout {
         };
 
         this.handleAutofillFocus();
+    }
+
+    generateAutofillOptions() {
+        for (let type in this.autofill) {
+            const select = this.form[type].autofill.dom;
+            
+            this.autofill[type].forEach(e => select.innerHTML += `<option value='${e.id}'>${e.name}</option>`);
+        }
+    }
+
+    handleAutofill(type) {
+        const section = this.form[type];
+        const dom = section.autofill.dom;
+        const selected = dom.value;
+        const zip = section.zipCode.dom;
+        const city = section.city.dom;
+        const streetHouse = section.streetHouse.dom;
+        
+        if (selected == "def") {
+            zip.value = "";
+            city.value = "";
+            streetHouse.value = "";
+
+            zip.dispatchEvent(new Event("focusout"))
+            city.dispatchEvent(new Event("focusout"))
+            streetHouse.dispatchEvent(new Event("focusout"))
+            return;
+        }
+
+        const data = this.autofill[type].filter(e => e.id == selected)[0];
+        if (!data) return;
+
+        zip.value = data.zip;
+        city.value = data.city;
+        streetHouse.value = data.street_house;
+
+        zip.dispatchEvent(new Event("focus"))
+        city.dispatchEvent(new Event("focus"))
+        streetHouse.dispatchEvent(new Event("focus"))
     }
 
     openResultOverlay(resultType = "success") {
@@ -302,7 +347,7 @@ class Checkout {
         const validity = error ? "invalid" : "valid";
         const oppositeValidity = error ? "valid" : "invalid";
         const didValidityChange = field.dom.classList.contains(oppositeValidity) || field.dom.classList.length == 0;
-
+        
         if (!didValidityChange) return;
 
         field.dom.classList.add(validity);
@@ -337,6 +382,10 @@ class Checkout {
         // Kattintási események
         document.addEventListener("click", (e) => this.handleClickEvents(e));
         this.errorOverlayCloser.addEventListener("click", this.closeErrorOverlay.bind(this));
+
+        // Automatikus kitöltési mezők eseményei
+        this.form.delivery.autofill.dom.addEventListener("input", () => this.handleAutofill("delivery"))
+        this.form.billing.autofill.dom.addEventListener("input", () => this.handleAutofill("billing"))
 
         // Beviteli mező fókusz eseményei
         document.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
@@ -389,9 +438,7 @@ class Checkout {
                 const input = el.querySelector('input, select');
     
                 if (!input) return;
-    
-                console.log(input.value, input);
-                if (input.value !== "") label.classList.add('focus');
+                if (input.value !== "" && input.value !== "def") label.classList.add('focus');
             });
         }, 10);
     }
@@ -401,13 +448,21 @@ class Checkout {
         const label = inputGroup.querySelector('label');
         const input = inputGroup.querySelector('input, select');
 
-        input.addEventListener("focus", () => {
-            if (input.nodeName !== "SELECT") label.classList.add('focus');
-        });
-
-        input.addEventListener("focusout", () => {
-            if (input.value === "") label.classList.remove('focus');
-        });
+        if (input.nodeName === "SELECT") {
+            input.addEventListener("input", () => {
+                if (input.value != "def") label.classList.add('focus');
+                else label.classList.remove('focus');
+            });
+        }
+        else {
+            input.addEventListener("focus", () => {
+                label.classList.add('focus');
+            });
+    
+            input.addEventListener("focusout", () => {
+                if (input.value === "") label.classList.remove('focus');
+            });
+        }
     }
 
     handlePurchaseTypeRadios(e) {
@@ -578,7 +633,7 @@ class Checkout {
 
         if (result.ok) {
             const data = await result.json();
-            this.autofill = data.message;
+            this.autofill = data;
         } else {
             throw new Error("Hiba történt az automatikus kitöltési mezők lekérdezése során: " + await result.json());
         }

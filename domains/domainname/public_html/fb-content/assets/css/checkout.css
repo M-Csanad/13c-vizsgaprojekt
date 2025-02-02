@@ -194,7 +194,7 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
         backface-visibility: hidden;
     }
 
-    & label.focus, &:focus-within label {
+    & label.focus, &:has(input:focus-within) label {
         transform: translateY(-10px) translateZ(0);
     }
 

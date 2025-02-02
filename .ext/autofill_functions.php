@@ -9,12 +9,12 @@ function uploadAutofill($data) {
         return $result;
     }
 
-    return selectData("SELECT * FROM autofill_$type WHERE id=?", $result->lastInsertId, 'i');
+    return selectData("SELECT id, name, zip, city, street_house FROM autofill_$type WHERE id=?", $result->lastInsertId, 'i');
 }
 
 function getAutofill($type, $userId) {
     if (in_array($type, ["billing", "delivery"]) && is_int($userId) && $userId > 0) {
-        return selectData("SELECT * FROM autofill_$type WHERE user_id=?;", $userId, 'i');
+        return selectData("SELECT id, name, zip, city, street_house FROM autofill_$type WHERE user_id=?;", $userId, 'i');
     }
     else return new Result(Result::ERROR, "Hibás típus.");
 }
@@ -27,7 +27,7 @@ function getAllAutofill($userId) {
         
         foreach ($types as $type) {
             if (in_array($type, ["billing", "delivery"])) {
-                $data = selectData("SELECT * FROM autofill_$type WHERE user_id=?;", $userId, 'i');
+                $data = selectData("SELECT id, name, zip, city, street_house FROM autofill_$type WHERE user_id=?;", $userId, 'i');
 
                 $results[$type] = $data->message;
             }
