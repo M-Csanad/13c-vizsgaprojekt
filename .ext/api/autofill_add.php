@@ -9,38 +9,47 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
-function validateInputs() {
-
-}
-
 // Bemeneti értékek ellenőrzése
-$data = json_decode(file_get_contents('php://input'), true);
-$fields = ["type", "name", "zip", "city", "street_house"];
+$fields = ["type", "autofill-name", "zip", "city", "street-house"];
 $values = [];
 $rules = [
-    "type" => function ($e) {return $e === "delivery" || $e === "billing"; },
-    "name" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
-    "zip" => '/^[1-9]{1}[0-9]{3}$/',
-    "city" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
-    "street_house" => '/^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(?:\/[A-Z]+)?$/',
+    "type" => [
+        "rule" => function ($e) {return $e === "delivery" || $e === "billing"; },
+        "message" => "Hibás típus."
+    ],
+    "name" => [
+        "rule" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
+        "message" => "Hibás cím."
+    ], 
+    "zip" => [
+        "rule" => '/^[1-9]{1}[0-9]{3}$/',
+        "message" => "Hibás irányítószám."
+    ],
+    "city" => [
+        "rule" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
+        "message" => "Hibás település"
+    ],
+    "street_house" => [
+        "rule" => '/^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(?:\/[A-Z]+)?$/',
+        "Hibás utca és házszám."
+    ]
 ];
 
 // Ellenőrizzük, hogy minden adat megvan-e
 foreach ($fields as $field) {
-    if (!isset($data[$field])) {
+    if (!isset($_POST[$field]) || empty($_POST[$field])) {
         http_response_code(400);
         $result = new Result(Result::ERROR, 'Hiányos kérés.');
         echo $result->toJSON();
         exit();
     }
-
-    $values[$field] = $data[$field];
+    
+    $values[$field] = $_POST[$field];
 }
 
 // Validáljuk az elemeket
 $validator = new InputValidator($values, $rules);
-
-if (!$validator->test()) {
+if ($validator->test()->isError()) {
     http_response_code(400);
     $result = new Result(Result::ERROR, 'Hibás adat.');
     echo $result->toJSON();
@@ -56,9 +65,16 @@ if ($user->isSuccess()) {
 }
 
 if (!$isLoggedIn) {
-    return new Result(Result::DENIED, "Csak bejelentkezett felhasználó indíthat kéréseket!");
+    http_response_code(400);
+    $result = new Result(Result::DENIED, "Csak bejelentkezett felhasználó indíthat kéréseket!");
+    echo $result->toJSON();
+    exit();
 }
 $values["user_id"] = $user['id'];
 
 // Adatbázisba feltöltés
 $result = uploadAutofill($values);
+
+http_response_code($result->isSuccess() ? 200: 400);
+echo $result->messageJSON();
+exit();

@@ -1,0 +1,25 @@
+const APIFetch = async (url, method, body = null, encode = true) => {
+    try {
+        const params = {
+            method: method,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        };
+
+        if (method === 'GET' && body) {
+            const paramString = Object.keys(body).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`).join('&');
+            url += '?' + paramString;
+        }
+
+        if (body && method !== 'GET') params.body = (encode) ? JSON.stringify(body) : body;
+
+        const response = await fetch(url, params);
+
+        return response;
+    } catch (e) {
+        return e;
+    }
+};
+
+export default APIFetch;

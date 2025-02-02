@@ -190,6 +190,7 @@
                         </div>
                         <div class="divider">Szállítási cím</div>
                         <div class="cards">
+                            <div class="saved-cards"></div>
                             <div class="add-field">+</div>
                         </div>
                         <div class="form-wrapper">
@@ -210,8 +211,8 @@
                                     <div class="input-group-inline" tabindex="-1">
                                         <div class="input-group" tabindex="-1">
                                             <div class="input-body" tabindex="-1">
-                                                <label for="billing-zip">Irányítószám</label>
-                                                <input type="text" name="billing-zip" id="billing-zip" required placeholder="pl. 8200" tabindex="1">
+                                                <label for="delivery-zip">Irányítószám</label>
+                                                <input type="text" name="zip" id="delivery-zip" required placeholder="pl. 8200" tabindex="1">
                                             </div>
                                             <div class="message-wrapper">
                                                 <div class="error-message"></div>
@@ -219,8 +220,8 @@
                                         </div>
                                         <div class="input-group" tabindex="-1">
                                             <div class="input-body" tabindex="-1">
-                                                <label for="billing-city">Település</label>
-                                                <input type="text" name="billing-city" id="billing-city" required placeholder="pl. Veszprém" tabindex="1">
+                                                <label for="delivery-city">Település</label>
+                                                <input type="text" name="city" id="delivery-city" required placeholder="pl. Veszprém" tabindex="1">
                                             </div>
                                             <div class="message-wrapper">
                                                 <div class="error-message"></div>
@@ -229,8 +230,8 @@
                                     </div>
                                     <div class="input-group" tabindex="-1">
                                         <div class="input-body" tabindex="-1">
-                                            <label for="billing-street-house">Utca és házszám</label>
-                                            <input type="text" name="billing-street-house" id="billing-street-house" required placeholder="pl. Fő utca 29/B" tabindex="1">
+                                            <label for="delivery-street-house">Utca és házszám</label>
+                                            <input type="text" name="street-house" id="delivery-street-house" required placeholder="pl. Fő utca 29/B" tabindex="1">
                                         </div>
                                         <div class="message-wrapper">
                                             <div class="error-message"></div>
@@ -250,6 +251,7 @@
                         </div>
                         <div class="divider">Számlázási cím</div>
                         <div class="cards">
+                            <div class="saved-cards"></div>
                             <div class="add-field">+</div>
                         </div>
                         <div class="form-wrapper">
@@ -260,7 +262,7 @@
                                     <div class="input-group" tabindex="-1">
                                         <div class="input-body" tabindex="-1">
                                             <label for="autofill-name-billing">Megnevezés</label>
-                                            <input type="text" name="autofill-name-billing" id="autofill-name-billing" required placeholder="A mentett adatok címe" tabindex="1">
+                                            <input type="text" name="autofill-name" id="autofill-name-billing" required placeholder="A mentett adatok címe" tabindex="1">
                                         </div>
                                         <div class="message-wrapper">
                                             <div class="error-message"></div>
@@ -271,7 +273,7 @@
                                         <div class="input-group" tabindex="-1">
                                             <div class="input-body" tabindex="-1">
                                                 <label for="billing-zip">Irányítószám</label>
-                                                <input type="text" name="billing-zip" id="billing-zip" required placeholder="pl. 8200" tabindex="1">
+                                                <input type="text" name="zip" id="billing-zip" required placeholder="pl. 8200" tabindex="1">
                                             </div>
                                             <div class="message-wrapper">
                                                 <div class="error-message"></div>
@@ -280,7 +282,7 @@
                                         <div class="input-group" tabindex="-1">
                                             <div class="input-body" tabindex="-1">
                                                 <label for="billing-city">Település</label>
-                                                <input type="text" name="billing-city" id="billing-city" required placeholder="pl. Veszprém" tabindex="1">
+                                                <input type="text" name="city" id="billing-city" required placeholder="pl. Veszprém" tabindex="1">
                                             </div>
                                             <div class="message-wrapper">
                                                 <div class="error-message"></div>
@@ -290,7 +292,7 @@
                                     <div class="input-group" tabindex="-1">
                                         <div class="input-body" tabindex="-1">
                                             <label for="billing-street-house">Utca és házszám</label>
-                                            <input type="text" name="billing-street-house" id="billing-street-house" required placeholder="pl. Fő utca 29/B" tabindex="1">
+                                            <input type="text" name="street-house" id="billing-street-house" required placeholder="pl. Fő utca 29/B" tabindex="1">
                                         </div>
                                         <div class="message-wrapper">
                                             <div class="error-message"></div>

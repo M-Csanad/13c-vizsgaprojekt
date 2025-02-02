@@ -1,4 +1,5 @@
 <?php
+include_once __DIR__.'/result.php';
 class InputValidator {
     public $inputs;
     public $rules;
@@ -8,18 +9,19 @@ class InputValidator {
         $this->rules = $rules;
     }
 
-    public function test(): bool {
+    public function test(): Result {
         foreach ($this->inputs as $field => $value) {
             if (isset($this->rules[$field])) {
-                $rule = $this->rules[$field];
+                $rule = $this->rules[$field]["rule"];
+                $message = $this->rules[$field]["message"];
 
                 if (is_string($rule)) {
                     if (!preg_match($rule, $value)) {
-                        return false;
+                        return new Result(Result::ERROR, $message);
                     }
                 } elseif (is_callable($rule)) {
                     if (!$rule($value)) {
-                        return false;
+                        return new Result(Result::ERROR, $message);
                     }
                 } else {
                     throw new InvalidArgumentException("Érvénytelen ellenőrzési típus: " . $field);
@@ -27,6 +29,6 @@ class InputValidator {
             }
         }
 
-        return true;
+        return new Result(Result::SUCCESS, "Minden mező érvényes.");
     }
 }

@@ -1,24 +1,8 @@
 import Confetti from "./confetti.js";
+import APIFetch from "./apifetch.js";
 
 // Segédfüggvény API kérésekhez
-const APIFetch = async (url, method, body = null, encode = true) => {
-    try {
-        const params = {
-            method: method,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        };
 
-        if (body) params.body = (encode) ? JSON.stringify(body) : body;
-
-        const response = await fetch(url, params);
-
-        return response;
-    } catch (e) {
-        return e;
-    }
-};
 
 class Checkout {
     orderData;
@@ -26,6 +10,7 @@ class Checkout {
     form;
     orderPlaced = false;
     overlayOpen = false;
+    autofill = {};
 
     constructor() {
         if (!gsap) {
@@ -39,7 +24,7 @@ class Checkout {
     async init() {
         try {
             // Kosár tartalom lekérése
-            const fetchPromise = this.fetchCartData();
+            const fetchPromise = this.fetchAll();
 
             // DOM töltését megvárjuk
             await this.waitForLoad();
@@ -98,7 +83,7 @@ class Checkout {
             "autofill": {
                 "dom": this.formDOM.querySelector('#autofill'),
                 "noValidate": true,
-                get value() { return this.dom.value || undefined }
+                get value() { return this.dom?.value }
             },
             "purchaseTypes": {
                 "dom": this.formDOM.querySelector("#purchase-types"),
@@ -109,34 +94,34 @@ class Checkout {
                 "name": {
                     "dom": this.formDOM.querySelector("#company-name"),
                     "errorMessage": "Érvénytelen cégnév",
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom?.value; }
                 },
                 "taxNumber": {
                     "dom": this.formDOM.querySelector("#tax-number"),
                     "errorMessage": "Érvénytelen adószám",
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom?.value; }
                 }
             },
             "customer": {
                 "email": {
                     "dom": this.formDOM.querySelector('#email'),
                     "errorMessage": "Érvénytelen e-mail cím",
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom?.value; }
                 },
                 "lastName": {
                     "dom": this.formDOM.querySelector("#last-name"),
                     "errorMessage": "Érvénytelen vezetéknév",
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom?.value; }
                 },
                 "firstName": {
                     "dom": this.formDOM.querySelector("#first-name"),
                     "errorMessage": "Érvénytelen keresztnév",
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom?.value; }
                 },
                 "phone": {
                     "dom": this.formDOM.querySelector("#phone"),
                     "errorMessage": "Érvénytelen telefonszám",
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom?.value; }
                 }
             },
         
@@ -144,17 +129,17 @@ class Checkout {
                 "zipCode": {
                     "dom": this.formDOM.querySelector("#zip-code"),
                     "errorMessage": "Érvénytelen irányítószám.",
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom?.value; }
                 },
                 "city": {
                     "dom": this.formDOM.querySelector("#city"),
                     "errorMessage": "A város mező nem lehet üres",
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom?.value; }
                 },
                 "streetHouse": {
                     "dom": this.formDOM.querySelector("#street-house"),
                     "errorMessage": "Hibás utca és házszám",
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom?.value; }
                 }
             },
         
@@ -167,17 +152,17 @@ class Checkout {
                 "zipCode": {
                     "dom": this.formDOM.querySelector("#billing-zip"),
                     "errorMessage": "Érvénytelen irányítószám",
-                    get value() { return this.dom.value || undefined; },
+                    get value() { return this.dom?.value; },
                 },
                 "city": {
                     "dom": this.formDOM.querySelector("#billing-city"),
                     "errorMessage": "A város mező nem lehet üres",
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom?.value; }
                 },
                 "streetHouse": {
                     "dom": this.formDOM.querySelector("#billing-street-house"),
                     "errorMessage": "Hibás utca és házszám",
-                    get value() { return this.dom.value || undefined; }
+                    get value() { return this.dom?.value; }
                 }
             }
         };
@@ -567,6 +552,11 @@ class Checkout {
         }
     }
 
+    async fetchAll() {
+        await this.fetchCartData();
+        await this.fetchAutofill();
+    }
+
     // Lekéri a kosár tartalmát
     async fetchCartData() {
         const result = await APIFetch("/api/cart/get", "GET");
@@ -579,6 +569,18 @@ class Checkout {
             }
         } else {
             throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());
+        }
+    }
+
+    // Lekéri az automatikus kitöltési mezőket
+    async fetchAutofill() {
+        const result = await APIFetch("/api/autofill/get", "GET", {type: "all"});
+
+        if (result.ok) {
+            const data = await result.json();
+            this.autofill = data.message;
+        } else {
+            throw new Error("Hiba történt az automatikus kitöltési mezők lekérdezése során: " + await result.json());
         }
     }
 }

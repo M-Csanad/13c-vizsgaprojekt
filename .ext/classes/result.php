@@ -115,4 +115,13 @@ class Result {
         return json_encode($this->toArray(), JSON_UNESCAPED_UNICODE);
     }
 
+    /**
+     * Egy Result példány üzenetét JSON stringgé alakítja.
+     * 
+     * @return string Az átalakított tömb.
+     */
+    public function messageJSON(): string {
+        return json_encode($this->message, JSON_UNESCAPED_UNICODE);
+    }
+
 }

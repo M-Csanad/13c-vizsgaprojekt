@@ -1,26 +1,9 @@
 import Popup from './popup.js';
+import APIFetch from './apifetch.js';
 
 const randomId = () => "el-" + (Math.random() + 1).toString(36).substring(7);
 
 // Segédfüggvény API kérésekhez
-const APIFetch = async (url, method, body = null) => {
-    try {
-        const params = {
-            method: method,
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        };
-
-        if (body) params.body = JSON.stringify(body);
-
-        const response = await fetch(url, params);
-
-        return response;
-    } catch (e) {
-        return e;
-    }
-};
 
 class Cart {
     isOpen = false;
