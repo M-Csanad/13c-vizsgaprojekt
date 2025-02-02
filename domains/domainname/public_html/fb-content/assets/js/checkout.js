@@ -200,6 +200,10 @@ class Checkout {
             zip.dispatchEvent(new Event("focusout"))
             city.dispatchEvent(new Event("focusout"))
             streetHouse.dispatchEvent(new Event("focusout"))
+
+            this.toggleFieldState(type, "zipCode", null);
+            this.toggleFieldState(type, "city", null);
+            this.toggleFieldState(type, "streetHouse", null);
             return;
         }
 
@@ -213,6 +217,10 @@ class Checkout {
         zip.dispatchEvent(new Event("focus"))
         city.dispatchEvent(new Event("focus"))
         streetHouse.dispatchEvent(new Event("focus"))
+
+        this.toggleFieldState(type, "zipCode", this.validateField(type, "zipCode"));
+        this.toggleFieldState(type, "city", this.validateField(type, "city"));
+        this.toggleFieldState(type, "streetHouse", this.validateField(type, "streetHouse"));
     }
 
     openResultOverlay(resultType = "success") {

@@ -169,6 +169,7 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     & select {
         padding: 0.3rem;
         padding-top: 1.4rem;
+        opacity: 1 !important;
         /* color-scheme: dark; */
     }
 
