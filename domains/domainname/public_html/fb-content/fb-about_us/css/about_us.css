@@ -196,7 +196,16 @@ body::after {
     position: absolute;
     user-select: none;
     z-index: 7;
-    background-color: white; /* Szín */
+    background-color: white;
+    transform: scaleY(0);
+
+    transition: transform 0.4s ease;
+  }
+  .white-square.show-text {
+    opacity: 1;
+  }
+  body.loaded .white-square {
+    transform: scaleY(1);
   }
   .runes {
     position: absolute;
@@ -242,6 +251,27 @@ body::after {
     rotate: 90deg;
     width: calc(9vh * 0.7);
     height: 100px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: black;
+
+    transition: all 0.3s ease-in-out; /
+  }
+  .white-square.square_04 #nameDisplay {
+    position: relative;
+    opacity: 0;
+    rotate: -90deg;
+    font-weight: 600;
+
+    font-size: clamp(0.15rem, calc(1.2rem + 0.39vw), 5.5rem);
+    font-family: "Poppins", sans-serif;
+    transition: opacity 0.2s ease;
+  }
+
+  .white-square.square_04.show-text #nameDisplay {
+    opacity: 1;
   }
 
   .paragraph_quoteL,
@@ -317,12 +347,35 @@ body::after {
     width: calc(58vh * (9 / 14));
     height: auto;
     overflow: hidden;
+    pointer-events: auto;
+  }
+
+  #Profile_M.pfpImage_wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: auto;
+    z-index: 10;
+  }
+  #Profile_B.pfpImage_wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 20%;
+    width: 60%;
+    height: 100%;
+    pointer-events: auto;
+    z-index: 10;
   }
 
   .pfpImage_wrapper img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    pointer-events: none;
   }
 
   #Profile_M {
@@ -333,6 +386,13 @@ body::after {
   #Profile_B {
     left: 7%;
     top: 37%;
+  }
+  #Profile_M::before {
+    /* Magasabb z-index a pointer eventek miatt */
+    z-index: 20;
+  }
+  #Profile_B::before {
+    z-index: 10;
   }
 }
 

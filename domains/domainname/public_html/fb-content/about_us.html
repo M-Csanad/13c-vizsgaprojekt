@@ -65,7 +65,9 @@
           <div class="white-square square_01"></div>
           <div class="white-square square_02"></div>
           <div class="white-square square_03"></div>
-          <div class="white-square square_04"></div>
+          <div class="white-square square_04">
+            <span id="nameDisplay"></span>
+          </div>
 
           <p class="runes">ᛚᚢᛒᛉᛊ</p>
           <p id="mainTitle">Rólunk</p>
@@ -91,6 +93,12 @@
     </div>
   </body>
 
+  <script>
+    window.addEventListener("load", function () {
+      document.body.classList.add("loaded");
+    });
+  </script>
   <script src="/fb-content/fb-about_us/js/halo-effect.js"></script>
+  <script src="/fb-content/fb-about_us/js/hover-names.js"></script>
   <script src="/fb-content/fb-about_us/js/drag-scroll.js"></script>
 </html>
