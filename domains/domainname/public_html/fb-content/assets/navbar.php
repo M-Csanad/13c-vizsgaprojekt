@@ -129,7 +129,7 @@ $logo_url = htmlspecialchars("$base_url/fb-content/assets/media/images/logos/her
 $menu_items = [
     ['name' => 'Kategóriák', 'id' => 'fb-navlink-category', 'url' => '#'],
     ['name' => 'Rólunk', 'url' => "$base_url/about-us"],
-    ['name' => 'Adatvédelmi Nyilatkozat', 'url' => "$base_url/privacy-policy"]
+    ['name' => 'Adatvédelem', 'url' => "$base_url/privacy-policy"]
 ];
 
 

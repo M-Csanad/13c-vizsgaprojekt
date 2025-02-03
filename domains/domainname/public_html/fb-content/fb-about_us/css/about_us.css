@@ -19,6 +19,7 @@ body {
 }
 
 .mol-div {
+  position: relative;
   aspect-ratio: 9 / 14;
   height: 100vh;
   max-width: calc(100vh * (9 / 14));
@@ -64,22 +65,6 @@ body {
   inset: 0; /* top:0; right:0; bottom:0; left:0; ugyanaz */
 }
 
-/* .background {
-  position: fixed;
-  top: 0;
-  left: -5%;
-  width: 110%;
-  height: 110%;
-
-  filter: blur(10px) brightness(0.6) grayscale(0.4);
-  z-index: -1;
-}
-@media (orientation: landscape) {
-  .background {
-    background: url("../media/images/background_horizontal.jpg") center/cover
-      no-repeat;
-  }
-} */
 body::before,
 body::after {
   content: "";
@@ -145,35 +130,34 @@ body::after {
     position: absolute;
     z-index: 6;
     top: 25%;
-    left: calc((8 * 10px) + 30px + 5%);
+    left: calc((8 * 5px) + 20px + 5%);
     transform: translate(-50%, -50%);
     display: grid;
-    grid-template-columns: repeat(8, 10px); /* 5 oszlop, 10px méret */
-    grid-gap: 30px; /* Távolság a pontok között */
+    grid-template-columns: repeat(8, 5px); /* 5 oszlop, 10px méret */
+    grid-gap: 20px; /* Távolság a pontok között */
   }
 
   .dot-grid-02 {
     position: absolute;
     z-index: 6;
     bottom: -2%;
-    right: calc((3 * 10px) + 40px + 5%);
-    transform: translate(-50%, -50%);
+    right: calc((3 * 5px) + 20px + 5%);
     display: grid;
-    grid-template-columns: repeat(3, 10px);
-    grid-gap: 40px;
+    grid-template-columns: repeat(3, 5px);
+    grid-gap: 20px;
   }
 
   .dot-grid .dot {
-    width: 8px;
-    height: 8px;
+    width: 4px;
+    height: 4px;
     background-color: white;
     border-radius: 50%;
   }
 
   .dot-grid .x-dot {
     position: relative;
-    width: 8px;
-    height: 8px;
+    width: 4px;
+    height: 4px;
     font-size: 20px;
     color: white;
     display: flex;
@@ -185,7 +169,7 @@ body::after {
   .x-dot::after {
     content: "";
     position: absolute;
-    width: 20px; /* X átlós vonalainak hossza */
+    width: 10px; /* X átlós vonalainak hossza */
     height: 2px; /* Vonal vastagsága */
     background-color: white; /* Vonal színe */
     transform-origin: center;
@@ -218,11 +202,11 @@ body::after {
     position: absolute;
     color: white;
     top: 15%; /* Tetszőleges hely */
-    right: 5%; /* Tetszőleges hely */
+    right: 2%; /* Tetszőleges hely */
     text-transform: uppercase;
     font-family: "Poppins";
     font-weight: 200;
-    font-size: clamp(0.15rem, calc(1rem + 0.39vw), 4.5rem);
+    font-size: clamp(0.15rem, calc(0.5rem + 0.39vw), 4.5rem);
     display: inline-block;
     writing-mode: vertical-lr;
     text-orientation: upright;
@@ -233,8 +217,8 @@ body::after {
     top: 0%; /* Tetszőleges hely */
     right: 10%; /* Tetszőleges hely */
     bottom: 15%; /* Tetszőleges hely */
-    width: 150px;
-    height: 330px;
+    width: 2.4rem;
+    height: calc(48vh * 0.7);
   }
 
   .square_02 {
@@ -242,26 +226,27 @@ body::after {
     left: 5%; /* Tetszőleges hely */
     rotate: 90deg;
     width: 8px;
-    height: 300px;
+    height: 100px;
   }
   .square_03 {
-    bottom: 18%; /* Tetszőleges hely */
+    bottom: 9%; /* Tetszőleges hely */
     left: 20%; /* Tetszőleges hely */
     rotate: 90deg;
-    width: 2px;
-    height: 200px;
+    width: 3px;
+    height: 120px;
   }
 
   .square_04 {
-    bottom: -3%; /* Tetszőleges hely */
-    left: 10%; /* Tetszőleges hely */
+    bottom: -2%; /* Tetszőleges hely */
+    left: 10%;
     rotate: 90deg;
-    width: 60px;
-    height: 300px;
+    width: calc(9vh * 0.7);
+    height: 100px;
   }
 
   .paragraph_quoteL,
   .paragraph_quoteR {
+    display: none;
     position: absolute;
     user-select: none;
     z-index: 7;
@@ -294,19 +279,19 @@ body::after {
   }
   .quote02 {
     bottom: 33%; /* Tetszőleges hely */
-    right: 0; /* Tetszőleges hely */
+    right: 5%; /* Tetszőleges hely */
   }
 
   #mainTitle {
     position: absolute;
     z-index: 7;
     top: 30%;
-    left: 40%;
+    left: 42%;
     text-transform: uppercase;
     font-family: "Poppins";
     color: white;
     font-weight: 700;
-    font-size: clamp(2.15rem, calc(4.8rem + 0.39vw), 5.5rem);
+    font-size: clamp(0.15rem, calc(1.2rem + 0.39vw), 5.5rem);
     display: inline-block;
     writing-mode: vertical-lr;
     text-orientation: upright;
@@ -351,5 +336,283 @@ body::after {
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-height: 430px) {
+  #mainTitle {
+    top: 30%;
+    left: 42%;
+    font-size: clamp(0.15rem, calc(1.6rem + 0.39vw), 5.5rem);
+  }
+  /* pontok a monitoron */
+  .dot-grid-01 {
+    top: 20%;
+    left: calc((8 * 8px) + 25px + 5%);
+    transform: translate(-50%, -50%);
+    grid-template-columns: repeat(8, 8px); /* 5 oszlop, 10px méret */
+    grid-gap: 25px; /* Távolság a pontok között */
+  }
+
+  .dot-grid-02 {
+    bottom: -2%;
+    right: calc((3 * 8px) + 25px + 5%);
+    grid-template-columns: repeat(3, 8px);
+    grid-gap: 25px;
+  }
+
+  .dot-grid .dot {
+    width: 6px;
+    height: 6px;
+  }
+
+  .dot-grid .x-dot {
+    width: 6px;
+    height: 6px;
+  }
+  .x-dot::before,
+  .x-dot::after {
+    width: 14px; /* X átlós vonalainak hossza */
+    height: 2px; /* Vonal vastagsága */
+  }
+
+  .square_01 {
+    right: 10%;
+    bottom: 15%;
+    width: 3.6rem;
+    height: calc(48vh * 0.7);
+  }
+
+  .square_02 {
+    bottom: 3%;
+    left: 0%;
+    width: 8px;
+    height: 11rem;
+  }
+  .square_03 {
+    bottom: 3%; /* Tetszőleges hely */
+    left: 30%; /* Tetszőleges hely */
+    width: 3px;
+    height: 150px;
+  }
+
+  .square_04 {
+    bottom: -2%; /* Tetszőleges hely */
+    left: 10%;
+    width: calc(9vh * 0.7);
+    height: 130px;
+  }
+}
+
+@media (min-height: 600px) {
+  #mainTitle {
+    top: 30%;
+    left: 44%;
+    font-size: clamp(0.15rem, calc(2.4rem + 0.39vw), 5.5rem);
+  }
+  .runes {
+    top: 15%; /* Tetszőleges hely */
+    right: 3%; /* Tetszőleges hely */
+    font-size: clamp(0.11rem, calc(0.8rem + 0.39vw), 4.5rem);
+  }
+
+  .paragraph_quoteL,
+  .paragraph_quoteR {
+    display: block;
+    position: absolute;
+    user-select: none;
+    z-index: 7;
+    width: 100px;
+    color: white;
+
+    font-family: "Poppins";
+  }
+  .paragraph_quoteL {
+    border-left: 4px solid white;
+    padding-left: 10px;
+  }
+  .paragraph_quoteR {
+    border-right: 4px solid white;
+    padding-right: 10px;
+    text-align: right;
+  }
+  .paragraph_quoteL p,
+  .paragraph_quoteR p {
+    text-transform: lowercase;
+    font-style: italic;
+    font-weight: 100;
+    text-shadow: 1px 0px 5px black;
+  }
+
+  .quote01 {
+    top: 10%; /* Tetszőleges hely */
+    left: 5%; /* Tetszőleges hely */
+  }
+  .quote02 {
+    bottom: 33%; /* Tetszőleges hely */
+    right: 5%; /* Tetszőleges hely */
+  }
+  /* pontok a monitoron */
+  .dot-grid-01 {
+    top: 20%;
+    left: calc((8 * 15px) + 30px + 5%);
+    transform: translate(-50%, -50%);
+    grid-template-columns: repeat(8, 15px); /* 5 oszlop, 10px méret */
+    grid-gap: 30px; /* Távolság a pontok között */
+  }
+
+  .dot-grid-02 {
+    bottom: -2%;
+    right: calc((3 * 10px) + 30px + 5%);
+    grid-template-columns: repeat(3, 10px);
+    grid-gap: 30px;
+  }
+
+  .dot-grid .dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .dot-grid .x-dot {
+    width: 8px;
+    height: 8px;
+  }
+  .x-dot::before,
+  .x-dot::after {
+    width: 16px; /* X átlós vonalainak hossza */
+    height: 2px; /* Vonal vastagsága */
+  }
+
+  .square_01 {
+    right: 10%;
+    bottom: 15%;
+    width: 4.8rem;
+    height: calc(48vh * 0.7);
+  }
+
+  .square_02 {
+    bottom: 13%;
+    left: calc(100% / 9 + 5%); /* 100% / width + 5%*/
+    width: 9px;
+    height: 10rem;
+  }
+
+  .square_03 {
+    bottom: 11%; /* Tetszőleges hely */
+    left: 30%; /* Tetszőleges hely */
+    width: 3px;
+    height: 10rem;
+  }
+
+  .square_04 {
+    bottom: -10%; /* Tetszőleges hely */
+    left: 10%;
+    width: calc(9vh * 0.7);
+    height: 250px;
+  }
+}
+
+@media (min-height: 900px) {
+  #mainTitle {
+    top: 30%;
+    left: 42.5%;
+    font-size: clamp(0.15rem, calc(3.6rem + 0.39vw), 5.5rem);
+  }
+  .runes {
+    top: 20%; /* Tetszőleges hely */
+    right: 5%; /* Tetszőleges hely */
+    font-size: clamp(0.11rem, calc(1.2rem + 0.39vw), 4.5rem);
+  }
+  /* pontok a monitoron */
+  .dot-grid-01 {
+    top: 21%;
+    left: calc((8 * 10px) + 35px + 5%);
+    transform: translate(-50%, -50%);
+    grid-template-columns: repeat(8, 10px); /* 5 oszlop, 10px méret */
+    grid-gap: 35px; /* Távolság a pontok között */
+  }
+
+  .dot-grid-02 {
+    bottom: 2%;
+    right: calc((3 * 15px) + 33px + 5%);
+    grid-template-columns: repeat(3, 15px);
+    grid-gap: 33px;
+  }
+
+  .dot-grid .dot {
+    width: 8px;
+    height: 8px;
+  }
+
+  .dot-grid .x-dot {
+    width: 8px;
+    height: 8px;
+  }
+  .x-dot::before,
+  .x-dot::after {
+    width: 16px; /* X átlós vonalainak hossza */
+    height: 2px; /* Vonal vastagsága */
+  }
+
+  .square_01 {
+    right: 10%;
+    bottom: 15%;
+    width: 8rem;
+    height: calc(55vh * 0.7);
+  }
+
+  .square_02 {
+    bottom: 16%;
+    left: calc(100% / 9 + 5%); /* 100% / width + 5%*/
+    width: 9px;
+    height: 12rem;
+  }
+
+  .square_03 {
+    bottom: 13%; /* Tetszőleges hely */
+    left: 28%; /* Tetszőleges hely */
+    width: 3px;
+    height: 220px;
+  }
+
+  .square_04 {
+    bottom: -5%; /* Tetszőleges hely */
+    left: 10%;
+    width: calc(9vh * 0.7);
+    height: 300px;
+  }
+}
+
+@media (min-height: 1000px) {
+  #mainTitle {
+    top: 30%;
+    left: 42%;
+    font-size: clamp(0.15rem, calc(4.5rem + 0.39vw), 5.5rem);
+  }
+  .dot-grid-01 {
+    top: 20%;
+    left: calc((8 * 12px) + 40px + 10%);
+    transform: translate(-50%, -50%);
+    grid-template-columns: repeat(8, 12px); /* 5 oszlop, 10px méret */
+    grid-gap: 40px; /* Távolság a pontok között */
+  }
+
+  .dot-grid-02 {
+    bottom: 2%;
+    right: calc((3 * 18px) + 35px + 5%);
+    grid-template-columns: repeat(3, 18px);
+    grid-gap: 35px;
+  }
+
+  .dot-grid .dot {
+    width: 9px;
+    height: 9px;
+  }
+
+  .dot-grid .x-dot {
+    width: 9px;
+    height: 9px;
+  }
+  .x-dot::before,
+  .x-dot::after {
+    width: 18px; /* X átlós vonalainak hossza */
+    height: 2px; /* Vonal vastagsága */
+  }
 }
