@@ -212,12 +212,12 @@ body::after {
   .runes {
     position: absolute;
     color: white;
-    top: 15%; /* Tetszőleges hely */
-    right: 2%; /* Tetszőleges hely */
+    top: 2%; /* Tetszőleges hely */
+    right: 15%; /* Tetszőleges hely */
     text-transform: uppercase;
     font-family: "Poppins";
     font-weight: 200;
-    font-size: clamp(0.15rem, calc(0.5rem + 0.39vw), 4.5rem);
+    font-size: clamp(0.11rem, calc(1.1rem + 0.39vw), 4.5rem);
     display: inline-block;
     writing-mode: vertical-lr;
     text-orientation: upright;
@@ -229,8 +229,8 @@ body::after {
     top: 0%; /* Tetszőleges hely */
     right: 10%; /* Tetszőleges hely */
     bottom: 15%; /* Tetszőleges hely */
-    width: 2.4rem;
-    height: calc(48vh * 0.7);
+    width: 1rem;
+    height: calc(24vh * 0.7);
   }
 
   .square_02 {
@@ -439,8 +439,8 @@ body::after {
   .square_01 {
     right: 10%;
     bottom: 15%;
-    width: 3.6rem;
-    height: calc(48vh * 0.7);
+    width: 1.2rem;
+    height: calc(28vh * 0.7);
   }
 
   .square_02 {
@@ -471,9 +471,9 @@ body::after {
     font-size: clamp(0.15rem, calc(2.4rem + 0.39vw), 5.5rem);
   }
   .runes {
-    top: 15%; /* Tetszőleges hely */
-    right: 3%; /* Tetszőleges hely */
-    font-size: clamp(0.11rem, calc(0.8rem + 0.39vw), 4.5rem);
+    top: 3%; /* Tetszőleges hely */
+    right: 15%; /* Tetszőleges hely */
+    font-size: clamp(0.11rem, calc(1.8rem + 0.39vw), 4.5rem);
   }
 
   .paragraph_quoteL,
@@ -515,7 +515,7 @@ body::after {
   /* pontok a monitoron */
   .dot-grid-01 {
     top: 20%;
-    left: calc((8 * 15px) + 30px + 5%);
+    left: calc((8 * 15px) + 30px - 5%);
     transform: translate(-50%, -50%);
     grid-template-columns: repeat(8, 15px); /* 5 oszlop, 10px méret */
     grid-gap: 30px; /* Távolság a pontok között */
@@ -546,8 +546,8 @@ body::after {
   .square_01 {
     right: 10%;
     bottom: 15%;
-    width: 4.8rem;
-    height: calc(48vh * 0.7);
+    width: 1.8rem;
+    height: calc(32vh * 0.7);
   }
 
   .square_02 {
@@ -579,9 +579,9 @@ body::after {
     font-size: clamp(0.15rem, calc(3.6rem + 0.39vw), 5.5rem);
   }
   .runes {
-    top: 20%; /* Tetszőleges hely */
-    right: 5%; /* Tetszőleges hely */
-    font-size: clamp(0.11rem, calc(1.2rem + 0.39vw), 4.5rem);
+    top: 3%; /* Tetszőleges hely */
+    right: 15%; /* Tetszőleges hely */
+    font-size: clamp(0.11rem, calc(2.7rem + 0.39vw), 4.5rem);
   }
   /* pontok a monitoron */
   .dot-grid-01 {
@@ -617,8 +617,8 @@ body::after {
   .square_01 {
     right: 10%;
     bottom: 15%;
-    width: 8rem;
-    height: calc(55vh * 0.7);
+    width: 2rem;
+    height: calc(35vh * 0.7);
   }
 
   .square_02 {
