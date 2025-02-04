@@ -33,9 +33,14 @@ if (!$isLoggedIn) {
 $userId = $user['id'];
 
 $result = $type == "all" ? getAllAutofill($userId) : getAutofill($type, $userId);
-if (!$result->isSuccess()) {
+if ($result->isError()) {
     http_response_code(400);
     echo $result->toJSON();
+    exit();
+}
+
+if ($result->isEmpty()) {
+    echo (new Result(Result::EMPTY, "Nincs találat!"))->toJSON();
     exit();
 }
 

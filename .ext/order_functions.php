@@ -57,7 +57,8 @@ function createOrderRow($data) {
         $values[] = $data['customer']['userId'];
         $typeString .= 'i';
     }
-    $fields = ["email", "phone", "first_name", "last_name", "delivery_address", "completed_at"];
+    array_push($fields, ["email", "phone", "first_name", "last_name", "delivery_address", "completed_at"]);
+    
     $values = [
         $data['customer']['email'], $data['customer']['phone'], 
         $data['customer']['firstName'], $data['customer']['lastName'], 

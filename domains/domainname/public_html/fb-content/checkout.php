@@ -142,7 +142,7 @@
                 <div class="input-group" tabindex="-1">
                     <div class="input-body" tabindex="-1">
                         <label for="email">E-mail</label>
-                        <input type="text" name="email" id="email" required placeholder="pelda@example.com" tabindex="1">
+                        <input type="text" name="email" id="email" required placeholder="pelda@example.com" tabindex="1" value="<?php if ($isLoggedIn) echo htmlspecialchars($user["email"]); ?>">
                         <div class="status">
                             <div class="error"></div>
                             <div class="success"></div>
@@ -156,7 +156,7 @@
                     <div class="input-group" tabindex="-1">
                         <div class="input-body" tabindex="-1">
                             <label for="last-name">Vezetéknév</label>
-                            <input type="text" name="last-name" id="last-name" required placeholder="pl. Minta" tabindex="1">
+                            <input type="text" name="last-name" id="last-name" required placeholder="pl. Minta" tabindex="1" value="<?php if ($isLoggedIn) echo htmlspecialchars($user["last_name"]); ?>">
                             <div class="status">
                                 <div class="error"></div>
                                 <div class="success"></div>
@@ -169,7 +169,7 @@
                     <div class="input-group" tabindex="-1">
                         <div class="input-body" tabindex="-1">
                             <label for="first-name">Keresztnév</label>
-                            <input type="text" name="first-name" id="first-name" required placeholder="pl. Károly" tabindex="1">
+                            <input type="text" name="first-name" id="first-name" required placeholder="pl. Károly" tabindex="1" value="<?php if ($isLoggedIn) echo htmlspecialchars($user["first_name"]); ?>">
                             <div class="status">
                                 <div class="error"></div>
                                 <div class="success"></div>

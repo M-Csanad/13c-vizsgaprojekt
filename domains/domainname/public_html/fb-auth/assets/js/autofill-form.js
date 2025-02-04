@@ -277,20 +277,16 @@ class AutofillForm {
         this.savedCardsContainer.innerHTML = "";
 
         for (let card of this.cards) {
-            this.savedCardsContainer.innerHTML += `
-                <div class="card">
-                    <div class="card-body">
-                        <div class="card-title">${card.name}</div>
-                        <div class="card-address">${card.zip}</div>
-                    </div>
-                </div>
-            `;
+            this.savedCardsContainer.innerHTML += this.getCardHTML(card);
         }
     }
 
     // Kártya metódusok
     addCard(card) {
         this.cards.push(card);
+
+        this.savedCardsContainer.innerHTML += this.getCardHTML(card);
+        console.log(this.cards);
     }
 
     removeCard(cardId) {
@@ -299,6 +295,17 @@ class AutofillForm {
 
     updateCard(card) {
 
+    }
+
+    getCardHTML(card) {
+        return `
+            <div class="card">
+                <div class="card-body">
+                    <div class="card-title">${card.name}</div>
+                    <div class="card-address">${card.zip}</div>
+                </div>
+            </div>
+        `;
     }
 
     // Form validáció
@@ -327,10 +334,9 @@ class AutofillForm {
 
         if (result.ok) {
             const card = await result.json();
-            this.addCard(card);
-
+            
             if (action == "add") {
-                this.addCard();
+                this.addCard(card[0]);
             }
             else {
                 this.updateCard();
@@ -349,8 +355,14 @@ class AutofillForm {
     async fetchContent() {
         const result = await APIFetch("/api/autofill/get", "GET", {type: this.autofillType});
         if (result.ok) {
-            this.cards = await result.json();
-            this.updateUI();
+            const adat = await result.json();
+            if (adat.type == "EMPTY") {
+                return;
+            }
+            else {
+                this.cards = adat;
+                this.updateUI();
+            }
         } else {
             console.log(result);
         }
