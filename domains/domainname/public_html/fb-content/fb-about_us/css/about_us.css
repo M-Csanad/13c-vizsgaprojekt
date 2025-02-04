@@ -273,6 +273,7 @@ body::after {
 
   .white-square.square_04.show-text #nameDisplay {
     opacity: 1;
+    transition: opacity 0.2s ease;
   }
 
   .paragraph_quoteL,

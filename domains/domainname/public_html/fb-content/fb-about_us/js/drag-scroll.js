@@ -29,3 +29,24 @@
     dragScroll.scrollLeft = scrollLeft - walk;
   });
 })();
+
+// Tiltja a Ctrl+ és Ctrl- billentyűkombinációkat
+document.addEventListener("keydown", function (e) {
+  if (
+    (e.ctrlKey || e.metaKey) &&
+    (e.key === "+" || e.key === "-" || e.key === "=")
+  ) {
+    e.preventDefault();
+  }
+});
+
+// Tiltja a Ctrl+ görgős zoomot
+document.addEventListener(
+  "wheel",
+  function (e) {
+    if (e.ctrlKey) {
+      e.preventDefault();
+    }
+  },
+  { passive: false }
+);
