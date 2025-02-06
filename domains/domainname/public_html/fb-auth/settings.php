@@ -188,7 +188,7 @@
                         <div class="page-title">
                             Automatikus kitöltés
                         </div>
-                        <div class="divider">Szállítási cím</div>
+                        <div class="divider">Szállítási címeim</div>
                         <div class="cards">
                             <div class="saved-cards"></div>
                             <div class="add-field">+</div>
@@ -249,7 +249,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="divider">Számlázási cím</div>
+                        <div class="divider">Számlázási címeim</div>
                         <div class="cards">
                             <div class="saved-cards"></div>
                             <div class="add-field">+</div>
