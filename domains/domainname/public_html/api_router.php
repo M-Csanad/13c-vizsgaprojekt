@@ -30,6 +30,7 @@ $routes = [
     '/api/auth/dashboard-search' => $API.'/dashboard_search.php',
     '/api/auth/login' => $API.'/login.php',
     '/api/auth/register' => $API.'/register.php',
+    '/api/search' => $API.'/search.php'
 ];
 
 // Ha az aktuális URL-t tartalmazza a $routes változó, akkor az egy létező végpont.
