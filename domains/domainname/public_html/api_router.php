@@ -26,6 +26,7 @@ $routes = [
     '/api/review' => $API.'/review.php',
     '/api/autofill/add' => $API.'/autofill_add.php',
     '/api/autofill/get' => $API.'/autofill_get.php',
+    '/api/autofill/remove' => $API.'/autofill_remove.php',
     '/api/auth/dashboard-search' => $API.'/dashboard_search.php',
     '/api/auth/login' => $API.'/login.php',
     '/api/auth/register' => $API.'/register.php',

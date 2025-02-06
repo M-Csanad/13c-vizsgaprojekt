@@ -180,7 +180,9 @@
                         </form>
                     </div>
                     <div class="didyouknow">
-                        <div class="dyk-text">Ön <b><?php echo $accountAge ?></b> napja a Florens Botanica tagja! Köszönjük, hogy minket választott.</div>
+                        <div class="dyk-text">
+                            <span>Ön <b><?php echo $accountAge; ?></b> napja a Florens Botanica tagja! Köszönjük, hogy minket választott.</span>
+                        </div>
                     </div>
                 </div>
                 <div class="content-page"> <!-- Automatikus kitöltés -->
@@ -194,7 +196,7 @@
                             <div class="add-field">+</div>
                         </div>
                         <div class="form-wrapper">
-                            <form class="autofill-delivery autofill-form">
+                            <form class="autofill-delivery autofill-form" data-lenis-prevent>
                                 <div class="form-body-wrapper">
                                     <header>Új szállítási cím</header>
                                     <p class="form-description">Gyakran használt címeit elmentheti, hogy gördülékenyebb legyen a rendelés folyamata.</p>
@@ -255,7 +257,7 @@
                             <div class="add-field">+</div>
                         </div>
                         <div class="form-wrapper">
-                            <form class="autofill-billing autofill-form">
+                            <form class="autofill-billing autofill-form" data-lenis-prevent>
                                 <div class="form-body-wrapper">
                                     <header>Új számlázási cím</header>
                                     <p class="form-description">Gyakran használt címeit elmentheti, hogy gördülékenyebb legyen a rendelés folyamata.</p>

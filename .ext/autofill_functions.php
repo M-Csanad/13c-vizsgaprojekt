@@ -1,6 +1,7 @@
 <?php
 include_once "init.php";
 
+// CREATE
 function uploadAutofill($data) {
     $type = $data['type'];
     $result = updateData("INSERT INTO autofill_$type(user_id, name, zip, city, street_house) VALUES (?, ?, ?, ?, ?);", [$data['user_id'], $data['autofill-name'], intval($data['zip']), $data['city'], $data['street-house']], 'isiss');
@@ -12,6 +13,7 @@ function uploadAutofill($data) {
     return selectData("SELECT id, name, zip, city, street_house FROM autofill_$type WHERE id=?", $result->lastInsertId, 'i');
 }
 
+// READ
 function getAutofill($type, $userId) {
     if (in_array($type, ["billing", "delivery"]) && is_int($userId) && $userId > 0) {
         return selectData("SELECT id, name, zip, city, street_house FROM autofill_$type WHERE user_id=?;", $userId, 'i');
@@ -35,4 +37,14 @@ function getAllAutofill($userId) {
         
         return new Result(Result::SUCCESS, $results);
     }
+}
+
+// UPDATE
+function updateAutofill() {
+
+}
+
+// DELETE
+function deleteAutofill($id, $type) {
+    return updateData("DELETE FROM autofill_$type WHERE id=?", $id, 'i');
 }

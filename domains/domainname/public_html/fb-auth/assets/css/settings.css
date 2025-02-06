@@ -443,7 +443,7 @@ body {
         border: 3px solid #5e5e5e;
         color: #aaaaaa;
         border-radius: 10px;
-        width: 150px;
+        width: 160px;
         transition: color 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
     }
 
@@ -461,6 +461,9 @@ body {
 
     & > .card .card-address {
         font-size: 14px;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
     }
 
     & > .card .card-actions {
@@ -469,13 +472,33 @@ body {
         width: calc(100% - 1rem);
         display: flex;
         flex-direction: row;
-        gap: 0.5rem;
     }
 
     & > .card .card-actions > button {
         cursor: pointer;
         flex-grow: 1;
         font-size: 14px;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        padding-block: 0.2rem;
+        border-radius: 5px;
+        transition: background-color 0.2s ease;
+    }
+
+    & > .card .card-actions > button > svg {
+        pointer-events: none;
+        fill: #868686;
+        transition: fill 0.2s ease, rotate 0.2s ease;
+    }
+
+    & > .card .card-actions > button:hover > svg {
+        fill: #f8f8f8;
+        rotate: 10deg;
+    }
+
+    & > .card .card-actions > button:hover {
+        background-color: rgba(255, 255, 255, 0.123);
     }
 
     & > .card:hover {
@@ -569,6 +592,7 @@ body {
     }
     .sidebar-wrapper {
         min-width: calc(min(350px, 100%));
+        max-height: fit-content;
     }
 }
 

@@ -5,6 +5,7 @@ class AutofillForm {
     ease = "power2.inOut";
     breakpoint = 991;
     cards = [];
+    state = "add";
 
     constructor(type, dom) {
         if (type != "autofill-delivery" && type != "autofill-billing") throw new Error("Ismeretlen típus");
@@ -65,6 +66,7 @@ class AutofillForm {
     }
 
     bindEvents() {
+        this.savedCardsContainer.addEventListener("click", this.handleCardClick.bind(this));
         this.openButton.addEventListener("click", this.open.bind(this));
         this.closeButton.addEventListener("click", this.close.bind(this));
         this.saveButton.addEventListener("click", this.save.bind(this));
@@ -281,26 +283,52 @@ class AutofillForm {
     }
 
     // Kártya metódusok
-    addCard(card) {
-        this.cards.push(card);
+    getCardFromElement(element) {
+        const id = element.id.split('-')[1];
+        return this.cards.find(e => e.id == id);
+    }
 
+    handleCardClick(e) {
+        if (e.target.closest('.action-edit')) {
+            this.state = "modify";
+
+            const element = e.target.closest('.card');
+            const card = this.getCardFromElement(element);
+            console.log("modifying: ", card);
+            this.open();
+        }
+
+        if (e.target.closest('.action-delete')) {
+            this.state = "delete";
+
+            const element = e.target.closest('.card');
+            const card = this.getCardFromElement(element);
+            console.log("removing: ", card);
+            this.remove(card, element);
+        }
+    }
+
+    addCard(card) {
+        this.state = "add";
+        this.cards.push(card);
         this.savedCardsContainer.innerHTML += this.getCardHTML(card);
     }
 
-    removeCard(cardId) {
-        this.cards = this.cards.filter(e => e.id !== cardId);
+    removeCard(card, dom) {
+        this.cards = this.cards.filter(e => e.id !== card.id);
+        dom.remove();
     }
 
-    updateCard(card) {
+    updateCard(card, data) {
 
     }
 
     getCardHTML(card) {
         return `
-            <div class="card">
+            <div class="card" id="card-${card.id}">
                 <div class="card-body">
                     <div class="card-title">${card.name}</div>
-                    <div class="card-address">${card.zip} ${card.city}</div>
+                    <div class="card-address">${card.city} ${card.street_house}</div>
                     <div class="card-actions">
                         <button class="action-edit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
@@ -318,7 +346,7 @@ class AutofillForm {
         `;
     }
 
-    // Form validáció
+    // Form validáció 
     validateForm() {
         let valid = true;
         for (let field in this.form) {
@@ -360,6 +388,17 @@ class AutofillForm {
 
     async cancel() {
         this.reset();
+    }
+
+    async remove(card, element) {
+        const result = await APIFetch("/api/autofill/remove", "DELETE", {id: card.id, type: this.autofillType});
+
+        if (result.ok) {
+            this.removeCard(card, element);
+        }
+        else {
+            console.log(result);
+        }
     }
 
     async fetchContent() {
