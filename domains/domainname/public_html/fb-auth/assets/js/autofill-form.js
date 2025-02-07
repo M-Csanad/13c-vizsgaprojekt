@@ -1,11 +1,15 @@
 import APIFetch from "/fb-content/assets/js/apifetch.js";
 
 class AutofillForm {
+    // Frontend tulajdonságok
     isOpen = false;
     ease = "power2.inOut";
     breakpoint = 991;
-    cards = [];
-    state = "add";
+
+    // Backend tulajdonságok
+    cards = []; // Az összes kártya (adatbázissal szinkronizálva)
+    currentCardId = null; // Az aktuális kártya azonosítója (szerkesztés űrlaphoz)
+    state = "add"; // Az űrlap aktuális feladatköre (add - új cím, modify - cím módosítása)
 
     constructor(type, dom) {
         if (type != "autofill-delivery" && type != "autofill-billing") throw new Error("Ismeretlen típus");
@@ -20,6 +24,7 @@ class AutofillForm {
         this.fetchContent();
     }
 
+    // DOM elemek lekérdezése és eltárolása későbbi használathoz
     initDOM(dom) {
         this.formDom = dom;
         this.formWrapper = dom.parentElement;
@@ -28,22 +33,26 @@ class AutofillForm {
             "autofillName": {
                 "dom": this.formDom.querySelector("[name=autofill-name]"),
                 "errorMessage": "Kérem ne hagyja üresen a címet",
-                get value() { return this.dom?.value }
+                get value() { return this.dom?.value },
+                set value(val) { this.dom.value = val }
             },
             "zipCode": {
                 "dom": this.formDom.querySelector("[name=zip]"),
                 "errorMessage": "Kérem helyes irányítószámot adjon meg",
-                get value() { return this.dom?.value }
+                get value() { return this.dom?.value },
+                set value(val) { this.dom.value = val }
             },
             "city": {
                 "dom": this.formDom.querySelector("[name=city]"),
                 "errorMessage": "Kérem adja meg helyesen a település nevét",
-                get value() { return this.dom?.value }
+                get value() { return this.dom?.value },
+                set value(val) { this.dom.value = val }
             },
             "streetHouse": {
                 "dom": this.formDom.querySelector("[name=street-house]"),
                 "errorMessage": "Kérem a '[közterület neve] [közterület típusa] [házszám]' formátumnak megfelelően töltse ki",
-                get value() { return this.dom?.value }
+                get value() { return this.dom?.value },
+                set value(val) { this.dom.value = val }
             },
         }
 
@@ -65,13 +74,16 @@ class AutofillForm {
         if (!this.openButton) throw new Error("Nincs kinyitó gomb");
     }
 
+    // Eseménykezelők hozzárendelése elemekhez
     bindEvents() {
+        // Gombok kattintási eseményei
         this.savedCardsContainer.addEventListener("click", this.handleCardClick.bind(this));
         this.openButton.addEventListener("click", this.open.bind(this));
         this.closeButton.addEventListener("click", this.close.bind(this));
         this.saveButton.addEventListener("click", this.save.bind(this));
         this.cacelButton.addEventListener("click", this.cancel.bind(this));
 
+        // Gyors kilépés az ESC gombbal
         this.keyListener = window.addEventListener("keydown", async (e) => {
             if (document.body.contains(this.domElement) && e.code == "Escape") {
                 this.cancel();
@@ -199,11 +211,23 @@ class AutofillForm {
         }
     }
 
-    open() {
+    open(card = null) {
         if (this.isOpen) return;
         
         this.isOpen = true;
         lenis.stop();
+
+        if (this.state == "modify" && card) {
+            this.form.autofillName.value = card.name;
+            this.form.zipCode.value = card.zip;
+            this.form.city.value = card.city;
+            this.form.streetHouse.value = card.street_house;
+
+            this.form.autofillName.dom.dispatchEvent(new Event("focus"));
+            this.form.zipCode.dom.dispatchEvent(new Event("focus"));
+            this.form.city.dom.dispatchEvent(new Event("focus"));
+            this.form.streetHouse.dom.dispatchEvent(new Event("focus"));
+        }
 
         gsap.set(this.formWrapper, {visibility: "visible"});
         gsap.to(this.formWrapper, {
@@ -274,7 +298,9 @@ class AutofillForm {
         this.resetValidity();
     }
 
-    updateUI() {
+    // Kártya metódusok
+    // Kártyák frissítése
+    updateCardUI() {
         this.savedCardsContainer.innerHTML = "";
 
         for (let card of this.cards) {
@@ -282,7 +308,6 @@ class AutofillForm {
         }
     }
 
-    // Kártya metódusok
     getCardFromElement(element) {
         const id = element.id.split('-')[1];
         return this.cards.find(e => e.id == id);
@@ -294,8 +319,9 @@ class AutofillForm {
 
             const element = e.target.closest('.card');
             const card = this.getCardFromElement(element);
-            console.log("modifying: ", card);
-            this.open();
+            
+            this.currentCardId = card.id;
+            this.open(card);
         }
 
         if (e.target.closest('.action-delete')) {
@@ -361,14 +387,24 @@ class AutofillForm {
         return valid;
     }
 
-    // Backend metódusok
-    async save(e, action = "add") {
-        console.log(action)
-        if (!this.validateForm()) return;
-
+    getFormData(json = false) {
         const data = new FormData(this.formDom);
         data.append("type", this.autofillType);
-        const result = await APIFetch(action == "add" ? "/api/autofill/add" : "/api/autofill/update", "POST", data, false);
+        
+        if (json) {
+            const dataJSON = {};
+            data.forEach((value, key) => dataJSON[key] = value);
+            return dataJSON;
+        }
+        return data;
+    }
+
+    // Backend metódusok
+    async save(e) {
+        if (!this.validateForm()) return;
+
+        const data = this.getFormData(this.state == "modify"); // Ha módosítunk, akkor JSON-ben küldjük az adatokat
+        const result = await APIFetch(this.state == "add" ? "/api/autofill/add" : "/api/autofill/update", this.state == "add" ? "POST" : "PUT", data, true);
 
         if (result.ok) {
             const card = await result.json();
@@ -377,7 +413,7 @@ class AutofillForm {
                 this.addCard(card[0]);
             }
             else {
-                this.updateCard();
+                this.updateCard(card[0]);
             }
 
             this.reset();
@@ -386,7 +422,7 @@ class AutofillForm {
         }
     }
 
-    async cancel() {
+    cancel() {
         this.reset();
     }
 
@@ -410,7 +446,7 @@ class AutofillForm {
             }
             else {
                 this.cards = adat;
-                this.updateUI();
+                this.updateCardUI();
             }
         } else {
             console.log(result);
