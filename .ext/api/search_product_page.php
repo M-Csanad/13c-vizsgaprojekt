@@ -33,4 +33,4 @@ $matches = selectData("SELECT product_page.id, product_page.page_title AS name, 
                         ORDER BY product_page.page_title;", 
                         array_fill(0, 3, $searchTerm), "sss");
 
-echo json_encode($matches, JSON_UNESCAPED_UNICODE);
+echo $matches->toJSON();

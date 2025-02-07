@@ -99,7 +99,7 @@ class Result {
      * 
      * @return array Az átalakított tömb.
      */
-    public function toArray(): array {
+    public function toArray($full = false): array {
         return [
             "type" => self::TYPES[$this->type],
             "message" => $this->message,
@@ -111,8 +111,8 @@ class Result {
      * 
      * @return string Az átalakított tömb.
      */
-    public function toJSON(): string {
-        return json_encode($this->toArray(), JSON_UNESCAPED_UNICODE);
+    public function toJSON($full = false): string {
+        return json_encode($this->toArray($full), JSON_UNESCAPED_UNICODE);
     }
 
     /**

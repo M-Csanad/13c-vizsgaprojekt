@@ -17,8 +17,8 @@ $rules = [
         "rule" => function ($e) {return $e === "delivery" || $e === "billing"; },
         "message" => "Hibás típus."
     ],
-    "name" => [
-        "rule" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
+    "autofill-name" => [
+        "rule" => function ($e) { return mb_strlen($e) > 0; },
         "message" => "Hibás cím."
     ], 
     "zip" => [

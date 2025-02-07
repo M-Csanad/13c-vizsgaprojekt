@@ -18,7 +18,7 @@ function getAutofill($type, $userId) {
     if (in_array($type, ["billing", "delivery"]) && is_int($userId) && $userId > 0) {
         return selectData("SELECT id, name, zip, city, street_house FROM autofill_$type WHERE user_id=?;", $userId, 'i');
     }
-    else return new Result(Result::ERROR, "Hibás típus.");
+    else return new Result(Result::ERROR, "Hibás paraméter.");
 }
 
 function getAllAutofill($userId) {
@@ -37,11 +37,32 @@ function getAllAutofill($userId) {
         
         return new Result(Result::SUCCESS, $results);
     }
+    else {
+        return new Result(Result::ERROR, "Hibás paraméter");
+    }
+}
+
+function getAutofillFromId($id, $type) {
+    if (in_array($type, ["billing", "delivery"]) && is_int($id) && $id > 0) {
+        return selectData("SELECT id, name, zip, city, street_house FROM autofill_$type WHERE id=?;", $id, "i");
+    }
+    else {
+        return new Result(Result::ERROR, "Hibás paraméter");
+    }
 }
 
 // UPDATE
-function updateAutofill() {
-
+function updateAutofill($values) {
+    $type = $values["type"];
+    $result = updateData("UPDATE autofill_$type SET name=?, zip=?, city=?, street_house=? WHERE id=? AND user_id=?;", [
+        $values["autofill-name"],
+        $values["zip"],
+        $values["city"],
+        $values["street-house"],
+        $values["id"],
+        $values["user_id"]
+    ], "sissii");
+    return $result;
 }
 
 // DELETE

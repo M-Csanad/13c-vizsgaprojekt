@@ -19,5 +19,5 @@ if ($table) {
                                INNER JOIN category ON subcategory.category_id = category.id
                                WHERE category.name = ?;", $_POST['category_name'], "s");
     }
-    echo json_encode($matches, JSON_UNESCAPED_UNICODE);
+    echo $matches->toJSON();
 }

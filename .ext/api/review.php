@@ -2,10 +2,11 @@
 include_once __DIR__.'/../review_functions.php';
 include_once __DIR__.'/../result_functions.php';
 
-if ($_SERVER["REQUEST_METHOD"] != "PUT") {
-    echo json_encode(["message" => "Hibás metódus! Várt: PUT, Aktuális: ".$_SERVER["REQUEST_METHOD"], "type" => "ERROR"], JSON_UNESCAPED_UNICODE);
-    header("bad request", true, 400);
-    return;
+if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
+    http_response_code(405);
+    $result = new Result(Result::ERROR, 'Hibás metódus! Várt: PUT');
+    echo $result->toJSON();
+    exit();
 }
 
 $fields = ["review-title", "review-body", "rating"];
@@ -15,9 +16,9 @@ $body = json_decode(file_get_contents("php://input"), true);
 
 foreach ($fields as $field) {
     if (!isset($body[$field]) || empty($body[$field])) {
-        header("bad request", true, 400);
-        echo json_encode(["message" => "Hiányos adat: ".$field, "type" => "ERROR"], JSON_UNESCAPED_UNICODE);
-        return;
+        http_response_code(400);
+        echo (new Result(Result::ERROR, "Hiányos adat: ".$field))->toJSON();
+        exit();
     }
 
     $values[$field] = $body[$field];
@@ -26,8 +27,9 @@ $values["HTTP_REFERER"] = $_SERVER["HTTP_REFERER"];
 
 $result = makeReview($values);
 if (!$result->isSuccess()) {
-    echo json_encode(["message" => "Hiba történt a feltöltés során: ".$result->toJSON(), "type" => "ERROR"], JSON_UNESCAPED_UNICODE);
-    header("bad request", true, 400);
+    http_response_code(400);
+    echo $result->toJSON();
+    exit();
 }
 
-echo json_encode(["message" => "Sikeres értékelés!", "type" => "SUCCESS"], JSON_UNESCAPED_UNICODE);
+echo (new Result(Result::SUCCESS, "Sikeres értékelés!"))->toJSON();

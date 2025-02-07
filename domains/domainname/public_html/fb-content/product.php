@@ -104,7 +104,7 @@
     <script defer src="/fb-content/fb-products/js/product.js"></script>
     <script defer src="/fb-content/assets/js/lenis.js"></script>
     <script defer src="/fb-content/assets/js/scrollbar.js"></script>
-    <script defer src="/fb-content/fb-products/js/reviewform.js"></script>
+    <script defer type="module" src="/fb-content/fb-products/js/reviewform.js"></script>
     <script defer src="/fb-content/assets/js/autogenerate__footer.js"></script>
 
     <!--ionicons-->

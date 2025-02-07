@@ -313,6 +313,10 @@ class AutofillForm {
         return this.cards.find(e => e.id == id);
     }
 
+    getCardElementFromId(id) {
+        return this.savedCardsContainer.querySelector('#card-' + id);
+    }
+
     handleCardClick(e) {
         if (e.target.closest('.action-edit')) {
             this.state = "modify";
@@ -320,7 +324,7 @@ class AutofillForm {
             const element = e.target.closest('.card');
             const card = this.getCardFromElement(element);
             
-            this.currentCardId = card.id;
+            this.currentCardId = Number(card.id);
             this.open(card);
         }
 
@@ -329,7 +333,7 @@ class AutofillForm {
 
             const element = e.target.closest('.card');
             const card = this.getCardFromElement(element);
-            console.log("removing: ", card);
+            
             this.remove(card, element);
         }
     }
@@ -345,8 +349,20 @@ class AutofillForm {
         dom.remove();
     }
 
-    updateCard(card, data) {
+    updateCard(id, data) {
+        const currentCard = this.getCardElementFromId(id);
+        const currentCardBackend = this.cards.filter(e => e.id == id)[0];
 
+        // Háttér kártya frissítése
+        currentCardBackend.name = data.name;
+        currentCardBackend.zip = data.zip;
+        currentCardBackend.city = data.city;
+        currentCardBackend.street_house = data.street_house;
+
+
+        // Frontend frissítése
+        currentCard.querySelector(".card-title").innerHTML = data.name;
+        currentCard.querySelector(".card-address").innerHTML = `${data.city} ${data.street_house}`;
     }
 
     getCardHTML(card) {
@@ -387,9 +403,15 @@ class AutofillForm {
         return valid;
     }
 
-    getFormData(json = false) {
+    getFormData(json = false, additional = null) {
         const data = new FormData(this.formDom);
         data.append("type", this.autofillType);
+
+        if (additional) {
+            for (const [key, value] of Object.entries(additional)) {
+                data.append(key, value);
+            }              
+        }
         
         if (json) {
             const dataJSON = {};
@@ -403,17 +425,18 @@ class AutofillForm {
     async save(e) {
         if (!this.validateForm()) return;
 
-        const data = this.getFormData(this.state == "modify"); // Ha módosítunk, akkor JSON-ben küldjük az adatokat
-        const result = await APIFetch(this.state == "add" ? "/api/autofill/add" : "/api/autofill/update", this.state == "add" ? "POST" : "PUT", data, true);
+        const isModify = this.state == "modify";
+        const data = this.getFormData(isModify, isModify ? {id: this.currentCardId} : null); // Ha módosítunk, akkor JSON-ben küldjük az adatokat
+        const result = await APIFetch(isModify ? "/api/autofill/update" : "/api/autofill/add", isModify ? "PUT" : "POST", data, true);
 
         if (result.ok) {
             const card = await result.json();
-            
-            if (action == "add") {
-                this.addCard(card[0]);
+
+            if (isModify) {
+                this.updateCard(this.currentCardId, card[0]);
             }
             else {
-                this.updateCard(card[0]);
+                this.addCard(card[0]);
             }
 
             this.reset();

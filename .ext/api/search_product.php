@@ -38,5 +38,5 @@ if ($searchTerm) {
 
     $matches = selectData($query, array_fill(0, 3, $searchTerm), "sss");
                            
-    echo json_encode($matches, JSON_UNESCAPED_UNICODE);
+    echo $matches->toJSON();
 }

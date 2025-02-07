@@ -13,5 +13,5 @@ if ($searchTerm) {
                            ORDER BY user.role, user.user_name;", 
                            array_fill(0, 2, $searchTerm), "ss");
 
-    echo json_encode($matches, JSON_UNESCAPED_UNICODE);
+    echo $matches->toJSON();
 }

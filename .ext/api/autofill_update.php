@@ -10,15 +10,19 @@ if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
 }
 
 // Bemeneti értékek ellenőrzése
-$fields = ["type", "autofill-name", "zip", "city", "street-house"];
+$fields = ["id", "type", "autofill-name", "zip", "city", "street-house"];
 $values = [];
 $rules = [
+    "id" => [
+        "rule" => function ($e) { return intval($e) && $e > 0; },
+        "message" => "Hibás azonosító."
+    ],
     "type" => [
-        "rule" => function ($e) {return $e === "delivery" || $e === "billing"; },
+        "rule" => function ($e) { return $e === "delivery" || $e === "billing"; },
         "message" => "Hibás típus."
     ],
-    "name" => [
-        "rule" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
+    "autofill-name" => [
+        "rule" => function ($e) { return mb_strlen($e) > 0; },
         "message" => "Hibás cím."
     ], 
     "zip" => [
@@ -54,7 +58,7 @@ foreach ($fields as $field) {
 $validator = new InputValidator($values, $rules);
 if ($validator->test()->isError()) {
     http_response_code(400);
-    $result = new Result(Result::ERROR, 'Hibás adat.');
+    $result = new Result(Result::ERROR, "Hibás adat szerepel az űrlapban.");
     echo $result->toJSON();
     exit();
 }
@@ -73,6 +77,22 @@ if (!$isLoggedIn) {
     echo $result->toJSON();
     exit();
 }
-$values["user_id"] = $user['id'];
 
-var_dump($values);
+// Adatok kiegészítése
+$values["user_id"] = $user['id'];
+$values["id"] = intval($values["id"]);
+$values["zip"] = intval($values["zip"]);
+
+$result = updateAutofill($values);
+
+http_response_code($result->isError() ? 400 : 200 );
+if ($result->isSuccess()) {
+    echo getAutofillFromId($values["id"], $values["type"])->messageJSON();
+}
+else if ($result->isOfType(Result::NO_AFFECT)) {
+    echo (new Result(Result::NO_AFFECT, "Nem történt változás."))->toJSON();
+}
+else {
+    echo $result->toJSON();
+}
+exit();
