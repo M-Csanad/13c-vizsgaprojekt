@@ -77,7 +77,7 @@ class Checkout {
             phone: /^(\+36|06)(\d{9})$/,
             taxNumber: /^\d{8}-\d{1,2}-\d{2}$/,
             city: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
-            streetHouse: /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(?:\/[A-Z]+)?$/
+            streetHouse: /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(\.|(?:\/[A-Z]+(?: \d+\/\d+)?))$/
         };
         
         this.form = {
@@ -177,6 +177,7 @@ class Checkout {
     }
 
     generateAutofillOptions() {
+        if (!this.autofill) return;
         for (let type in this.autofill) {
             const select = this.form[type].autofill.dom;
             
@@ -392,8 +393,8 @@ class Checkout {
         this.errorOverlayCloser.addEventListener("click", this.closeErrorOverlay.bind(this));
 
         // Automatikus kitöltési mezők eseményei
-        this.form.delivery.autofill.dom.addEventListener("input", () => this.handleAutofill("delivery"))
-        this.form.billing.autofill.dom.addEventListener("input", () => this.handleAutofill("billing"))
+        this.form.delivery.autofill.dom?.addEventListener("input", () => this.handleAutofill("delivery"))
+        this.form.billing.autofill.dom?.addEventListener("input", () => this.handleAutofill("billing"))
 
         // Beviteli mező fókusz eseményei
         document.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
@@ -598,6 +599,7 @@ class Checkout {
         this.orderPlaced = true;
 
         const data = new FormData(this.formDOM);
+        data.delete("same-address");
         data.append("same-address", this.form.billing.sameAddress.value);
         data.append("purchase-type", this.form.purchaseTypes.value);
         
@@ -641,7 +643,12 @@ class Checkout {
 
         if (result.ok) {
             const data = await result.json();
-            this.autofill = data;
+            if (data.type && data.type == "EMPTY") {
+                this.autofill = null;
+            }
+            else {
+                this.autofill = data;
+            }
         } else {
             throw new Error("Hiba történt az automatikus kitöltési mezők lekérdezése során: " + await result.json());
         }

@@ -60,7 +60,7 @@ class AutofillForm {
             autofillName: (e) => e.length > 0,
             zipCode: /^[1-9]{1}[0-9]{3}$/,
             city: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
-            streetHouse: /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(?:\/[A-Z]+)?$/
+            streetHouse: /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(\.|(?:\/[A-Z]+(?: \d+\/\d+)?))$/
         };
         
         this.cardsContainer = this.formWrapper.previousElementSibling;
@@ -427,7 +427,7 @@ class AutofillForm {
 
         const isModify = this.state == "modify";
         const data = this.getFormData(isModify, isModify ? {id: this.currentCardId} : null); // Ha módosítunk, akkor JSON-ben küldjük az adatokat
-        const result = await APIFetch(isModify ? "/api/autofill/update" : "/api/autofill/add", isModify ? "PUT" : "POST", data, true);
+        const result = await APIFetch(isModify ? "/api/autofill/update" : "/api/autofill/add", isModify ? "PUT" : "POST", data, isModify);
 
         if (result.ok) {
             const card = await result.json();

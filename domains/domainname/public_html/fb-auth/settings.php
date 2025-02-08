@@ -16,6 +16,12 @@
         header("Location: ./login");
         exit();
     }
+
+    // Felhasználó rendeléseinek lekérdezése
+    $result = selectData(
+        "SELECT order FROM order
+            INNER JOIN order_item ON order_item.order_id=order.id
+            INNER JOIN product ON order_item.product_id = product.id")
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -314,7 +320,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="content-page"></div> <!-- Rendeléseim -->
+                <div class="content-page">  <!-- Rendeléseim -->
+                    <div class="content-main">
+                        <div class="page-title">Rendeléseim</div>
+                    </div>
+                </div>
                 <div class="content-page"></div> <!-- Jelszó -->
             </div>
         </div>

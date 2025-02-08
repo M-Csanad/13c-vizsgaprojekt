@@ -57,15 +57,15 @@ function createOrderRow($data) {
         $values[] = $data['customer']['userId'];
         $typeString .= 'i';
     }
-    array_push($fields, ["email", "phone", "first_name", "last_name", "delivery_address", "completed_at"]);
-    
-    $values = [
+    array_push($fields, "email", "phone", "first_name", "last_name", "delivery_address", "completed_at");
+
+    array_push($values, 
         $data['customer']['email'], $data['customer']['phone'], 
         $data['customer']['firstName'], $data['customer']['lastName'], 
         getAddressFromComponents($data['delivery']['zipCode'], $data['delivery']['city'], $data['delivery']['streetHouse']),
         date("Y-m-d H:i:s", time())
-    ];
-    $typeString = 'ssssss';
+    );
+    $typeString .= 'ssssss';
 
     // Céges rendelés esetén
     if ($data['purchaseType'] === "Cégként rendelek") {
@@ -83,7 +83,7 @@ function createOrderRow($data) {
     
     // Adatok feltöltése
     $fieldString = implode(", ", $fields);
-    $wildCardString = implode(', ', array_fill(0, count($fields), '?'));
+    $wildCardString = implode(", ", array_fill(0, count($fields), '?'));
     return updateData("INSERT INTO `order`($fieldString) VALUES ($wildCardString);", $values, $typeString);
 }
 

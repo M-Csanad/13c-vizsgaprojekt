@@ -31,7 +31,12 @@ function getAllAutofill($userId) {
             if (in_array($type, ["billing", "delivery"])) {
                 $data = selectData("SELECT id, name, zip, city, street_house FROM autofill_$type WHERE user_id=?;", $userId, 'i');
 
-                $results[$type] = $data->message;
+                if ($data->isEmpty()) {
+                    $results[$type] = [];
+                }
+                else {
+                    $results[$type] = $data->message;
+                }
             }
         }
         
