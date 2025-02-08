@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Jan 31. 18:34
+-- Létrehozás ideje: 2025. Feb 08. 14:40
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -217,6 +217,7 @@ CREATE TABLE `order` (
   `tax_number` varchar(20) DEFAULT NULL,
   `billing_address` varchar(255) DEFAULT NULL COMMENT 'NULL, ha megegyezik a szállítási címmel',
   `delivery_address` varchar(255) DEFAULT NULL,
+  `status` varchar(50) NOT NULL DEFAULT 'completed',
   `completed_at` timestamp NULL DEFAULT NULL COMMENT 'NULL, ha nyitott a rendelés',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
