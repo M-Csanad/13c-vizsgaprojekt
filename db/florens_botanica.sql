@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Feb 08. 19:37
+-- Létrehozás ideje: 2025. Feb 09. 15:27
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -29,6 +29,7 @@ USE `florens_botanica`;
 -- Tábla szerkezet ehhez a táblához `autofill_billing`
 --
 
+DROP TABLE IF EXISTS `autofill_billing`;
 CREATE TABLE `autofill_billing` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -44,6 +45,7 @@ CREATE TABLE `autofill_billing` (
 -- Tábla szerkezet ehhez a táblához `autofill_delivery`
 --
 
+DROP TABLE IF EXISTS `autofill_delivery`;
 CREATE TABLE `autofill_delivery` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -59,6 +61,7 @@ CREATE TABLE `autofill_delivery` (
 -- Tábla szerkezet ehhez a táblához `cart`
 --
 
+DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
@@ -75,6 +78,7 @@ CREATE TABLE `cart` (
 -- Tábla szerkezet ehhez a táblához `category`
 --
 
+DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -92,14 +96,14 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `name`, `subname`, `description`, `thumbnail_image_vertical_uri`, `thumbnail_image_horizontal_uri`, `thumbnail_video_uri`, `product_count`, `slug`) VALUES
-(1, 'A Tiszta Egészség', 'A Természet Esszenciája', 'Támogasd szervezetedet a természet legjavával! Vitaminok, ásványi anyagok, és növényi kivonatok gondoskodnak az energikus mindennapokról, miközben természetes forrásokból származó kiegészítők segítenek megőrizni egészséged harmóniáját. Válaszd a természet', 'http://localhost/fb-content/fb-categories/media/images/category-1/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-1/thumbnail_image_horizontal.jpg', NULL, 7, 'a-tiszta-egeszseg'),
-(2, 'A Nyugodt Elme', 'A Nyugalom Forrása', 'Találd meg a belső békédet természetes megoldásokkal! Ebben a kategóriában mindent megtalálsz, ami támogatja a relaxációt, csökkenti a stresszt és segít az éjszakai pihenésben, hogy minden nap energikusan és kiegyensúlyozottan induljon. Fedezd fel a nyuga', 'http://localhost/fb-content/fb-categories/media/images/category-2/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-2/thumbnail_image_horizontal.jpg', NULL, 8, 'a-nyugodt-elme'),
+(1, 'A Tiszta Egészség', 'A Természet Esszenciája', 'Támogasd szervezetedet a természet legjavával! Vitaminok, ásványi anyagok, és növényi kivonatok gondoskodnak az energikus mindennapokról, miközben természetes forrásokból származó kiegészítők segítenek megőrizni egészséged harmóniáját. Válaszd a természet', 'http://localhost/fb-content/fb-categories/media/images/category-1/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-1/thumbnail_image_horizontal.jpg', NULL, 8, 'a-tiszta-egeszseg'),
+(2, 'A Nyugodt Elme', 'A Nyugalom Forrása', 'Találd meg a belső békédet természetes megoldásokkal! Ebben a kategóriában mindent megtalálsz, ami támogatja a relaxációt, csökkenti a stresszt és segít az éjszakai pihenésben, hogy minden nap energikusan és kiegyensúlyozottan induljon. Fedezd fel a nyuga', 'http://localhost/fb-content/fb-categories/media/images/category-2/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-2/thumbnail_image_horizontal.jpg', NULL, 13, 'a-nyugodt-elme'),
 (3, 'A Detox Ereje', 'Méregtelenítés', 'Adj új lendületet testednek természetes méregtelenítő megoldásokkal! Ebben a kategóriában hatékony, természetes eszközöket találsz, amelyek segítenek a belső tisztulásban, támogatják a májat, vesét és az emésztőrendszert, hogy szervezeted felfrissüljön és', 'http://localhost/fb-content/fb-categories/media/images/category-3/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-3/thumbnail_image_horizontal.jpg', NULL, 0, 'a-detox-ereje'),
 (4, 'A Könnyed Emésztés', 'Az Anyagcsere', 'Támogasd tested természetes egyensúlyát! Ebben a kategóriában hatékony megoldásokat találsz, amelyek serkentik az anyagcserét, javítják az emésztést, és hozzájárulnak a megfelelő rostbevitelhez, hogy energikus és kiegyensúlyozott lehess minden nap.', 'http://localhost/fb-content/fb-categories/media/images/category-4/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-4/thumbnail_image_horizontal.jpg', NULL, 5, 'a-konnyed-emesztes'),
-(5, 'A Mozgás Ereje', 'A Mozgás Forrása', 'Turbózd fel teljesítményed természetes, erőt adó megoldásokkal! Ebben a kategóriában megtalálod mindazt, ami támogatja az aktív életmódot, növeli az energiát és segíti a regenerációt – természetes alapanyagokból, hogy minden mozdulat könnyed legyen és hat', 'http://localhost/fb-content/fb-categories/media/images/category-5/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-5/thumbnail_image_horizontal.jpg', NULL, 3, 'a-mozgas-ereje'),
-(6, 'A Pillanat Lángja', 'A Szenvedély Ereje', 'Ébreszd fel a belső tüzed a természet erejével! Ebben a kategóriában olyan különleges gyógynövények, aromaterápiás esszenciák és tápláló kiegészítők várnak rád, amelyek támogatják az érzelmi harmóniát, fokozzák az energiát és új lendületet adnak a mindennapoknak.', 'http://localhost/fb-content/fb-categories/media/images/category-6/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-6/thumbnail_image_horizontal.jpg', NULL, 0, 'a-pillanat-langja'),
+(5, 'A Mozgás Ereje', 'A Mozgás Forrása', 'Turbózd fel teljesítményed természetes, erőt adó megoldásokkal! Ebben a kategóriában megtalálod mindazt, ami támogatja az aktív életmódot, növeli az energiát és segíti a regenerációt – természetes alapanyagokból, hogy minden mozdulat könnyed legyen és hat', 'http://localhost/fb-content/fb-categories/media/images/category-5/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-5/thumbnail_image_horizontal.jpg', NULL, 12, 'a-mozgas-ereje'),
+(6, 'A Pillanat Lángja', 'A Szenvedély Ereje', 'Ébreszd fel a belső tüzed a természet erejével! Ebben a kategóriában olyan különleges gyógynövények, aromaterápiás esszenciák és tápláló kiegészítők várnak rád, amelyek támogatják az érzelmi harmóniát, fokozzák az energiát és új lendületet adnak a mindennapoknak.', 'http://localhost/fb-content/fb-categories/media/images/category-6/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-6/thumbnail_image_horizontal.jpg', NULL, 15, 'a-pillanat-langja'),
 (7, 'A Szépség Titka', 'Az Fiatalos Szépség', 'Fedezd fel a ragyogó megjelenés titkát! Ebben a kategóriában bőrápoló, hajápoló és anti-aging megoldások várnak, amelyek természetes összetevőikkel támogatják a fiatalos szépséget és az egészséges ragyogást. Érd el a szépség új dimenzióját!', 'http://localhost/fb-content/fb-categories/media/images/category-7/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-7/thumbnail_image_horizontal.jpg', NULL, 1, 'a-szepseg-titka'),
-(8, 'Az Energia Alapjai', 'A Vitalitás Forrásai', 'Töltsd fel szervezeted a legfontosabb tápanyagokkal! Ebben a kategóriában vitaminok, aminosavak és enzimek kínálnak természetes támogatást az energiád fenntartásához és a mindennapi vitalitás eléréséhez. Érezd a különbséget, amit a természet ereje adhat!', 'http://localhost/fb-content/fb-categories/media/images/category-8/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-8/thumbnail_image_horizontal.jpg', NULL, 1, 'az-energia-alapjai'),
+(8, 'Az Energia Alapjai', 'A Vitalitás Forrásai', 'Töltsd fel szervezeted a legfontosabb tápanyagokkal! Ebben a kategóriában vitaminok, aminosavak és enzimek kínálnak természetes támogatást az energiád fenntartásához és a mindennapi vitalitás eléréséhez. Érezd a különbséget, amit a természet ereje adhat!', 'http://localhost/fb-content/fb-categories/media/images/category-8/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-8/thumbnail_image_horizontal.jpg', NULL, 8, 'az-energia-alapjai'),
 (9, 'A Frissítő Élmény', 'A Frissesség Titka', 'Élvezd a természetesen frissítő italok és ízek világát! Ebben a kategóriában teák, kávék és gyümölcs alapú italok kínálnak energiát, vitalitást és egy kis kényeztetést, hogy felfrissülve nézhess szembe a nap kihívásaival.', 'http://localhost/fb-content/fb-categories/media/images/category-9/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-9/thumbnail_image_horizontal.jpg', NULL, 0, 'a-frissito-élmeny'),
 (10, 'A Természet Elixirjei', 'Az Egészség Esszenciája', 'Ismerd meg a természet rejtett kincseit! Ebben a kategóriában egzotikus gyógynövények, tinktúrák és különleges elixírek segítenek támogatni a vitalitást és a belső harmóniát, hogy a mindennapjaid energikusabbak és kiegyensúlyozottabbak legyenek.', 'http://localhost/fb-content/fb-categories/media/images/category-10/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-10/thumbnail_image_horizontal.jpg', NULL, 0, 'a-termeszet-elixirjei'),
 (11, 'A Tengerek Kincsei', 'Az Óceán Ereje', 'Meríts erőt a tengerek gazdagságából! Ebben a kategóriában tengeri algák, ásványok, halolajok és kollagén alapú kiegészítők várnak rád, hogy természetes támogatást nyújtsanak az egészséghez és a vitalitáshoz. Fedezd fel az óceán erejét!', 'http://localhost/fb-content/fb-categories/media/images/category-11/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-categories/media/images/category-11/thumbnail_image_horizontal.jpg', NULL, 0, 'a-tengerek-kincsei'),
@@ -114,6 +118,7 @@ INSERT INTO `category` (`id`, `name`, `subname`, `description`, `thumbnail_image
 -- Tábla szerkezet ehhez a táblához `health_effect`
 --
 
+DROP TABLE IF EXISTS `health_effect`;
 CREATE TABLE `health_effect` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
@@ -173,6 +178,7 @@ INSERT INTO `health_effect` (`id`, `name`, `description`, `benefit`) VALUES
 -- Tábla szerkezet ehhez a táblához `image`
 --
 
+DROP TABLE IF EXISTS `image`;
 CREATE TABLE `image` (
   `id` int(11) NOT NULL,
   `uri` varchar(255) NOT NULL,
@@ -238,7 +244,49 @@ INSERT INTO `image` (`id`, `uri`, `orientation`, `media_type`) VALUES
 (52, 'http://localhost/fb-content/fb-products/media/images/product-18/thumbnail.jpg', 'horizontal', 'image'),
 (53, 'http://localhost/fb-content/fb-products/media/images/product-18/image0.jpg', 'vertical', 'image'),
 (54, 'http://localhost/fb-content/fb-products/media/images/product-18/image1.jpg', 'horizontal', 'image'),
-(55, 'http://localhost/fb-content/fb-products/media/images/product-7/thumbnail.jpg', 'horizontal', 'image');
+(55, 'http://localhost/fb-content/fb-products/media/images/product-7/thumbnail.jpg', 'horizontal', 'image'),
+(56, 'http://localhost/fb-content/fb-products/media/images/product-19/thumbnail.jpg', 'horizontal', 'image'),
+(57, 'http://localhost/fb-content/fb-products/media/images/product-19/image0.jpg', 'horizontal', 'image'),
+(58, 'http://localhost/fb-content/fb-products/media/images/product-19/image1.jpg', 'vertical', 'image'),
+(59, 'http://localhost/fb-content/fb-products/media/images/product-19/image2.jpg', 'horizontal', 'image'),
+(64, 'http://localhost/fb-content/fb-products/media/images/product-21/thumbnail.jpg', 'horizontal', 'image'),
+(65, 'http://localhost/fb-content/fb-products/media/images/product-21/image0.jpg', 'vertical', 'image'),
+(66, 'http://localhost/fb-content/fb-products/media/images/product-21/image1.jpg', 'horizontal', 'image'),
+(67, 'http://localhost/fb-content/fb-products/media/images/product-22/thumbnail.jpg', 'horizontal', 'image'),
+(68, 'http://localhost/fb-content/fb-products/media/images/product-22/image0.png', 'horizontal', 'image'),
+(69, 'http://localhost/fb-content/fb-products/media/images/product-22/image1.jpg', 'vertical', 'image'),
+(70, 'http://localhost/fb-content/fb-products/media/images/product-23/thumbnail.jpg', 'horizontal', 'image'),
+(71, 'http://localhost/fb-content/fb-products/media/images/product-23/image0.jpg', 'horizontal', 'image'),
+(72, 'http://localhost/fb-content/fb-products/media/images/product-23/image1.jpg', 'vertical', 'image'),
+(73, 'http://localhost/fb-content/fb-products/media/images/product-24/thumbnail.jpg', 'horizontal', 'image'),
+(74, 'http://localhost/fb-content/fb-products/media/images/product-24/image0.jpg', 'horizontal', 'image'),
+(75, 'http://localhost/fb-content/fb-products/media/images/product-24/image1.jpg', 'vertical', 'image'),
+(76, 'http://localhost/fb-content/fb-products/media/images/product-25/thumbnail.jpg', 'horizontal', 'image'),
+(77, 'http://localhost/fb-content/fb-products/media/images/product-25/image0.jpg', 'horizontal', 'image'),
+(78, 'http://localhost/fb-content/fb-products/media/images/product-25/image1.jpg', 'vertical', 'image'),
+(79, 'http://localhost/fb-content/fb-products/media/images/product-26/thumbnail.jpg', 'horizontal', 'image'),
+(80, 'http://localhost/fb-content/fb-products/media/images/product-26/image0.jpg', 'horizontal', 'image'),
+(81, 'http://localhost/fb-content/fb-products/media/images/product-26/image1.jpg', 'vertical', 'image'),
+(82, 'http://localhost/fb-content/fb-products/media/images/product-27/thumbnail.jpg', 'horizontal', 'image'),
+(83, 'http://localhost/fb-content/fb-products/media/images/product-27/image0.jpg', 'horizontal', 'image'),
+(84, 'http://localhost/fb-content/fb-products/media/images/product-27/image1.jpg', 'vertical', 'image'),
+(85, 'http://localhost/fb-content/fb-products/media/images/product-28/thumbnail.jpg', 'horizontal', 'image'),
+(86, 'http://localhost/fb-content/fb-products/media/images/product-28/image0.jpg', 'horizontal', 'image'),
+(87, 'http://localhost/fb-content/fb-products/media/images/product-28/image1.jpg', 'horizontal', 'image'),
+(88, 'http://localhost/fb-content/fb-products/media/images/product-29/thumbnail.jpg', 'horizontal', 'image'),
+(89, 'http://localhost/fb-content/fb-products/media/images/product-29/image0.jpg', 'horizontal', 'image'),
+(90, 'http://localhost/fb-content/fb-products/media/images/product-30/thumbnail.jpg', 'horizontal', 'image'),
+(91, 'http://localhost/fb-content/fb-products/media/images/product-30/image0.jpg', 'horizontal', 'image'),
+(92, 'http://localhost/fb-content/fb-products/media/images/product-30/image1.jpg', 'vertical', 'image'),
+(93, 'http://localhost/fb-content/fb-products/media/images/product-31/thumbnail.jpg', 'horizontal', 'image'),
+(94, 'http://localhost/fb-content/fb-products/media/images/product-31/image0.jpg', 'horizontal', 'image'),
+(95, 'http://localhost/fb-content/fb-products/media/images/product-31/image1.jpg', 'vertical', 'image'),
+(102, 'http://localhost/fb-content/fb-products/media/images/product-32/thumbnail.jpg', 'horizontal', 'image'),
+(103, 'http://localhost/fb-content/fb-products/media/images/product-32/image0.jpg', 'horizontal', 'image'),
+(104, 'http://localhost/fb-content/fb-products/media/images/product-32/image1.jpg', 'vertical', 'image'),
+(105, 'http://localhost/fb-content/fb-products/media/images/product-34/thumbnail.jpg', 'horizontal', 'image'),
+(106, 'http://localhost/fb-content/fb-products/media/images/product-34/image0.jpg', 'horizontal', 'image'),
+(107, 'http://localhost/fb-content/fb-products/media/images/product-34/image1.jpg', 'vertical', 'image');
 
 -- --------------------------------------------------------
 
@@ -246,6 +294,7 @@ INSERT INTO `image` (`id`, `uri`, `orientation`, `media_type`) VALUES
 -- Tábla szerkezet ehhez a táblához `order`
 --
 
+DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL COMMENT 'Vendég rendelések miatt lehet NULL is a user_id',
@@ -265,6 +314,7 @@ CREATE TABLE `order` (
 --
 -- Eseményindítók `order`
 --
+DROP TRIGGER IF EXISTS `after_order_delete`;
 DELIMITER $$
 CREATE TRIGGER `after_order_delete` AFTER DELETE ON `order` FOR EACH ROW BEGIN
     DELETE FROM order_item WHERE order_id IS NULL;
@@ -278,6 +328,7 @@ DELIMITER ;
 -- Tábla szerkezet ehhez a táblához `order_item`
 --
 
+DROP TABLE IF EXISTS `order_item`;
 CREATE TABLE `order_item` (
   `id` int(11) NOT NULL,
   `order_id` int(11) DEFAULT NULL,
@@ -289,6 +340,7 @@ CREATE TABLE `order_item` (
 --
 -- Eseményindítók `order_item`
 --
+DROP TRIGGER IF EXISTS `after_order_item_delete`;
 DELIMITER $$
 CREATE TRIGGER `after_order_item_delete` AFTER DELETE ON `order_item` FOR EACH ROW BEGIN
     UPDATE product
@@ -297,6 +349,7 @@ CREATE TRIGGER `after_order_item_delete` AFTER DELETE ON `order_item` FOR EACH R
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `after_order_item_insert`;
 DELIMITER $$
 CREATE TRIGGER `after_order_item_insert` AFTER INSERT ON `order_item` FOR EACH ROW BEGIN
     UPDATE product
@@ -305,6 +358,7 @@ CREATE TRIGGER `after_order_item_insert` AFTER INSERT ON `order_item` FOR EACH R
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `after_order_item_update`;
 DELIMITER $$
 CREATE TRIGGER `after_order_item_update` AFTER UPDATE ON `order_item` FOR EACH ROW BEGIN
     IF OLD.product_id = NEW.product_id THEN
@@ -315,7 +369,7 @@ CREATE TRIGGER `after_order_item_update` AFTER UPDATE ON `order_item` FOR EACH R
         UPDATE product
         SET stock = stock + OLD.quantity
         WHERE id = OLD.product_id;
-        
+
         UPDATE product
         SET stock = stock - NEW.quantity
         WHERE id = NEW.product_id;
@@ -330,6 +384,7 @@ DELIMITER ;
 -- Tábla szerkezet ehhez a táblához `product`
 --
 
+DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -360,7 +415,21 @@ INSERT INTO `product` (`id`, `name`, `unit_price`, `stock`, `description`) VALUE
 (15, 'Pillangóborsó', 5000, 20, 'A pillangóborsó gazdag antioxidánsokban, javítja a bélflóra működését és segít a méregtelenítésben.'),
 (16, 'Reishi', 5500, 10, 'A reishi gomba immunerősítő és stresszoldó hatású, segít a test és az elme harmonizálásában.'),
 (17, 'Rozmaring', 3000, 20, 'A rozmaring kiváló antioxidáns és memóriajavító hatással rendelkezik, valamint segít az emésztésben.'),
-(18, 'Valeriána gyökér', 4000, 25, 'A valeriána nyugtató hatású, segít az alvás elősegítésében és a szorongás csökkentésében.');
+(18, 'Valeriána gyökér', 4000, 25, 'A valeriána nyugtató hatású, segít az alvás elősegítésében és a szorongás csökkentésében.'),
+(19, 'Ashwagandha por', 4600, 25, 'Az Ashwagandha (Withania somnifera) az ájurvédikus gyógyászat egyik legismertebb adaptogén növénye, amely támogatja a stresszkezelést, a hormonális egyensúlyt és az általános energiaszintet.'),
+(21, 'Ashwagandha durvára őrölt', 4800, 30, 'Az Ashwagandha (Withania somnifera) Indiában és Afrikában honos gyógynövény, amelyet hagyományosan az ájurvédikus gyógyászatban alkalmaznak. Durvára őrölt formában megőrzi természetes aromáját.'),
+(22, 'Damiana őrölt', 5200, 20, 'A Damiana (Turnera diffusa) egy Közép- és Dél-Amerikában őshonos, lágy illatú gyógynövény, amelyet évszázadok óta hagyományosan aphrodisiakumként és enyhe stresszoldóként használnak. '),
+(23, 'Kanos Kecskefű őrölt', 5900, 35, 'Az Epimedium, közismert nevén Horny Goat Weed, egy Kelet-Ázsiából származó gyógynövény, amelyet a hagyományos kínai orvoslás már évszázadok óta alkalmaz.'),
+(24, 'Kanos Kecskefű por', 5500, 30, 'Az Epimedium, közismert nevén Horny Goat Weed, egy Kelet-Ázsiából származó gyógynövény, amelyet a hagyományos kínai orvoslás már évszázadok óta alkalmaz.'),
+(25, 'Ginzeng por', 6000, 60, 'A ginzeng (Panax ginseng) a hagyományos keleti orvoslás egyik legismertebb energianövelő és immunerősítő gyógynövénye.'),
+(26, 'Maca por', 5500, 50, 'A maca (Lepidium meyenii) gyökérből készül, amely a perui Andok magasföldjein terem. Por formájában sokoldalúan felhasználható, és közismert arról, hogy támogathatja a hormonális egyensúlyt.'),
+(27, 'Bársonybab por', 5800, 50, 'A Mucuna pruriens (bársonybab) a trópusi és szubtrópusi területeken honos növény, amelynek magja a dopamin előanyagaként ismert L-DOPA-ban gazdag.'),
+(28, 'Muira Puama őrölt', 6800, 50, 'A Muira Puama (Ptychopetalum olacoides) az Amazonas-medence őshonos fájának kérgéből és gyökéréből származik, amit évtizedek óta aphrodisiakumként és általános erőnlétfokozóként alkalmaznak.'),
+(29, 'Muira Puama por', 6300, 40, 'A Muira Puama (Ptychopetalum olacoides) az Amazonas-medence őshonos fájának kérgéből és gyökéréből származik, amit évtizedek óta aphrodisiakumként és általános erőnlétfokozóként alkalmaznak.'),
+(30, 'Királydinnye', 4990, 50, 'A Tribulus terrestris, magyarul királydinnye, a hagyományos gyógyászatban főként a hormonális egyensúly és a szexuális egészség támogatására kedvelt növény'),
+(31, 'Királydinnye por', 5300, 60, 'A Tribulus terrestris, magyarul királydinnye, a hagyományos gyógyászatban főként a hormonális egyensúly és a szexuális egészség támogatására kedvelt növény.'),
+(32, 'Barátcserje por', 4800, 60, 'A Vitex agnus-castus (barátcserje) por formájában egy népszerű gyógynövény, amelyet elsősorban a női hormonális egyensúly támogatására alkalmaznak.'),
+(34, 'Vitex szárított bogyók', 5200, 20, 'A Vitex agnus-castus, ismertebb nevén barátcserje, szárított, bio minősítésű bogyói. Hagyományosan a női hormonális egyensúly, valamint a menstruációs ciklus támogatására használják, de számos egyéb jótékony hatással is bír.');
 
 -- --------------------------------------------------------
 
@@ -368,6 +437,7 @@ INSERT INTO `product` (`id`, `name`, `unit_price`, `stock`, `description`) VALUE
 -- Tábla szerkezet ehhez a táblához `product_health_effect`
 --
 
+DROP TABLE IF EXISTS `product_health_effect`;
 CREATE TABLE `product_health_effect` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
@@ -467,7 +537,95 @@ INSERT INTO `product_health_effect` (`id`, `product_id`, `health_effect_id`) VAL
 (97, 7, 6),
 (98, 7, 30),
 (99, 7, 20),
-(100, 7, 39);
+(100, 7, 39),
+(117, 19, 1),
+(118, 19, 4),
+(119, 19, 8),
+(120, 19, 22),
+(121, 19, 40),
+(122, 19, 13),
+(123, 19, 14),
+(124, 19, 31),
+(125, 21, 1),
+(126, 21, 4),
+(127, 21, 8),
+(128, 21, 22),
+(129, 21, 40),
+(130, 21, 13),
+(131, 21, 14),
+(132, 21, 31),
+(139, 22, 4),
+(140, 22, 8),
+(141, 22, 40),
+(142, 22, 13),
+(143, 22, 14),
+(144, 22, 31),
+(145, 23, 8),
+(146, 23, 10),
+(147, 23, 40),
+(148, 23, 13),
+(149, 23, 14),
+(150, 23, 16),
+(151, 23, 37),
+(152, 24, 10),
+(153, 24, 8),
+(154, 24, 40),
+(155, 24, 13),
+(156, 24, 14),
+(157, 24, 16),
+(158, 24, 37),
+(159, 25, 1),
+(160, 25, 6),
+(161, 25, 40),
+(162, 25, 15),
+(163, 25, 14),
+(164, 26, 1),
+(165, 26, 4),
+(166, 26, 8),
+(167, 26, 40),
+(168, 26, 13),
+(169, 26, 14),
+(170, 26, 15),
+(171, 27, 4),
+(172, 27, 8),
+(173, 27, 40),
+(174, 27, 13),
+(175, 27, 14),
+(176, 27, 31),
+(177, 28, 8),
+(178, 28, 40),
+(179, 28, 4),
+(180, 28, 13),
+(181, 28, 16),
+(182, 28, 14),
+(183, 29, 8),
+(184, 29, 40),
+(185, 29, 4),
+(186, 29, 14),
+(187, 29, 13),
+(188, 29, 16),
+(195, 30, 8),
+(196, 30, 10),
+(197, 30, 40),
+(198, 30, 14),
+(199, 30, 16),
+(200, 30, 37),
+(201, 31, 8),
+(202, 31, 10),
+(203, 31, 40),
+(204, 31, 14),
+(205, 31, 16),
+(206, 31, 37),
+(217, 32, 4),
+(218, 32, 8),
+(219, 32, 13),
+(220, 32, 14),
+(221, 32, 15),
+(222, 34, 8),
+(223, 34, 4),
+(224, 34, 13),
+(225, 34, 14),
+(226, 34, 15);
 
 -- --------------------------------------------------------
 
@@ -475,6 +633,7 @@ INSERT INTO `product_health_effect` (`id`, `product_id`, `health_effect_id`) VAL
 -- Tábla szerkezet ehhez a táblához `product_image`
 --
 
+DROP TABLE IF EXISTS `product_image`;
 CREATE TABLE `product_image` (
   `id` int(11) NOT NULL,
   `image_id` int(11) NOT NULL,
@@ -539,7 +698,49 @@ INSERT INTO `product_image` (`id`, `image_id`, `product_id`) VALUES
 (52, 52, 18),
 (53, 53, 18),
 (54, 54, 18),
-(55, 55, 7);
+(55, 55, 7),
+(56, 56, 19),
+(57, 57, 19),
+(58, 58, 19),
+(59, 59, 19),
+(64, 64, 21),
+(65, 65, 21),
+(66, 66, 21),
+(67, 67, 22),
+(68, 68, 22),
+(69, 69, 22),
+(70, 70, 23),
+(71, 71, 23),
+(72, 72, 23),
+(73, 73, 24),
+(74, 74, 24),
+(75, 75, 24),
+(76, 76, 25),
+(77, 77, 25),
+(78, 78, 25),
+(79, 79, 26),
+(80, 80, 26),
+(81, 81, 26),
+(82, 82, 27),
+(83, 83, 27),
+(84, 84, 27),
+(85, 85, 28),
+(86, 86, 28),
+(87, 87, 28),
+(88, 88, 29),
+(89, 89, 29),
+(90, 90, 30),
+(91, 91, 30),
+(92, 92, 30),
+(93, 93, 31),
+(94, 94, 31),
+(95, 95, 31),
+(102, 102, 32),
+(103, 103, 32),
+(104, 104, 32),
+(105, 105, 34),
+(106, 106, 34),
+(107, 107, 34);
 
 -- --------------------------------------------------------
 
@@ -547,6 +748,7 @@ INSERT INTO `product_image` (`id`, `image_id`, `product_id`) VALUES
 -- Tábla szerkezet ehhez a táblához `product_page`
 --
 
+DROP TABLE IF EXISTS `product_page`;
 CREATE TABLE `product_page` (
   `id` int(11) NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
@@ -595,11 +797,50 @@ INSERT INTO `product_page` (`id`, `created_at`, `last_modified`, `product_id`, `
 (29, '2025-02-08 19:21:56', '2025-02-08 19:21:56', 17, 'a-konnyed-emesztes/emesztest-tamogatok/rozmaring', 4, 7, 'Rozmaring', 'A rozmaring (Rosmarinus officinalis) egy aromás mediterrán fűszernövény, amelyet nemcsak kulináris célokra, hanem gyógynövényként is széles körben alkalmaznak. Jellegzetes, fűszeres illata élénkítő hatású, és elősegítheti a koncentrációt, ezért gyakran használják természetes memóriaserkentőként. Serkentheti a vérkeringést, különösen a fejbőrben, így segíthet a hajnövekedés elősegítésében és a hajhullás csökkentésében. Illóolaj formájában masszázshoz és aromaterápiához is alkalmazzák.\r\nGyógyhatásai közé tartozik az emésztés javítása, mivel serkentheti az epetermelést, enyhítheti a puffadást és támogathatja a májműködést. Antibakteriális és gyulladáscsökkentő tulajdonságai révén hozzájárulhat a légúti fertőzések enyhítéséhez, valamint segíthet a torokfájás és a köhögés csillapításában. Teája élénkítő hatású, és segíthet a fáradtság leküzdésében, így kiváló választás lehet kimerültség vagy alacsony energiaszint esetén.'),
 (30, '2025-02-08 19:24:52', '2025-02-08 19:24:52', 17, 'a-konyha-izei/fuszernovenyek/rozmaring', 13, 24, 'Rozmaring', 'A rozmaring (Rosmarinus officinalis) egy aromás mediterrán fűszernövény, amelyet nemcsak kulináris célokra, hanem gyógynövényként is széles körben alkalmaznak. Jellegzetes, fűszeres illata élénkítő hatású, és elősegítheti a koncentrációt, ezért gyakran használják természetes memóriaserkentőként. Serkentheti a vérkeringést, különösen a fejbőrben, így segíthet a hajnövekedés elősegítésében és a hajhullás csökkentésében. Illóolaj formájában masszázshoz és aromaterápiához is alkalmazzák.\r\nGyógyhatásai közé tartozik az emésztés javítása, mivel serkentheti az epetermelést, enyhítheti a puffadást és támogathatja a májműködést. Antibakteriális és gyulladáscsökkentő tulajdonságai révén hozzájárulhat a légúti fertőzések enyhítéséhez, valamint segíthet a torokfájás és a köhögés csillapításában. Teája élénkítő hatású, és segíthet a fáradtság leküzdésében, így kiváló választás lehet kimerültség vagy alacsony energiaszint esetén.'),
 (31, '2025-02-08 19:27:00', '2025-02-08 19:27:00', 18, 'a-nyugodt-elme/nyugtato-novenyek/valeriana-gyoker', 2, 3, 'Valeriána gyökér', 'A Valeriana officinalis a loncfélék családjába tartozó évelő növény, amelyet régóta használnak nyugtató hatása miatt. Európában és Ázsiában honos, de Észak-Amerikában is elterjedt. Gyökere erőteljes, jellegzetes illatú, amely macskákat és rágcsálókat vonz. A valeriána tea vagy tinktúra formájában fogyasztható, és segíti a természetes ellazulást, valamint a stressz kezelését. Az ókori görögök és középkori gyógyítók is használták nyugtató hatásai miatt.\r\nA növény akár két méter magasra is megnő, fehér vagy rózsaszín virágokat hoz. Gyökerét alacsony hőmérsékleten szárítják, hogy megőrizzék hatóanyagait. Noha illata sokak számára kellemetlen, évszázadok óta népszerű gyógynövényként alkalmazzák. A valeriána különösen hasznos esti teaként vagy gyógynövényes keverékek részeként.'),
-(32, '2025-02-08 19:31:03', '2025-02-08 19:31:03', 18, 'a-nyugodt-elme/alvassegitok/valeriana-gyoker', 2, 4, 'Valeriána gyökér', 'A Valeriana officinalis a loncfélék családjába tartozó évelő növény, amelyet régóta használnak nyugtató hatása miatt. Európában és Ázsiában honos, de Észak-Amerikában is elterjedt. Gyökere erőteljes, jellegzetes illatú, amely macskákat és rágcsálókat vonz. A valeriána tea vagy tinktúra formájában fogyasztható, és segíti a természetes ellazulást, valamint a stressz kezelését. Az ókori görögök és középkori gyógyítók is használták nyugtató hatásai miatt.\r\nA növény akár két méter magasra is megnő, fehér vagy rózsaszín virágokat hoz. Gyökerét alacsony hőmérsékleten szárítják, hogy megőrizzék hatóanyagait. Noha illata sokak számára kellemetlen, évszázadok óta népszerű gyógynövényként alkalmazzák. A valeriána különösen hasznos esti teaként vagy gyógynövényes keverékek részeként.');
+(32, '2025-02-08 19:31:03', '2025-02-08 19:31:03', 18, 'a-nyugodt-elme/alvassegitok/valeriana-gyoker', 2, 4, 'Valeriána gyökér', 'A Valeriana officinalis a loncfélék családjába tartozó évelő növény, amelyet régóta használnak nyugtató hatása miatt. Európában és Ázsiában honos, de Észak-Amerikában is elterjedt. Gyökere erőteljes, jellegzetes illatú, amely macskákat és rágcsálókat vonz. A valeriána tea vagy tinktúra formájában fogyasztható, és segíti a természetes ellazulást, valamint a stressz kezelését. Az ókori görögök és középkori gyógyítók is használták nyugtató hatásai miatt.\r\nA növény akár két méter magasra is megnő, fehér vagy rózsaszín virágokat hoz. Gyökerét alacsony hőmérsékleten szárítják, hogy megőrizzék hatóanyagait. Noha illata sokak számára kellemetlen, évszázadok óta népszerű gyógynövényként alkalmazzák. A valeriána különösen hasznos esti teaként vagy gyógynövényes keverékek részeként.'),
+(33, '2025-02-09 10:28:54', '2025-02-09 10:28:54', 19, 'a-nyugodt-elme/alvassegitok/ashwagandha-por', 2, 4, 'Ashwagandha por', 'Az Ashwagandha, más néven „indiai ginzeng”, a burgonyafélék családjába tartozó évelő cserje, amely főként Indiában és néhány afrikai régióban honos. Az ájurvéda évszázadok óta alkalmazza a növény gyökerét és leveleit, főleg szárítva és porrá őrölve, hogy támogassa a test és az elme egyensúlyát.\r\n\r\nElsősorban Indiában termesztik, ahol a forró, száraz klíma és a termékeny talaj kiváló környezetet biztosít a növény növekedéséhez. Hagyományosan kis, családi gazdaságokban is megtalálható, ahol nagy gondot fordítanak a növények kézzel történő betakarítására és kíméletes szárítására.\r\n\r\n- Stresszoldás és nyugodt elme: Adaptogén hatású, vagyis segíthet a szervezetnek alkalmazkodni a mindennapi stresszhez, és csökkentheti a túlzott idegességet.\r\n- Hormonális egyensúly: Hozzájárulhat a normál hormonháztartás fenntartásához mind nők, mind férfiak esetében.\r\n- Energetizálás és állóképesség: Támogathatja a fizikai teljesítményt és a szellemi frissességet, hozzájárulva a hosszú távú vitalitáshoz.\r\n- Immunrendszer-erősítés: Rendszeres fogyasztása támogathatja a test védekező mechanizmusait.\r\n\r\nPor alakban sokoldalúan felhasználható: keverhető meleg italokba (teákba, „aranytej”-hez), smoothie-khoz, de akár levesek vagy egyéb ételek dúsítására is alkalmas.'),
+(35, '2025-02-09 10:49:00', '2025-02-09 10:49:00', 19, 'a-pillanat-langja/stresszcsokkento-novenyek/ashwagandha-por', 6, 12, 'Ashwagandha por', 'Az Ashwagandha, más néven „indiai ginzeng”, a burgonyafélék családjába tartozó évelő cserje, amely főként Indiában és néhány afrikai régióban honos. Az ájurvéda évszázadok óta alkalmazza a növény gyökerét és leveleit, főleg szárítva és porrá őrölve, hogy támogassa a test és az elme egyensúlyát.\r\n\r\nElsősorban Indiában termesztik, ahol a forró, száraz klíma és a termékeny talaj kiváló környezetet biztosít a növény növekedéséhez. Hagyományosan kis, családi gazdaságokban is megtalálható, ahol nagy gondot fordítanak a növények kézzel történő betakarítására és kíméletes szárítására.\r\n\r\n- Stresszoldás és nyugodt elme: Adaptogén hatású, vagyis segíthet a szervezetnek alkalmazkodni a mindennapi stresszhez, és csökkentheti a túlzott idegességet.\r\n- Hormonális egyensúly: Hozzájárulhat a normál hormonháztartás fenntartásához mind nők, mind férfiak esetében.\r\n- Energetizálás és állóképesség: Támogathatja a fizikai teljesítményt és a szellemi frissességet, hozzájárulva a hosszú távú vitalitáshoz.\r\n- Immunrendszer-erősítés: Rendszeres fogyasztása támogathatja a test védekező mechanizmusait.\r\n\r\nPor alakban sokoldalúan felhasználható: keverhető meleg italokba (teákba, „aranytej”-hez), smoothie-khoz, de akár levesek vagy egyéb ételek dúsítására is alkalmas.'),
+(36, '2025-02-09 11:28:34', '2025-02-09 11:28:34', 19, 'a-nyugodt-elme/nyugtato-novenyek/ashwagandha-por', 2, 3, 'Ashwagandha por', 'Az Ashwagandha, más néven „indiai ginzeng”, a burgonyafélék családjába tartozó évelő cserje, amely főként Indiában és néhány afrikai régióban honos. Az ájurvéda évszázadok óta alkalmazza a növény gyökerét és leveleit, főleg szárítva és porrá őrölve, hogy támogassa a test és az elme egyensúlyát.\r\n\r\nElsősorban Indiában termesztik, ahol a forró, száraz klíma és a termékeny talaj kiváló környezetet biztosít a növény növekedéséhez. Hagyományosan kis, családi gazdaságokban is megtalálható, ahol nagy gondot fordítanak a növények kézzel történő betakarítására és kíméletes szárítására.\r\n\r\n- Stresszoldás és nyugodt elme: Adaptogén hatású, vagyis segíthet a szervezetnek alkalmazkodni a mindennapi stresszhez, és csökkentheti a túlzott idegességet.\r\n- Hormonális egyensúly: Hozzájárulhat a normál hormonháztartás fenntartásához mind nők, mind férfiak esetében.\r\n- Energetizálás és állóképesség: Támogathatja a fizikai teljesítményt és a szellemi frissességet, hozzájárulva a hosszú távú vitalitáshoz.\r\n- Immunrendszer-erősítés: Rendszeres fogyasztása támogathatja a test védekező mechanizmusait.\r\n\r\nPor alakban sokoldalúan felhasználható: keverhető meleg italokba (teákba, „aranytej”-hez), smoothie-khoz, de akár levesek vagy egyéb ételek dúsítására is alkalmas.'),
+(37, '2025-02-09 11:33:11', '2025-02-09 11:33:11', 21, 'a-tiszta-egeszseg/immunerosito-keverekek/ashwagandha-durvara-orolt', 1, 2, 'Ashwagandha durvára őrölt', 'Az Ashwagandha, más néven „indiai ginzeng”, egy évelő cserje a burgonyafélék családjából, amely főként a forró, száraz klímájú területeken nő. A növény gyökerét és leveleit évszázadok óta szárítják és aprítják - vagy finom porrá, vagy durva, „nagyszemű” őrleménnyé dolgozzák fel, attól függően, milyen felhasználási módra szánják.\r\n\r\n- Hagyományos felhasználás: Az ájurvédikus gyógyászatban az Ashwagandhát a stressz és a fáradtság enyhítésére, valamint a szervezet általános ellenállóképességének fokozására alkalmazzák.\r\n- Termesztés és betakarítás: Indiában jellemzően kis, családi gazdaságok gondozzák a növényeket, ahol nagy figyelmet fordítanak a kézi betakarításra és a kíméletes szárításra.\r\n\r\nFelhasználási tippek:\r\n- Teaként (forrázással vagy főzetként)\r\n- Turmixokban és smoothiekban\r\n- Krémlevesek, szószok ízesítésére vagy dúsítására\r\n\r\nElőny a durvára őrölt verziónál: A nagyobb szemcsék lassabban adják le hatóanyagaikat, ezért alkalmanként intenzívebb, „földesebb” íz és aroma érhető el vele (például hosszabb főzési idejű teákban).'),
+(38, '2025-02-09 11:37:56', '2025-02-09 11:37:56', 21, 'a-nyugodt-elme/nyugtato-novenyek/ashwagandha-durvara-orolt', 2, 3, 'Ashwagandha durvára őrölt', 'Az Ashwagandha, más néven „indiai ginzeng”, egy évelő cserje a burgonyafélék családjából, amely főként a forró, száraz klímájú területeken nő. A növény gyökerét és leveleit évszázadok óta szárítják és aprítják – vagy finom porrá, vagy durva, „nagyszemű” őrleménnyé dolgozzák fel, attól függően, milyen felhasználási módra szánják.\r\n\r\n- Hagyományos felhasználás: Az ájurvédikus gyógyászatban az Ashwagandhát a stressz és a fáradtság enyhítésére, valamint a szervezet általános ellenállóképességének fokozására alkalmazzák.\r\n- Termesztés és betakarítás: Indiában jellemzően kis, családi gazdaságok gondozzák a növényeket, ahol nagy figyelmet fordítanak a kézi betakarításra és a kíméletes szárításra.\r\n\r\nFelhasználási tippek:\r\n- Teaként (forrázással vagy főzetként)\r\n- Turmixokban és smoothiekban\r\n- Krémlevesek, szószok ízesítésére vagy dúsítására\r\n\r\nElőny a durvára őrölt verziónál: A nagyobb szemcsék lassabban adják le hatóanyagaikat, ezért alkalmanként intenzívebb, „földesebb” íz és aroma érhető el vele (például hosszabb főzési idejű teákban).'),
+(39, '2025-02-09 11:38:13', '2025-02-09 11:38:13', 21, 'a-nyugodt-elme/alvassegitok/ashwagandha-durvara-orolt', 2, 4, 'Ashwagandha durvára őrölt', 'Az Ashwagandha, más néven „indiai ginzeng”, egy évelő cserje a burgonyafélék családjából, amely főként a forró, száraz klímájú területeken nő. A növény gyökerét és leveleit évszázadok óta szárítják és aprítják – vagy finom porrá, vagy durva, „nagyszemű” őrleménnyé dolgozzák fel, attól függően, milyen felhasználási módra szánják.\r\n\r\n- Hagyományos felhasználás: Az ájurvédikus gyógyászatban az Ashwagandhát a stressz és a fáradtság enyhítésére, valamint a szervezet általános ellenállóképességének fokozására alkalmazzák.\r\n- Termesztés és betakarítás: Indiában jellemzően kis, családi gazdaságok gondozzák a növényeket, ahol nagy figyelmet fordítanak a kézi betakarításra és a kíméletes szárításra.\r\n\r\nFelhasználási tippek:\r\n- Teaként (forrázással vagy főzetként)\r\n- Turmixokban és smoothiekban\r\n- Krémlevesek, szószok ízesítésére vagy dúsítására\r\n\r\nElőny a durvára őrölt verziónál: A nagyobb szemcsék lassabban adják le hatóanyagaikat, ezért alkalmanként intenzívebb, „földesebb” íz és aroma érhető el vele (például hosszabb főzési idejű teákban).'),
+(40, '2025-02-09 11:38:56', '2025-02-09 11:38:56', 21, 'a-pillanat-langja/stresszcsokkento-novenyek/ashwagandha-durvara-orolt', 6, 12, 'Ashwagandha durvára őrölt', 'Az Ashwagandha, más néven „indiai ginzeng”, egy évelő cserje a burgonyafélék családjából, amely főként a forró, száraz klímájú területeken nő. A növény gyökerét és leveleit évszázadok óta szárítják és aprítják – vagy finom porrá, vagy durva, „nagyszemű” őrleménnyé dolgozzák fel, attól függően, milyen felhasználási módra szánják.\r\n\r\n- Hagyományos felhasználás: Az ájurvédikus gyógyászatban az Ashwagandhát a stressz és a fáradtság enyhítésére, valamint a szervezet általános ellenállóképességének fokozására alkalmazzák.\r\n- Termesztés és betakarítás: Indiában jellemzően kis, családi gazdaságok gondozzák a növényeket, ahol nagy figyelmet fordítanak a kézi betakarításra és a kíméletes szárításra.\r\n\r\nFelhasználási tippek:\r\n- Teaként (forrázással vagy főzetként)\r\n- Turmixokban és smoothiekban\r\n- Krémlevesek, szószok ízesítésére vagy dúsítására\r\n\r\nElőny a durvára őrölt verziónál: A nagyobb szemcsék lassabban adják le hatóanyagaikat, ezért alkalmanként intenzívebb, „földesebb” íz és aroma érhető el vele (például hosszabb főzési idejű teákban).'),
+(41, '2025-02-09 11:39:13', '2025-02-09 11:39:13', 21, 'a-pillanat-langja/erzeki-novenykincsek/ashwagandha-durvara-orolt', 6, 31, 'Ashwagandha durvára őrölt', 'Az Ashwagandha, más néven „indiai ginzeng”, egy évelő cserje a burgonyafélék családjából, amely főként a forró, száraz klímájú területeken nő. A növény gyökerét és leveleit évszázadok óta szárítják és aprítják – vagy finom porrá, vagy durva, „nagyszemű” őrleménnyé dolgozzák fel, attól függően, milyen felhasználási módra szánják.\r\n\r\n- Hagyományos felhasználás: Az ájurvédikus gyógyászatban az Ashwagandhát a stressz és a fáradtság enyhítésére, valamint a szervezet általános ellenállóképességének fokozására alkalmazzák.\r\n- Termesztés és betakarítás: Indiában jellemzően kis, családi gazdaságok gondozzák a növényeket, ahol nagy figyelmet fordítanak a kézi betakarításra és a kíméletes szárításra.\r\n\r\nFelhasználási tippek:\r\n- Teaként (forrázással vagy főzetként)\r\n- Turmixokban és smoothiekban\r\n- Krémlevesek, szószok ízesítésére vagy dúsítására\r\n\r\nElőny a durvára őrölt verziónál: A nagyobb szemcsék lassabban adják le hatóanyagaikat, ezért alkalmanként intenzívebb, „földesebb” íz és aroma érhető el vele (például hosszabb főzési idejű teákban).'),
+(42, '2025-02-09 11:47:03', '2025-02-09 11:47:03', 22, 'a-pillanat-langja/stresszcsokkento-novenyek/damiana-orolt', 6, 12, 'Damiana őrölt', 'A Damiana, más néven „Mexikói Turneravirág”, apró, sárga virágaival és aromás leveleivel tűnik ki. Már az őslakos maja és azték kultúrákban is ismert és nagyra becsült növény volt, főként a hangulat és a libidó támogatására. Édeskés, kissé fűszeres illata és íze miatt gyakran keverik más gyógynövényekkel, hogy komplexebb, kiegyensúlyozottabb hatású főzeteket vagy füstölő-keverékeket hozzanak létre.\r\n\r\n- Aphrodisiakum-hagyomány: A népi gyógyászat szerint élénkítheti a szexuális vágyat és a hormonális működést, segítve mind a nőket, mind a férfiakat.\r\n- Hangulatjavító tulajdonság: Enyhe tonizáló és idegrendszert kiegyensúlyozó hatást tulajdonítanak neki, ezért egyesek stresszcsökkentő, lelki állapotot harmonizáló „növényi támogatásként” alkalmazzák.\r\n\r\nFelhasználási javaslatok:\r\n- Tea: Önállóan vagy más gyógynövényekkel vegyítve (pl. citromfű, levendula) kellemes, enyhén fűszeres aromájú főzetet ad.\r\n- Füstölő: Tömjénnel vagy más füstölőnövényekkel keverve különleges, édeskés illatot kínál.\r\n- Egyéb: Likőrök és tinktúrák alapanyagaként is régóta használják.'),
+(43, '2025-02-09 11:50:48', '2025-02-09 11:50:48', 22, 'a-pillanat-langja/erzeki-novenykincsek/damiana-orolt', 6, 31, 'Damiana őrölt', 'A Damiana, más néven „Mexikói Turneravirág”, apró, sárga virágaival és aromás leveleivel tűnik ki. Már az őslakos maja és azték kultúrákban is ismert és nagyra becsült növény volt, főként a hangulat és a libidó támogatására. Édeskés, kissé fűszeres illata és íze miatt gyakran keverik más gyógynövényekkel, hogy komplexebb, kiegyensúlyozottabb hatású főzeteket vagy füstölő-keverékeket hozzanak létre.\r\n\r\n- Aphrodisiakum-hagyomány: A népi gyógyászat szerint élénkítheti a szexuális vágyat és a hormonális működést, segítve mind a nőket, mind a férfiakat.\r\n- Hangulatjavító tulajdonság: Enyhe tonizáló és idegrendszert kiegyensúlyozó hatást tulajdonítanak neki, ezért egyesek stresszcsökkentő, lelki állapotot harmonizáló „növényi támogatásként” alkalmazzák.\r\n\r\nFelhasználási javaslatok:\r\n- Tea: Önállóan vagy más gyógynövényekkel vegyítve (pl. citromfű, levendula) kellemes, enyhén fűszeres aromájú főzetet ad.\r\n- Füstölő: Tömjénnel vagy más füstölőnövényekkel keverve különleges, édeskés illatot kínál.\r\n- Egyéb: Likőrök és tinktúrák alapanyagaként is régóta használják.'),
+(44, '2025-02-09 11:51:23', '2025-02-09 11:51:23', 22, 'a-nyugodt-elme/nyugtato-novenyek/damiana-orolt', 2, 3, 'Damiana őrölt', 'A Damiana, más néven „Mexikói Turneravirág”, apró, sárga virágaival és aromás leveleivel tűnik ki. Már az őslakos maja és azték kultúrákban is ismert és nagyra becsült növény volt, főként a hangulat és a libidó támogatására. Édeskés, kissé fűszeres illata és íze miatt gyakran keverik más gyógynövényekkel, hogy komplexebb, kiegyensúlyozottabb hatású főzeteket vagy füstölő-keverékeket hozzanak létre.\r\n\r\n- Aphrodisiakum-hagyomány: A népi gyógyászat szerint élénkítheti a szexuális vágyat és a hormonális működést, segítve mind a nőket, mind a férfiakat.\r\n- Hangulatjavító tulajdonság: Enyhe tonizáló és idegrendszert kiegyensúlyozó hatást tulajdonítanak neki, ezért egyesek stresszcsökkentő, lelki állapotot harmonizáló „növényi támogatásként” alkalmazzák.\r\n\r\nFelhasználási javaslatok:\r\n- Tea: Önállóan vagy más gyógynövényekkel vegyítve (pl. citromfű, levendula) kellemes, enyhén fűszeres aromájú főzetet ad.\r\n- Füstölő: Tömjénnel vagy más füstölőnövényekkel keverve különleges, édeskés illatot kínál.\r\n- Egyéb: Likőrök és tinktúrák alapanyagaként is régóta használják.'),
+(45, '2025-02-09 12:02:32', '2025-02-09 12:02:32', 23, 'a-pillanat-langja/erzeki-novenykincsek/kanos-kecskefu-orolt', 6, 31, 'Kanos Kecskefű őrölt', 'Az Epimedium nemzetségbe tartozó növények (gyakran Epimedium sagittatum vagy Epimedium grandiflorum fajként forgalmazzák) őshazája főként Kínában és Japánban található, de a világ számos pontján termesztik. A „Horny Goat Weed” elnevezés mögött egy régi legenda áll, amely szerint a kecskepásztorok észrevették, hogy állataik kifejezetten „élénkek” lesznek, miután legelésztek ebből a növényből.\r\n\r\nHagyományos felhasználás\r\n- Aphrodisiakum: A népi gyógyászat szerint elősegíti a szexuális vágyat és fokozza a libidót.\r\n- Energetizáló hatás: Enyhe stimulánsként tartják számon, segítheti a testi és szellemi frissességet.\r\n- Keringés támogatása: Előfordulhat, hogy javítja a véráramlást, ezáltal hozzájárul a jobb állóképességhez.\r\n\r\nFelhasználási javaslatok\r\n- Tea vagy főzet: A szárított, darabos leveleket forró vízzel leöntve, kb. 10-15 percig áztatva fogyaszthatod. Íze enyhén kesernyés-fűszeres, így más, aromás gyógynövényekkel (pl. citromfű, borsmenta) érdemes kombinálni.\r\n- Tinktúra: Sokan alkoholos kivonatot készítenek belőle, hogy koncentrált formában használják ki a hatóanyagokat (ám ez a termék magában nem tinktúra, hanem darabolt levél).\r\n- Egyéb keverékek: Belekeverhető házi füstölő mixekbe is, de ez esetben fontos az óvatosság és a kis dózis alkalmazása.\r\n\r\nMegjegyzés az adagoláshoz: Mivel az Epimedium erősebb hatóanyagokat is tartalmaz (pl. ikarin), érdemes kisebb mennyiséggel kezdeni, és figyelni a szervezet reakcióit.'),
+(46, '2025-02-09 12:13:59', '2025-02-09 12:13:59', 23, 'a-mozgas-ereje/energizalo-novenyek/kanos-kecskefu-orolt', 5, 10, 'Kanos Kecskefű őrölt', 'Az Epimedium nemzetségbe tartozó növények (gyakran Epimedium sagittatum vagy Epimedium grandiflorum fajként forgalmazzák) őshazája főként Kínában és Japánban található, de a világ számos pontján termesztik. A „Horny Goat Weed” elnevezés mögött egy régi legenda áll, amely szerint a kecskepásztorok észrevették, hogy állataik kifejezetten „élénkek” lesznek, miután legelésztek ebből a növényből.\r\n\r\nHagyományos felhasználás\r\n- Aphrodisiakum: A népi gyógyászat szerint elősegíti a szexuális vágyat és fokozza a libidót.\r\n- Energetizáló hatás: Enyhe stimulánsként tartják számon, segítheti a testi és szellemi frissességet.\r\n- Keringés támogatása: Előfordulhat, hogy javítja a véráramlást, ezáltal hozzájárul a jobb állóképességhez.\r\n\r\nFelhasználási javaslatok\r\n- Tea vagy főzet: A szárított, darabos leveleket forró vízzel leöntve, kb. 10-15 percig áztatva fogyaszthatod. Íze enyhén kesernyés-fűszeres, így más, aromás gyógynövényekkel (pl. citromfű, borsmenta) érdemes kombinálni.\r\n- Tinktúra: Sokan alkoholos kivonatot készítenek belőle, hogy koncentrált formában használják ki a hatóanyagokat (ám ez a termék magában nem tinktúra, hanem darabolt levél).\r\n- Egyéb keverékek: Belekeverhető házi füstölő mixekbe is, de ez esetben fontos az óvatosság és a kis dózis alkalmazása.\r\n\r\nMegjegyzés az adagoláshoz: Mivel az Epimedium erősebb hatóanyagokat is tartalmaz (pl. ikarin), érdemes kisebb mennyiséggel kezdeni, és figyelni a szervezet reakcióit.'),
+(47, '2025-02-09 12:33:53', '2025-02-09 12:33:53', 24, 'a-pillanat-langja/erzeki-novenykincsek/kanos-kecskefu-por', 6, 31, 'Kanos Kecskefű por', 'Az Epimedium nemzetségbe tartozó növények (gyakran Epimedium sagittatum vagy Epimedium grandiflorum fajként forgalmazzák) őshazája főként Kínában és Japánban található, de a világ számos pontján termesztik. A „Horny Goat Weed” elnevezés mögött egy régi legenda áll, amely szerint a kecskepásztorok észrevették, hogy állataik kifejezetten „élénkek” lesznek, miután legelésztek ebből a növényből.\r\n\r\nHagyományos felhasználás\r\n- Aphrodisiakum: A népi gyógyászat szerint elősegíti a szexuális vágyat és fokozza a libidót.\r\n- Energetizáló hatás: Enyhe stimulánsként tartják számon, segítheti a testi és szellemi frissességet.\r\n- Keringés támogatása: Előfordulhat, hogy javítja a véráramlást, ezáltal hozzájárul a jobb állóképességhez.\r\n\r\nFelhasználási javaslatok\r\n- Tea vagy főzet: A szárított, darabos leveleket forró vízzel leöntve, kb. 10-15 percig áztatva fogyaszthatod. Íze enyhén kesernyés-fűszeres, így más, aromás gyógynövényekkel (pl. citromfű, borsmenta) érdemes kombinálni.\r\n- Tinktúra: Sokan alkoholos kivonatot készítenek belőle, hogy koncentrált formában használják ki a hatóanyagokat (ám ez a termék magában nem tinktúra, hanem darabolt levél).\r\n- Egyéb keverékek: Belekeverhető házi füstölő mixekbe is, de ez esetben fontos az óvatosság és a kis dózis alkalmazása.\r\n\r\nMegjegyzés az adagoláshoz: Mivel az Epimedium erősebb hatóanyagokat is tartalmaz (pl. ikarin), érdemes kisebb mennyiséggel kezdeni, és figyelni a szervezet reakcióit.'),
+(48, '2025-02-09 12:36:57', '2025-02-09 12:36:57', 24, 'a-mozgas-ereje/energizalo-novenyek/kanos-kecskefu-por', 5, 10, 'Kanos Kecskefű por', 'Az Epimedium nemzetségbe tartozó növények (gyakran Epimedium sagittatum vagy Epimedium grandiflorum fajként forgalmazzák) őshazája főként Kínában és Japánban található, de a világ számos pontján termesztik. A „Horny Goat Weed” elnevezés mögött egy régi legenda áll, amely szerint a kecskepásztorok észrevették, hogy állataik kifejezetten „élénkek” lesznek, miután legelésztek ebből a növényből.\r\n\r\nHagyományos felhasználás\r\n- Aphrodisiakum: A népi gyógyászat szerint elősegíti a szexuális vágyat és fokozza a libidót.\r\n- Energetizáló hatás: Enyhe stimulánsként tartják számon, segítheti a testi és szellemi frissességet.\r\n- Keringés támogatása: Előfordulhat, hogy javítja a véráramlást, ezáltal hozzájárul a jobb állóképességhez.\r\n\r\nFelhasználási javaslatok\r\n- Tea vagy főzet: A szárított, darabos leveleket forró vízzel leöntve, kb. 10-15 percig áztatva fogyaszthatod. Íze enyhén kesernyés-fűszeres, így más, aromás gyógynövényekkel (pl. citromfű, borsmenta) érdemes kombinálni.\r\n- Tinktúra: Sokan alkoholos kivonatot készítenek belőle, hogy koncentrált formában használják ki a hatóanyagokat (ám ez a termék magában nem tinktúra, hanem darabolt levél).\r\n- Egyéb keverékek: Belekeverhető házi füstölő mixekbe is, de ez esetben fontos az óvatosság és a kis dózis alkalmazása.\r\n\r\nMegjegyzés az adagoláshoz: Mivel az Epimedium erősebb hatóanyagokat is tartalmaz (pl. ikarin), érdemes kisebb mennyiséggel kezdeni, és figyelni a szervezet reakcióit.'),
+(49, '2025-02-09 12:45:05', '2025-02-09 12:45:05', 25, 'a-mozgas-ereje/energizalo-novenyek/ginzeng-por', 5, 10, 'Ginzeng por', 'A ginzeng több ezer éve része az ázsiai gyógyászati hagyományoknak, különösen Kínában és Koreában népszerű. A növény gyökerét gőzöléssel, szárítással, majd finomra őrléssel dolgozzák fel, így alakul ki az a por, amely megőrzi a ginzeng legértékesebb hatóanyagait, például a ginsenosidokat.\r\n\r\nÉlettani hatások:\r\n- Energiaszint fokozás: Segíti a szervezet vitalitását és csökkentheti a fáradtságot.\r\n- Immunerősítés: Hozzájárulhat a test védekező képességének fenntartásához.\r\n- Antioxidáns tulajdonságok: Elősegítheti a sejtvédelemben fontos folyamatokat, segítve az öregedés és a betegségek elleni küzdelmet.\r\n\r\nFelhasználási javaslatok:\r\n- Tea vagy főzet: 1 teáskanál őrölt ginzenget forró (de nem lobogó) vízzel önts le, majd hagyd állni 5–10 percig.\r\n- Smoothiek és turmixok: Egyszerűen adj egy kiskanállal a kedvenc gyümölcs- vagy zöldségitalodhoz.\r\n- Ételekbe keverve: Levesekhez, rizses fogásokhoz vagy akár salátaöntetekhez is adható a változatos ízvilágért és extra hatóanyagokért.\r\n\r\nMinőségi garancia: A gondos termesztés és ellenőrzött szárítás biztosítja, hogy a por megőrizze a ginzeng jellegzetes aromáját és hatóanyagait.'),
+(50, '2025-02-09 12:48:21', '2025-02-09 12:48:21', 25, 'az-energia-alapjai/vitalizalo-novenyek/ginzeng-por', 8, 15, 'Ginzeng por', 'A ginzeng több ezer éve része az ázsiai gyógyászati hagyományoknak, különösen Kínában és Koreában népszerű. A növény gyökerét gőzöléssel, szárítással, majd finomra őrléssel dolgozzák fel, így alakul ki az a por, amely megőrzi a ginzeng legértékesebb hatóanyagait, például a ginsenosidokat.\r\n\r\nÉlettani hatások:\r\n- Energiaszint fokozás: Segíti a szervezet vitalitását és csökkentheti a fáradtságot.\r\n- Immunerősítés: Hozzájárulhat a test védekező képességének fenntartásához.\r\n- Antioxidáns tulajdonságok: Elősegítheti a sejtvédelemben fontos folyamatokat, segítve az öregedés és a betegségek elleni küzdelmet.\r\n\r\nFelhasználási javaslatok:\r\n- Tea vagy főzet: 1 teáskanál őrölt ginzenget forró (de nem lobogó) vízzel önts le, majd hagyd állni 5–10 percig.\r\n- Smoothiek és turmixok: Egyszerűen adj egy kiskanállal a kedvenc gyümölcs- vagy zöldségitalodhoz.\r\n- Ételekbe keverve: Levesekhez, rizses fogásokhoz vagy akár salátaöntetekhez is adható a változatos ízvilágért és extra hatóanyagokért.\r\n\r\nMinőségi garancia: A gondos termesztés és ellenőrzött szárítás biztosítja, hogy a por megőrizze a ginzeng jellegzetes aromáját és hatóanyagait.'),
+(51, '2025-02-09 12:54:42', '2025-02-09 12:54:42', 26, 'a-pillanat-langja/erzeki-novenykincsek/maca-por', 6, 31, 'Maca por', 'A maca egy káposztafélékhez tartozó gyökérnövény, amelyet már az ősi inka civilizációk is nagyra becsültek testi és szellemi teljesítményfokozó hatásai miatt. A zord hegyvidéki körülmények között nevelt maca gazdag vitaminokban, ásványi anyagokban és növényi tápanyagokban (fitonutriensek).\r\n\r\nFő tulajdonságok és előnyök:\r\n- Hormonális egyensúly: A népgyógyászat szerint hozzájárulhat mind a női, mind a férfi hormonháztartás harmonizálásához, és támogathatja a termékenységet.\r\n- Energetizáló hatás: Segíthet csökkenteni a fáradtságot, és hosszú távú energiát biztosíthat a szervezetnek.\r\n- Libidófokozás: Sokszor említik természetes afrodiziákumként, melyet mindkét nem szívesen alkalmaz a szexuális élet fellendítésére.\r\n\r\nFelhasználási javaslatok:\r\n- Smoothie/koktél: Egy teáskanál maca port belekeverve finom, diós-maltás ízű, energizáló italt kaphatsz.\r\n- Reggeli kása vagy müzli: Tökéletes kiegészítés lehet gabonapelyhekhez, joghurtokhoz, zabkásához.\r\n- Sütés-főzés: Sütik, palacsinták, energiaszeletek ízesítéséhez – különösen, ha tápanyagban gazdagabb édességet szeretnél készíteni.\r\n\r\nÉrdemes tudni: A maca íze enyhén édeskés, kissé karamellás-maltás jellegű, amely jól harmonizál a gyümölcsökkel, csokoládéval, de akár sós ételekben is kipróbálhatod.'),
+(52, '2025-02-09 13:14:05', '2025-02-09 13:14:05', 26, 'a-mozgas-ereje/energizalo-novenyek/maca-por', 5, 10, 'Maca por', 'A maca egy káposztafélékhez tartozó gyökérnövény, amelyet már az ősi inka civilizációk is nagyra becsültek testi és szellemi teljesítményfokozó hatásai miatt. A zord hegyvidéki körülmények között nevelt maca gazdag vitaminokban, ásványi anyagokban és növényi tápanyagokban (fitonutriensek).\r\n\r\nFő tulajdonságok és előnyök:\r\n- Hormonális egyensúly: A népgyógyászat szerint hozzájárulhat mind a női, mind a férfi hormonháztartás harmonizálásához, és támogathatja a termékenységet.\r\n- Energetizáló hatás: Segíthet csökkenteni a fáradtságot, és hosszú távú energiát biztosíthat a szervezetnek.\r\n- Libidófokozás: Sokszor említik természetes afrodiziákumként, melyet mindkét nem szívesen alkalmaz a szexuális élet fellendítésére.\r\n\r\nFelhasználási javaslatok:\r\n- Smoothie/koktél: Egy teáskanál maca port belekeverve finom, diós-maltás ízű, energizáló italt kaphatsz.\r\n- Reggeli kása vagy müzli: Tökéletes kiegészítés lehet gabonapelyhekhez, joghurtokhoz, zabkásához.\r\n- Sütés-főzés: Sütik, palacsinták, energiaszeletek ízesítéséhez – különösen, ha tápanyagban gazdagabb édességet szeretnél készíteni.\r\n\r\nÉrdemes tudni: A maca íze enyhén édeskés, kissé karamellás-maltás jellegű, amely jól harmonizál a gyümölcsökkel, csokoládéval, de akár sós ételekben is kipróbálhatod.');
+INSERT INTO `product_page` (`id`, `created_at`, `last_modified`, `product_id`, `link_slug`, `category_id`, `subcategory_id`, `page_title`, `page_content`) VALUES
+(53, '2025-02-09 13:14:33', '2025-02-09 13:14:33', 26, 'az-energia-alapjai/vitalizalo-novenyek/maca-por', 8, 15, 'Maca por', 'A maca egy káposztafélékhez tartozó gyökérnövény, amelyet már az ősi inka civilizációk is nagyra becsültek testi és szellemi teljesítményfokozó hatásai miatt. A zord hegyvidéki körülmények között nevelt maca gazdag vitaminokban, ásványi anyagokban és növényi tápanyagokban (fitonutriensek).\r\n\r\nFő tulajdonságok és előnyök:\r\n- Hormonális egyensúly: A népgyógyászat szerint hozzájárulhat mind a női, mind a férfi hormonháztartás harmonizálásához, és támogathatja a termékenységet.\r\n- Energetizáló hatás: Segíthet csökkenteni a fáradtságot, és hosszú távú energiát biztosíthat a szervezetnek.\r\n- Libidófokozás: Sokszor említik természetes afrodiziákumként, melyet mindkét nem szívesen alkalmaz a szexuális élet fellendítésére.\r\n\r\nFelhasználási javaslatok:\r\n- Smoothie/koktél: Egy teáskanál maca port belekeverve finom, diós-maltás ízű, energizáló italt kaphatsz.\r\n- Reggeli kása vagy müzli: Tökéletes kiegészítés lehet gabonapelyhekhez, joghurtokhoz, zabkásához.\r\n- Sütés-főzés: Sütik, palacsinták, energiaszeletek ízesítéséhez – különösen, ha tápanyagban gazdagabb édességet szeretnél készíteni.\r\n\r\nÉrdemes tudni: A maca íze enyhén édeskés, kissé karamellás-maltás jellegű, amely jól harmonizál a gyümölcsökkel, csokoládéval, de akár sós ételekben is kipróbálhatod.'),
+(54, '2025-02-09 13:29:04', '2025-02-09 13:29:04', 27, 'a-pillanat-langja/erzeki-novenykincsek/barsonybab-por', 6, 31, 'Bársonybab por', 'A Mucuna pruriens évszázadok óta a hagyományos indiai (ájurvédikus) gyógyászat egyik kedvelt alapanyaga. A növény érett magjait alapos tisztítás után szárítják és finomra őrlik, így alakul ki a könnyen felhasználható por.\r\n\r\nFő összetevője: L-DOPA (levodopa), mely a dopamin termelésben játszik kulcsszerepet. A dopamin az idegrendszer egyik kiemelten fontos ingerületátvivő anyaga, befolyásolja a motivációt, a mozgáskoordinációt és a hangulatot.\r\n\r\nLehetséges előnyös tulajdonságok:\r\n- Hangulat és motiváció: A dopaminszint emelésével hozzájárulhat a pozitív hangulathoz és a szellemi frissességhez.\r\n- Hormonszint és libidó: Egyes források szerint támogathatja a reproduktív egészséget és a tesztoszteronszintet is, ezáltal segíthet a libidó fokozásában.\r\n- Stresszkezelés és energiaszint: Adaptogén jellegűnek tartják, vagyis segíthet a szervezetnek a stresszhez való alkalmazkodásban, és javíthatja az általános vitalitást.\r\n\r\nFelhasználási javaslatok:\r\n- Turmixokhoz, gyümölcslevekhez: 1 teáskanál Mucuna port egyszerűen elkeverhetsz naponta a kedvenc smoothie-dban.\r\n- Teához vagy meleg italokhoz: Hozzáadhatod teához, „aranytej” (pl. kurkumás ital) vagy kakaó alapú készítményekhez.\r\n- Ételekbe keverve: Akár levesekbe, zabkásába vagy joghurtba is szórhatod, ha nem zavar enyhén földes, diós aromája.'),
+(55, '2025-02-09 13:37:39', '2025-02-09 13:37:39', 27, 'a-mozgas-ereje/energizalo-novenyek/barsonybab-por', 5, 10, 'Bársonybab por', 'A Mucuna pruriens évszázadok óta a hagyományos indiai (ájurvédikus) gyógyászat egyik kedvelt alapanyaga. A növény érett magjait alapos tisztítás után szárítják és finomra őrlik, így alakul ki a könnyen felhasználható por.\r\n\r\nFő összetevője: L-DOPA (levodopa), mely a dopamin termelésben játszik kulcsszerepet. A dopamin az idegrendszer egyik kiemelten fontos ingerületátvivő anyaga, befolyásolja a motivációt, a mozgáskoordinációt és a hangulatot.\r\n\r\nLehetséges előnyös tulajdonságok:\r\n- Hangulat és motiváció: A dopaminszint emelésével hozzájárulhat a pozitív hangulathoz és a szellemi frissességhez.\r\n- Hormonszint és libidó: Egyes források szerint támogathatja a reproduktív egészséget és a tesztoszteronszintet is, ezáltal segíthet a libidó fokozásában.\r\n- Stresszkezelés és energiaszint: Adaptogén jellegűnek tartják, vagyis segíthet a szervezetnek a stresszhez való alkalmazkodásban, és javíthatja az általános vitalitást.\r\n\r\nFelhasználási javaslatok:\r\n- Turmixokhoz, gyümölcslevekhez: 1 teáskanál Mucuna port egyszerűen elkeverhetsz naponta a kedvenc smoothie-dban.\r\n- Teához vagy meleg italokhoz: Hozzáadhatod teához, „aranytej” (pl. kurkumás ital) vagy kakaó alapú készítményekhez.\r\n- Ételekbe keverve: Akár levesekbe, zabkásába vagy joghurtba is szórhatod, ha nem zavar enyhén földes, diós aromája.'),
+(56, '2025-02-09 13:37:50', '2025-02-09 13:37:50', 27, 'az-energia-alapjai/vitalizalo-novenyek/barsonybab-por', 8, 15, 'Bársonybab por', 'A Mucuna pruriens évszázadok óta a hagyományos indiai (ájurvédikus) gyógyászat egyik kedvelt alapanyaga. A növény érett magjait alapos tisztítás után szárítják és finomra őrlik, így alakul ki a könnyen felhasználható por.\r\n\r\nFő összetevője: L-DOPA (levodopa), mely a dopamin termelésben játszik kulcsszerepet. A dopamin az idegrendszer egyik kiemelten fontos ingerületátvivő anyaga, befolyásolja a motivációt, a mozgáskoordinációt és a hangulatot.\r\n\r\nLehetséges előnyös tulajdonságok:\r\n- Hangulat és motiváció: A dopaminszint emelésével hozzájárulhat a pozitív hangulathoz és a szellemi frissességhez.\r\n- Hormonszint és libidó: Egyes források szerint támogathatja a reproduktív egészséget és a tesztoszteronszintet is, ezáltal segíthet a libidó fokozásában.\r\n- Stresszkezelés és energiaszint: Adaptogén jellegűnek tartják, vagyis segíthet a szervezetnek a stresszhez való alkalmazkodásban, és javíthatja az általános vitalitást.\r\n\r\nFelhasználási javaslatok:\r\n- Turmixokhoz, gyümölcslevekhez: 1 teáskanál Mucuna port egyszerűen elkeverhetsz naponta a kedvenc smoothie-dban.\r\n- Teához vagy meleg italokhoz: Hozzáadhatod teához, „aranytej” (pl. kurkumás ital) vagy kakaó alapú készítményekhez.\r\n- Ételekbe keverve: Akár levesekbe, zabkásába vagy joghurtba is szórhatod, ha nem zavar enyhén földes, diós aromája.'),
+(57, '2025-02-09 13:49:36', '2025-02-09 13:49:36', 28, 'a-pillanat-langja/erzeki-novenykincsek/muira-puama-orolt', 6, 31, 'Muira Puama őrölt', 'A Muira Puama – más néven „potenciafa” – elsősorban Brazíliában és a szomszédos dél-amerikai területeken honos. A helyi népi gyógyászatban a növény kérgét és gyökerét már a 19. század óta használják a libidó fokozására, a fáradtság csökkentésére és az idegrendszer erősítésére.\r\n\r\nHagyomány és hatás\r\n- Aphrodisiakum: Számos népgyógyászati forrás szerint hozzájárulhat a szexuális vágy és teljesítmény növeléséhez.\r\n- Energia és állóképesség: Általános erőnlétfokozó tulajdonságokkal ruházzák fel, segíthet a fizikai és szellemi kimerültség enyhítésében.\r\n- Emésztés és idegrendszer: Előfordul, hogy az idegrendszer kiegyensúlyozására, illetve gyomor- és emésztésjavítóként is alkalmazzák.\r\n\r\nFelhasználás\r\n- Tea vagy főzet: A durva őrleményt érdemes legalább 10–15 percig főzni, hogy az aromás- és hatóanyagok maradéktalanul kioldódjanak. A kesernyés, fás íz enyhíthető mézzel, citromfűvel vagy más gyógynövényekkel.\r\n- Alkoholos kivonat (tinktúra): Különösen népszerű forma, mert koncentráltan tartalmazhatja a hatóanyagokat. (Jelen termék önmagában nem tinktúra, de megfelelő alapanyag hozzá.)\r\n- Gyógyteakeverékek részeként: Kiválóan kombinálható más afrodiziákus vagy energizáló növényekkel (pl. Damiana, Ginzeng, Maca).'),
+(58, '2025-02-09 13:53:05', '2025-02-09 13:53:05', 28, 'a-mozgas-ereje/energizalo-novenyek/muira-puama-orolt', 5, 10, 'Muira Puama őrölt', 'A Muira Puama – más néven „potenciafa” – elsősorban Brazíliában és a szomszédos dél-amerikai területeken honos. A helyi népi gyógyászatban a növény kérgét és gyökerét már a 19. század óta használják a libidó fokozására, a fáradtság csökkentésére és az idegrendszer erősítésére.\r\n\r\nHagyomány és hatás\r\n- Aphrodisiakum: Számos népgyógyászati forrás szerint hozzájárulhat a szexuális vágy és teljesítmény növeléséhez.\r\n- Energia és állóképesség: Általános erőnlétfokozó tulajdonságokkal ruházzák fel, segíthet a fizikai és szellemi kimerültség enyhítésében.\r\n- Emésztés és idegrendszer: Előfordul, hogy az idegrendszer kiegyensúlyozására, illetve gyomor- és emésztésjavítóként is alkalmazzák.\r\n\r\nFelhasználás\r\n- Tea vagy főzet: A durva őrleményt érdemes legalább 10–15 percig főzni, hogy az aromás- és hatóanyagok maradéktalanul kioldódjanak. A kesernyés, fás íz enyhíthető mézzel, citromfűvel vagy más gyógynövényekkel.\r\n- Alkoholos kivonat (tinktúra): Különösen népszerű forma, mert koncentráltan tartalmazhatja a hatóanyagokat. (Jelen termék önmagában nem tinktúra, de megfelelő alapanyag hozzá.)\r\n- Gyógyteakeverékek részeként: Kiválóan kombinálható más afrodiziákus vagy energizáló növényekkel (pl. Damiana, Ginzeng, Maca).'),
+(59, '2025-02-09 13:55:44', '2025-02-09 13:55:44', 29, 'a-pillanat-langja/erzeki-novenykincsek/muira-puama-por', 6, 31, 'Muira Puama por', 'A Muira Puama – más néven „potenciafa” – elsősorban Brazíliában és a szomszédos dél-amerikai területeken honos. A helyi népi gyógyászatban a növény kérgét és gyökerét már a 19. század óta használják a libidó fokozására, a fáradtság csökkentésére és az idegrendszer erősítésére.\r\n\r\nHagyomány és hatás\r\n- Aphrodisiakum: Számos népgyógyászati forrás szerint hozzájárulhat a szexuális vágy és teljesítmény növeléséhez.\r\n- Energia és állóképesség: Általános erőnlétfokozó tulajdonságokkal ruházzák fel, segíthet a fizikai és szellemi kimerültség enyhítésében.\r\n- Emésztés és idegrendszer: Előfordul, hogy az idegrendszer kiegyensúlyozására, illetve gyomor- és emésztésjavítóként is alkalmazzák.\r\n\r\nFelhasználás\r\n- Tea vagy főzet: A durva őrleményt érdemes legalább 10–15 percig főzni, hogy az aromás- és hatóanyagok maradéktalanul kioldódjanak. A kesernyés, fás íz enyhíthető mézzel, citromfűvel vagy más gyógynövényekkel.\r\n- Alkoholos kivonat (tinktúra): Különösen népszerű forma, mert koncentráltan tartalmazhatja a hatóanyagokat. (Jelen termék önmagában nem tinktúra, de megfelelő alapanyag hozzá.)\r\n- Gyógyteakeverékek részeként: Kiválóan kombinálható más afrodiziákus vagy energizáló növényekkel (pl. Damiana, Ginzeng, Maca).'),
+(60, '2025-02-09 13:59:03', '2025-02-09 13:59:03', 29, 'a-mozgas-ereje/energizalo-novenyek/muira-puama-por', 5, 10, 'Muira Puama por', 'A Muira Puama – más néven „potenciafa” – elsősorban Brazíliában és a szomszédos dél-amerikai területeken honos. A helyi népi gyógyászatban a növény kérgét és gyökerét már a 19. század óta használják a libidó fokozására, a fáradtság csökkentésére és az idegrendszer erősítésére.\r\n\r\nHagyomány és hatás\r\n- Aphrodisiakum: Számos népgyógyászati forrás szerint hozzájárulhat a szexuális vágy és teljesítmény növeléséhez.\r\n- Energia és állóképesség: Általános erőnlétfokozó tulajdonságokkal ruházzák fel, segíthet a fizikai és szellemi kimerültség enyhítésében.\r\n- Emésztés és idegrendszer: Előfordul, hogy az idegrendszer kiegyensúlyozására, illetve gyomor- és emésztésjavítóként is alkalmazzák.\r\n\r\nFelhasználás\r\n- Tea vagy főzet: A durva őrleményt érdemes legalább 10–15 percig főzni, hogy az aromás- és hatóanyagok maradéktalanul kioldódjanak. A kesernyés, fás íz enyhíthető mézzel, citromfűvel vagy más gyógynövényekkel.\r\n- Alkoholos kivonat (tinktúra): Különösen népszerű forma, mert koncentráltan tartalmazhatja a hatóanyagokat. (Jelen termék önmagában nem tinktúra, de megfelelő alapanyag hozzá.)\r\n- Gyógyteakeverékek részeként: Kiválóan kombinálható más afrodiziákus vagy energizáló növényekkel (pl. Damiana, Ginzeng, Maca).'),
+(61, '2025-02-09 14:10:07', '2025-02-09 14:10:07', 30, 'a-pillanat-langja/erzeki-novenykincsek/kiralydinnye', 6, 31, 'Királydinnye', 'A Tribulus terrestris a forró, száraz éghajlatot kedvelő, kúszó szárú növény, melynek apró, tüskés terméseit évezredek óta használják a mediterrán, indiai és kínai gyógyászatban. A bennük található hatóanyagok, például a szteroid-szaponinok, elősegíthetik a hormonszint kiegyensúlyozását, különösen a tesztoszterontermeléshez kapcsolódó folyamatokat.\r\n\r\nHagyomány és hatás\r\n- Hormonális támogatás: A népgyógyászat elsősorban férfiak esetében használja a libidó fokozására, de nők számára is hasznos lehet a hormonális rendszer harmonizálására.\r\n- Teljesítményfokozás és állóképesség: Sportolók és aktív életmódot élők kedvelik a Tribulust annak energizáló, erősítő hatása miatt.\r\n- Keringéstámogatás: A szaponinoknak köszönhetően javíthatja a vérkeringést, ezáltal támogatva az általános fittségét.\r\n\r\nFelhasználási javaslatok\r\n- Főzet vagy tea: Mivel a termés meglehetősen kemény és szúrós, a használat előtt célszerű összetörni (mozsárban vagy konyhai aprítóban). Ezután lassú forralással, 10–15 perces főzet készíthető belőle, amelynek kesernyés ízét mézzel vagy édesebb gyógynövényekkel (pl. édesgyökér) lehet ellensúlyozni.\r\n- Tinktúra: Sok gyártó alkohollal vonja ki a hatóanyagokat, koncentrált formában (bár a termék maga nem tinktúra, alapanyagnak kiváló).\r\n- Porrá őrölve: Ha szeretnéd por formába továbbvinni, házilag is összedarálhatod, de előtte figyelj a hegyes, szúrós részekre!\r\n\r\nKisebb adaggal érdemes kezdeni, mivel erőteljes hatású lehet.'),
+(62, '2025-02-09 14:16:18', '2025-02-09 14:16:18', 30, 'a-mozgas-ereje/energizalo-novenyek/kiralydinnye', 5, 10, 'Királydinnye', 'A Tribulus terrestris a forró, száraz éghajlatot kedvelő, kúszó szárú növény, melynek apró, tüskés terméseit évezredek óta használják a mediterrán, indiai és kínai gyógyászatban. A bennük található hatóanyagok, például a szteroid-szaponinok, elősegíthetik a hormonszint kiegyensúlyozását, különösen a tesztoszterontermeléshez kapcsolódó folyamatokat.\r\n\r\nHagyomány és hatás\r\n- Hormonális támogatás: A népgyógyászat elsősorban férfiak esetében használja a libidó fokozására, de nők számára is hasznos lehet a hormonális rendszer harmonizálására.\r\n- Teljesítményfokozás és állóképesség: Sportolók és aktív életmódot élők kedvelik a Tribulust annak energizáló, erősítő hatása miatt.\r\n- Keringéstámogatás: A szaponinoknak köszönhetően javíthatja a vérkeringést, ezáltal támogatva az általános fittségét.\r\n\r\nFelhasználási javaslatok\r\n- Főzet vagy tea: Mivel a termés meglehetősen kemény és szúrós, a használat előtt célszerű összetörni (mozsárban vagy konyhai aprítóban). Ezután lassú forralással, 10–15 perces főzet készíthető belőle, amelynek kesernyés ízét mézzel vagy édesebb gyógynövényekkel (pl. édesgyökér) lehet ellensúlyozni.\r\n- Tinktúra: Sok gyártó alkohollal vonja ki a hatóanyagokat, koncentrált formában (bár a termék maga nem tinktúra, alapanyagnak kiváló).\r\n- Porrá őrölve: Ha szeretnéd por formába továbbvinni, házilag is összedarálhatod, de előtte figyelj a hegyes, szúrós részekre!\r\n\r\nKisebb adaggal érdemes kezdeni, mivel erőteljes hatású lehet.'),
+(63, '2025-02-09 14:16:36', '2025-02-09 14:16:36', 30, 'az-energia-alapjai/vitalizalo-novenyek/kiralydinnye', 8, 15, 'Királydinnye', 'A Tribulus terrestris a forró, száraz éghajlatot kedvelő, kúszó szárú növény, melynek apró, tüskés terméseit évezredek óta használják a mediterrán, indiai és kínai gyógyászatban. A bennük található hatóanyagok, például a szteroid-szaponinok, elősegíthetik a hormonszint kiegyensúlyozását, különösen a tesztoszterontermeléshez kapcsolódó folyamatokat.\r\n\r\nHagyomány és hatás\r\n- Hormonális támogatás: A népgyógyászat elsősorban férfiak esetében használja a libidó fokozására, de nők számára is hasznos lehet a hormonális rendszer harmonizálására.\r\n- Teljesítményfokozás és állóképesség: Sportolók és aktív életmódot élők kedvelik a Tribulust annak energizáló, erősítő hatása miatt.\r\n- Keringéstámogatás: A szaponinoknak köszönhetően javíthatja a vérkeringést, ezáltal támogatva az általános fittségét.\r\n\r\nFelhasználási javaslatok\r\n- Főzet vagy tea: Mivel a termés meglehetősen kemény és szúrós, a használat előtt célszerű összetörni (mozsárban vagy konyhai aprítóban). Ezután lassú forralással, 10–15 perces főzet készíthető belőle, amelynek kesernyés ízét mézzel vagy édesebb gyógynövényekkel (pl. édesgyökér) lehet ellensúlyozni.\r\n- Tinktúra: Sok gyártó alkohollal vonja ki a hatóanyagokat, koncentrált formában (bár a termék maga nem tinktúra, alapanyagnak kiváló).\r\n- Porrá őrölve: Ha szeretnéd por formába továbbvinni, házilag is összedarálhatod, de előtte figyelj a hegyes, szúrós részekre!\r\n\r\nKisebb adaggal érdemes kezdeni, mivel erőteljes hatású lehet.'),
+(64, '2025-02-09 14:25:48', '2025-02-09 14:25:48', 31, 'a-pillanat-langja/erzeki-novenykincsek/kiralydinnye-por', 6, 31, 'Királydinnye por', 'A királydinnye (Tribulus terrestris) a mediterrán és szárazabb éghajlatú vidékek kedvelt növénye, melynek szúrós terméséből és leveléből ősidők óta készítenek főzeteket, tinktúrákat. A por formátum praktikus megoldás, hiszen egyszerűen adagolható, akár italokhoz, ételekhez is hozzákeverhető.\r\n\r\nFőbb tulajdonságok és előnyök:\r\n- Hormonális támogatás: A népi gyógyászat szerint segíthet a tesztoszteronszint optimalizálásában, ami mindkét nemnél hozzájárulhat a szexuális egészséghez.\r\n- Energia és teljesítmény: Sportolók és aktív életmódot élők is szívesen alkalmazzák a Tribulus-t a jobb erőnlét és állóképesség elérése érdekében.\r\n- Könnyű felhasználás: A por keverhető teába, turmixba, de akár bele is sütheted kenyérbe vagy süteménybe, ha szeretnéd kreatívan beilleszteni az étrendedbe.\r\n\r\nFelhasználási tippek:\r\n- Napi adagolás: Általában 1 teáskanál (kb. 2-3 g) ajánlott naponta, ám érdemes kisebb mennyiséggel kezdeni, és fokozatosan emelni a dózist.\r\n- Tea vagy főzet: Meleg (nem forrásban lévő) vízhez add hozzá, és hagyd állni 5–10 percig. Íze kissé kesernyés, így mézzel, steviával vagy más édesítőszerrel lágyíthatod.\r\n- Turmix, smoothie: Egyszerűen keverd bele a kedvenc italodba, hogy elfedd enyhén kesernyés ízét, és élvezd jótékony hatásait.'),
+(65, '2025-02-09 14:39:12', '2025-02-09 14:39:12', 31, 'a-mozgas-ereje/energizalo-novenyek/kiralydinnye-por', 5, 10, 'Királydinnye por', 'A királydinnye (Tribulus terrestris) a mediterrán és szárazabb éghajlatú vidékek kedvelt növénye, melynek szúrós terméséből és leveléből ősidők óta készítenek főzeteket, tinktúrákat. A por formátum praktikus megoldás, hiszen egyszerűen adagolható, akár italokhoz, ételekhez is hozzákeverhető.\r\n\r\nFőbb tulajdonságok és előnyök:\r\n- Hormonális támogatás: A népi gyógyászat szerint segíthet a tesztoszteronszint optimalizálásában, ami mindkét nemnél hozzájárulhat a szexuális egészséghez.\r\n- Energia és teljesítmény: Sportolók és aktív életmódot élők is szívesen alkalmazzák a Tribulus-t a jobb erőnlét és állóképesség elérése érdekében.\r\n- Könnyű felhasználás: A por keverhető teába, turmixba, de akár bele is sütheted kenyérbe vagy süteménybe, ha szeretnéd kreatívan beilleszteni az étrendedbe.\r\n\r\nFelhasználási tippek:\r\n- Napi adagolás: Általában 1 teáskanál (kb. 2-3 g) ajánlott naponta, ám érdemes kisebb mennyiséggel kezdeni, és fokozatosan emelni a dózist.\r\n- Tea vagy főzet: Meleg (nem forrásban lévő) vízhez add hozzá, és hagyd állni 5–10 percig. Íze kissé kesernyés, így mézzel, steviával vagy más édesítőszerrel lágyíthatod.\r\n- Turmix, smoothie: Egyszerűen keverd bele a kedvenc italodba, hogy elfedd enyhén kesernyés ízét, és élvezd jótékony hatásait.'),
+(66, '2025-02-09 14:39:23', '2025-02-09 14:39:23', 31, 'az-energia-alapjai/vitalizalo-novenyek/kiralydinnye-por', 8, 15, 'Királydinnye por', 'A királydinnye (Tribulus terrestris) a mediterrán és szárazabb éghajlatú vidékek kedvelt növénye, melynek szúrós terméséből és leveléből ősidők óta készítenek főzeteket, tinktúrákat. A por formátum praktikus megoldás, hiszen egyszerűen adagolható, akár italokhoz, ételekhez is hozzákeverhető.\r\n\r\nFőbb tulajdonságok és előnyök:\r\n- Hormonális támogatás: A népi gyógyászat szerint segíthet a tesztoszteronszint optimalizálásában, ami mindkét nemnél hozzájárulhat a szexuális egészséghez.\r\n- Energia és teljesítmény: Sportolók és aktív életmódot élők is szívesen alkalmazzák a Tribulus-t a jobb erőnlét és állóképesség elérése érdekében.\r\n- Könnyű felhasználás: A por keverhető teába, turmixba, de akár bele is sütheted kenyérbe vagy süteménybe, ha szeretnéd kreatívan beilleszteni az étrendedbe.\r\n\r\nFelhasználási tippek:\r\n- Napi adagolás: Általában 1 teáskanál (kb. 2-3 g) ajánlott naponta, ám érdemes kisebb mennyiséggel kezdeni, és fokozatosan emelni a dózist.\r\n- Tea vagy főzet: Meleg (nem forrásban lévő) vízhez add hozzá, és hagyd állni 5–10 percig. Íze kissé kesernyés, így mézzel, steviával vagy más édesítőszerrel lágyíthatod.\r\n- Turmix, smoothie: Egyszerűen keverd bele a kedvenc italodba, hogy elfedd enyhén kesernyés ízét, és élvezd jótékony hatásait.'),
+(67, '2025-02-09 14:51:42', '2025-02-09 14:51:42', 32, 'a-pillanat-langja/erzeki-novenykincsek/baratcserje-por', 6, 31, 'Barátcserje por', 'A barátcserje, vagy Vitex agnus-castus, a Földközi-tenger térségéből származik, de ma már világszerte ismert és elterjedt gyógynövény. A terméséből vagy magjaiból készült por hosszú múltra tekint vissza a tradicionális gyógyászatban, különösen a nőgyógyászati problémák enyhítésében.\r\n\r\nFő előnyei és hagyományos felhasználása:\r\n- Hormonális egyensúly: A Vitex képes befolyásolni a prolaktin- és más nemi hormonok szintjét, így hozzájárulhat a menstruációs ciklus harmonizálásához, enyhítheti a menstruáció előtti diszkomfortérzetet.\r\n- Termékenység támogatása: Néhány forrás szerint a rendszeres Vitex-fogyasztás segíthet a termékenység elősegítésében, bár ezt érdemes előzetesen szakemberrel is egyeztetni.\r\n- Hangulatkiegyensúlyozás: Sokan tapasztalnak mérséklődést a PMS okozta hangulatingadozásokban és feszültségben.\r\n\r\nFelhasználási tippek:\r\n- Teában vagy főzetben: Adj 1 teáskanál Vitex port meleg vízhez, és hagyd állni 5–10 percig. Íze kissé földes, fűszeres jellegű; mézzel vagy édesebb növényekkel érdemes lágyítani.\r\n- Smoothiek és turmixok: Könnyen elrejthető a kedvenc gyümölcsös italodban, így kényelmesen beilleszthető a napi rutinodba.\r\n- Kapszulázva: Ha nem kedveled a növény ízét, a por adagolását megkönnyítheti, ha saját kapszulákat töltesz meg vele.\r\n\r\nÉrdemes legalább néhány héten keresztül rendszeresen fogyasztani a tartós hatás érdekében. A nagyon erős hormonális hatás miatt várandós vagy szoptató nőknek, illetve komolyabb hormonális problémákkal küzdőknek javasolt előzetesen szakorvossal konzultálni.'),
+(69, '2025-02-09 14:56:21', '2025-02-09 14:56:21', 32, 'az-energia-alapjai/vitalizalo-novenyek/baratcserje-por', 8, 15, 'Barátcserje por', 'A barátcserje, vagy Vitex agnus-castus, a Földközi-tenger térségéből származik, de ma már világszerte ismert és elterjedt gyógynövény. A terméséből vagy magjaiból készült por hosszú múltra tekint vissza a tradicionális gyógyászatban, különösen a nőgyógyászati problémák enyhítésében.\r\n\r\nFő előnyei és hagyományos felhasználása:\r\n- Hormonális egyensúly: A Vitex képes befolyásolni a prolaktin- és más nemi hormonok szintjét, így hozzájárulhat a menstruációs ciklus harmonizálásához, enyhítheti a menstruáció előtti diszkomfortérzetet.\r\n- Termékenység támogatása: Néhány forrás szerint a rendszeres Vitex-fogyasztás segíthet a termékenység elősegítésében, bár ezt érdemes előzetesen szakemberrel is egyeztetni.\r\n- Hangulatkiegyensúlyozás: Sokan tapasztalnak mérséklődést a PMS okozta hangulatingadozásokban és feszültségben.\r\n\r\nFelhasználási tippek:\r\n- Teában vagy főzetben: Adj 1 teáskanál Vitex port meleg vízhez, és hagyd állni 5–10 percig. Íze kissé földes, fűszeres jellegű; mézzel vagy édesebb növényekkel érdemes lágyítani.\r\n- Smoothiek és turmixok: Könnyen elrejthető a kedvenc gyümölcsös italodban, így kényelmesen beilleszthető a napi rutinodba.\r\n- Kapszulázva: Ha nem kedveled a növény ízét, a por adagolását megkönnyítheti, ha saját kapszulákat töltesz meg vele.\r\n\r\nÉrdemes legalább néhány héten keresztül rendszeresen fogyasztani a tartós hatás érdekében. A nagyon erős hormonális hatás miatt várandós vagy szoptató nőknek, illetve komolyabb hormonális problémákkal küzdőknek javasolt előzetesen szakorvossal konzultálni.'),
+(70, '2025-02-09 15:12:16', '2025-02-09 15:12:16', 34, 'a-pillanat-langja/erzeki-novenykincsek/vitex-szaritott-bogyok', 6, 31, 'Vitex szárított bogyók', 'A barátcserje bogyói évszázadok óta fontos szerepet töltenek be a mediterrán, közel-keleti és ázsiai gyógyászati hagyományokban. Az organikus körülmények között nevelt Vitex bogyók gondos szárítási folyamaton mennek át, hogy megőrizzék maximális hatóanyag-tartalmukat. A termés kellemesen fűszeres, kissé borsos ízzel rendelkezik, ezért régebben „szerzetesbors” néven is emlegették.\r\n\r\nFő tulajdonságok és előnyök\r\n- Hormonális egyensúly: A Vitex befolyásolhatja a prolaktin- és más nemi hormonok (pl. progeszteron, ösztrogén) szintjét, ezáltal segíthet a menstruációs ciklus harmonizálásában és a PMS tüneteinek enyhítésében.\r\n- Hangulatingadozások enyhítése: Sokan tapasztalnak kedvező hatást a ciklushoz kapcsolódó feszültség, ingerlékenység csökkentésében.\r\n- Termékenység támogatása: Egyes tradicionális orvoslási rendszerek termékenységfokozóként is említik a Vitexet, bár erről minden esetben javasolt szakértői véleményt is kikérni.\r\n\r\nFelhasználási javaslatok\r\n- Tea/főzet: A szárított bogyókat mozsárban kissé megtörve (vagy egészben, hosszabb főzési idővel) forrázd le meleg vízzel, és hagyd állni 10–15 percig. Az enyhén fűszeres ízt édes gyógynövényekkel (pl. édesgyökér) vagy mézzel teheted lágyabbá.\r\n- Tinktúra/alkoholos kivonat: Sok esetben a leghatékonyabb formának tartják, mert a hatóanyagok így koncentráltan kerülnek kioldásra. A bogyók tökéletes alapanyagot nyújtanak ehhez.\r\n- Kapszulázva vagy őrölve: Ha nem kedveled a fűszeres, borsos ízt, saját kezűleg is porrá törheted, majd kapszulákba töltheted.\r\n\r\nA kiegyensúlyozott hormonháztartás eléréséhez gyakran több hét vagy akár néhány hónap rendszeres fogyasztás szükséges. Várandós vagy szoptató nők, illetve hormonális terápián lévők kérjék ki herbal terapeuta tanácsát.'),
+(71, '2025-02-09 15:18:50', '2025-02-09 15:18:50', 34, 'az-energia-alapjai/vitalizalo-novenyek/vitex-szaritott-bogyok', 8, 15, 'Vitex szárított bogyók', 'A barátcserje bogyói évszázadok óta fontos szerepet töltenek be a mediterrán, közel-keleti és ázsiai gyógyászati hagyományokban. Az organikus körülmények között nevelt Vitex bogyók gondos szárítási folyamaton mennek át, hogy megőrizzék maximális hatóanyag-tartalmukat. A termés kellemesen fűszeres, kissé borsos ízzel rendelkezik, ezért régebben „szerzetesbors” néven is emlegették.\r\n\r\nFő tulajdonságok és előnyök\r\n- Hormonális egyensúly: A Vitex befolyásolhatja a prolaktin- és más nemi hormonok (pl. progeszteron, ösztrogén) szintjét, ezáltal segíthet a menstruációs ciklus harmonizálásában és a PMS tüneteinek enyhítésében.\r\n- Hangulatingadozások enyhítése: Sokan tapasztalnak kedvező hatást a ciklushoz kapcsolódó feszültség, ingerlékenység csökkentésében.\r\n- Termékenység támogatása: Egyes tradicionális orvoslási rendszerek termékenységfokozóként is említik a Vitexet, bár erről minden esetben javasolt szakértői véleményt is kikérni.\r\n\r\nFelhasználási javaslatok\r\n- Tea/főzet: A szárított bogyókat mozsárban kissé megtörve (vagy egészben, hosszabb főzési idővel) forrázd le meleg vízzel, és hagyd állni 10–15 percig. Az enyhén fűszeres ízt édes gyógynövényekkel (pl. édesgyökér) vagy mézzel teheted lágyabbá.\r\n- Tinktúra/alkoholos kivonat: Sok esetben a leghatékonyabb formának tartják, mert a hatóanyagok így koncentráltan kerülnek kioldásra. A bogyók tökéletes alapanyagot nyújtanak ehhez.\r\n- Kapszulázva vagy őrölve: Ha nem kedveled a fűszeres, borsos ízt, saját kezűleg is porrá törheted, majd kapszulákba töltheted.\r\n\r\nA kiegyensúlyozott hormonháztartás eléréséhez gyakran több hét vagy akár néhány hónap rendszeres fogyasztás szükséges. Várandós vagy szoptató nők, illetve hormonális terápián lévők kérjék ki herbal terapeuta tanácsát.');
 
 --
 -- Eseményindítók `product_page`
 --
+DROP TRIGGER IF EXISTS `product_page_after_insert`;
 DELIMITER $$
 CREATE TRIGGER `product_page_after_insert` AFTER INSERT ON `product_page` FOR EACH ROW BEGIN
   -- Ha van subcategory_id
@@ -621,6 +862,7 @@ CREATE TRIGGER `product_page_after_insert` AFTER INSERT ON `product_page` FOR EA
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `product_page_after_update`;
 DELIMITER $$
 CREATE TRIGGER `product_page_after_update` AFTER UPDATE ON `product_page` FOR EACH ROW BEGIN
   -- Ha a régiben volt subcategory, de az újban más
@@ -659,6 +901,7 @@ CREATE TRIGGER `product_page_after_update` AFTER UPDATE ON `product_page` FOR EA
 END
 $$
 DELIMITER ;
+DROP TRIGGER IF EXISTS `product_page_before_delete`;
 DELIMITER $$
 CREATE TRIGGER `product_page_before_delete` BEFORE DELETE ON `product_page` FOR EACH ROW BEGIN
   IF OLD.subcategory_id IS NOT NULL THEN
@@ -686,6 +929,7 @@ DELIMITER ;
 -- Tábla szerkezet ehhez a táblához `product_tag`
 --
 
+DROP TABLE IF EXISTS `product_tag`;
 CREATE TABLE `product_tag` (
   `id` int(11) NOT NULL,
   `tag_id` int(11) DEFAULT NULL,
@@ -764,7 +1008,114 @@ INSERT INTO `product_tag` (`id`, `tag_id`, `product_id`) VALUES
 (73, 1, 7),
 (74, 2, 7),
 (75, 5, 7),
-(76, 10, 7);
+(76, 10, 7),
+(91, 1, 19),
+(92, 2, 19),
+(93, 4, 19),
+(94, 5, 19),
+(95, 6, 19),
+(96, 9, 19),
+(97, 10, 19),
+(98, 1, 21),
+(99, 2, 21),
+(100, 4, 21),
+(101, 5, 21),
+(102, 6, 21),
+(103, 7, 21),
+(104, 9, 21),
+(105, 10, 21),
+(114, 1, 22),
+(115, 2, 22),
+(116, 4, 22),
+(117, 5, 22),
+(118, 6, 22),
+(119, 7, 22),
+(120, 9, 22),
+(121, 10, 22),
+(122, 1, 23),
+(123, 2, 23),
+(124, 4, 23),
+(125, 5, 23),
+(126, 6, 23),
+(127, 9, 23),
+(128, 10, 23),
+(129, 1, 24),
+(130, 2, 24),
+(131, 4, 24),
+(132, 5, 24),
+(133, 6, 24),
+(134, 9, 24),
+(135, 10, 24),
+(136, 1, 25),
+(137, 2, 25),
+(138, 4, 25),
+(139, 5, 25),
+(140, 6, 25),
+(141, 9, 25),
+(142, 10, 25),
+(143, 1, 26),
+(144, 2, 26),
+(145, 4, 26),
+(146, 5, 26),
+(147, 6, 26),
+(148, 7, 26),
+(149, 9, 26),
+(150, 10, 26),
+(151, 1, 27),
+(152, 2, 27),
+(153, 4, 27),
+(154, 5, 27),
+(155, 6, 27),
+(156, 7, 27),
+(157, 9, 27),
+(158, 10, 27),
+(159, 1, 28),
+(160, 2, 28),
+(161, 4, 28),
+(162, 5, 28),
+(163, 6, 28),
+(164, 7, 28),
+(165, 9, 28),
+(166, 10, 28),
+(167, 1, 29),
+(168, 2, 29),
+(169, 4, 29),
+(170, 5, 29),
+(171, 6, 29),
+(172, 7, 29),
+(173, 9, 29),
+(174, 10, 29),
+(183, 1, 30),
+(184, 2, 30),
+(185, 4, 30),
+(186, 5, 30),
+(187, 6, 30),
+(188, 7, 30),
+(189, 9, 30),
+(190, 10, 30),
+(191, 1, 31),
+(192, 2, 31),
+(193, 4, 31),
+(194, 5, 31),
+(195, 6, 31),
+(196, 9, 31),
+(197, 10, 31),
+(214, 1, 32),
+(215, 2, 32),
+(216, 4, 32),
+(217, 5, 32),
+(218, 6, 32),
+(219, 7, 32),
+(220, 9, 32),
+(221, 10, 32),
+(222, 1, 34),
+(223, 2, 34),
+(224, 4, 34),
+(225, 5, 34),
+(226, 6, 34),
+(227, 7, 34),
+(228, 9, 34),
+(229, 10, 34);
 
 -- --------------------------------------------------------
 
@@ -772,6 +1123,7 @@ INSERT INTO `product_tag` (`id`, `tag_id`, `product_id`) VALUES
 -- Tábla szerkezet ehhez a táblához `review`
 --
 
+DROP TABLE IF EXISTS `review`;
 CREATE TABLE `review` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
@@ -788,6 +1140,7 @@ CREATE TABLE `review` (
 -- Tábla szerkezet ehhez a táblához `subcategory`
 --
 
+DROP TABLE IF EXISTS `subcategory`;
 CREATE TABLE `subcategory` (
   `id` int(11) NOT NULL,
   `category_id` int(11) DEFAULT NULL COMMENT 'On delete: SET NULL',
@@ -807,20 +1160,20 @@ CREATE TABLE `subcategory` (
 
 INSERT INTO `subcategory` (`id`, `category_id`, `name`, `subname`, `description`, `thumbnail_image_vertical_uri`, `thumbnail_image_horizontal_uri`, `thumbnail_video_uri`, `product_count`, `slug`) VALUES
 (1, 1, 'Méregtelenítő Növények', 'A tisztulás támogatása természetes módon', 'A méregtelenítő növények segítenek a test tisztulási folyamatainak elősegítésében, eltávolítva a felhalmozódott toxikus anyagokat.', 'http://localhost/fb-content/fb-subcategories/media/images/category-1/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-1/thumbnail_image_horizontal.jpg', NULL, 4, 'meregtelenito-novenyek'),
-(2, 1, 'Immunerősítő Keverékek', 'A védekezőképesség fokozása', 'Erőteljes gyógynövény-keverékek, amelyek támogatják az immunrendszert, erősítve a szervezet védekezőképességét.', 'http://localhost/fb-content/fb-subcategories/media/images/category-2/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-2/thumbnail_image_horizontal.jpg', NULL, 3, 'immunerosito-keverekek'),
-(3, 2, 'Nyugtató Növények', 'Relaxáció és mentális egyensúly', 'Növények és gyógynövények, amelyek segítenek a stressz csökkentésében, és elősegítik a testi-lelki nyugalmat.', 'http://localhost/fb-content/fb-subcategories/media/images/category-3/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-3/thumbnail_image_horizontal.jpg', NULL, 6, 'nyugtato-novenyek'),
-(4, 2, 'Alvássegítők', 'A pihentető alvás titkai', 'Nyugtató hatású növények és kivonatok, amelyek javítják az alvást, segítve a pihentető, regeneráló éjszakákat.', 'http://localhost/fb-content/fb-subcategories/media/images/category-4/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-4/thumbnail_image_horizontal.jpg', NULL, 2, 'alvassegitok'),
+(2, 1, 'Immunerősítő Keverékek', 'A védekezőképesség fokozása', 'Erőteljes gyógynövény-keverékek, amelyek támogatják az immunrendszert, erősítve a szervezet védekezőképességét.', 'http://localhost/fb-content/fb-subcategories/media/images/category-2/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-2/thumbnail_image_horizontal.jpg', NULL, 4, 'immunerosito-keverekek'),
+(3, 2, 'Nyugtató Növények', 'Relaxáció és mentális egyensúly', 'Növények és gyógynövények, amelyek segítenek a stressz csökkentésében, és elősegítik a testi-lelki nyugalmat.', 'http://localhost/fb-content/fb-subcategories/media/images/category-3/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-3/thumbnail_image_horizontal.jpg', NULL, 9, 'nyugtato-novenyek'),
+(4, 2, 'Alvássegítők', 'A pihentető alvás titkai', 'Nyugtató hatású növények és kivonatok, amelyek javítják az alvást, segítve a pihentető, regeneráló éjszakákat.', 'http://localhost/fb-content/fb-subcategories/media/images/category-4/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-4/thumbnail_image_horizontal.jpg', NULL, 4, 'alvassegitok'),
 (5, 3, 'Májtisztító Növények', 'A méregtelenítés segítése a májban', 'Olyan gyógynövények, amelyek támogathatják a máj méregtelenítő és tisztító folyamatait.', 'http://localhost/fb-content/fb-subcategories/media/images/category-5/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-5/thumbnail_image_horizontal.jpg', NULL, 0, 'majtisztito-novenyek'),
 (6, 3, 'Lúgosító Növények', 'A sav-bázis egyensúly helyreállítása', 'Növények, amelyek elősegítik a szervezet lúgosítását, hozzájárulva a sav-bázis egyensúly fenntartásához.', 'http://localhost/fb-content/fb-subcategories/media/images/category-6/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-6/thumbnail_image_horizontal.jpg', NULL, 0, 'lugosito-novenyek'),
 (7, 4, 'Emésztést Támogatók', 'Az egészséges emésztés alapjai', 'Olyan gyógynövények, amelyek segítenek az emésztési folyamatok javításában és a bélflóra egészségének fenntartásában.', 'http://localhost/fb-content/fb-subcategories/media/images/category-7/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-7/thumbnail_image_horizontal.jpg', NULL, 3, 'emesztest-tamogatok'),
 (8, 4, 'Puffadásgátló Növények', 'A kellemetlen puffadás enyhítése', 'Növények, amelyek csökkenthetik a puffadást, segítve az emésztést és a bélműködés javítását.', 'http://localhost/fb-content/fb-subcategories/media/images/category-8/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-8/thumbnail_image_horizontal.jpg', NULL, 2, 'puffadasgatlo-novenyek'),
 (9, 5, 'Ízületi Növények', 'Az ízületek védelme és regenerálása', 'Olyan gyógynövények, amelyek segítenek az ízületek egészségének megőrzésében, enyhítve a fájdalmat és javítva a mobilitást.', 'http://localhost/fb-content/fb-subcategories/media/images/category-9/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-9/thumbnail_image_horizontal.jpg', NULL, 1, 'ízuleti-novenyek'),
-(10, 5, 'Energizáló Növények', 'Az energia növelése természetes módon', 'Frissítő hatású növények, amelyek elősegítik a vitalitást és az energiaszint növelését.', 'http://localhost/fb-content/fb-subcategories/media/images/category-10/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-10/thumbnail_image_horizontal.jpg', NULL, 2, 'energizalo-novenyek'),
+(10, 5, 'Energizáló Növények', 'Az energia növelése természetes módon', 'Frissítő hatású növények, amelyek elősegítik a vitalitást és az energiaszint növelését.', 'http://localhost/fb-content/fb-subcategories/media/images/category-10/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-10/thumbnail_image_horizontal.jpg', NULL, 11, 'energizalo-novenyek'),
 (11, 6, 'Életerőt Adó Növények', 'Frissesség és vitalitás', 'A növények, amelyek erősítik a testet és az elmét, segítve a fáradtság leküzdését és a mindennapi életerő fenntartását.', 'http://localhost/fb-content/fb-subcategories/media/images/category-11/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-11/thumbnail_image_horizontal.jpg', NULL, 0, 'életerot-ado-novenyek'),
-(12, 6, 'Stresszcsökkentő Növények', 'A nyugodt elme megteremtése', 'Nyugtató gyógynövények, amelyek segítenek csökkenteni a stresszt és elősegítik a lelki egyensúlyt.', 'http://localhost/fb-content/fb-subcategories/media/images/category-12/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-12/thumbnail_image_horizontal.jpg', NULL, 0, 'stresszcsokkento-novenyek'),
+(12, 6, 'Stresszcsökkentő Növények', 'A nyugodt elme megteremtése', 'Nyugtató gyógynövények, amelyek segítenek csökkenteni a stresszt és elősegítik a lelki egyensúlyt.', 'http://localhost/fb-content/fb-subcategories/media/images/category-12/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-12/thumbnail_image_horizontal.jpg', NULL, 3, 'stresszcsokkento-novenyek'),
 (13, 7, 'Bőrápoló Növények', 'A bőr természetes ápolása', 'Olyan növények, amelyek hozzájárulnak a bőr hidratálásához, regenerálódásához és védelméhez.', 'http://localhost/fb-content/fb-subcategories/media/images/category-13/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-13/thumbnail_image_horizontal.jpg', NULL, 1, 'borapolo-novenyek'),
 (14, 7, 'Hajápoló Növények', 'A haj erősítése és táplálása', 'Növények, amelyek segítenek erősíteni a hajat, serkentik a növekedést és javítják annak egészségét.', 'http://localhost/fb-content/fb-subcategories/media/images/category-14/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-14/thumbnail_image_horizontal.jpg', NULL, 0, 'hajapolo-novenyek'),
-(15, 8, 'Vitalizáló Növények', 'A frissesség és életerő fokozása', 'Növények, amelyek fokozzák a vitalitást, segítenek frissíteni és revitalizálni a testet.', 'http://localhost/fb-content/fb-subcategories/media/images/category-15/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-15/thumbnail_image_horizontal.jpg', NULL, 1, 'vitalizalo-novenyek'),
+(15, 8, 'Vitalizáló Növények', 'A frissesség és életerő fokozása', 'Növények, amelyek fokozzák a vitalitást, segítenek frissíteni és revitalizálni a testet.', 'http://localhost/fb-content/fb-subcategories/media/images/category-15/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-15/thumbnail_image_horizontal.jpg', NULL, 8, 'vitalizalo-novenyek'),
 (16, 9, 'Energizáló Teák', 'Frissítő teaélmény a mindennapokhoz', 'Teák, amelyek növelik az energiát és frissítenek a nap bármely szakában.', 'http://localhost/fb-content/fb-subcategories/media/images/category-16/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-16/thumbnail_image_horizontal.jpg', NULL, 0, 'energizalo-teak'),
 (17, 9, 'Illatos Növények', 'Aromák a frissességért', 'Növényi levelek és illóolajok, amelyek segítenek a levegő frissítésében, hozzájárulva a hangulat javításához.', 'http://localhost/fb-content/fb-subcategories/media/images/category-17/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-17/thumbnail_image_horizontal.jpg', NULL, 0, 'illatos-novenyek'),
 (18, 9, 'Hűsítő Növények', 'A hűsítő hatás természetes ereje', 'Növények, amelyek hűsítő hatással vannak a testre, enyhítve a meleget és felfrissítve a bőrt.', 'http://localhost/fb-content/fb-subcategories/media/images/category-18/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-18/thumbnail_image_horizontal.jpg', NULL, 0, 'husito-novenyek'),
@@ -834,7 +1187,9 @@ INSERT INTO `subcategory` (`id`, `category_id`, `name`, `subname`, `description`
 (26, 14, 'Keringést Támogatók', ' A szív- és érrendszer egészsége', 'Növények és kivonatok, amelyek támogatják a szív- és érrendszert, javítva a vérkeringést.', 'http://localhost/fb-content/fb-subcategories/media/images/category-26/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-26/thumbnail_image_horizontal.jpg', NULL, 2, 'keringest-tamogatok'),
 (27, 14, 'Vérnyomáscsökkentő Növények', 'A szív egészségének védelme', 'Olyan növények, amelyek segítenek a vérnyomás szabályozásában, támogathatják a szív- és érrendszer működését.', 'http://localhost/fb-content/fb-subcategories/media/images/category-27/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-27/thumbnail_image_horizontal.jpg', NULL, 1, 'vernyomascsokkento-novenyek'),
 (28, 15, 'Erdei Gyógynövények', 'Jótékony és egészséges gyógynövények az erdőből', 'Olyan növények, amelyek az erdő mélyéről származnak, és jótékony hatással vannak a testre és az elmére.', 'http://localhost/fb-content/fb-subcategories/media/images/category-28/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-28/thumbnail_image_horizontal.jpg', NULL, 1, 'erdei-gyogynovenyek'),
-(29, 15, 'Erdei Kivonatok', 'Jótékony kivonatok az egészségért', 'Erdei növények kivonatai, amelyek különleges és erőteljes jótékony hatásokat kínálnak a méregtelenítéshez és regenerálódáshoz.', 'http://localhost/fb-content/fb-subcategories/media/images/category-29/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-29/thumbnail_image_horizontal.jpg', NULL, 0, 'erdei-kivonatok');
+(29, 15, 'Erdei Kivonatok', 'Jótékony kivonatok az egészségért', 'Erdei növények kivonatai, amelyek különleges és erőteljes jótékony hatásokat kínálnak a méregtelenítéshez és regenerálódáshoz.', 'http://localhost/fb-content/fb-subcategories/media/images/category-29/thumbnail_image_vertical.jpg', 'http://localhost/fb-content/fb-subcategories/media/images/category-29/thumbnail_image_horizontal.jpg', NULL, 0, 'erdei-kivonatok'),
+(30, 6, 'Aromaterápiás Esszenciák', 'Illatok, amelyek felébresztik az érzelmeket', 'Válogatott illóolajok, diffúzorok és párologtató keverékek, melyek segítségével otthonodba egy intenzív, érzelmekkel teli atmoszférát varázsolhatsz. Ezek a termékek serkentik a belső szenvedélyt és elősegítik az intimitást.', 'http://localhost/fb-content/fb-subcategories/media/images/category-30/thumbnail_image_vertical.jpeg', 'http://localhost/fb-content/fb-subcategories/media/images/category-30/thumbnail_image_horizontal.jpg', NULL, 0, 'aromaterapias-esszenciak'),
+(31, 6, 'Érzéki Növénykincsek', 'A szenvedély felébresztése természetes módon', 'Ebben az alkategóriában olyan gyógynövények és természetes kivonatok találhatók, amelyek elősegítik a hormonális egyensúlyt, fokozzák az libidót és támogatják a szexuális egészséget. Válaszd a természet adta lehetőségeket, hogy a belső tűz újra lángra lob', 'http://localhost/fb-content/fb-subcategories/media/images/category-31/thumbnail_image_vertical.jpeg', 'http://localhost/fb-content/fb-subcategories/media/images/category-31/thumbnail_image_horizontal.jpg', NULL, 12, 'erzeki-novenykincsek');
 
 -- --------------------------------------------------------
 
@@ -842,6 +1197,7 @@ INSERT INTO `subcategory` (`id`, `category_id`, `name`, `subname`, `description`
 -- Tábla szerkezet ehhez a táblához `tag`
 --
 
+DROP TABLE IF EXISTS `tag`;
 CREATE TABLE `tag` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
@@ -859,7 +1215,7 @@ INSERT INTO `tag` (`id`, `name`, `icon_uri`) VALUES
 (4, 'Halmentes', 'http://localhost/fb-content/assets/media/images/tags/no-fish.png'),
 (5, 'GMO-mentes', 'http://localhost/fb-content/assets/media/images/tags/non-gmo.png'),
 (6, 'Mogyoró mentes', 'http://localhost/fb-content/assets/media/images/tags/peanut-free.png'),
-(7, 'Pollen', 'http://localhost/fb-content/assets/media/images/tags/pollen.png'),
+(7, 'Pollenmentes', 'http://localhost/fb-content/assets/media/images/tags/pollen.png'),
 (8, 'Tinktúra', 'http://localhost/fb-content/assets/media/images/tags/serum.png'),
 (9, 'Cukormentes', 'http://localhost/fb-content/assets/media/images/tags/sugar-free.png'),
 (10, 'Vegán', 'http://localhost/fb-content/assets/media/images/tags/vegan.png');
@@ -870,6 +1226,7 @@ INSERT INTO `tag` (`id`, `name`, `icon_uri`) VALUES
 -- Tábla szerkezet ehhez a táblához `user`
 --
 
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
@@ -890,7 +1247,8 @@ CREATE TABLE `user` (
 
 INSERT INTO `user` (`id`, `email`, `user_name`, `password_hash`, `role`, `cookie_id`, `cookie_expires_at`, `first_name`, `last_name`, `pfp_uri`, `created_at`) VALUES
 (1, '13c-blank@ipari.vein.hu', 'admin', '$2y$10$GYHbnzKZf8jPKEN/8F.Zn.nFQSmDtJhx8NDdpO3NHQOVA.TfeypuS', 'Administrator', NULL, NULL, 'Máté', 'Blank', 'https://ui-avatars.com/api/?name=Blank+Máté&background=9CB5A6&bold=true&format=svg', '2024-11-02 13:27:24'),
-(2, 'teszt-elek@gmail.com', 'teszt-elek', '$2y$10$.BZLWK4qrkNB7jVCWxpkyeCpo/wRGMA/7QmSb7j4MnSZc/Ez4huMa', 'Guest', NULL, NULL, 'Elek', 'Teszt', 'https://ui-avatars.com/api/?name=Teszt+Elek&background=9CB5A6&bold=true&format=svg', '2024-11-26 17:24:56');
+(2, 'teszt-elek@gmail.com', 'teszt-elek', '$2y$10$.BZLWK4qrkNB7jVCWxpkyeCpo/wRGMA/7QmSb7j4MnSZc/Ez4huMa', 'Guest', NULL, NULL, 'Elek', 'Teszt', 'https://ui-avatars.com/api/?name=Teszt+Elek&background=9CB5A6&bold=true&format=svg', '2024-11-26 17:24:56'),
+(3, '13c-milkovics@ipari.vein.hu', 'Kecske', '$2y$10$VX.1kRDv2h6x0x4lqNYxMe1NWBWsPIAs1qxXA0/vk71YdCVugcCu6', 'Administrator', NULL, NULL, 'Csanád', 'Milkovics', 'https://ui-avatars.com/api/?name=Milkovics+Csanád&background=9CB5A6&bold=true&format=svg', '2025-02-09 09:09:02');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -1060,61 +1418,61 @@ ALTER TABLE `health_effect`
 -- AUTO_INCREMENT a táblához `image`
 --
 ALTER TABLE `image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT a táblához `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `product`
 --
 ALTER TABLE `product`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT a táblához `product_health_effect`
 --
 ALTER TABLE `product_health_effect`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=227;
 
 --
 -- AUTO_INCREMENT a táblához `product_image`
 --
 ALTER TABLE `product_image`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=108;
 
 --
 -- AUTO_INCREMENT a táblához `product_page`
 --
 ALTER TABLE `product_page`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=72;
 
 --
 -- AUTO_INCREMENT a táblához `product_tag`
 --
 ALTER TABLE `product_tag`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=230;
 
 --
 -- AUTO_INCREMENT a táblához `review`
 --
 ALTER TABLE `review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `subcategory`
 --
 ALTER TABLE `subcategory`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT a táblához `tag`
@@ -1126,7 +1484,7 @@ ALTER TABLE `tag`
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Megkötések a kiírt táblákhoz
