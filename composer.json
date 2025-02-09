@@ -1,0 +1,19 @@
+{
+    "name": "mate/13c-vizsgaprojekt",
+    "description": "13.C osztály vizsgaremek projekt",
+    "type": "project",
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mate\\13cVizsgaprojekt\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "mxte-b",
+            "email": "13c-blank@ipari.vein.hu"
+        }
+    ]
+}

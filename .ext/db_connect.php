@@ -1,6 +1,6 @@
 <?php
 
-include_once __DIR__ . '/db_config.php';
+include_once __DIR__ . '/env_config.php';
 
 /**
  * Establishes a database connection using environment variables, with logging.
