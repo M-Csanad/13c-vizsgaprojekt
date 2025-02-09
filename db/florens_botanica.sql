@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Feb 09. 15:27
+-- Létrehozás ideje: 2025. Feb 09. 17:18
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -29,7 +29,6 @@ USE `florens_botanica`;
 -- Tábla szerkezet ehhez a táblához `autofill_billing`
 --
 
-DROP TABLE IF EXISTS `autofill_billing`;
 CREATE TABLE `autofill_billing` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -45,7 +44,6 @@ CREATE TABLE `autofill_billing` (
 -- Tábla szerkezet ehhez a táblához `autofill_delivery`
 --
 
-DROP TABLE IF EXISTS `autofill_delivery`;
 CREATE TABLE `autofill_delivery` (
   `id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
@@ -61,7 +59,6 @@ CREATE TABLE `autofill_delivery` (
 -- Tábla szerkezet ehhez a táblához `cart`
 --
 
-DROP TABLE IF EXISTS `cart`;
 CREATE TABLE `cart` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
@@ -78,7 +75,6 @@ CREATE TABLE `cart` (
 -- Tábla szerkezet ehhez a táblához `category`
 --
 
-DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -118,7 +114,6 @@ INSERT INTO `category` (`id`, `name`, `subname`, `description`, `thumbnail_image
 -- Tábla szerkezet ehhez a táblához `health_effect`
 --
 
-DROP TABLE IF EXISTS `health_effect`;
 CREATE TABLE `health_effect` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
@@ -178,7 +173,6 @@ INSERT INTO `health_effect` (`id`, `name`, `description`, `benefit`) VALUES
 -- Tábla szerkezet ehhez a táblához `image`
 --
 
-DROP TABLE IF EXISTS `image`;
 CREATE TABLE `image` (
   `id` int(11) NOT NULL,
   `uri` varchar(255) NOT NULL,
@@ -294,7 +288,6 @@ INSERT INTO `image` (`id`, `uri`, `orientation`, `media_type`) VALUES
 -- Tábla szerkezet ehhez a táblához `order`
 --
 
-DROP TABLE IF EXISTS `order`;
 CREATE TABLE `order` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL COMMENT 'Vendég rendelések miatt lehet NULL is a user_id',
@@ -307,6 +300,7 @@ CREATE TABLE `order` (
   `billing_address` varchar(255) DEFAULT NULL COMMENT 'NULL, ha megegyezik a szállítási címmel',
   `delivery_address` varchar(255) DEFAULT NULL,
   `status` varchar(50) NOT NULL DEFAULT 'completed',
+  `order_total` int(11) NOT NULL DEFAULT 0,
   `completed_at` timestamp NULL DEFAULT NULL COMMENT 'NULL, ha nyitott a rendelés',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
@@ -314,7 +308,6 @@ CREATE TABLE `order` (
 --
 -- Eseményindítók `order`
 --
-DROP TRIGGER IF EXISTS `after_order_delete`;
 DELIMITER $$
 CREATE TRIGGER `after_order_delete` AFTER DELETE ON `order` FOR EACH ROW BEGIN
     DELETE FROM order_item WHERE order_id IS NULL;
@@ -328,7 +321,6 @@ DELIMITER ;
 -- Tábla szerkezet ehhez a táblához `order_item`
 --
 
-DROP TABLE IF EXISTS `order_item`;
 CREATE TABLE `order_item` (
   `id` int(11) NOT NULL,
   `order_id` int(11) DEFAULT NULL,
@@ -340,7 +332,6 @@ CREATE TABLE `order_item` (
 --
 -- Eseményindítók `order_item`
 --
-DROP TRIGGER IF EXISTS `after_order_item_delete`;
 DELIMITER $$
 CREATE TRIGGER `after_order_item_delete` AFTER DELETE ON `order_item` FOR EACH ROW BEGIN
     UPDATE product
@@ -349,7 +340,6 @@ CREATE TRIGGER `after_order_item_delete` AFTER DELETE ON `order_item` FOR EACH R
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `after_order_item_insert`;
 DELIMITER $$
 CREATE TRIGGER `after_order_item_insert` AFTER INSERT ON `order_item` FOR EACH ROW BEGIN
     UPDATE product
@@ -358,7 +348,6 @@ CREATE TRIGGER `after_order_item_insert` AFTER INSERT ON `order_item` FOR EACH R
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `after_order_item_update`;
 DELIMITER $$
 CREATE TRIGGER `after_order_item_update` AFTER UPDATE ON `order_item` FOR EACH ROW BEGIN
     IF OLD.product_id = NEW.product_id THEN
@@ -384,7 +373,6 @@ DELIMITER ;
 -- Tábla szerkezet ehhez a táblához `product`
 --
 
-DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `id` int(11) NOT NULL,
   `name` varchar(255) DEFAULT NULL,
@@ -437,7 +425,6 @@ INSERT INTO `product` (`id`, `name`, `unit_price`, `stock`, `description`) VALUE
 -- Tábla szerkezet ehhez a táblához `product_health_effect`
 --
 
-DROP TABLE IF EXISTS `product_health_effect`;
 CREATE TABLE `product_health_effect` (
   `id` int(11) NOT NULL,
   `product_id` int(11) NOT NULL,
@@ -633,7 +620,6 @@ INSERT INTO `product_health_effect` (`id`, `product_id`, `health_effect_id`) VAL
 -- Tábla szerkezet ehhez a táblához `product_image`
 --
 
-DROP TABLE IF EXISTS `product_image`;
 CREATE TABLE `product_image` (
   `id` int(11) NOT NULL,
   `image_id` int(11) NOT NULL,
@@ -748,7 +734,6 @@ INSERT INTO `product_image` (`id`, `image_id`, `product_id`) VALUES
 -- Tábla szerkezet ehhez a táblához `product_page`
 --
 
-DROP TABLE IF EXISTS `product_page`;
 CREATE TABLE `product_page` (
   `id` int(11) NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
@@ -840,7 +825,6 @@ INSERT INTO `product_page` (`id`, `created_at`, `last_modified`, `product_id`, `
 --
 -- Eseményindítók `product_page`
 --
-DROP TRIGGER IF EXISTS `product_page_after_insert`;
 DELIMITER $$
 CREATE TRIGGER `product_page_after_insert` AFTER INSERT ON `product_page` FOR EACH ROW BEGIN
   -- Ha van subcategory_id
@@ -862,7 +846,6 @@ CREATE TRIGGER `product_page_after_insert` AFTER INSERT ON `product_page` FOR EA
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `product_page_after_update`;
 DELIMITER $$
 CREATE TRIGGER `product_page_after_update` AFTER UPDATE ON `product_page` FOR EACH ROW BEGIN
   -- Ha a régiben volt subcategory, de az újban más
@@ -901,7 +884,6 @@ CREATE TRIGGER `product_page_after_update` AFTER UPDATE ON `product_page` FOR EA
 END
 $$
 DELIMITER ;
-DROP TRIGGER IF EXISTS `product_page_before_delete`;
 DELIMITER $$
 CREATE TRIGGER `product_page_before_delete` BEFORE DELETE ON `product_page` FOR EACH ROW BEGIN
   IF OLD.subcategory_id IS NOT NULL THEN
@@ -929,7 +911,6 @@ DELIMITER ;
 -- Tábla szerkezet ehhez a táblához `product_tag`
 --
 
-DROP TABLE IF EXISTS `product_tag`;
 CREATE TABLE `product_tag` (
   `id` int(11) NOT NULL,
   `tag_id` int(11) DEFAULT NULL,
@@ -1123,7 +1104,6 @@ INSERT INTO `product_tag` (`id`, `tag_id`, `product_id`) VALUES
 -- Tábla szerkezet ehhez a táblához `review`
 --
 
-DROP TABLE IF EXISTS `review`;
 CREATE TABLE `review` (
   `id` int(11) NOT NULL,
   `user_id` int(11) DEFAULT NULL,
@@ -1140,7 +1120,6 @@ CREATE TABLE `review` (
 -- Tábla szerkezet ehhez a táblához `subcategory`
 --
 
-DROP TABLE IF EXISTS `subcategory`;
 CREATE TABLE `subcategory` (
   `id` int(11) NOT NULL,
   `category_id` int(11) DEFAULT NULL COMMENT 'On delete: SET NULL',
@@ -1197,7 +1176,6 @@ INSERT INTO `subcategory` (`id`, `category_id`, `name`, `subname`, `description`
 -- Tábla szerkezet ehhez a táblához `tag`
 --
 
-DROP TABLE IF EXISTS `tag`;
 CREATE TABLE `tag` (
   `id` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
@@ -1226,7 +1204,6 @@ INSERT INTO `tag` (`id`, `name`, `icon_uri`) VALUES
 -- Tábla szerkezet ehhez a táblához `user`
 --
 
-DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL,
   `email` varchar(255) DEFAULT NULL,
