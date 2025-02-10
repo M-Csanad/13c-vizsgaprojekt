@@ -20,7 +20,7 @@
     // Felhasználó rendeléseinek lekérdezése
     $orders = [];
     $result = selectData(
-        "SELECT `order`.id, `order`.email, `order`.phone, CONCAT(`order`.last_name, ' ', `order`.first_name) as full_name, 
+        "SELECT `order`.id, `order`.email, `order`.phone, CONCAT(`order`.last_name, ' ', `order`.first_name) AS full_name, 
         `order`.company_name, `order`.tax_number, `order`.billing_address, `order`.delivery_address, `order`.status, 
         `order`.order_total, `order`.created_at 
         FROM `order` WHERE `order`.user_id=?", $user['id'], 'i'
@@ -29,14 +29,12 @@
     if ($result->isSuccess()) {
         foreach ($result->message as $order) {
             $orderId = $order["id"];
-            unset($order["id"]);
-
             $orders[$orderId] = $order;
         }
 
         // Rendeléshez tartozó termékek lekérdezése
         $result = selectData(
-            "SELECT product.name, order_item.quantity, order.id as order_id FROM order_item 
+            "SELECT product.name, order_item.quantity, `order`.id AS order_id FROM order_item 
             INNER JOIN `order` ON order_item.order_id=`order`.id
             INNER JOIN product ON order_item.product_id=product.id 
             WHERE `order`.user_id=?", $user['id'], 'i'
@@ -47,6 +45,7 @@
                 $orderId = $orderItems["order_id"];
                 unset($orderItems["order_id"]);
 
+                if (!isset($orderItems[0])) $orderItems = [$orderItems];
                 $orders[$orderId]["items"] = $orderItems;
             }
         }
@@ -63,8 +62,6 @@
     else {
         $orders = $result->toJSON(true);
     }
-
-    var_dump($orders);
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -366,6 +363,54 @@
                 <div class="content-page">  <!-- Rendeléseim -->
                     <div class="content-main">
                         <div class="page-title">Rendeléseim</div>
+                        <?php if (is_array($orders)): ?>
+                            <div class="order-timeline">
+                                <?php foreach ($orders as $order): ?>
+                                    <div class="timeline-event">
+                                        <div class="event-date"><?= htmlspecialchars($order["created_at"]); ?> - <?= htmlspecialchars($order["status"] == "completed" ? "Teljesítve" : "Feldolgozás alatt"); ?></div>
+                                        <div class="event-body">
+                                            <hr>
+                                            <div class="total">
+                                                <span class="timeline-section">Összeg:</span> 
+                                                <strong><?= htmlspecialchars($order["order_total"]); ?> Ft</strong>
+                                            </div>
+                                            <div class="order-id">
+                                                <span class="timeline-section">Rendelési azonosító:</span>
+                                                <span class="id-number">#<?= htmlspecialchars($order["id"]); ?></span>
+                                            </div>
+                                            <div class="personal-info">
+                                                <div><?= htmlspecialchars($order["email"]); ?></div>
+                                                <div><?= htmlspecialchars($order["phone"]); ?></div>
+                                                <div><?= htmlspecialchars($order["delivery_address"]); ?></div>
+                                                <?php if (isset($order["billing_address"])): ?>
+                                                    <div><?= htmlspecialchars($order["billing_address"]); ?></div>
+                                                <?php endif; ?>
+                                            </div>
+
+                                            <?php if (isset($order["company_name"]) && isset($order["tax_number"])): ?>
+                                                <div class="timeline-section">Céges adatok</div>
+                                                <div><?= htmlspecialchars($order["company_name"]); ?></div>
+                                                <div><?= htmlspecialchars($order["tax_number"]); ?></div>
+                                            <?php endif; ?>
+                                            <div class="timeline-section">Tételek</div>
+                                            <div class="order-items">
+                                                <ul>
+                                                    <?php foreach ($order["items"] as $item): ?>
+                                                        <li>
+                                                            <?= htmlspecialchars($item["name"]); ?>
+                                                             - 
+                                                            <?= htmlspecialchars($item["quantity"]); ?> db
+                                                        </li>
+                                                    <?php endforeach; ?>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php else: ?>
+                            <div class="error-message"><?= is_null($orders) ? "Még nincsenek rendeléseid." : htmlspecialchars($orders); ?></div>
+                        <?php endif; ?>
                     </div>
                 </div>
                 <div class="content-page"></div> <!-- Jelszó -->

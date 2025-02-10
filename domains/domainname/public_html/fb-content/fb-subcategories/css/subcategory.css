@@ -296,7 +296,6 @@ main {
 }
 
 .card {
-    aspect-ratio: 3 / 4;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -307,6 +306,7 @@ main {
   }
   
   .card > .card-image {
+    aspect-ratio: 1 / 1;
     width: 100%;
     height: 100%;
     overflow: hidden;
@@ -442,6 +442,9 @@ main {
     gap: 0.5rem;
   
     & > .name {
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
       font-family: "Playfair Display";
       font-size: min(4vw, 25px);
     }

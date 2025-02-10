@@ -536,6 +536,85 @@ body {
     color: white;
 }
 
+.order-timeline {
+    --border-color: grey;
+    --event-color: lightgray;
+    --border-width: 2px;
+    --event-border-width: 2px;
+    --event-left-padding: 2rem;
+    --timeline-circle-size: 1rem;
+
+    border-left: var(--border-width) solid var(--border-color);
+    padding-left: var(--event-left-padding);
+    padding-block: 1rem;
+
+    & > .timeline-event {
+        margin-block: 2rem;
+        position: relative;
+        width: fit-content;
+        max-width: 600px;
+        display: flex;
+        flex-wrap: wrap;
+        padding: 1rem;
+        background-color: #272626;
+        border: var(--event-border-width) solid rgb(48, 47, 47);
+        box-shadow: 0 0 5px rgb(39, 38, 38);
+    }
+
+    & > .timeline-event::before {
+        background-color: #1d1d1d;
+        content: '';
+        position: absolute;
+        top: 1.3rem;
+        left: calc(calc(var(--event-left-padding) * -1) - calc(var(--timeline-circle-size) / 2) - calc(var(--border-width) / 2) - var(--event-border-width));
+        width: var(--timeline-circle-size);
+        height: var(--timeline-circle-size);
+        border: var(--border-width) solid var(--event-color);
+        border-radius: 50%;
+    }
+
+    & >.timeline-event > .event-date {
+        font-weight: bold;
+        font-size: 25px;
+    }
+
+    & > .timeline-event > .event-body {
+        width: 100%;
+        color: #b6b4b4;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    & ul {
+        padding-left: var(--event-left-padding);
+    }
+
+    & .timeline-section {
+        color: #eeeeee;
+    }
+
+    & .total {
+        color: #baee2c;
+        font-size: 20px;
+    }
+
+    & hr {
+        opacity: 0.5;
+        margin-block: 1rem;
+    }
+
+    & span.id-number {
+        color: #e4e4e4;
+        font-weight: bold;
+        font-family: Consolas;
+    }
+
+    & *, *::before {
+        box-sizing: border-box;
+    }
+}
+
 .didyouknow {
     border: 4px solid #2c5227;
     margin-top: 1rem;

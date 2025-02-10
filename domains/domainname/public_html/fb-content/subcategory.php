@@ -222,7 +222,7 @@
                             </div>
                             </div>
                             <div class="card-body">
-                            <div class="name">
+                            <div class="name" title="<?= htmlspecialchars($product["name"]); ?>">
                                 <?= htmlspecialchars($product["name"]); ?>
                             </div>
                             <div class="price" aria-label="Ár">
