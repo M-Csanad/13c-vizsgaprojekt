@@ -310,7 +310,6 @@ class Checkout {
     closeErrorOverlay() {
         if (!this.overlayOpen) return;
 
-        
         gsap.to(this.errorOverlaySelector, {
             opacity: 0,
             duration: 0.8,
@@ -324,7 +323,9 @@ class Checkout {
                 gsap.set('#checkout-error-icon', {opacity: 0, scale: 0});
             }
         })
+
         this.overlayOpen = false;
+        this.orderPlaced = false;
     }
 
     // Beviteli mező validálása
@@ -593,6 +594,8 @@ class Checkout {
 
     // Backend metódusok
     async placeOrder() {
+        if (this.orderPlaced) return;
+
         const isValid = this.validateForm();
         if (!isValid) return;
 
@@ -606,11 +609,8 @@ class Checkout {
         
         const result = await APIFetch("/api/order/place", "POST", data, false);
         
-        this.orderPlaced = false;
         if (result.ok) {
             const data = await result.json();
-
-            // Animáció
             this.openResultOverlay("success");
         } else {
             this.openResultOverlay('error');
