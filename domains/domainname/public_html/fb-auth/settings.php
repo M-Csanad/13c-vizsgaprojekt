@@ -18,10 +18,53 @@
     }
 
     // Felhasználó rendeléseinek lekérdezése
+    $orders = [];
     $result = selectData(
-        "SELECT order FROM order
-            INNER JOIN order_item ON order_item.order_id=order.id
-            INNER JOIN product ON order_item.product_id = product.id")
+        "SELECT `order`.id, `order`.email, `order`.phone, CONCAT(`order`.last_name, ' ', `order`.first_name) as full_name, 
+        `order`.company_name, `order`.tax_number, `order`.billing_address, `order`.delivery_address, `order`.status, 
+        `order`.order_total, `order`.created_at 
+        FROM `order` WHERE `order`.user_id=?", $user['id'], 'i'
+    );
+
+    if ($result->isSuccess()) {
+        foreach ($result->message as $order) {
+            $orderId = $order["id"];
+            unset($order["id"]);
+
+            $orders[$orderId] = $order;
+        }
+
+        // Rendeléshez tartozó termékek lekérdezése
+        $result = selectData(
+            "SELECT product.name, order_item.quantity, order.id as order_id FROM order_item 
+            INNER JOIN `order` ON order_item.order_id=`order`.id
+            INNER JOIN product ON order_item.product_id=product.id 
+            WHERE `order`.user_id=?", $user['id'], 'i'
+        );
+
+        if ($result->isSuccess()) {
+            foreach ($result->message as $orderItems) {
+                $orderId = $orderItems["order_id"];
+                unset($orderItems["order_id"]);
+
+                $orders[$orderId]["items"] = $orderItems;
+            }
+        }
+        else if ($result->isEmpty()) {
+            $orders = null;
+        }
+        else {
+            $orders = "Hiba merült fel a rendelésekhez tartozó termékek lekérdezése során. Kérjük próbáld újra később.";
+        }
+    }
+    else if ($result->isEmpty()) {
+        $orders = null;
+    }
+    else {
+        $orders = $result->toJSON(true);
+    }
+
+    var_dump($orders);
 ?>
 <!DOCTYPE html>
 <html lang="hu">

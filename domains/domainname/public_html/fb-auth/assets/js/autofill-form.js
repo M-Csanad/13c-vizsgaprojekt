@@ -60,7 +60,7 @@ class AutofillForm {
             autofillName: (e) => e.length > 0,
             zipCode: /^[1-9]{1}[0-9]{3}$/,
             city: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
-            streetHouse: /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(\.|(?:\/[A-Z]+(?: \d+\/\d+)?))$/
+            streetHouse: /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+(?: [A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)? [a-záéíóöőúüű]{2,} \d{1,}(\.?|(?:\/[A-Z]+(?: \d+\/\d+)?))$/
         };
         
         this.cardsContainer = this.formWrapper.previousElementSibling;

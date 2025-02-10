@@ -43,36 +43,35 @@ function newOrder($data) {
         return $result;
     }
 
-    if ($isLoggedIn) {
-        // Rendelés adatainek lekérdezése az email tartalomhoz
-        $orderData = getOrderFromId($orderId);
-        if (!$orderData->isSuccess()) {
-            return new Result(Result::ERROR, "Nem található a feltöltött rendelés.");
-        }
-        $orderData = $orderData->message[0];
-
-        $recipient = [
-            "email" => $data["customer"]["email"],
-            "name" => $data["customer"]["lastName"]." ".$data["customer"]["firstName"]
-        ];
-
-        $orderDetails = [
-            "orderNumber" => $orderData["id"],
-            "orderDate" => $orderData["created_at"],
-            "orderTotal" => $total,
-            "items" => $cart
-        ];
-        
-        // Levél aszinkron küldése
-        $mail = [
-            "subject" => "Rendelés visszaigazolva",
-            "body" => Mail::getMailBody("order", $recipient["name"], $orderDetails),
-            "alt" => Mail::getMailAltBody("order", $recipient["name"], $orderDetails)
-        ];
-
-        $mailer = new Mail();
-        $mailer->sendTo($recipient, $mail, true);
+    // Rendelés adatainek lekérdezése az email tartalomhoz
+    $orderData = getOrderFromId($orderId);
+    if (!$orderData->isSuccess()) {
+        return new Result(Result::ERROR, "Nem található a feltöltött rendelés.");
     }
+    $orderData = $orderData->message[0];
+
+    $recipient = [
+        "email" => $data["customer"]["email"],
+        "name" => $data["customer"]["lastName"]." ".$data["customer"]["firstName"]
+    ];
+
+    $orderDetails = [
+        "orderNumber" => $orderData["id"],
+        "orderDate" => $orderData["created_at"],
+        "orderTotal" => $total,
+        "items" => $cart
+    ];
+    
+    // Levél aszinkron küldése
+    $mail = [
+        "subject" => "Rendelés visszaigazolva",
+        "body" => Mail::getMailBody("order", $recipient["name"], $orderDetails),
+        "alt" => Mail::getMailAltBody("order", $recipient["name"], $orderDetails)
+    ];
+
+    $mailer = new Mail();
+    $mailer->sendTo($recipient, $mail, true);
+    
     return new Result(Result::SUCCESS, "Rendelés feltöltve és email elküldve.");
 }
 
