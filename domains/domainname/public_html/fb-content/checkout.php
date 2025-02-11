@@ -54,6 +54,7 @@
     <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="stylesheet" href="/fb-content/assets/css/checkout.css">
+    <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.14/dist/lenis.css" />
     <link rel="stylesheet" href="/fb-content/assets/css/confetti.css">
 

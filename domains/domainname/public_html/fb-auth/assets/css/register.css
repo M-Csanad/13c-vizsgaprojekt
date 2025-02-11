@@ -13,7 +13,7 @@ body {
     width: 100%;
     align-items: center;
     justify-content: center;
-    font-family: Raleway;
+    font-family: Karla;
     font-weight: 500;
     overflow-y: hidden;
 }
@@ -97,7 +97,7 @@ form {
         width: 80%;
         
         h1 {
-            font-size: 35px;
+            font-size: 40px;
         }
 
         div {

@@ -25,6 +25,7 @@ if ($result->isSuccess()) {
     <link rel="stylesheet" href="./fb-auth/assets/css/register.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="shortcut icon" href="./fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
 
     <script async defer src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>

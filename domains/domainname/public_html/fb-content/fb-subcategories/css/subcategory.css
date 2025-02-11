@@ -11,19 +11,11 @@
     font-style: normal;
     font-display: swap;
 }
-  
-@font-face {
-    font-family: "Roboto";
-    src: url("../../assets/font/Roboto-Regular.woff2") format("woff2");
-    /* font-weight: 100 900; A betűtípus vastagsági tartománya */
-    font-style: normal;
-    font-display: swap;
-}
 
 body {
     background-color: #1d1d1d;
     color: white;
-    font-family: Roboto;
+    font-family: Karla;
     height: calc(100vh - 100px) !important;
 }
 
