@@ -27,12 +27,22 @@ class Mail {
             $recipientBase64 = base64_encode(json_encode($recipients, JSON_UNESCAPED_UNICODE));
             $mailBase64 = base64_encode(json_encode($mail, JSON_UNESCAPED_UNICODE));
 
+            // PATH ellenőrzés és javítás
+            $phpDir = "C:\\xampp\\php";
+            $currentPath = getenv('PATH');
+
+            if (strpos($currentPath, $phpDir) === false) {
+                putenv('PATH=' . $currentPath . ';' . $phpDir);
+            }
+
+            // Parancs elkészítése
             if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
                 $command = "start /B php $dir/mail_async_worker.php $recipientBase64 $mailBase64 > NUL 2>&1";
             } else {
                 $command = "php $dir/mail_async_worker.php $recipientBase64 $mailBase64 > /dev/null 2>&1 &";
             }
 
+            // Háttérfolyamat indítása
             pclose(popen($command, "r"));
             return new Result(Result::SUCCESS, 'Email küldés aszinkron módban.');
         }

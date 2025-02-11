@@ -204,7 +204,7 @@
                                     </picture>
                                 </a>
                             <div class="button-wrapper">
-                                <button class="quick-add">
+                                <button class="quick-add" id="<?= htmlspecialchars(format_str($product["name"])); ?>">
                                 <div>Kosárba</div>
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"

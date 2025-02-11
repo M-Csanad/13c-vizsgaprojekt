@@ -325,7 +325,7 @@
         </form>
         <div class="order-details">
             <header>Összesítő</header>
-            <div class="items">
+            <div class="items" data-lenis-prevent>
                 <?php foreach ($cart as $item): ?>
                     <?php 
                         $thumbnail_uri = explode('.', $item['thumbnail_uri'])[0];

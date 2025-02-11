@@ -62,7 +62,8 @@ else {
             ) AS thumbnail_uri 
             FROM cart INNER JOIN product ON cart.product_id=product.id 
             INNER JOIN product_page ON cart.page_id=product_page.id 
-            WHERE cart.user_id=?;", intval($user['id']), "i");
+            WHERE cart.user_id=?
+            ORDER BY product.name;", intval($user['id']), "i");
                     
         if ($result->isError()) {
             http_response_code(500);

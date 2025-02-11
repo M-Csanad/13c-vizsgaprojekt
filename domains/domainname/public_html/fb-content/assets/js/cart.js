@@ -93,6 +93,8 @@ class Cart {
 
         // Kosárba rakó gombok
         this.cartAddButtons = document.querySelectorAll(".add-to-cart");
+        this.quickAddButtons = document.querySelectorAll(".quick-add");
+
         this.quantityInput = document.querySelector(".product-quantity");
 
         // Kosár mérete
@@ -121,9 +123,12 @@ class Cart {
     bindEvents() {
         this.openButton.addEventListener("click", this.open.bind(this));
         this.closeButton.addEventListener("click", this.close.bind(this));
+
         this.cartAddButtons.forEach((button) =>
             button.addEventListener("click", this.add.bind(this))
         );
+
+        this.quickAddButtons?.forEach(button => button.addEventListener("click", () => this.add(this.getUrlFromCard(button))));
 
         this.cartContainer.addEventListener("click", async (e) => {
             if (e.target.closest('.item-remove')) {
@@ -301,11 +306,15 @@ class Cart {
         }
     }
 
+    getUrlFromCard(card) {
+        return this.url + "/" + card.id;
+    }
+
     // Backend metódusok
     // Hozzáad egy terméket a kosárhoz
-    async add() {
+    async add(url = null) {
         const result = await APIFetch("/api/cart/add", "POST", {
-            url: this.url,
+            url: url ? url : this.url,
             qty: this.quantityInput ? Number(this.quantityInput.value) : 1,
         });
 
