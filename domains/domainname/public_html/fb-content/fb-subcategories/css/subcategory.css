@@ -289,7 +289,7 @@ main {
 
 .cards {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: minmax(auto, 500px) minmax(auto, 500px);
     grid-auto-rows: max-content;  
     
     gap: 1rem;
@@ -507,7 +507,7 @@ main {
 
 @media screen and (min-width: 950px){
     .cards {
-        grid-template-columns: auto auto auto;
+        grid-template-columns: minmax(auto, 500px) minmax(auto, 500px) minmax(auto, 500px);
     }
 
     .filters {
