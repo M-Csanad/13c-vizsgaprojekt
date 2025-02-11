@@ -1,4 +1,4 @@
-<?php 
+<?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 
 $base_url = "http://localhost";
@@ -14,8 +14,8 @@ $footerData = [
             ['text' => 'Szerzői jog', 'url' => '#'],
         ],
         'Csapatunk' => [
-            ['name' => 'Csanád', 'url' => '#', 'icon' => 'construct-outline'],
-            ['name' => 'Máté', 'url' => '#', 'icon' => 'construct-outline'],
+            ['name' => 'Csanád', 'url' => "$base_url/about-us", 'icon' => 'construct-outline'],
+            ['name' => 'Máté', 'url' => "$base_url/about-us", 'icon' => 'construct-outline'],
         ],
         'Sitemap' => [
             ['text' => 'Keresés & Sitemap', 'url' => '#'],
