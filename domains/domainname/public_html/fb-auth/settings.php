@@ -414,7 +414,63 @@
                         <?php endif; ?>
                     </div>
                 </div>
-                <div class="content-page"></div> <!-- Jelszó -->
+                <div class="content-page">
+                    <div class="content-main">
+                        <div class="page-title">Jelszó</div>
+                        <div class="page-info">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="#94d8ff" class="bi bi-info-circle" viewBox="0 0 16 16">
+                                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                            </svg>
+                            <p>Kérjük, hogy fiókod biztonsága érdekében időről időre változtasd meg a jelszavad.</p>
+                        </div>
+                        <div class="divider">Jelszó módosítása</div>
+                        <div class="notice">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-shield-exclamation" viewBox="0 0 16 16">
+                                <path d="M5.338 1.59a61 61 0 0 0-2.837.856.48.48 0 0 0-.328.39c-.554 4.157.726 7.19 2.253 9.188a10.7 10.7 0 0 0 2.287 2.233c.346.244.652.42.893.533q.18.085.293.118a1 1 0 0 0 .101.025 1 1 0 0 0 .1-.025q.114-.034.294-.118c.24-.113.547-.29.893-.533a10.7 10.7 0 0 0 2.287-2.233c1.527-1.997 2.807-5.031 2.253-9.188a.48.48 0 0 0-.328-.39c-.651-.213-1.75-.56-2.837-.855C9.552 1.29 8.531 1.067 8 1.067c-.53 0-1.552.223-2.662.524zM5.072.56C6.157.265 7.31 0 8 0s1.843.265 2.928.56c1.11.3 2.229.655 2.887.87a1.54 1.54 0 0 1 1.044 1.262c.596 4.477-.787 7.795-2.465 9.99a11.8 11.8 0 0 1-2.517 2.453 7 7 0 0 1-1.048.625c-.28.132-.581.24-.829.24s-.548-.108-.829-.24a7 7 0 0 1-1.048-.625 11.8 11.8 0 0 1-2.517-2.453C1.928 10.487.545 7.169 1.141 2.692A1.54 1.54 0 0 1 2.185 1.43 63 63 0 0 1 5.072.56"/>
+                                <path d="M7.001 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.553.553 0 0 1-1.1 0z"/>
+                            </svg>
+                            <p>Fontos, hogy olyan jelszót használj, amit máshol még nem használtál, ezzel növelve fiókod biztonságát.</p>
+                        </div>
+                        <form class="password-form" data-lenis-prevent>
+                            <div class="form-body-wrapper">
+                                <div class="input-group" tabindex="-1">
+                                    <div class="input-body" tabindex="-1">
+                                        <label for="old-pass">Régi jelszó</label>
+                                        <input type="password" name="old-pass" id="old-pass" autocomplete="current-password"  required tabindex="1">
+                                    </div>
+                                    <div class="message-wrapper">
+                                        <div class="error-message"></div>
+                                    </div>
+                                </div>
+                                <div class="input-group-inline" tabindex="-1">
+                                    <div class="input-group" tabindex="-1">
+                                        <div class="input-body" tabindex="-1">
+                                            <label for="new-pass">Új jelszó</label>
+                                            <input type="password" name="new-pass" id="new-pass" autocomplete="new-password"  required tabindex="1">
+                                        </div>
+                                        <div class="message-wrapper">
+                                            <div class="error-message"></div>
+                                        </div>
+                                    </div>
+                                    <div class="input-group" tabindex="-1">
+                                        <div class="input-body" tabindex="-1">
+                                            <label for="new-pass-confirm">Új jelszó mégegyszer</label>
+                                            <input type="password" name="new-pass-confirm" id="new-pass-confirm" autocomplete="new-password" required tabindex="1">
+                                        </div>
+                                        <div class="message-wrapper">
+                                            <div class="error-message"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="message-container">
+                                    
+                                </div>
+                                <button type="button" class="action-button">Módosítás</button>
+                            </div>
+                        </form>
+                    </div>
+                </div> <!-- Jelszó -->
             </div>
         </div>
     </div>

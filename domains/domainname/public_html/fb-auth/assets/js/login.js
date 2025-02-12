@@ -106,6 +106,7 @@ const validationRegex = {
     "length": /^.{8,64}$/,
     "lowercase": /[a-z]/,
     "uppercase": /[A-Z]/,
+    "number": /[0-9]/,
     "specialCharacter": /[!@#$%^&*()_\-+=\[\]{}|\\;:'",.<>\/?~`]/
   }
 };

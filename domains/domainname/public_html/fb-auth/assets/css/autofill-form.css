@@ -33,7 +33,7 @@
     
     & header {
         margin-top: 2rem;
-        font-family: Raleway;
+        font-family: Karla;
         font-size: 30px;
         margin-bottom: 1rem;
     }
@@ -59,7 +59,7 @@
         background-color: #1d1d1d;
         border: 2px solid grey;
         color: grey;
-        font-family: Raleway;
+        font-family: Karla;
         font-size: 16px;
         border-radius: 5px;
         cursor: pointer;
@@ -78,7 +78,7 @@
         background-color: #1d1d1d;
         border: 2px solid greenyellow;
         color: greenyellow;
-        font-family: Raleway;
+        font-family: Karla;
         font-size: 16px;
         border-radius: 5px;
         cursor: pointer;

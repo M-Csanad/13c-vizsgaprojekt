@@ -35,7 +35,7 @@ $rules = [
     ],
     "street_house" => [
         "rule" => '/^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(?:\/[A-Z]+)?$/',
-        "Hibás utca és házszám."
+        "message" => "Hibás utca és házszám."
     ]
 ];
 

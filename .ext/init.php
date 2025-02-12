@@ -3,6 +3,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 include_once __DIR__.'/../.packs/ffmpeg/ffmpeg_automatization.php';
 include_once 'classes/queryresult.php';
 include_once 'classes/mail.php';
+include_once 'classes/inputvalidator.php';
 include_once 'db_connect.php';
 include_once 'login_register_functions.php';
 include_once 'cookie_session_functions.php';

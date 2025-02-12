@@ -62,6 +62,8 @@ class AutofillForm {
             city: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
             streetHouse: /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+(?: [A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)? [a-záéíóöőúüű]{2,} \d{1,}(\.?|(?:\/[A-Z]+(?: \d+\/\d+)?))$/
         };
+
+        this.titleDom = this.formDom.querySelector("header");
         
         this.cardsContainer = this.formWrapper.previousElementSibling;
         this.savedCardsContainer = this.cardsContainer?.querySelector(".saved-cards");
@@ -78,7 +80,11 @@ class AutofillForm {
     bindEvents() {
         // Gombok kattintási eseményei
         this.savedCardsContainer.addEventListener("click", this.handleCardClick.bind(this));
-        this.openButton.addEventListener("click", this.open.bind(this));
+        this.openButton.addEventListener("click", () => {
+            this.reset();
+            this.state = "add";
+            this.open();
+        });
         this.closeButton.addEventListener("click", this.close.bind(this));
         this.saveButton.addEventListener("click", this.save.bind(this));
         this.cacelButton.addEventListener("click", this.cancel.bind(this));
@@ -91,7 +97,7 @@ class AutofillForm {
         });
 
         // Beviteli mező fókusz eseményei
-        document.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
+        this.formDom.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
 
         // Beviteli mezők validálási eseményei
         for (let field in this.form) {
@@ -217,6 +223,8 @@ class AutofillForm {
         this.isOpen = true;
         lenis.stop();
 
+        this.updateFormTitle();
+
         if (this.state == "modify" && card) {
             this.form.autofillName.value = card.name;
             this.form.zipCode.value = card.zip;
@@ -291,11 +299,16 @@ class AutofillForm {
         }
     }
 
-    reset() {
+    reset(uiReset = false) {
+        if (uiReset) this.close();
+
         this.formDom.reset();
-        this.close();
         this.dropFocus();
         this.resetValidity();
+    }
+
+    updateFormTitle() {
+        this.titleDom.innerHTML = this.state == "add" ? "Új szállítási cím" : "Szállítási cím módosítása";
     }
 
     // Kártya metódusok
@@ -439,14 +452,14 @@ class AutofillForm {
                 this.addCard(card[0]);
             }
 
-            this.reset();
+            this.reset(true);
         } else {
             console.log(result);
         }
     }
 
     cancel() {
-        this.reset();
+        this.reset(true);
     }
 
     async remove(card, element) {

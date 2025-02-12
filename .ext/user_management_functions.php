@@ -1,4 +1,5 @@
 <?php
+include_once "init.php";
 /**
   * Lekéri a felhasználó adatait
   *
@@ -9,7 +10,6 @@
   * @return result
   */
 function getUserData($userId = null) {
-    include_once "init.php";
 
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
@@ -59,13 +59,15 @@ function getUserData($userId = null) {
     }
 }
 
-function modifyUserData($userId, $userData) {
-    include_once "init.php";
-    var_dump($userData);
+function getHashedPassword($userId) {
+    return selectData("SELECT user.password FROM user WHERE user.id=?", $userId, 'i');
+}
+
+function modifyPassword($userId, $old, $new) {
+
 }
 
 function modifyRole($userId, $role) {
-    include_once "init.php";
     $result = updateData("UPDATE user SET user.role = ? WHERE user.id = ?", [$role, $userId], "si");
 
     return $result;
