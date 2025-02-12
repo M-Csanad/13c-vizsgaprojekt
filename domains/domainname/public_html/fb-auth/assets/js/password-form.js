@@ -171,11 +171,10 @@ class PasswordForm {
     }
 
     async send() {
-        // if (!this.validateForm()) return;
+        if (!this.validateForm()) return;
 
         const data = this.getFormData(true);
         const response = await APIFetch("/api/settings/newpassword", "PUT", data);
-        console.log(response);
     }
 }
 
