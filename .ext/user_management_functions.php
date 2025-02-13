@@ -60,11 +60,11 @@ function getUserData($userId = null) {
 }
 
 function getHashedPassword($userId) {
-    return selectData("SELECT user.password FROM user WHERE user.id=?", $userId, 'i');
+    return selectData("SELECT user.password_hash FROM user WHERE user.id=?", $userId, 'i');
 }
 
-function modifyPassword($userId, $old, $new) {
-
+function modifyPassword($userId, $new) {
+    return updateData("UPDATE user SET password_hash=? WHERE id=?", [$new, $userId], 'si');
 }
 
 function modifyRole($userId, $role) {

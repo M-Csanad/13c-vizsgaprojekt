@@ -297,27 +297,48 @@ body {
 
 .password-form {
     width: 100%;
-    max-width: 600px;
+    /* max-width: 1000px; */
 
     & .message-container {
-        width: 100%;
+        width: calc(50% - 0.25rem);
+        text-align: center;
         overflow: hidden;
+        will-change: height;
+        visibility: hidden;
+        height: 0;
     }
     
     & .message-container > .message {
-        margin-block: 1rem;
+        opacity: 0;
         width: 100%;
         text-align: center;
+        padding: 0.5rem;
+        border-radius: 5px;
+        will-change: opacity;
+    }
+
+    & .message-container > .message.success {
+        background-color: #94c9441f;
+        color: #a5e04d;
+        border: 1px solid #a5e04d;
+    }
+
+    & .message-container > .message.error {
+        background-color: #96171721;
+        border: 1px solid #ff4b4b;
+        color: #ff4b4b;
     }
 
     & .action-button {
+        margin-top: 1rem;
         font-size: 16px;
         font-family: Karla;
-        width: 100%;
+        width: calc(50% - 0.25rem);
         height: 48px;
         border: 1px solid #9cafb9;
         color: #b9c9d3;
         background-color: #cfedff0e;
+        box-shadow: 0 0 5px #94d8ff6e;
         border-radius: 5px;
         cursor: pointer;
         transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease;
@@ -750,6 +771,14 @@ body {
     .sidebar-wrapper {
         max-height: fit-content;
     }
+
+    .action-button {
+        width: 100% !important;
+    }
+
+    .message-container {
+        width: 100% !important;
+    }
 }
 
 @media screen and (max-width: 991px) {
@@ -806,6 +835,16 @@ body {
     .page-title {
         text-align: center;
         font-size: 35px;
+    }
+
+    .input-group-inline {
+        flex-direction: column;
+        gap: 0 !important;
+        margin-bottom: 2rem;
+    }
+
+    .input-group-inline > * {
+        width: 100% !important;
     }
 }
 
