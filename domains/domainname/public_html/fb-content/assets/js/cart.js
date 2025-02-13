@@ -128,7 +128,7 @@ class Cart {
             button.addEventListener("click", this.add.bind(this))
         );
 
-        this.quickAddButtons?.forEach(button => button.addEventListener("click", () => this.add(this.getUrlFromCard(button))));
+        this.quickAddButtons?.forEach(button => button.addEventListener("click", () => this.add(null, this.getUrlFromCard(button))));
 
         this.cartContainer.addEventListener("click", async (e) => {
             if (e.target.closest('.item-remove')) {
@@ -312,7 +312,7 @@ class Cart {
 
     // Backend metódusok
     // Hozzáad egy terméket a kosárhoz
-    async add(url = null) {
+    async add(e, url = null) {
         const result = await APIFetch("/api/cart/add", "POST", {
             url: url ? url : this.url,
             qty: this.quantityInput ? Number(this.quantityInput.value) : 1,
