@@ -35,15 +35,18 @@ function getUserData($userId = null) {
         $sessionUserId = $_SESSION["user_id"];
         return selectData("SELECT CAST(user.id AS INT) AS id, user.email, 
             user.user_name, user.role, user.first_name, 
-            user.last_name, user.pfp_uri,user.created_at 
-            FROM user WHERE user.id = ?", (isset($userId)) ? $userId : $sessionUserId, "i");
+            user.last_name, avatar.uri AS pfp_uri, user.created_at 
+            FROM user 
+            INNER JOIN avatar ON user.avatar_id=avatar.id
+            WHERE user.id = ?", (isset($userId)) ? $userId : $sessionUserId, "i");
     }
     else if (isset($_COOKIE["rememberMe"])) { // Ha nem userId-t adunk meg, akkor leellenőrizzük a sütit-t.
         
         $cookieToken = $_COOKIE["rememberMe"];
         $result = selectData("SELECT CAST(user.id AS INT) AS id, user.email, user.user_name, user.role, user.first_name, 
-                                    user.last_name, user.pfp_uri, user.created_at, user.cookie_expires_at
+                                    user.last_name, avatar.uri AS pfp_uri, user.created_at, user.cookie_expires_at
                                 FROM user
+                                INNER JOIN avatar ON user.avatar_id=avatar.id
                                 WHERE user.cookie_id = ? 
                                 AND user.cookie_expires_at > ?",
                                 [$cookieToken, time()], "si");
