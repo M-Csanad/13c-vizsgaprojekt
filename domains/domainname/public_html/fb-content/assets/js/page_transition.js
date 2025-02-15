@@ -22,27 +22,15 @@ window.addEventListener("load", () => {
             }
         }
     }
-    const ease = "power3.inOut";
+    const ease = "power2.inOut";
     const inParams = {
         scaleY: 0, 
-        duration: 1,
-        stagger: {
-            each: 0.05,
-            from: "start",
-            grid: "auto",
-            axis: "x"
-        },
+        duration: 0.3,
         ease: ease
     }
     const outParams = {
         scaleY: 1, 
-        duration: 1,
-        stagger: {
-            each: 0.05,
-            from: "start",
-            grid: "auto",
-            axis: "x"
-        },
+        duration: 0.3,
         ease: ease
     }
 
@@ -107,57 +95,43 @@ window.addEventListener("load", () => {
         setTimeout(() => {
             revealPageTransition(inParams).then(() => { 
                 isAnimating = false;
-                gsap.set(".block", { visibility: "hidden" });
+                gsap.set(".transition-background", { visibility: "hidden" });
             });
-        }, 100)
+        }, 200)
     });
 });
 
 function revealPageTransition(inParams) {
     return new Promise((resolve) => {
         isAnimating = true;
-        gsap.set(".block", { scaleY: 1 });
-
-        gsap.to(".layer-0 .block", { 
-            ...inParams,
-        });
-        gsap.to(".quote > .char", {
-            y: "-100%",
-            stagger: {
-                each: 0.005,
-                from: "start",
-                grid: "auto",
-                axis: "x"
-            },
-            duration: 0.5,
+        gsap.to(".transition-background", { 
+            opacity: 0,
+            duration: 0.3,
             ease: inParams.ease,
-            delay: 0.1
+            onComplete: resolve
+        })
+        gsap.to(".quote > .char", {
+            opacity: 0,
+            // stagger: {
+            //     each: 0.005,
+            //     from: "start",
+            //     grid: "auto",
+            //     axis: "x"
+            // },
+            duration: 0.3,
+            ease: inParams.ease,
         })
         gsap.to(".hero > .char", {
-            y: "-100%",
-            stagger: {
-                each: 0.01,
-                from: "start",
-                grid: "auto",
-                axis: "x"
-            },
-            duration: 1,
+            opacity: 0,
+            // stagger: {
+            //     each: 0.01,
+            //     from: "start",
+            //     grid: "auto",
+            //     axis: "x"
+            // },
+            duration: 0.3,
             ease: inParams.ease,
-            delay: 0.1
-        });
-        gsap.to(".layer-1 .block", { 
-            ...inParams,
-            delay: 0.1,
-        });
-        gsap.to(".layer-2 .block", { 
-            ...inParams,
-            delay: 0.2,
-        });
-
-        gsap.to(".layer-3 .block", { 
-            ...inParams,
-            delay: 0.25,
-            onComplete: resolve
+            
         });
     });
 }

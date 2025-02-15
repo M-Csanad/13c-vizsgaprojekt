@@ -25,8 +25,7 @@ if ($user->isSuccess()) {
 }
 
 if (!$isLoggedIn) {
-    http_response_code(400);
-    $result = new Result(Result::DENIED, "Csak bejelentkezett felhasználó indíthat kéréseket!");
+    $result = new Result(Result::EMPTY, []);
     echo $result->toJSON();
     exit();
 }

@@ -1,3 +1,5 @@
+import APIFetch from '/fb-content/assets/js/apifetch.js';
+
 const isMobile = (getComputedStyle(document.body).getPropertyValue("--is-mobile") == "1") || (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
 
 const form = document.querySelector(".review-form");
@@ -50,18 +52,14 @@ if (reviewSubmitter) {
       body.classList.add("invalid");
       return;
     }
-  
-    const response = await fetch("../../../review", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
+
+    const response = await APIFetch("/api/review", "PUT", 
+      {
         "review-title": title.value,
         "review-body": body.value,
         "rating": rating
-      })
-    });
+      },
+    true);
     
     if (response.ok) {
       reviewSubmitter.classList.remove("unsuccessful");

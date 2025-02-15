@@ -17,8 +17,8 @@ $rules = [
         "rule" => function ($e) {return $e === "delivery" || $e === "billing"; },
         "message" => "Hibás típus."
     ],
-    "name" => [
-        "rule" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
+    "autofill-name" => [
+        "rule" => function ($e) { return mb_strlen($e) > 0; },
         "message" => "Hibás cím."
     ], 
     "zip" => [
@@ -31,7 +31,7 @@ $rules = [
     ],
     "street_house" => [
         "rule" => '/^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(?:\/[A-Z]+)?$/',
-        "Hibás utca és házszám."
+        "message" => "Hibás utca és házszám."
     ]
 ];
 

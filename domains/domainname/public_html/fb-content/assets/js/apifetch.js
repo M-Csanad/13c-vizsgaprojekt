@@ -7,7 +7,7 @@ const APIFetch = async (url, method, body = null, encode = true) => {
             }
         };
 
-        if (method === 'GET' && body) {
+        if (["GET", "DELETE"].includes(method) && body) {
             const paramString = Object.keys(body).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(body[key])}`).join('&');
             url += '?' + paramString;
         }

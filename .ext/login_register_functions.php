@@ -8,9 +8,8 @@ function register($username, $password, $email, $firstname, $lastname) {
     
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
-    $pfp = "https://ui-avatars.com/api/?name=$lastname+$firstname&background=9CB5A6&bold=true&format=svg";
-    $result = updateData("INSERT INTO user (user_name, email, password_hash, first_name, last_name, pfp_uri) 
-                          VALUES (?, ?, ?, ?, ?, ?)", [$username, $email, $passwordHash, $firstname, $lastname, $pfp], "ssssss");
+    $result = updateData("INSERT INTO user (user_name, email, password_hash, first_name, last_name) 
+                          VALUES (?, ?, ?, ?, ?, ?)", [$username, $email, $passwordHash, $firstname, $lastname], "sssss");
                           
     if ($result->isError()) {
         $error = $result->message;

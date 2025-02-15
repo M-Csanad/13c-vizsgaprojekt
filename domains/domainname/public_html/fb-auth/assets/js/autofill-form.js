@@ -1,10 +1,15 @@
 import APIFetch from "/fb-content/assets/js/apifetch.js";
 
 class AutofillForm {
+    // Frontend tulajdonságok
     isOpen = false;
     ease = "power2.inOut";
     breakpoint = 991;
-    cards = [];
+
+    // Backend tulajdonságok
+    cards = []; // Az összes kártya (adatbázissal szinkronizálva)
+    currentCardId = null; // Az aktuális kártya azonosítója (szerkesztés űrlaphoz)
+    state = "add"; // Az űrlap aktuális feladatköre (add - új cím, modify - cím módosítása)
 
     constructor(type, dom) {
         if (type != "autofill-delivery" && type != "autofill-billing") throw new Error("Ismeretlen típus");
@@ -19,6 +24,7 @@ class AutofillForm {
         this.fetchContent();
     }
 
+    // DOM elemek lekérdezése és eltárolása későbbi használathoz
     initDOM(dom) {
         this.formDom = dom;
         this.formWrapper = dom.parentElement;
@@ -27,22 +33,26 @@ class AutofillForm {
             "autofillName": {
                 "dom": this.formDom.querySelector("[name=autofill-name]"),
                 "errorMessage": "Kérem ne hagyja üresen a címet",
-                get value() { return this.dom?.value }
+                get value() { return this.dom?.value },
+                set value(val) { this.dom.value = val }
             },
             "zipCode": {
                 "dom": this.formDom.querySelector("[name=zip]"),
                 "errorMessage": "Kérem helyes irányítószámot adjon meg",
-                get value() { return this.dom?.value }
+                get value() { return this.dom?.value },
+                set value(val) { this.dom.value = val }
             },
             "city": {
                 "dom": this.formDom.querySelector("[name=city]"),
                 "errorMessage": "Kérem adja meg helyesen a település nevét",
-                get value() { return this.dom?.value }
+                get value() { return this.dom?.value },
+                set value(val) { this.dom.value = val }
             },
             "streetHouse": {
                 "dom": this.formDom.querySelector("[name=street-house]"),
                 "errorMessage": "Kérem a '[közterület neve] [közterület típusa] [házszám]' formátumnak megfelelően töltse ki",
-                get value() { return this.dom?.value }
+                get value() { return this.dom?.value },
+                set value(val) { this.dom.value = val }
             },
         }
 
@@ -50,8 +60,10 @@ class AutofillForm {
             autofillName: (e) => e.length > 0,
             zipCode: /^[1-9]{1}[0-9]{3}$/,
             city: /^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/,
-            streetHouse: /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(?:\/[A-Z]+)?$/
+            streetHouse: /^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+(?: [A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)? [a-záéíóöőúüű]{2,} \d{1,}(\.?|(?:\/[A-Z]+(?: \d+\/\d+)?))$/
         };
+
+        this.titleDom = this.formDom.querySelector("header");
         
         this.cardsContainer = this.formWrapper.previousElementSibling;
         this.savedCardsContainer = this.cardsContainer?.querySelector(".saved-cards");
@@ -64,12 +76,20 @@ class AutofillForm {
         if (!this.openButton) throw new Error("Nincs kinyitó gomb");
     }
 
+    // Eseménykezelők hozzárendelése elemekhez
     bindEvents() {
-        this.openButton.addEventListener("click", this.open.bind(this));
+        // Gombok kattintási eseményei
+        this.savedCardsContainer.addEventListener("click", this.handleCardClick.bind(this));
+        this.openButton.addEventListener("click", () => {
+            this.reset();
+            this.state = "add";
+            this.open();
+        });
         this.closeButton.addEventListener("click", this.close.bind(this));
         this.saveButton.addEventListener("click", this.save.bind(this));
         this.cacelButton.addEventListener("click", this.cancel.bind(this));
 
+        // Gyors kilépés az ESC gombbal
         this.keyListener = window.addEventListener("keydown", async (e) => {
             if (document.body.contains(this.domElement) && e.code == "Escape") {
                 this.cancel();
@@ -77,7 +97,7 @@ class AutofillForm {
         });
 
         // Beviteli mező fókusz eseményei
-        document.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
+        this.formDom.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
 
         // Beviteli mezők validálási eseményei
         for (let field in this.form) {
@@ -197,11 +217,25 @@ class AutofillForm {
         }
     }
 
-    open() {
+    open(card = null) {
         if (this.isOpen) return;
         
         this.isOpen = true;
         lenis.stop();
+
+        this.updateFormTitle();
+
+        if (this.state == "modify" && card) {
+            this.form.autofillName.value = card.name;
+            this.form.zipCode.value = card.zip;
+            this.form.city.value = card.city;
+            this.form.streetHouse.value = card.street_house;
+
+            this.form.autofillName.dom.dispatchEvent(new Event("focus"));
+            this.form.zipCode.dom.dispatchEvent(new Event("focus"));
+            this.form.city.dom.dispatchEvent(new Event("focus"));
+            this.form.streetHouse.dom.dispatchEvent(new Event("focus"));
+        }
 
         gsap.set(this.formWrapper, {visibility: "visible"});
         gsap.to(this.formWrapper, {
@@ -265,14 +299,21 @@ class AutofillForm {
         }
     }
 
-    reset() {
+    reset(uiReset = false) {
+        if (uiReset) this.close();
+
         this.formDom.reset();
-        this.close();
         this.dropFocus();
         this.resetValidity();
     }
 
-    updateUI() {
+    updateFormTitle() {
+        this.titleDom.innerHTML = this.state == "add" ? "Új szállítási cím" : "Szállítási cím módosítása";
+    }
+
+    // Kártya metódusok
+    // Kártyák frissítése
+    updateCardUI() {
         this.savedCardsContainer.innerHTML = "";
 
         for (let card of this.cards) {
@@ -280,27 +321,69 @@ class AutofillForm {
         }
     }
 
-    // Kártya metódusok
-    addCard(card) {
-        this.cards.push(card);
+    getCardFromElement(element) {
+        const id = element.id.split('-')[1];
+        return this.cards.find(e => e.id == id);
+    }
 
+    getCardElementFromId(id) {
+        return this.savedCardsContainer.querySelector('#card-' + id);
+    }
+
+    handleCardClick(e) {
+        if (e.target.closest('.action-edit')) {
+            this.state = "modify";
+
+            const element = e.target.closest('.card');
+            const card = this.getCardFromElement(element);
+            
+            this.currentCardId = Number(card.id);
+            this.open(card);
+        }
+
+        if (e.target.closest('.action-delete')) {
+            this.state = "delete";
+
+            const element = e.target.closest('.card');
+            const card = this.getCardFromElement(element);
+            
+            this.remove(card, element);
+        }
+    }
+
+    addCard(card) {
+        this.state = "add";
+        this.cards.push(card);
         this.savedCardsContainer.innerHTML += this.getCardHTML(card);
     }
 
-    removeCard(cardId) {
-        this.cards = this.cards.filter(e => e.id !== cardId);
+    removeCard(card, dom) {
+        this.cards = this.cards.filter(e => e.id !== card.id);
+        dom.remove();
     }
 
-    updateCard(card) {
+    updateCard(id, data) {
+        const currentCard = this.getCardElementFromId(id);
+        const currentCardBackend = this.cards.filter(e => e.id == id)[0];
 
+        // Háttér kártya frissítése
+        currentCardBackend.name = data.name;
+        currentCardBackend.zip = data.zip;
+        currentCardBackend.city = data.city;
+        currentCardBackend.street_house = data.street_house;
+
+
+        // Frontend frissítése
+        currentCard.querySelector(".card-title").innerHTML = data.name;
+        currentCard.querySelector(".card-address").innerHTML = `${data.city} ${data.street_house}`;
     }
 
     getCardHTML(card) {
         return `
-            <div class="card">
+            <div class="card" id="card-${card.id}">
                 <div class="card-body">
                     <div class="card-title">${card.name}</div>
-                    <div class="card-address">${card.zip} ${card.city}</div>
+                    <div class="card-address">${card.city} ${card.street_house}</div>
                     <div class="card-actions">
                         <button class="action-edit">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
@@ -318,7 +401,7 @@ class AutofillForm {
         `;
     }
 
-    // Form validáció
+    // Form validáció 
     validateForm() {
         let valid = true;
         for (let field in this.form) {
@@ -333,33 +416,61 @@ class AutofillForm {
         return valid;
     }
 
-    // Backend metódusok
-    async save(e, action = "add") {
-        console.log(action)
-        if (!this.validateForm()) return;
-
+    getFormData(json = false, additional = null) {
         const data = new FormData(this.formDom);
         data.append("type", this.autofillType);
-        const result = await APIFetch(action == "add" ? "/api/autofill/add" : "/api/autofill/update", "POST", data, false);
+
+        if (additional) {
+            for (const [key, value] of Object.entries(additional)) {
+                data.append(key, value);
+            }              
+        }
+        
+        if (json) {
+            const dataJSON = {};
+            data.forEach((value, key) => dataJSON[key] = value);
+            return dataJSON;
+        }
+        return data;
+    }
+
+    // Backend metódusok
+    async save(e) {
+        if (!this.validateForm()) return;
+
+        const isModify = this.state == "modify";
+        const data = this.getFormData(isModify, isModify ? {id: this.currentCardId} : null); // Ha módosítunk, akkor JSON-ben küldjük az adatokat
+        const result = await APIFetch(isModify ? "/api/autofill/update" : "/api/autofill/add", isModify ? "PUT" : "POST", data, isModify);
 
         if (result.ok) {
             const card = await result.json();
-            
-            if (action == "add") {
-                this.addCard(card[0]);
+
+            if (isModify) {
+                this.updateCard(this.currentCardId, card[0]);
             }
             else {
-                this.updateCard();
+                this.addCard(card[0]);
             }
 
-            this.reset();
+            this.reset(true);
         } else {
             console.log(result);
         }
     }
 
-    async cancel() {
-        this.reset();
+    cancel() {
+        this.reset(true);
+    }
+
+    async remove(card, element) {
+        const result = await APIFetch("/api/autofill/remove", "DELETE", {id: card.id, type: this.autofillType});
+
+        if (result.ok) {
+            this.removeCard(card, element);
+        }
+        else {
+            console.log(result);
+        }
     }
 
     async fetchContent() {
@@ -371,7 +482,7 @@ class AutofillForm {
             }
             else {
                 this.cards = adat;
-                this.updateUI();
+                this.updateCardUI();
             }
         } else {
             console.log(result);

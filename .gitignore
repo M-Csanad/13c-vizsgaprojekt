@@ -37,3 +37,7 @@ node_modules/
 bin/*
 
 /vendor/
+
+
+# Képek
+domains/domainname/public_html/fb-content/fb-products/media/images/

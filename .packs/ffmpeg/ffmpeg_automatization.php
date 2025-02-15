@@ -12,7 +12,7 @@ require_once 'error_logger.php';
  * @param int $maxRetries Maximális újrapróbálási szám (alapértelmezett 3).
  * @return void
  */
-function optimizeImage($inputFile, $sizes = [3840, 2560, 1920, 1440, 1024, 768], $quality = 65, $maxRetries = 3)
+function optimizeImage($inputFile, $sizes = [1920, 1440, 1024, 768], $quality = 65, $maxRetries = 3)
 {
     // Ellenőrizzük, hogy a bemeneti fájl létezik-e
     if (!file_exists($inputFile)) {

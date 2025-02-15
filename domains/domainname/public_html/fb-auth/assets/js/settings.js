@@ -1,4 +1,5 @@
 import AutofillForm from "./autofill-form.js";
+import PasswordForm from "./password-form.js";
 
 const isMobile = (getComputedStyle(document.body).getPropertyValue("--is-mobile") == "1") || (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
 let pageLinks;
@@ -25,7 +26,7 @@ for (let page of pageLinks) {
   });
 }
 
-window.addEventListener("load", () => {
+window.addEventListener("DOMContentLoaded", () => {
   let main = document.querySelector(".main");
   let borderElements = document.querySelectorAll(".dynamic-border");
   let logout = document.querySelector(".logout");
@@ -35,6 +36,7 @@ window.addEventListener("load", () => {
   let dyk = document.querySelector(".didyouknow");
 
   document.querySelectorAll('.autofill-form').forEach(form => new AutofillForm(form.classList[0], form));
+  new PasswordForm(document.querySelector('.password-form'));
 
   saveButtons.forEach((e) =>
     e.addEventListener("click", () => {

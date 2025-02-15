@@ -18,7 +18,7 @@ $searchTerm = $_POST['search_term'];
 $searchTerm = "%".$searchTerm."%";
 
 $matches = selectData("SELECT product_page.id, product_page.page_title AS name, SUBSTRING(product_page.page_content, 1, 25) AS content_preview, product_page.page_content, 
-                        category.name AS category_name, subcategory.name AS subcategory_name, image.uri, product_page.category_id, product_page.subcategory_id FROM product_page 
+                        category.name AS category_name, subcategory.name AS subcategory_name, MAX(image.uri) AS uri, product_page.category_id, product_page.subcategory_id FROM product_page 
                         INNER JOIN product ON product_page.product_id=product.id
                         LEFT JOIN category ON product_page.category_id=category.id 
                         LEFT JOIN subcategory ON product_page.subcategory_id=subcategory.id 
@@ -33,4 +33,4 @@ $matches = selectData("SELECT product_page.id, product_page.page_title AS name, 
                         ORDER BY product_page.page_title;", 
                         array_fill(0, 3, $searchTerm), "sss");
 
-echo json_encode($matches, JSON_UNESCAPED_UNICODE);
+echo $matches->toJSON();

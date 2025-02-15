@@ -10,6 +10,7 @@
     justify-content: center;
     align-items: flex-end;
     visibility: hidden;
+    z-index: 9;
 }
 
 .autofill-form {
@@ -21,6 +22,7 @@
     border-radius: 20px 20px 0 0;
     display: flex;
     flex-direction: column;
+    overflow-y: auto;
     
     & > .form-body-wrapper {
         flex-grow: 1;
@@ -31,7 +33,7 @@
     
     & header {
         margin-top: 2rem;
-        font-family: Raleway;
+        font-family: Karla;
         font-size: 30px;
         margin-bottom: 1rem;
     }
@@ -57,7 +59,7 @@
         background-color: #1d1d1d;
         border: 2px solid grey;
         color: grey;
-        font-family: Raleway;
+        font-family: Karla;
         font-size: 16px;
         border-radius: 5px;
         cursor: pointer;
@@ -76,7 +78,7 @@
         background-color: #1d1d1d;
         border: 2px solid greenyellow;
         color: greenyellow;
-        font-family: Raleway;
+        font-family: Karla;
         font-size: 16px;
         border-radius: 5px;
         cursor: pointer;

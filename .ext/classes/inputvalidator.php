@@ -10,10 +10,11 @@ class InputValidator {
     }
 
     public function test(): Result {
+        $hasAnyMatcher = array_key_exists("*", $this->rules);
         foreach ($this->inputs as $field => $value) {
-            if (isset($this->rules[$field])) {
-                $rule = $this->rules[$field]["rule"];
-                $message = $this->rules[$field]["message"];
+            if (isset($this->rules[$field]) || $hasAnyMatcher) {
+                $rule = isset($this->rules[$field]) ? $this->rules[$field]["rule"] : $this->rules["*"]["rule"];
+                $message = isset($this->rules[$field]) ? $this->rules[$field]["message"] : $this->rules["*"]["message"];
 
                 if (is_string($rule)) {
                     if (!preg_match($rule, $value)) {

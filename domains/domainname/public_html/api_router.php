@@ -21,14 +21,24 @@ $routes = [
     '/api/cart/remove' => $API.'/cart_remove.php',
     '/api/cart/update' => $API.'/cart_update.php',
     '/api/cart/merge' => $API.'/cart_merge.php',
+
     '/api/order/place' => $API.'/order_place.php',
     '/api/order/get' => $API.'/order_get.php',
+
     '/api/review' => $API.'/review.php',
+
     '/api/autofill/add' => $API.'/autofill_add.php',
     '/api/autofill/get' => $API.'/autofill_get.php',
+    '/api/autofill/remove' => $API.'/autofill_remove.php',
+    '/api/autofill/update' => $API.'/autofill_update.php',
+
     '/api/auth/dashboard-search' => $API.'/dashboard_search.php',
     '/api/auth/login' => $API.'/login.php',
     '/api/auth/register' => $API.'/register.php',
+
+    '/api/settings/newpassword' => $API.'/new_password.php',
+
+    '/api/search' => $API.'/search.php'
 ];
 
 // Ha az aktuális URL-t tartalmazza a $routes változó, akkor az egy létező végpont.

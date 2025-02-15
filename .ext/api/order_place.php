@@ -28,7 +28,7 @@ $validationRules = [
         "errorMessage" => "Érvénytelen telefonszám"
     ],
     "streetHouse" => [
-        "pattern" => '/^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+ [a-záéíóöőúüű]{2,} \d{1,}(?:\/[A-Z]+)?$/',
+        "pattern" => '/^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+(?: [A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)? [a-záéíóöőúüű]{2,} \d{1,}(\.?|(?:\/[A-Z]+(?: \d+\/\d+)?))$/',
         "errorMessage" => "Érvénytelen házszám (pozitív egész számnak kell lennie)"
     ],
     "sameAddress" => [
@@ -138,12 +138,14 @@ if ($error) {
 // Rendelés leadása
 $result = newOrder($formFields);
 if (!$result->isSuccess()) {
-    echo $result->toJSON();
+    http_response_code(400);
+    echo $result->toJSON(true);
     exit();
 }
 
 $result = clearCart();
 if (!$result->isSuccess()) {
+    http_response_code(400);
     echo $result->toJSON();
     exit();
 }

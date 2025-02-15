@@ -21,5 +21,5 @@ if ($searchTerm) {
                            
     $matches = selectData($query, array_fill(0, 2, $searchTerm), "ss");
                            
-    echo json_encode($matches, JSON_UNESCAPED_UNICODE);
+    echo $matches->toJSON();
 }

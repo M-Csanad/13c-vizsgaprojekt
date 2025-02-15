@@ -74,8 +74,9 @@ class QueryResult extends Result {
     }
 
     // Tömbbé konvertálás felülírása
-    public function toArray(): array {
+    public function toArray($full = false): array {
         $base = parent::toArray();
+        if (!$full) return $base;
 
         $base['rowsAffected'] = $this->affectedRows;
         $base['lastInsertId'] = $this->lastInsertId;
