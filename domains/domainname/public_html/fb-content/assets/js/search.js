@@ -26,14 +26,25 @@ class Search {
         this.closeButton = this.domElement.querySelector(".search-close");
         if (!this.closeButton) throw new Error("Nincs becsukó gomb.");
 
+        this.searchInput = this.domElement.querySelector("input");
+
         // GSAP ellenőrzés
         if (!gsap) throw new Error("A GSAP nem található");
 
         if (!lenis) throw new Error("A Lenis nem található");
 
-        // Eseménykezelés
+        this.bindEvents();
+    }
+    
+    // Eseménykezelés
+    bindEvents() {
         this.openButton.addEventListener("click", this.open.bind(this))
         this.closeButton.addEventListener("click", this.close.bind(this));
+        this.searchInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter") {
+                this.search();
+            }
+        });
     }
 
     // UI metódusok
@@ -75,8 +86,37 @@ class Search {
     // Backend függvények
 
     search() {
-
-    }
+        // Kereső input mező lekérése
+        const inputField = this.domElement.querySelector(
+          "input[name=search_term]"
+        );
+        if (!inputField) {
+          console.error("Keresési input nem található.");
+          return;
+        }
+        console.log(inputField.value.trim());
+        const searchTerm = inputField.value.trim();
+        if (!searchTerm) {
+          console.log("Üres keresési kifejezés.");
+          return;
+        }
+    
+        // Indítjuk a fetch()-et a search.php felé (POST metódussal)
+        const data = new FormData();
+        data.append("query", searchTerm);
+        APIFetch("/api/search", "POST", data, false)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Hálózati hiba: " + response.status);
+            }
+    
+            window.location = "/search";
+            return;
+          })
+          .catch((err) => {
+            console.error("Keresési hiba:", err);
+          });
+      }
 }
 
 export default Search;
