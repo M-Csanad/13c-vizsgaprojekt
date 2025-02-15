@@ -366,7 +366,7 @@ body {
     width: 0;
     min-width: 100%;
 
-    & > label {
+    & > .avatar {
         cursor: pointer;
         min-width: 66px;
         min-height: 66px;
@@ -377,19 +377,23 @@ body {
         transition: border-color 0.3s ease, scale 0.3s ease;
     }
 
-    & > label:active {
+    & > .avatar:active {
         scale: 0.95;
     }
 
-    & > label:has(input:checked) {
+    & > .avatar.checked {
         border-color: grey;
     }
 
-    & > label:has(input:checked) > img {
+    & > .avatar.checked > img {
         filter: grayscale(0.0);
     }
 
-    & > label > img {
+    & > .avatar.checked > svg {
+        opacity: 1;
+    }
+
+    & > .avatar > img {
         object-fit: cover;
         image-rendering: auto;
         user-select: none;
@@ -399,10 +403,13 @@ body {
         filter: grayscale(0.9);
     }
 
-    & > label > input {
-        user-select: none;
+    & > .avatar > svg {
         position: absolute;
-        z-index: -1;
+        opacity: 0;
+        right: -10px;
+        top: -10px;
+        filter: drop-shadow(0 0 5px black);
+        transition: opacity 0.3s ease;
     }
 }
 

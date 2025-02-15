@@ -1,5 +1,6 @@
 <?php
 include_once "init.php";
+
 /**
   * Lekéri a felhasználó adatait
   *
@@ -15,10 +16,10 @@ function getUserData($userId = null) {
         session_start();
     }
 
-    if (isset($_SESSION['expires_at']) && $_SESSION['expires_at'] < time()) {
+    if (isset($_SESSION["expires_at"]) && $_SESSION["expires_at"] < time()) {
         session_unset();
         session_destroy();
-        setcookie('PHPSESSID', '', time() - 3600, '/');
+        setcookie("PHPSESSID", "", time() - 3600, "/");
         session_start();
         session_regenerate_id(true);
 
@@ -62,16 +63,26 @@ function getUserData($userId = null) {
     }
 }
 
+function getProfileUri($userId) {
+    return selectData("SELECT avatar.id, avatar.uri FROM user INNER JOIN avatar on user.avatar_id=avatar.id WHERE user.id=?", $userId, "i");
+}
+
+// Hashelt jelszó lekérdezése a felhasználó azonosító alapján
 function getHashedPassword($userId) {
-    return selectData("SELECT user.password_hash FROM user WHERE user.id=?", $userId, 'i');
+    return selectData("SELECT user.password_hash FROM user WHERE user.id=?", $userId, "i");
 }
 
+// Jelszó módosítása
 function modifyPassword($userId, $new) {
-    return updateData("UPDATE user SET password_hash=? WHERE id=?", [$new, $userId], 'si');
+    return updateData("UPDATE user SET password_hash=? WHERE id=?", [$new, $userId], "si");
 }
 
+// Jogosultság módosítása
 function modifyRole($userId, $role) {
-    $result = updateData("UPDATE user SET user.role = ? WHERE user.id = ?", [$role, $userId], "si");
+    return updateData("UPDATE user SET user.role = ? WHERE user.id = ?", [$role, $userId], "si");
+}
 
-    return $result;
+// Személyes adatok módodítása
+function updatePersonalDetails($column, $userId, $data, $type) {
+    return updateData("UPDATE user SET $column=? WHERE id=?", [$data, $userId], $type);
 }

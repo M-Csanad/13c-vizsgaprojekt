@@ -3,6 +3,7 @@ import APIFetch from "/fb-content/assets/js/apifetch.js";
 class PersonalDetailsForm {
     // Frontend tulajdonság
     ease = "power2.inOut";
+    currentAvatarId;
 
     constructor(dom) {
         if (!gsap) throw new Error("GSAP nem található");
@@ -10,8 +11,6 @@ class PersonalDetailsForm {
         this.initDOM(dom);
         this.bindEvents();
         this.handleAutofillFocus();
-
-        this.fetchContent();
     }
 
     // DOM elemek lekérdezése és eltárolása későbbi használathoz
@@ -31,14 +30,12 @@ class PersonalDetailsForm {
         this.validationRules = {
         };
 
-        this.avatarInputs = this.formDom.querySelectorAll(".avatar-field > [name=pfp]");
-        console.log(this.avatarInputs);
-        this.saveButton = this.formDom.querySelector(".form-save");
+        this.avatarInputs = this.formDom.querySelectorAll(".avatar");
+        this.avatarImage = document.querySelector(".profile-picture > img");
     }
 
     // Eseménykezelők hozzárendelése elemekhez
     bindEvents() {
-        this.saveButton.addEventListener("click", this.save.bind(this));
 
         // Beviteli mező fókusz eseményei
         this.formDom.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
@@ -53,6 +50,31 @@ class PersonalDetailsForm {
                 this.toggleFieldState(field, error);
             });
         }
+
+        // Avatár beviteli mezők eseményei
+        this.avatarInputs.forEach(e => e.addEventListener("click", () => this.save({
+            type: "avatar", 
+            data: e.id
+        })));
+    }
+
+    updateUI(type, newData) {
+        switch (type) {
+            case "avatar":
+                this.changeAvatar(newData)
+                break;
+        
+            default:
+                break;
+        }
+    }
+
+    changeAvatar(avatar) {
+        this.avatarImage.src = avatar.uri;
+
+        const avatarInput = [...this.avatarInputs].find(e => e.id == "avatar-"+avatar.id);
+        this.avatarInputs.forEach(e => e.classList.remove("checked"));
+        avatarInput.classList.add("checked");
     }
 
     handleAutofillFocus() {
@@ -203,24 +225,30 @@ class PersonalDetailsForm {
     }
 
     // Backend metódusok
-    async save(e) {
-        if (!this.validateForm()) return;
+    async save(input) {
+        // Validálás és az adatok megfelelő formátumra alakítása a backend számára
+        switch (input.type) {
+            case "avatar":
+                const avatarId = Number(input.data.split('-')[1]);
+                if (!avatarId) {
+                    return;
+                }
 
-        const isModify = this.state == "modify";
-        const data = this.getFormData(isModify, isModify ? {id: this.currentCardId} : null); // Ha módosítunk, akkor JSON-ben küldjük az adatokat
-        const result = await APIFetch(isModify ? "/api/autofill/update" : "/api/autofill/add", isModify ? "PUT" : "POST", data, isModify);
+                input.data = { avatar_id: avatarId };
+                break;
+        
+            default:
+                break;
+        }
+
+        // Kérés elküldése
+        const result = await APIFetch("/api/settings/updatedetails", "PUT", input);
 
         if (result.ok) {
-            const card = await result.json();
-
-            if (isModify) {
-                this.updateCard(this.currentCardId, card[0]);
-            }
-            else {
-                this.addCard(card[0]);
-            }
-
-            this.reset(true);
+            const response = await result.json();
+            
+            const updated = response.message[0];
+            this.updateUI(input.type, updated)
         } else {
             console.log(result);
         }

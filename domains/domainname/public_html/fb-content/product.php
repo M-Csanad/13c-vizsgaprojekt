@@ -62,7 +62,7 @@
   
 
     // Értékelések lekérdezése
-    $result = selectData("SELECT review.id, review.user_id, review.product_id, review.rating, review.description, review.title, DATE(review.created_at) AS created_at, user.id, user.email, user.user_name, user.password_hash, user.role, user.cookie_id, user.cookie_expires_at, user.first_name, user.last_name, user.pfp_uri, user.created_at AS user_created_at FROM review INNER JOIN user ON review.user_id = user.id WHERE product_id=?", $product["id"], "i");
+    $result = selectData("SELECT review.id, review.user_id, review.product_id, review.rating, review.description, review.title, DATE(review.created_at) AS created_at, user.id, user.email, user.user_name, user.password_hash, user.role, user.cookie_id, user.cookie_expires_at, user.first_name, user.last_name, avatar.uri as pfp_uri, user.created_at AS user_created_at FROM review INNER JOIN user ON review.user_id = user.id INNER JOIN avatar ON avatar.id=user.avatar_id WHERE product_id=?", $product["id"], "i");
 
     if ($result->isError()) {
       logError("Sikertelen termék értékelés lekérdezés: ".json_encode($result), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
