@@ -9,21 +9,21 @@ class Result {
     public $type;
     public $typeAsString;
 
-    public const SUCCESS = 1;
-    public const ERROR = 2;
-    public const EMPTY = 3;
-    public const NO_AFFECT = 4;
-    public const DENIED = 5;
-    public const PROMPT = 6;
+    public const SUCCESS    = 1;
+    public const ERROR      = 2;
+    public const EMPTY      = 3;
+    public const NO_AFFECT  = 4;
+    public const DENIED     = 5;
+    public const PROMPT     = 6;
 
     // Rejtett tulajdonságok
     private const TYPES = [
-        self::SUCCESS => "SUCCESS", 
-        self::ERROR => "ERROR", 
-        self::EMPTY => "EMPTY", 
-        self::NO_AFFECT => "NO_AFFECT", 
-        self::DENIED => "DENIED",
-        self::PROMPT => "PROMPT"
+        self::SUCCESS =>    "SUCCESS", 
+        self::ERROR =>      "ERROR", 
+        self::EMPTY =>      "EMPTY", 
+        self::NO_AFFECT =>  "NO_AFFECT", 
+        self::DENIED =>     "DENIED",
+        self::PROMPT =>     "PROMPT"
     ];
 
     /**

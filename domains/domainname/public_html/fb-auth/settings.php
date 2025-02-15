@@ -17,6 +17,13 @@
         exit();
     }
 
+    // Avatárok lekérdezése
+    $avatars = [];
+    $result = selectData("SELECT * FROM avatar");
+    if ($result->isSuccess()) {
+        $avatars = $result->message;
+    }
+
     // Felhasználó rendeléseinek lekérdezése
     $orders = [];
     $result = selectData(
@@ -207,21 +214,21 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="inline-field picture-field">
-                                <div class="field-label">Profilkép</div>
-                                <div class="field-body">
-                                    <label for="pfp">
-                                        <img src="<?php echo $user['pfp_uri'] ?>" alt="A profilképed">
-                                        <input type="file" name="pfp" id="pfp">
-                                        <div class="camera-icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-fill" viewBox="0 0 16 16">
-                                                <path d="M10.5 8.5a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0"/>
-                                                <path d="M2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4zm.5 2a.5.5 0 1 1 0-1 .5.5 0 0 1 0 1m9 2.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0"/>
-                                            </svg>
-                                        </div>
-                                    </label>
+                            <?php if (count($avatars) > 0): ?>
+                                <div class="divider">Profilkép</div>
+                                <div class="avatar-field">
+                                    <?php foreach ($avatars as $a): ?>
+                                        <label for="avatar-<?= htmlspecialchars($a['id']); ?>">
+                                            <img src="<?= htmlspecialchars($a['uri']); ?>" draggable="false" alt="A profilképed">
+                                            <?php if ($a['uri'] == $user['pfp_uri']): ?>
+                                                <input type="radio" name="pfp" id="avatar-<?= htmlspecialchars($a['id']); ?>" checked>
+                                            <?php else: ?>
+                                                <input type="radio" name="pfp" id="avatar-<?= htmlspecialchars($a['id']); ?>" >
+                                            <?php endif; ?>
+                                        </label>
+                                    <?php endforeach; ?>
                                 </div>
-                            </div>
+                            <?php endif; ?>
                         </form>
                     </div>
                     <div class="didyouknow">

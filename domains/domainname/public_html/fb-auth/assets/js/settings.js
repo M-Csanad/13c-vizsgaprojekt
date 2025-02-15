@@ -1,5 +1,6 @@
 import AutofillForm from "./autofill-form.js";
 import PasswordForm from "./password-form.js";
+import PersonalDetailsForm from "./personal-form.js";
 
 const isMobile = (getComputedStyle(document.body).getPropertyValue("--is-mobile") == "1") || (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
 let pageLinks;
@@ -35,6 +36,7 @@ window.addEventListener("DOMContentLoaded", () => {
   let editButtons = document.querySelectorAll(".edit");
   let dyk = document.querySelector(".didyouknow");
 
+  new PersonalDetailsForm(document.querySelector("form[name=basic-info]"))
   document.querySelectorAll('.autofill-form').forEach(form => new AutofillForm(form.classList[0], form));
   new PasswordForm(document.querySelector('.password-form'));
 

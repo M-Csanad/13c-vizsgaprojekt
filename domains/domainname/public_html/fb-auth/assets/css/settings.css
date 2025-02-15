@@ -359,51 +359,58 @@ body {
     margin-bottom: 2rem;
 }
 
+.avatar-field {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    width: 0;
+    min-width: 100%;
+
+    & > label {
+        cursor: pointer;
+        min-width: 66px;
+        min-height: 66px;
+        position: relative;
+        user-select: none;
+        border: 3px solid rgb(56, 56, 56);
+        will-change: transform;
+        transition: border-color 0.3s ease, scale 0.3s ease;
+    }
+
+    & > label:active {
+        scale: 0.95;
+    }
+
+    & > label:has(input:checked) {
+        border-color: grey;
+    }
+
+    & > label:has(input:checked) > img {
+        filter: grayscale(0.0);
+    }
+
+    & > label > img {
+        object-fit: cover;
+        image-rendering: auto;
+        user-select: none;
+        width: 60px;
+        height: 60px;
+        position: absolute;
+        filter: grayscale(0.9);
+    }
+
+    & > label > input {
+        user-select: none;
+        position: absolute;
+        z-index: -1;
+    }
+}
+
 .inline-field {
     display: flex;
     flex-direction: row;
     padding-block: 1rem;
     width: 50%;
-}
-
-.picture-field {
-    height: 100px;
-}
-
-.picture-field > .field-body {
-    flex-grow: 0;
-    border-bottom: none;
-    position: relative;
-}
-
-.picture-field > .field-body > label > .camera-icon {
-    position: absolute;
-    bottom: 0px;
-    height: 20px;
-    width: 100%;
-    background-color: rgb(0,0,0,0.5);
-    padding: 6px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.picture-field > .field-body > label > .camera-icon > svg {
-    width: 15px;
-    height: 15px;
-}
-
-.picture-field > .field-body > label {
-    height: 100%;
-    border: 3px solid var(--page);
-    transition: border-color 0.3s ease;
-}
-.picture-field > .field-body > label:hover {
-    border-color: #474747;
-}
-
-.picture-field > .field-body > label > img {
-    height: 100%;
 }
 
 .field-label {
@@ -493,20 +500,6 @@ body {
 
 .field-body > .svg-group > svg:active {
     scale: 1 ;
-}
-
-
-.picture-field > .field-body > label {
-    cursor: pointer;
-    position: relative;
-}
-
-.picture-field > .field-body > label > input {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 0;
-    height: 0;
 }
 
 .cards {
@@ -804,6 +797,20 @@ body {
     .sidebar-wrapper {
         position: static;
         width: 100%;
+    }
+
+    .avatar-field {
+        justify-content: center;
+    }
+
+    .avatar-field > label {
+        min-width: 56px !important;
+        min-height: 56px !important;
+    }
+
+    .avatar-field img {
+        width: 50px !important;
+        height: 50px !important;
     }
 }
 

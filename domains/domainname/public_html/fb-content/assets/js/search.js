@@ -1,4 +1,6 @@
 const randomId = () => "el-" + (Math.random() + 1).toString(36).substring(7);
+import APIFetch from './apifetch.js';
+
 class Search {
     isOpen = false;
     ease = "power2.inOut";
