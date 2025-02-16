@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Feb 14. 17:25
+-- Létrehozás ideje: 2025. Feb 16. 21:24
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -1240,6 +1240,7 @@ CREATE TABLE `user` (
   `cookie_expires_at` int(11) DEFAULT NULL,
   `first_name` varchar(255) DEFAULT NULL,
   `last_name` varchar(255) DEFAULT NULL,
+  `phone` varchar(50) DEFAULT NULL,
   `avatar_id` int(11) DEFAULT 9 COMMENT 'Profilkép',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
@@ -1248,10 +1249,10 @@ CREATE TABLE `user` (
 -- A tábla adatainak kiíratása `user`
 --
 
-INSERT INTO `user` (`id`, `email`, `user_name`, `password_hash`, `role`, `cookie_id`, `cookie_expires_at`, `first_name`, `last_name`, `avatar_id`, `created_at`) VALUES
-(1, '13c-blank@ipari.vein.hu', 'admin', '$2y$10$GYHbnzKZf8jPKEN/8F.Zn.nFQSmDtJhx8NDdpO3NHQOVA.TfeypuS', 'Administrator', NULL, NULL, 'Máté', 'Blank', 5, '2024-11-02 13:27:24'),
-(2, 'teszt-elek@gmail.com', 'teszt-elek', '$2y$10$.BZLWK4qrkNB7jVCWxpkyeCpo/wRGMA/7QmSb7j4MnSZc/Ez4huMa', 'Guest', NULL, NULL, 'Elek', 'Teszt', 5, '2024-11-26 17:24:56'),
-(3, '13c-milkovics@ipari.vein.hu', 'Kecske', '$2y$10$VX.1kRDv2h6x0x4lqNYxMe1NWBWsPIAs1qxXA0/vk71YdCVugcCu6', 'Administrator', NULL, NULL, 'Csanád', 'Milkovics', 5, '2025-02-09 09:09:02');
+INSERT INTO `user` (`id`, `email`, `user_name`, `password_hash`, `role`, `cookie_id`, `cookie_expires_at`, `first_name`, `last_name`, `phone`, `avatar_id`, `created_at`) VALUES
+(1, '13c-blank@ipari.vein.hu', 'admin', '$2y$10$akYNgkIySgEjOb7zwRUo7utSWw3S0OGOJZ6i1gx3wQCT9hr.DGdHq', 'Administrator', '5ac5ed70b1b3926fd2456b7cec476bd544941c71bb326a8913740baee79186c9', 1740340154, 'Máté', 'Blank', '+36302166162', 1, '2024-11-02 13:27:24'),
+(2, 'teszt-elek@gmail.com', 'teszt-elek', '$2y$10$.BZLWK4qrkNB7jVCWxpkyeCpo/wRGMA/7QmSb7j4MnSZc/Ez4huMa', 'Guest', NULL, NULL, 'Elek', 'Teszt', NULL, 1, '2024-11-26 17:24:56'),
+(3, '13c-milkovics@ipari.vein.hu', 'Kecske', '$2y$10$VX.1kRDv2h6x0x4lqNYxMe1NWBWsPIAs1qxXA0/vk71YdCVugcCu6', 'Administrator', NULL, NULL, 'Csanád', 'Milkovics', NULL, 1, '2025-02-09 09:09:02');
 
 --
 -- Indexek a kiírt táblákhoz

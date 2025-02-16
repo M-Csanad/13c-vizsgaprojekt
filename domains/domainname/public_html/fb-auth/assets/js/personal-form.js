@@ -202,7 +202,7 @@ class PersonalDetailsForm {
 
 	changeAvatar(avatar) {
 		this.avatarImage.src = avatar.uri;
-
+		
 		const avatarInput = [...this.avatarInputs].find(e => e.id == "avatar-" + avatar.id);
 		this.avatarInputs.forEach(e => e.classList.remove("checked"));
 		avatarInput.classList.add("checked");
@@ -250,7 +250,7 @@ class PersonalDetailsForm {
 		});
 
 		input.addEventListener("focusout", () => {
-			if (input.value === "" || !input.dataset.initialValue && this.isCancelling) label.classList.remove('focus');
+			if (input.value === "" && !input.dataset.initialValue || !input.dataset.initialValue && this.isCancelling) label.classList.remove('focus');
 		});
 	}
 
@@ -278,8 +278,8 @@ class PersonalDetailsForm {
 		const messageContainer = errorWrapper.querySelector(".error-message");
 		const validity = error ? "invalid" : "valid";
 		const oppositeValidity = error ? "valid" : "invalid";
-		const didValidityChange = field.dom.classList.contains(oppositeValidity) || field.dom.classList.length == 0;
-        const didErrorMessageChange = messageContainer.innerHTML !== error;
+		const didValidityChange = field.dom.classList.contains(oppositeValidity) || (error && field.dom.classList.length == 0);
+		const didErrorMessageChange = (error && messageContainer.innerHTML !== error) || (!error && messageContainer.innerHTML !== "");
         
         if (!didValidityChange && !didErrorMessageChange) return;
         
@@ -387,11 +387,8 @@ class PersonalDetailsForm {
 			activeInput.disabled = true;
 
 			// Érvényesség visszaállítása az adott mezőre
-			for (const key in this.form) {
-				if (this.form[key].dom === activeInput) {
-					this.toggleFieldState(key, null);
-				}
-			}
+			const key = this.getFieldName(activeInput);
+			this.toggleFieldState(key, null);
 
             this.isCancelling = false;
 		}

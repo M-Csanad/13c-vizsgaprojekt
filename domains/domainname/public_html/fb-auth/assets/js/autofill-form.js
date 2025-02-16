@@ -113,7 +113,7 @@ class AutofillForm {
 
     handleAutofillFocus() {
         setTimeout(() => {
-            document.querySelectorAll(".input-group").forEach(el => {
+            this.formDom.querySelectorAll(".input-group").forEach(el => {
                 const label = el.querySelector('label');
                 const input = el.querySelector('input, select');
     
@@ -125,7 +125,7 @@ class AutofillForm {
     }
 
     dropFocus() {
-        document.querySelectorAll(".input-group").forEach(el => {
+        this.formDom.querySelectorAll(".input-group").forEach(el => {
             const label = el.querySelector('label');
             const input = el.querySelector('input, select');
 
@@ -186,7 +186,7 @@ class AutofillForm {
         const messageContainer = errorWrapper.querySelector(".error-message");
         const validity = error ? "invalid" : "valid";
         const oppositeValidity = error ? "valid" : "invalid";
-        const didValidityChange = field.dom.classList.contains(oppositeValidity) || field.dom.classList.length == 0;
+        const didValidityChange = field.dom.classList.contains(oppositeValidity) || (error && field.dom.classList.length == 0);
 
         if (!didValidityChange) return;
 

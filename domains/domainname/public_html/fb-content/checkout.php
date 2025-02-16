@@ -184,7 +184,7 @@
                 <div class="input-group" tabindex="-1">
                     <div class="input-body" tabindex="-1">
                         <label for="phone">Telefonszám</label>
-                        <input type="tel" name="phone" id="phone" required placeholder="pl. +36 30 123 1234" tabindex="1">
+                        <input type="tel" name="phone" id="phone" required placeholder="pl. +36 30 123 1234" tabindex="1" value="<?php if ($isLoggedIn && !is_null($user["phone"])) echo htmlspecialchars($user["phone"]); ?>">
                         <div class="status">
                             <div class="error"></div>
                             <div class="success"></div>

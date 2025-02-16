@@ -7,7 +7,7 @@ function sendResponse($result, $httpCode = null) {
         $httpCode = $result->isSuccess() ? 200 : 400;
     }
     http_response_code($httpCode);
-    echo $result->toJSON(true);
+    echo $result->toJSON();
     exit();
 }
 
@@ -46,7 +46,7 @@ switch ($data['type']) {
     case 'avatar':
         $id = $data["data"]["avatar_id"] ?? null;
         if (is_int($id)) {
-            $update = updatePersonalDetails("avatar_id", $user['id'], $id, 'ii');
+            $update = updatePersonalDetails("avatar_id", $id, $user['id'], 'ii');
             if (!$update->isError()) {
                 $result = getProfileUri($user["id"]);
             }

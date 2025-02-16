@@ -66,7 +66,7 @@ class PasswordForm {
         this.submitter.addEventListener("click", this.send.bind(this))
 
         // Beviteli mező fókusz eseményei
-        document.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
+        this.formDom.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
 
         // Beviteli mezők validálási eseményei
         for (let field in this.form) {
@@ -223,8 +223,8 @@ class PasswordForm {
         const messageContainer = errorWrapper.querySelector(".error-message");
         const validity = error ? "invalid" : "valid";
         const oppositeValidity = error ? "valid" : "invalid";
-        const didValidityChange = field.dom.classList.contains(oppositeValidity) || field.dom.classList.length == 0;
-        const didErrorMessageChange = messageContainer.innerHTML !== error;
+        const didValidityChange = field.dom.classList.contains(oppositeValidity) || (error && field.dom.classList.length == 0);
+		const didErrorMessageChange = (error && messageContainer.innerHTML !== error) || (!error && messageContainer.innerHTML !== "");
 
         if (!didValidityChange && !didErrorMessageChange) return;
 
