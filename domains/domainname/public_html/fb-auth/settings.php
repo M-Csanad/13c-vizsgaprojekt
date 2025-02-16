@@ -169,11 +169,11 @@
                         </div>
                         <div class="divider">Általános adatok</div>
                         <form name="basic-info">
-                            <div class="inline-field">
-                                <div class="field-label">Vezetéknév</div>
-                                <div class="field-body">
-                                    <input type="text" name="lastname" id="lastname" value="<?php echo $user["last_name"]; ?>" disabled>
-                                    <div class="svg-group">
+                            <div class="input-group input-group-half" tabindex="-1">
+                                <div class="input-body" tabindex="-1">
+                                    <label for="last-name">Vezetéknév</label>
+                                    <input type="text" name="last-name" id="last-name" required placeholder="" tabindex="1" value="<?= htmlspecialchars($user["last_name"]); ?>" disabled>
+                                    <div class="edit-toggler">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
                                             <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
                                         </svg>
@@ -183,12 +183,15 @@
                                         </svg>
                                     </div>
                                 </div>
+                                <div class="message-wrapper">
+                                    <div class="error-message"></div>
+                                </div>
                             </div>
-                            <div class="inline-field">
-                                <div class="field-label">Keresztnév</div>
-                                <div class="field-body">
-                                    <input type="text" name="firstname" id="firstname" value="<?php echo $user["first_name"]; ?>" disabled>
-                                    <div class="svg-group">
+                            <div class="input-group input-group-half" tabindex="-1">
+                                <div class="input-body" tabindex="-1">
+                                    <label for="first-name">Keresztnév</label>
+                                    <input type="text" name="first-name" id="first-name" required placeholder="" tabindex="1" value="<?= htmlspecialchars($user["first_name"]); ?>" disabled>
+                                    <div class="edit-toggler">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
                                             <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
                                         </svg>
@@ -198,12 +201,16 @@
                                         </svg>
                                     </div>
                                 </div>
+                                <div class="message-wrapper">
+                                    <div class="error-message"></div>
+                                </div>
                             </div>
-                            <div class="inline-field">
-                                <div class="field-label">E-mail cím</div>
-                                <div class="field-body">
-                                    <input type="email" value="<?php echo $user["email"] ?>" disabled>
-                                    <div class="svg-group">
+                            <div class="divider">Elérhetőség</div>
+                            <div class="input-group input-group-half" tabindex="-1">
+                                <div class="input-body" tabindex="-1">
+                                    <label for="email">E-mail cím</label>
+                                    <input type="text" name="email" id="email" required placeholder="" tabindex="1" value="<?= htmlspecialchars($user["email"]); ?>" disabled>
+                                    <div class="edit-toggler">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
                                             <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
                                         </svg>
@@ -212,6 +219,27 @@
                                             <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0zM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1zM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1"/>
                                         </svg>
                                     </div>
+                                </div>
+                                <div class="message-wrapper">
+                                    <div class="error-message"></div>
+                                </div>
+                            </div>
+                            <div class="input-group input-group-half" tabindex="-1">
+                                <div class="input-body" tabindex="-1">
+                                    <label for="phone">Telefonszám</label>
+                                    <input type="text" name="phone" id="phone" required placeholder="" tabindex="1" disabled value="<?= htmlspecialchars($user["phone"]); ?>">
+                                    <div class="edit-toggler">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                                            <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-floppy2-fill save" viewBox="0 0 16 16">
+                                            <path d="M12 2h-2v3h2z"/>
+                                            <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5v13A1.5 1.5 0 0 0 1.5 16h13a1.5 1.5 0 0 0 1.5-1.5V2.914a1.5 1.5 0 0 0-.44-1.06L14.147.439A1.5 1.5 0 0 0 13.086 0zM4 6a1 1 0 0 1-1-1V1h10v4a1 1 0 0 1-1 1zM3 9h10a1 1 0 0 1 1 1v5H2v-5a1 1 0 0 1 1-1"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                                <div class="message-wrapper">
+                                    <div class="error-message"></div>
                                 </div>
                             </div>
                             <?php if (count($avatars) > 0): ?>

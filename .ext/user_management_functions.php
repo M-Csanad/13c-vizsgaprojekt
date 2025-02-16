@@ -36,7 +36,7 @@ function getUserData($userId = null) {
         $sessionUserId = $_SESSION["user_id"];
         return selectData("SELECT CAST(user.id AS INT) AS id, user.email, 
             user.user_name, user.role, user.first_name, 
-            user.last_name, avatar.uri AS pfp_uri, user.created_at 
+            user.last_name, avatar.uri AS pfp_uri, user.created_at, user.phone
             FROM user 
             INNER JOIN avatar ON user.avatar_id=avatar.id
             WHERE user.id = ?", (isset($userId)) ? $userId : $sessionUserId, "i");
@@ -45,7 +45,8 @@ function getUserData($userId = null) {
         
         $cookieToken = $_COOKIE["rememberMe"];
         $result = selectData("SELECT CAST(user.id AS INT) AS id, user.email, user.user_name, user.role, user.first_name, 
-                                    user.last_name, avatar.uri AS pfp_uri, user.created_at, user.cookie_expires_at
+                                    user.last_name, avatar.uri AS pfp_uri, user.created_at, user.cookie_expires_at,
+                                    user.phone
                                 FROM user
                                 INNER JOIN avatar ON user.avatar_id=avatar.id
                                 WHERE user.cookie_id = ? 
@@ -83,6 +84,6 @@ function modifyRole($userId, $role) {
 }
 
 // Személyes adatok módodítása
-function updatePersonalDetails($column, $userId, $data, $type) {
+function updatePersonalDetails($column, $data, $userId, $type) {
     return updateData("UPDATE user SET $column=? WHERE id=?", [$data, $userId], $type);
 }

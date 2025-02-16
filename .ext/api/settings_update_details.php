@@ -1,66 +1,101 @@
 <?php
-
 include_once __DIR__.'/../init.php';
 
-// Metódus ellenőrzés
-if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
-    http_response_code(405);
-    $result = new Result(Result::ERROR, 'Hibás metódus! Várt: PUT');
-    echo $result->toJSON();
+// Új segédfüggvény a válasz küldéséhez
+function sendResponse($result, $httpCode = null) {
+    if (!$httpCode) {
+        $httpCode = $result->isSuccess() ? 200 : 400;
+    }
+    http_response_code($httpCode);
+    echo $result->toJSON(true);
     exit();
+}
+
+// Metódus ellenőrzése (guard clause)
+if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
+    sendResponse(new Result(Result::ERROR, 'Hibás metódus! Várt: PUT'), 405);
 }
 
 // JSON adatok megszerzése
 $data = json_decode(file_get_contents('php://input'), true);
 
 // Ellenőrizzük, hogy minden adat megvan-e
-$fields = ['type', 'data'];
-$values = [];
-foreach ($fields as $field) {
-    if (!isset($data[$field]) || empty($data[$field])) {
-        http_response_code(400);
-        $result = new Result(Result::ERROR, 'Kérlek töltsd ki mindegyik mezőt!');
-        echo $result->toJSON();
-        exit();
+$requiredFields = ['type', 'data'];
+foreach ($requiredFields as $field) {
+    if (empty($data[$field])) {
+        sendResponse(new Result(Result::ERROR, 'Kérlek töltsd ki mindegyik mezőt!'), 400);
     }
-    
-    $values[$field] = $data[$field];
 }
 
 // Felhasználó adatainak lekérése
-$isLoggedIn = false;
-$user = getUserData();
-if ($user->isSuccess()) {
-    $isLoggedIn=true;
-    $user = $user->message[0];
+$result = getUserData();
+if (!$result->isSuccess()) {
+    sendResponse(new Result(Result::DENIED, "Csak bejelentkezett felhasználó indíthat kéréseket!"), 401);
 }
+$user = $result->message[0];
 
-if (!$isLoggedIn) {
-    http_response_code(401);
-    $result = new Result(Result::DENIED, "Csak bejelentkezett felhasználó indíthat kéréseket!");
-    echo $result->toJSON();
-    exit();
-}
+$rules = [
+    "first_name" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
+    "last_name"  => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
+    "phone"      => '/^(\+36|06)(\d{9})$/',
+];
 
-// Különböző módosítási típusok kezelése, validálása
 $result = new Result(Result::ERROR, "Hibás adat.");
-switch ($values['type']) {
-    case 'avatar':
-        $id = $values["data"]["avatar_id"];
 
+switch ($data['type']) {
+    case 'avatar':
+        $id = $data["data"]["avatar_id"] ?? null;
         if (is_int($id)) {
-            // Az avatár frissítése
             $update = updatePersonalDetails("avatar_id", $user['id'], $id, 'ii');
             if (!$update->isError()) {
-                // Új adat lekérdezése
                 $result = getProfileUri($user["id"]);
             }
         }
         break;
     
+    case 'first_name':
+        $firstName = $data["data"] ?? null;
+        if ($firstName && preg_match($rules["first_name"], $firstName)) {
+            $update = updatePersonalDetails("first_name", $firstName, $user['id'], 'si');
+            if (!$update->isError()) {
+                $result = new Result(Result::SUCCESS, $firstName);
+            }
+        }
+        break;
+    
+    case 'last_name':
+        $lastName = $data["data"] ?? null;
+        if ($lastName && preg_match($rules["last_name"], $lastName)) {
+            $update = updatePersonalDetails("last_name", $lastName, $user['id'], 'si');
+            if (!$update->isError()) {
+                $result = new Result(Result::SUCCESS, $lastName);
+            }
+        }
+        break;
+    
+    case 'email':
+        $email = $data["data"] ?? null;
+        if ($email && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $update = updatePersonalDetails("email", $email, $user['id'], 'si');
+            if (!$update->isError()) {
+                $result = new Result(Result::SUCCESS, $email);
+            }
+        }
+        break;
+    
+    case 'phone':
+        $phone = $data["data"] ?? null;
+        if ($phone && preg_match($rules["phone"], $phone)) {
+            $update = updatePersonalDetails("phone", $phone, $user['id'], 'si');
+            if (!$update->isError()) {
+                $result = new Result(Result::SUCCESS, $phone);
+            }
+        }
+        break;
+    
     default:
-        # code...
+        // Ismeretlen módosítási típus esetén
         break;
 }
 
-echo $result->toJSON();
+sendResponse($result);

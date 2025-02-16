@@ -43,6 +43,7 @@
     }
 
     & input, select {
+        cursor: not-allowed;
         padding: 0.5rem;
         padding-top: 1.6rem;
         font-family: Karla;
@@ -71,6 +72,10 @@
         color: black;
     }
 
+    & input:enabled{
+        cursor: text;
+    }
+
     & label {
         z-index: 10;
         position: absolute;
@@ -88,7 +93,7 @@
         backface-visibility: hidden;
     }
 
-    & label.focus, &:focus-within label {
+    & label.focus, &:has(input:enabled):focus-within label {
         transform: translateY(-10px) translateZ(0);
     }
 
@@ -112,6 +117,54 @@
         font-size: 12px;
         color: rgb(255, 97, 97);
     }
+
+    & .edit-toggler {
+        min-width: 35px;
+        height: 100%;
+        position: relative;
+    }
+
+    & .edit-toggler > svg {
+        width: 35px;
+        height: 100%;
+        padding: 10px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        transform-origin: 0% 0%;
+        cursor: pointer;
+        transition: color 0.2s ease, transform 0.3s ease, opacity 0.2s ease;
+        color: rgb(107, 107, 107);
+    }
+
+    & .edit-toggler > svg:hover {
+        color: white;
+    }
+
+    & > .input-body:has(input:disabled) > .edit-toggler > .edit {
+        z-index: 10;
+        transform: scale(1) translate(-50%, -50%);
+        opacity: 1;
+    }
+
+    & > .input-body:has(input:disabled) > .edit-toggler > .save {
+        z-index: -1;
+        transform: scale(0) translate(-50%, -50%);
+        opacity: 0;
+    }
+
+    & > .input-body:has(input:enabled) > .edit-toggler > .edit {
+        z-index: -1;
+        transform: scale(0) translate(-50%, -50%);
+        opacity: 0;
+    }
+
+    & > .input-body:has(input:enabled) > .edit-toggler > .save {
+        z-index: 10;
+        transform: scale(1) translate(-50%, -50%);
+        opacity: 1;
+    }
 }
 
 .input-group:has(input.invalid, select.invalid) {
@@ -125,6 +178,12 @@
 
     & label {
         color: rgb(255, 97, 97);
+    }
+}
+
+.input-group:has(.edit-toggler) {
+    & > .input-body {
+        display: flex;
     }
 }
 

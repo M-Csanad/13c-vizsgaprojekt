@@ -224,9 +224,9 @@ class PasswordForm {
         const validity = error ? "invalid" : "valid";
         const oppositeValidity = error ? "valid" : "invalid";
         const didValidityChange = field.dom.classList.contains(oppositeValidity) || field.dom.classList.length == 0;
-        const didErrorMessageChange = messageContainer.innerHTML === error;
+        const didErrorMessageChange = messageContainer.innerHTML !== error;
 
-        if (!didValidityChange && didErrorMessageChange) return;
+        if (!didValidityChange && !didErrorMessageChange) return;
 
         field.dom.classList.add(validity);
         field.dom.classList.remove(oppositeValidity);

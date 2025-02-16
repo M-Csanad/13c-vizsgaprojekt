@@ -357,6 +357,7 @@ body {
     padding-bottom: 0.5rem;
     border-bottom: 2px solid #868686;
     margin-bottom: 2rem;
+    margin-top: 1rem;
 }
 
 .avatar-field {
@@ -779,6 +780,10 @@ body {
     .message-container {
         width: 100% !important;
     }
+
+    .input-group.input-group-half {
+        width: 75% !important;
+    }
 }
 
 @media screen and (max-width: 991px) {
@@ -810,7 +815,7 @@ body {
         justify-content: center;
     }
 
-    .avatar-field > label {
+    .avatar-field > .avatar {
         min-width: 56px !important;
         min-height: 56px !important;
     }
@@ -832,6 +837,10 @@ body {
 
     .inline-field:not(.picture-field) {
         flex-direction: column;
+    }
+
+    .input-group.input-group-half {
+        width: 100% !important;
     }
 
     .svg-group {
