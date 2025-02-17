@@ -461,7 +461,7 @@
                         </div>
                         <div class="divider">Jelszó módosítása</div>
                         
-                        <form class="password-form" data-lenis-prevent>
+                        <form class="password-form">
                             <div class="form-body-wrapper">
                                 <div class="input-group-inline">
                                     <div class="input-group" tabindex="-1">

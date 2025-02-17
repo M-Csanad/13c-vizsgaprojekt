@@ -496,6 +496,13 @@ main {
     width: 0%;
 }
 
+.no-products {
+    font-size: 1.8rem;
+    color: #888;
+    text-align: center;
+    padding: 2rem;
+    margin-top: 5rem;
+}
 
 @media screen and (min-width: 950px){
     .cards {

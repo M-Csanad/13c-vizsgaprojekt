@@ -1,12 +1,11 @@
+import { applyProductFilters, clearProductFilters } from "/fb-content/assets/js/filter.js";
+
 const randomId = () => "el-" + (Math.random() + 1).toString(36).substring(7);
 
 class FilterWindow {
     isOpen = false;
     ease = "power3.inOut";
-
-    // A töréspont felett az animáció máshogy működik
     breakpoint = 950;
-    
 
     constructor() {
         // Fő filter ablak
@@ -31,6 +30,9 @@ class FilterWindow {
         // Eseménykezelés
         this.openButton.addEventListener("click", this.open.bind(this))
         this.closeButton.addEventListener("click", this.close.bind(this));
+
+        this.applyButton = this.domElement.querySelector(".filter-apply");
+        this.clearButton = this.domElement.querySelector(".filter-clear");
     }
 
     open() {
