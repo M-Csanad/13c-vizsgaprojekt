@@ -39,7 +39,8 @@ $routes = [
     '/api/settings/updatedetails' => $API.'/settings_update_details.php',
     '/api/settings/newpassword' => $API.'/settings_new_password.php',
 
-    '/api/search' => $API.'/search.php'
+    '/api/search' => $API.'/search.php',
+    '/api/subcategory/products' => $API.'/subcategory_products.php'
 ];
 
 // Ha az aktuális URL-t tartalmazza a $routes változó, akkor az egy létező végpont.

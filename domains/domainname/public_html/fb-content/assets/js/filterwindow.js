@@ -1,11 +1,13 @@
-import { applyProductFilters, clearProductFilters } from "/fb-content/assets/js/filter.js";
-
+import APIFetch from "./apifetch.js";
 const randomId = () => "el-" + (Math.random() + 1).toString(36).substring(7);
 
 class FilterWindow {
     isOpen = false;
     ease = "power3.inOut";
     breakpoint = 950;
+    filters = {};
+    products = [];
+    url = '';
 
     constructor() {
         // Fő filter ablak
@@ -33,6 +35,169 @@ class FilterWindow {
 
         this.applyButton = this.domElement.querySelector(".filter-apply");
         this.clearButton = this.domElement.querySelector(".filter-clear");
+
+        // Initialize filters
+        this.initializeFilters();
+
+        // Add event listeners for filter buttons
+        if (this.applyButton) {
+            this.applyButton.addEventListener('click', () => this.applyFilters());
+        }
+        if (this.clearButton) {
+            this.clearButton.addEventListener('click', () => this.clearFilters());
+        }
+
+        // Get subcategory ID from URL
+        const pathSegments = window.location.pathname.split('/');
+        this.subcategoryId = document.querySelector('main').dataset.subcategoryId;
+
+        // Get current URL for API endpoint
+        this.url = window.location.pathname;
+        
+        // Initial product fetch
+        this.fetchProducts()
+    }
+
+    initializeFilters() {
+        // Price filter
+        const priceFilter = this.domElement.querySelector('[data-target="price"]');
+        if (priceFilter) {
+            const minInput = priceFilter.querySelector('#price_min');
+            const maxInput = priceFilter.querySelector('#price_max');
+            
+            if (minInput && maxInput) {
+                this.filters.price = {
+                    min: null,
+                    max: null,
+                    inputs: { minInput, maxInput }
+                };
+
+                minInput.addEventListener('change', () => {
+                    this.filters.price.min = minInput.value ? parseInt(minInput.value) : null;
+                });
+                maxInput.addEventListener('change', () => {
+                    this.filters.price.max = maxInput.value ? parseInt(maxInput.value) : null;
+                });
+            }
+        }
+
+        // Stock filter
+        const stockFilter = this.domElement.querySelector('[data-target="stock"]');
+        if (stockFilter) {
+            const inStockCheckbox = stockFilter.querySelector('#in_stock');
+            if (inStockCheckbox) {
+                this.filters.stock = {
+                    value: false,
+                    input: inStockCheckbox
+                };
+
+                inStockCheckbox.addEventListener('change', () => {
+                    this.filters.stock.value = inStockCheckbox.checked;
+                });
+            }
+        }
+    }
+
+    async fetchProducts() {
+        try {
+            const response = await APIFetch('/api/subcategory/products', 'POST', {
+                url: this.url
+            });
+
+            if (!response.ok) throw new Error('Network response was not ok');
+
+            const data = await response.json();
+            if (data.type !== 'ERROR') {
+                this.products = data.message;
+            } else {
+                console.error('Failed to fetch products:', data.message);
+            }
+        } catch (error) {
+            console.error('Error fetching products:', error);
+        }
+    }
+
+    applyFilters() {
+        const filteredProducts = this.products.filter(product => {
+            // Price filter
+            if (this.filters.price?.min && product.unit_price < this.filters.price.min) {
+                return false;
+            }
+            if (this.filters.price?.max && product.unit_price > this.filters.price.max) {
+                return false;
+            }
+            
+            // Stock filter
+            if (this.filters.stock?.value && product.stock <= 0) {
+                return false;
+            }
+
+            return true;
+        });
+
+        this.updateProductDisplay({ 
+            type: filteredProducts.length ? 'SUCCESS' : 'EMPTY',
+            message: filteredProducts 
+        });
+    }
+
+    clearFilters() {
+        // Reset price inputs
+        if (this.filters.price) {
+            this.filters.price.min = null;
+            this.filters.price.max = null;
+            this.filters.price.inputs.minInput.value = '';
+            this.filters.price.inputs.maxInput.value = '';
+        }
+
+        // Reset stock checkbox
+        if (this.filters.stock) {
+            this.filters.stock.value = false;
+            this.filters.stock.input.checked = false;
+        }
+
+        // Immediately apply cleared filters
+        this.applyFilters();
+    }
+
+    updateProductDisplay(response) {
+        const cardsContainer = document.querySelector('.cards');
+        if (!cardsContainer) return;
+
+        const products = response.message;
+        
+        if (response.type === 'EMPTY') {
+            // Show no products message
+            const noProductsMsg = cardsContainer.querySelector('.no-products') || 
+                cardsContainer.appendChild(document.createElement('div'));
+            noProductsMsg.className = 'no-products';
+            noProductsMsg.textContent = 'Nincsenek termékek a megadott szűrési feltételekkel.';
+            noProductsMsg.style.display = 'block';
+
+            // Hide all product cards
+            cardsContainer.querySelectorAll('.card').forEach(card => {
+                card.style.display = 'none';
+            });
+        } else {
+            // Hide no products message if it exists
+            const noProductsMsg = cardsContainer.querySelector('.no-products');
+            if (noProductsMsg) {
+                noProductsMsg.style.display = 'none';
+            }
+
+            // Show/hide products based on filter results
+            cardsContainer.querySelectorAll('.card').forEach(card => {
+                const productId = parseInt(card.dataset.productId);
+                const isVisible = products.some(p => p.id === productId);
+                card.style.display = isVisible ? 'flex' : 'none';
+            });
+        }
+        
+        // Update product count
+        const productCount = document.querySelector('.product-count');
+        if (productCount) {
+            productCount.textContent = `${products.length} termék`;
+        }
     }
 
     open() {

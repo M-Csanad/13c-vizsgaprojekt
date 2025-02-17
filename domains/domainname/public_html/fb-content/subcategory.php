@@ -5,14 +5,14 @@
     $result = selectData("SELECT subcategory.*, category.name as category_name, category.slug AS category_slug FROM subcategory INNER JOIN category ON subcategory.category_id=category.id WHERE subcategory.id=?", $ids[1], "i");
 
     if (!$result->isSuccess()) {
-        include "http://localhost/fb-functions/error/error-404.html";
+        include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
     }
 
     $subcategoryData = $result->message[0];
 
     $result = selectData("SELECT product.*, product_page.link_slug FROM product_page INNER JOIN product ON product_page.product_id = product.id WHERE product_page.subcategory_id=? ORDER BY product.id ASC;", $ids[1], "i");
     if ($result->isError()) {
-        include "http://localhost/fb-functions/error/error-404.html";
+        include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
         exit();
     }
     
@@ -39,7 +39,7 @@
         ORDER BY product.id ASC;", $ids[1], 'i');
 
     if ($result->isError()) {
-        include "http://localhost/fb-functions/error/error-404.html";
+        include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
         exit();
     }
     $images = $result->message;
@@ -54,6 +54,10 @@
             $products[$index]["secondary_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $images[$index]["secondary_image"]);
         }
     }
+
+    usort($products, function($a, $b) {
+        return $a["name"] <=> $b["name"];
+    });
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -179,7 +183,7 @@
                 <?php else: ?>
                     <div class="cards">
                         <?php foreach ($products as $product): ?>
-                            <div class="card">
+                            <div class="card" data-product-id="<?= htmlspecialchars($product["id"]); ?>">
                                 <div class="card-image">
                                     <a href="/<?= htmlspecialchars($product["link_slug"]); ?>">
                                         <?php $resolutions = [1920, 1440, 1024, 768]; ?>
