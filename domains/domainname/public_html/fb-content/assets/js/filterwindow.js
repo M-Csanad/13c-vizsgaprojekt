@@ -36,10 +36,8 @@ class FilterWindow {
         this.applyButton = this.domElement.querySelector(".filter-apply");
         this.clearButton = this.domElement.querySelector(".filter-clear");
 
-        // Initialize filters
         this.initializeFilters();
 
-        // Add event listeners for filter buttons
         if (this.applyButton) {
             this.applyButton.addEventListener('click', () => this.applyFilters());
         }
@@ -47,19 +45,15 @@ class FilterWindow {
             this.clearButton.addEventListener('click', () => this.clearFilters());
         }
 
-        // Get subcategory ID from URL
         const pathSegments = window.location.pathname.split('/');
         this.subcategoryId = document.querySelector('main').dataset.subcategoryId;
 
-        // Get current URL for API endpoint
         this.url = window.location.pathname;
-        
-        // Initial product fetch
+
         this.fetchProducts()
     }
 
     initializeFilters() {
-        // Price filter
         const priceFilter = this.domElement.querySelector('[data-target="price"]');
         if (priceFilter) {
             const minInput = priceFilter.querySelector('#price_min');
@@ -81,7 +75,6 @@ class FilterWindow {
             }
         }
 
-        // Stock filter
         const stockFilter = this.domElement.querySelector('[data-target="stock"]');
         if (stockFilter) {
             const inStockCheckbox = stockFilter.querySelector('#in_stock');
@@ -119,7 +112,6 @@ class FilterWindow {
 
     applyFilters() {
         const filteredProducts = this.products.filter(product => {
-            // Price filter
             if (this.filters.price?.min && product.unit_price < this.filters.price.min) {
                 return false;
             }
@@ -127,7 +119,6 @@ class FilterWindow {
                 return false;
             }
             
-            // Stock filter
             if (this.filters.stock?.value && product.stock <= 0) {
                 return false;
             }
@@ -142,7 +133,6 @@ class FilterWindow {
     }
 
     clearFilters() {
-        // Reset price inputs
         if (this.filters.price) {
             this.filters.price.min = null;
             this.filters.price.max = null;
@@ -150,13 +140,11 @@ class FilterWindow {
             this.filters.price.inputs.maxInput.value = '';
         }
 
-        // Reset stock checkbox
         if (this.filters.stock) {
             this.filters.stock.value = false;
             this.filters.stock.input.checked = false;
         }
 
-        // Immediately apply cleared filters
         this.applyFilters();
     }
 
@@ -167,25 +155,21 @@ class FilterWindow {
         const products = response.message;
         
         if (response.type === 'EMPTY') {
-            // Show no products message
             const noProductsMsg = cardsContainer.querySelector('.no-products') || 
                 cardsContainer.appendChild(document.createElement('div'));
             noProductsMsg.className = 'no-products';
             noProductsMsg.textContent = 'Nincsenek termékek a megadott szűrési feltételekkel.';
             noProductsMsg.style.display = 'block';
 
-            // Hide all product cards
             cardsContainer.querySelectorAll('.card').forEach(card => {
                 card.style.display = 'none';
             });
         } else {
-            // Hide no products message if it exists
             const noProductsMsg = cardsContainer.querySelector('.no-products');
             if (noProductsMsg) {
                 noProductsMsg.style.display = 'none';
             }
 
-            // Show/hide products based on filter results
             cardsContainer.querySelectorAll('.card').forEach(card => {
                 const productId = parseInt(card.dataset.productId);
                 const isVisible = products.some(p => p.id === productId);
@@ -193,7 +177,6 @@ class FilterWindow {
             });
         }
         
-        // Update product count
         const productCount = document.querySelector('.product-count');
         if (productCount) {
             productCount.textContent = `${products.length} termék`;

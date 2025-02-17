@@ -44,7 +44,6 @@ if ($result->isError() || $result->isEmpty()) {
 
 $subcategoryId = $result->message[0]['id'];
 
-// Base query for all products with images
 $query = "SELECT 
     product.*, 
     product_page.link_slug,
@@ -64,7 +63,7 @@ ORDER BY product.name ASC";
 $result = selectData($query, [$subcategoryId], "i");
 
 if ($result->isSuccess() && !$result->isEmpty()) {
-    // Process image URIs to remove extensions
+    
     foreach ($result->message as &$product) {
         $product['thumbnail_image'] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $product['thumbnail_image']);
         $product['secondary_image'] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $product['secondary_image']);
