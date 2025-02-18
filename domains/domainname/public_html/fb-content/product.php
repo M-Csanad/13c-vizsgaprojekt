@@ -9,7 +9,7 @@
     
 
     // Termék és termékoldal adatainak lekérése
-    $result = selectData("SELECT product.*, product_page.id as page_id, product_page.created_at, product_page.last_modified, product_page.page_title, product_page.page_content, category.name AS category_name, subcategory.name AS subcategory_name FROM product_page INNER JOIN product ON product_page.product_id=product.id INNER JOIN category ON product_page.category_id=category.id INNER JOIN subcategory ON product_page.subcategory_id=subcategory.id WHERE product_page.link_slug LIKE ?", [$slug], "s");
+    $result = selectData("SELECT product.*, product_page.id as page_id, product_page.created_at, product_page.last_modified, product_page.page_title, product_page.page_content, product_page.category_id, category.name AS category_name, subcategory.name AS subcategory_name FROM product_page INNER JOIN product ON product_page.product_id=product.id INNER JOIN category ON product_page.category_id=category.id INNER JOIN subcategory ON product_page.subcategory_id=subcategory.id WHERE product_page.link_slug LIKE ?", [$slug], "s");
     
     // Ha nem sikeres, akkor 404 oldal betöltése
     if (!$result->isSuccess()) {
@@ -78,6 +78,103 @@
     }
 
     // Hasonló termékek lekérése
+    $relatedProducts = null;
+
+    // Ugyanabban az alkatrgóriában lévő termékek lekérése
+    $limit = 6;
+    $relatedProducts = array();
+
+    // Először ugyanabból az alkategóriából gyűjtünk termékeket
+    $result = selectData(
+      "SELECT DISTINCT p.*, pp.link_slug,
+      MAX(CASE WHEN i.uri LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') END) AS thumbnail_image,
+      MAX(CASE 
+      WHEN i.uri LIKE '%vertical%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '')
+      WHEN i.uri NOT LIKE '%vertical%' AND i.uri NOT LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') 
+      END) AS secondary_image,
+      COALESCE(AVG(r.rating), 0) as avg_rating,
+      COUNT(DISTINCT r.id) as review_count
+      FROM product p
+      INNER JOIN product_page pp ON p.id = pp.product_id
+      LEFT JOIN product_image pi ON p.id = pi.product_id
+      LEFT JOIN image i ON pi.image_id = i.id
+      LEFT JOIN review r ON p.id = r.product_id
+      WHERE pp.subcategory_id = ? AND p.id != ?
+      GROUP BY p.id
+      ORDER BY p.name
+      LIMIT ?",
+      [$ids[1], $product['id'], $limit - count($relatedProducts)],
+      "iii"
+    );
+
+    if ($result->isSuccess() && !$result->isEmpty()) {
+      $relatedProducts = array_merge($relatedProducts, $result->message);
+    }
+
+    // Ha még kell, akkor ugyanabból a kategóriából gyűjtünk termékeket
+    if (count($relatedProducts) < $limit) {
+      $result = selectData(
+      "SELECT DISTINCT p.*, pp.link_slug,
+      MAX(CASE WHEN i.uri LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') END) AS thumbnail_image,
+      MAX(CASE 
+        WHEN i.uri LIKE '%vertical%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '')
+        WHEN i.uri NOT LIKE '%vertical%' AND i.uri NOT LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') 
+      END) AS secondary_image,
+      COALESCE(AVG(r.rating), 0) as avg_rating,
+      COUNT(DISTINCT r.id) as review_count
+      FROM product p
+      INNER JOIN product_page pp ON p.id = pp.product_id
+      LEFT JOIN product_image pi ON p.id = pi.product_id
+      LEFT JOIN image i ON pi.image_id = i.id
+      LEFT JOIN review r ON p.id = r.product_id
+      WHERE pp.category_id = ? AND p.id != ? 
+      AND p.id NOT IN (" . implode(',', array_map(function($p) { return $p['id']; }, $relatedProducts)) . ")
+      GROUP BY p.id
+      ORDER BY p.name
+      LIMIT ?",
+      [$product['category_id'], $product['id'], $limit - count($relatedProducts)],
+      "iii"
+      );
+
+      if ($result->isSuccess() && !$result->isEmpty()) {
+      $relatedProducts = array_merge($relatedProducts, $result->message);
+      }
+    }
+
+    // Ha még mindig kell, akkor bármely termék közül keresünk
+    if (count($relatedProducts) < $limit) {
+      $result = selectData(
+      "SELECT DISTINCT p.*, pp.link_slug,
+      MAX(CASE WHEN i.uri LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') END) AS thumbnail_image,
+      MAX(CASE 
+        WHEN i.uri LIKE '%vertical%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '')
+        WHEN i.uri NOT LIKE '%vertical%' AND i.uri NOT LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') 
+      END) AS secondary_image,
+      COALESCE(AVG(r.rating), 0) as avg_rating,
+      COUNT(DISTINCT r.id) as review_count
+      FROM product p
+      INNER JOIN product_page pp ON p.id = pp.product_id
+      LEFT JOIN product_image pi ON p.id = pi.product_id
+      LEFT JOIN image i ON pi.image_id = i.id
+      LEFT JOIN review r ON p.id = r.product_id
+      WHERE p.id != ? 
+      AND p.id NOT IN (" . (empty($relatedProducts) ? '-1' : implode(',', array_map(function($p) { return $p['id']; }, $relatedProducts))) . ")
+      GROUP BY p.id
+      ORDER BY p.name
+      LIMIT ?",
+      [$product['id'], $limit - count($relatedProducts)],
+      "ii"
+      );
+    
+      if ($result->isSuccess() && !$result->isEmpty()) {
+      $relatedProducts = array_merge($relatedProducts, $result->message);
+      }
+    }
+
+    // Rendezzük a termékeket név szerint
+    usort($relatedProducts, function($a, $b) {
+      return $a['name'] <=> $b['name'];
+    });
 
 ?>
 <!DOCTYPE html>
@@ -453,100 +550,89 @@
       <header class="title">Hasonló termékek</header>
       <div class="products-wrapper">
         <div class="products">
-          <!-- <div class="card">
-            <div class="card-image">
-              <img src="./product-image/image1.jpg" alt="" />
-              <div class="button-wrapper">
-                <button class="quick-add">
-                  <div>Kosárba</div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-bag"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"
-                    />
-                  </svg>
-                </button>
-              </div>
+          <?php if (is_array($relatedProducts)): ?>
+            <?php foreach ($relatedProducts as $relatedProduct): ?>
+              <div class="card" data-product-id="<?= htmlspecialchars($relatedProduct["id"]); ?>">
+                <div class="card-image">
+                    <a href="/<?= htmlspecialchars($relatedProduct["link_slug"]); ?>">
+                        <?php $resolutions = [1920, 1440, 1024, 768]; ?>
+                        <picture>
+                            <?php foreach ($resolutions as $index=>$resolution): ?>
+                                <source type="image/avif" srcset="<?= $relatedProduct["thumbnail_image"] ?>-<?= $resolution ?>px.avif 1x" media="(min-width: <?= $resolution ?>px)">
+                                <source type="image/webp" srcset="<?= $relatedProduct["thumbnail_image"] ?>-<?= $resolution ?>px.webp 1x" media="(min-width: <?= $resolution ?>px)">
+                                <source type="image/jpeg" srcset="<?= $relatedProduct["thumbnail_image"] ?>-<?= $resolution ?>px.jpg 1x" media="(min-width: <?= $resolution ?>px)">
+                            <?php endforeach; ?>
+                            <!-- Fallback -->
+                            <img 
+                            src="<?= $relatedProduct["thumbnail_image"] ?>-<?= end($resolutions) ?>px.webp" 
+                            alt="<?= htmlspecialchars($relatedProduct['name']) ?>" 
+                            loading="lazy"
+                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw">
+                        </picture>
+                        <picture class="secondary">
+                            <?php foreach ($resolutions as $index=>$resolution): ?>
+                                <source type="image/avif" srcset="<?= $relatedProduct["secondary_image"] ?>-<?= $resolution ?>px.avif 1x" media="(min-width: <?= $resolution ?>px)">
+                                <source type="image/webp" srcset="<?= $relatedProduct["secondary_image"] ?>-<?= $resolution ?>px.webp 1x" media="(min-width: <?= $resolution ?>px)">
+                                <source type="image/jpeg" srcset="<?= $relatedProduct["secondary_image"] ?>-<?= $resolution ?>px.jpg 1x" media="(min-width: <?= $resolution ?>px)">
+                            <?php endforeach; ?>
+                            <!-- Fallback -->
+                            <source type="image/jpeg" srcset="<?= $relatedProduct["secondary_image"] ?>.jpg 1x" media="(min-width: 0px)">
+                            <img 
+                            src="<?= $relatedProduct["secondary_image"] ?>.jpg" 
+                            alt="<?= htmlspecialchars($relatedProduct['name']) ?>" 
+                            loading="lazy"
+                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw">
+                        </picture>
+                    </a>
+                <div class="button-wrapper">
+                    <button class="quick-add" 
+                            data-product-id="<?= htmlspecialchars($relatedProduct["id"]); ?>"
+                            data-product-url="<?= htmlspecialchars($relatedProduct["link_slug"]); ?>">
+                    <div>Kosárba</div>
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="16"
+                        height="16"
+                        fill="currentColor"
+                        class="bi bi-bag"
+                        viewBox="0 0 16 16"
+                    >
+                        <path
+                        d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"
+                        />
+                    </svg>
+                    </button>
+                </div>
+                </div>
+                <div class="card-body">
+                <div class="name" title="<?= htmlspecialchars($relatedProduct["name"]); ?>">
+                    <?= htmlspecialchars($relatedProduct["name"]); ?>
+                </div>
+                <div class="price" aria-label="Ár">
+                    <span class="price-value">
+                        <?= htmlspecialchars($relatedProduct["unit_price"]); ?>
+                    </span>
+                    <span class="price-currency">Ft</span>
+                </div>
+                <?php if ($relatedProduct["review_count"] > 0): ?>
+                    <div class="card-bottom">
+                        <div class="review-stars stars" data-rating="<?= htmlspecialchars($relatedProduct["avg_rating"]); ?>"></div>
+                        <div class="review-count">
+                            <?= htmlspecialchars($relatedProduct["review_count"]) . ' értékelés'; ?>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <div class="card-bottom">
+                        <div class="review-count">
+                            Még nincs értékelve
+                        </div>
+                    </div>
+                <?php endif; ?>
+                </div>
             </div>
-            <div class="card-body">
-              <div class="name">Acai őrlemény</div>
-              <div class="price" aria-label="Ár">
-                <span class="price-value">8999</span>
-                <span class="price-currency">Ft</span>
-              </div>
-              <div class="review-stars stars" data-rating="3.5"></div>
-              <div class="review-count">123 értékelés</div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-image">
-              <img src="./product-image/image1.jpg" alt="" />
-              <div class="button-wrapper">
-                <button class="quick-add">
-                  <div>Kosárba</div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-bag"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="name">Acai őrlemény</div>
-              <div class="price" aria-label="Ár">
-                <span class="price-value">8999</span>
-                <span class="price-currency">Ft</span>
-              </div>
-              <div class="review-stars stars" data-rating="3.5"></div>
-              <div class="review-count">123 értékelés</div>
-            </div>
-          </div>
-          <div class="card">
-            <div class="card-image">
-              <img src="./product-image/image1.jpg" alt="" />
-              <div class="button-wrapper">
-                <button class="quick-add">
-                  <div>Kosárba</div>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="16"
-                    height="16"
-                    fill="currentColor"
-                    class="bi bi-bag"
-                    viewBox="0 0 16 16"
-                  >
-                    <path
-                      d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"
-                    />
-                  </svg>
-                </button>
-              </div>
-            </div>
-            <div class="card-body">
-              <div class="name">Acai őrlemény</div>
-              <div class="price" aria-label="Ár">
-                <span class="price-value">8999</span>
-                <span class="price-currency">Ft</span>
-              </div>
-              <div class="review-stars stars" data-rating="3.5"></div>
-              <div class="review-count">123 értékelés</div>
-            </div>
-          </div>
-        </div> -->
+            <?php endforeach; ?>
+          <?php endif; ?>
+        </div>
       </div>
       <div class="product-navigator">
         <div class="navigator-button navigator-left">

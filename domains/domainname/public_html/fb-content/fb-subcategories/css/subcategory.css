@@ -449,8 +449,16 @@ main {
     & > .price > .price-currency {
         font-size: min(2vw, 20px);
     }
+
+    & > .card-bottom {
+        height: 45px;
+        display: flex;
+        justify-content: flex-end;
+        flex-direction: column;
+        justify-content: space-between;
+    }
   
-    & > .review-count {
+    & .review-count {
         font-size: min(2.5vw, 14px);
         color: #dddd;
     }
@@ -539,7 +547,7 @@ main {
         font-size: min(3cqw, 20px);
     }
 
-    .card-body > .review-count {
+    .card-body .review-count {
         font-size: min(3cqw, 14px);
         color: #dddd;
     }

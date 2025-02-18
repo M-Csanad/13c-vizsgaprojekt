@@ -10,7 +10,13 @@
 
     $subcategoryData = $result->message[0];
 
-    $result = selectData("SELECT product.*, product_page.link_slug FROM product_page INNER JOIN product ON product_page.product_id = product.id WHERE product_page.subcategory_id=? ORDER BY product.id ASC;", $ids[1], "i");
+    $result = selectData("SELECT product.*, product_page.link_slug, COALESCE(AVG(review.rating), 0) as avg_rating, COUNT(review.id) as review_count 
+    FROM product_page 
+    INNER JOIN product ON product_page.product_id = product.id 
+    LEFT JOIN review ON product.id = review.product_id
+    WHERE product_page.subcategory_id=? 
+    GROUP BY product.id, product_page.link_slug
+    ORDER BY product.id ASC;", $ids[1], "i");
     if ($result->isError()) {
         include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
         exit();
@@ -229,7 +235,7 @@
                                         </picture>
                                     </a>
                                 <div class="button-wrapper">
-                                    <button class="quick-add" id="<?= htmlspecialchars(format_str($product["name"])); ?>">
+                                    <button class="quick-add" data-product-url="<?= htmlspecialchars(format_str($product["link_slug"])); ?>">
                                     <div>Kosárba</div>
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
@@ -256,8 +262,20 @@
                                     </span>
                                     <span class="price-currency">Ft</span>
                                 </div>
-                                <div class="review-stars stars" data-rating="3.5"></div>
-                                <div class="review-count">123 értékelés</div>
+                                <?php if ($product["review_count"] > 0): ?>
+                                    <div class="card-bottom">
+                                        <div class="review-stars stars" data-rating="<?= htmlspecialchars($product["avg_rating"]); ?>"></div>
+                                        <div class="review-count">
+                                            <?= htmlspecialchars($product["review_count"]) . ' értékelés'; ?>
+                                        </div>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="card-bottom">
+                                        <div class="review-count">
+                                            Még nincs értékelve
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                                 </div>
                             </div>
                         <?php endforeach; ?>

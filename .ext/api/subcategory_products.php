@@ -44,18 +44,25 @@ if ($result->isError() || $result->isEmpty()) {
 
 $subcategoryId = $result->message[0]['id'];
 
+// Termékek lekérése
 $query = "SELECT 
     product.*, 
     product_page.link_slug,
-    MAX(CASE WHEN image.uri LIKE '%thumbnail%' THEN image.uri END) AS thumbnail_image,
     MAX(CASE 
-        WHEN image.uri LIKE '%vertical%' THEN image.uri
-        WHEN image.uri NOT LIKE '%vertical%' AND image.uri NOT LIKE '%thumbnail%' THEN image.uri 
-    END) AS secondary_image
+        WHEN image.uri LIKE '%thumbnail%' THEN REGEXP_REPLACE(image.uri, '\\.[^.]*$', '')
+    END) AS thumbnail_image,
+    MAX(CASE 
+        WHEN image.uri LIKE '%vertical%' THEN REGEXP_REPLACE(image.uri, '\\.[^.]*$', '')
+        WHEN image.uri NOT LIKE '%vertical%' AND image.uri NOT LIKE '%thumbnail%' 
+        THEN REGEXP_REPLACE(image.uri, '\\.[^.]*$', '')
+    END) AS secondary_image,
+    COALESCE(AVG(review.rating), 0) as avg_rating,
+    COUNT(DISTINCT review.id) as review_count
 FROM product_page 
 INNER JOIN product ON product_page.product_id = product.id
 LEFT JOIN product_image ON product.id = product_image.product_id
 LEFT JOIN image ON product_image.image_id = image.id
+LEFT JOIN review ON product.id = review.product_id
 WHERE product_page.subcategory_id = ?
 GROUP BY product.id 
 ORDER BY product.name ASC";

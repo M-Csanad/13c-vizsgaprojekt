@@ -307,7 +307,7 @@ class Cart {
     }
 
     getUrlFromCard(card) {
-        return this.url + "/" + card.id;
+        return card.dataset.productUrl;
     }
 
     // Backend metódusok
