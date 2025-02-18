@@ -95,7 +95,7 @@
     <link rel="stylesheet" href="/fb-content/fb-products/css/reviewform.css">
     <link rel="stylesheet" href="/fb-content/assets/css/footer.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
-    <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/footer.css" media="all" />
     <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
 

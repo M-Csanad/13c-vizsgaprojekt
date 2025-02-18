@@ -296,7 +296,7 @@
     <meta name="description" content="A Florens Botanica vezérlőpultja">
     <title>Vezérlőpult</title>
 
-    <link rel="shortcut icon" href="./fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/dashboard.css">

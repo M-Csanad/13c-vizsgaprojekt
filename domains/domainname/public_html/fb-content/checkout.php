@@ -51,7 +51,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fizetés és rendelés</title>
 
-    <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="stylesheet" href="/fb-content/assets/css/checkout.css">
     <link rel="stylesheet" href="/fb-content/assets/css/font.css" />

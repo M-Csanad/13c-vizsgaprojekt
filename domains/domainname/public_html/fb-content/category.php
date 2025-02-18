@@ -19,6 +19,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
   <link rel="stylesheet" href="http://localhost//fb-content/assets/css/box.css" />
   <link rel="stylesheet" href="http://localhost//fb-content/assets/css/font.css" />
   <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
+  <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
 
   <link rel="stylesheet" href="http://localhost//fb-content/fb-categories/css/category-cards.css" />
 

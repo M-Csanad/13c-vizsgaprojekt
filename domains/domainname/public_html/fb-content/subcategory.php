@@ -53,11 +53,11 @@
             $products[$index]["thumbnail_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $images[$index]["thumbnail_image"]);
             $products[$index]["secondary_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $images[$index]["secondary_image"]);
         }
+        usort($products, function($a, $b) {
+            return $a["name"] <=> $b["name"];
+        });
     }
 
-    usort($products, function($a, $b) {
-        return $a["name"] <=> $b["name"];
-    });
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -71,9 +71,10 @@
     <link rel="stylesheet" href="/fb-content/assets/css/footer.css">
     <link rel="stylesheet" href="/fb-content/fb-products/css/reviewform.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
-    <link rel="shortcut icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white.png" type="image/x-icon">
+    <link rel="shortcut icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/footer.css" media="all" />
     <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
+    <link rel="stylesheet" href="/fb-auth/assets/css/inputs.css">
     
     <script defer src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" ></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -100,7 +101,7 @@
     <main>
         <section class="filters">
             <header>Szűrés</header>
-            <div class="product-count">5 termék</div>
+            <div class="product-count"><?= htmlspecialchars(is_array($products) ? count($products) : 0); ?> termék</div>
             <div class="filter-logo">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
                     <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
@@ -109,13 +110,25 @@
             <div class="filter-group">
                 <header>Ár szerint</header>
                 <div class="filter" data-target="price">
-                    <div class="filter-input">
-                        <label for="price_min">Minimum</label>
-                        <input type="number" name="price_min" id="price_min">
-                    </div>
-                    <div class="filter-input">
-                        <label for="price_max">Maximum</label>
-                        <input type="number" name="price_max" id="price_max">
+                    <div class="input-group-inline">
+                        <div class="input-group" tabindex="-1">
+                            <div class="input-body" tabindex="-1">
+                                <label for="price_min">Minimum</label>
+                                <input type="number" name="price_min" id="price_min" required placeholder="A minimum ár" tabindex="1">
+                            </div>
+                            <div class="message-wrapper">
+                                <div class="error-message"></div>
+                            </div>
+                        </div>
+                        <div class="input-group" tabindex="-1">
+                            <div class="input-body" tabindex="-1">
+                                <label for="price_max">Maximum</label>
+                                <input type="number" name="price_max" id="price_max" required placeholder="A maximum ár" tabindex="1">
+                            </div>
+                            <div class="message-wrapper">
+                                <div class="error-message"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -155,7 +168,7 @@
                             <?= htmlspecialchars($subcategoryData["category_name"]); ?>
                         </a>
                         <header>
-                            <?= htmlspecialchars($subcategoryData["name"]); ?> <span style="font-size: 18px; color: #dddddd; font-family: Roboto">- <?= htmlspecialchars($subcategoryData['product_count']); ?> termék</span>
+                            <?= htmlspecialchars($subcategoryData["name"]); ?> <span style="font-size: 18px; color: #dddddd; font-family: Roboto">- <?= htmlspecialchars($subcategoryData['product_count']); ?> termék összesen</span>
                         </header>
                         <div class="subname">
                             <?= htmlspecialchars($subcategoryData["subname"]); ?>
