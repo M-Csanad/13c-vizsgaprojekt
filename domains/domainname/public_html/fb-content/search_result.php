@@ -31,6 +31,9 @@ $searchResults = $_SESSION['search_results'];
 }
 
 
+
+
+
 /* var_dump($searchResult); */
 
 
