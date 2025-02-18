@@ -106,7 +106,7 @@ class Search {
           throw new Error("Hálózati hiba: " + response.status);
         }
 
-        /* window.location = "/search"; */
+        window.location = "/search";
         return response.json();
       })
       .then((data) => {

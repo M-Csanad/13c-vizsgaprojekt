@@ -4,7 +4,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
 
 
 // Ha nincs keresési eredmény, akkor jelezzük, vagy átirányítjuk a felhasználót
-var_dump(session_id());
+/* var_dump(session_id()); */
 /* var_dump($_SESSION); */
 if (!isset($_SESSION['search_query']) || !isset($_SESSION['search_results'])) {
     echo "Nincs keresési eredmény. Kérlek végezz keresést!";
@@ -12,7 +12,31 @@ if (!isset($_SESSION['search_query']) || !isset($_SESSION['search_results'])) {
 }
 
 $searchQuery = $_SESSION['search_query'];
+$searchResult = $_SESSION['search_results'];
 $searchResults = $_SESSION['search_results'];
+
+
+
+
+ // A termékekhez hozzácsatoljuk a képeket
+ foreach ($searchResult as $index=>$product) {
+    // Mivel a termékek is és a képek is növekvő sorrendbe vannak
+    // rendezve a product.id alapján, így a lista index-szel
+    // is el tudjuk érni a hozzá tartozó képeket
+
+    $searchResult[$index]["product"]["thumbnail_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $searchResults[$index]["product"]["thumbnail_image"]);
+    $searchResult[$index]["product"]["secondary_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $searchResults[$index]["product"]["secondary_image"]);
+
+
+}
+
+
+/* var_dump($searchResult); */
+
+
+
+
+/* var_dump($searchResults); */
 // Töröljük a session változókat, hogy később ne maradjanak fent
 unset($_SESSION['search_query'], $_SESSION['search_results'], $_SESSION['search_error'], $_SESSION['search_info']);
 ?>
@@ -53,7 +77,7 @@ unset($_SESSION['search_query'], $_SESSION['search_results'], $_SESSION['search_
 
     <header style="height: 100px;">
         <section id="StickyNavbar_container">
-            <?php include $_SERVER["DOCUMENT_ROOT"] . '/assets/navbar.php'; ?>
+            <?php include $_SERVER["DOCUMENT_ROOT"] . '/fb-content/assets/navbar.php'; ?>
         </section>
     </header>
 
@@ -141,39 +165,70 @@ unset($_SESSION['search_query'], $_SESSION['search_results'], $_SESSION['search_
                 <div class="cards">
                     <?php foreach ($searchResults as $item):
                         $product = $item['product'];
+                        var_dump($product);
                         ?>
                         <div class="card">
                             <div class="card-image">
-                                <a href="/product/<?= htmlspecialchars($product['id']); ?>">
-                                    <?php
-                                    $thumbnail = htmlspecialchars($product['thumbnail_image'] ?? '');
-                                    ?>
-                                    <img src="<?= $thumbnail ?>" alt="<?= htmlspecialchars($product['name']); ?>"
-                                        loading="lazy">
+                                <a href="/<?= htmlspecialchars($product["link_slug"]); ?>">
+                                    <?php $resolutions = [1920, 1440, 1024, 768]; ?>
+                                    <picture>
+                                        <?php foreach ($resolutions as $index=>$resolution): ?>
+                                            <source type="image/avif" srcset="<?= $product["thumbnail_image"] ?>-<?= $resolution ?>px.avif 1x" media="(min-width: <?= $resolution ?>px)">
+                                            <source type="image/webp" srcset="<?= $product["thumbnail_image"] ?>-<?= $resolution ?>px.webp 1x" media="(min-width: <?= $resolution ?>px)">
+                                            <source type="image/jpeg" srcset="<?= $product["thumbnail_image"] ?>-<?= $resolution ?>px.jpg 1x" media="(min-width: <?= $resolution ?>px)">
+                                        <?php endforeach; ?>
+                                        <!-- Fallback -->
+                                        <img
+                                        src="<?= $product["thumbnail_image"] ?>-<?= end($resolutions) ?>px.webp"
+                                        alt="<?= htmlspecialchars($product['name']) ?>"
+                                        loading="lazy"
+                                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw">
+                                    </picture>
+                                    <picture class="secondary">
+                                        <?php foreach ($resolutions as $index=>$resolution): ?>
+                                            <source type="image/avif" srcset="<?= $product["secondary_image"] ?>-<?= $resolution ?>px.avif 1x" media="(min-width: <?= $resolution ?>px)">
+                                            <source type="image/webp" srcset="<?= $product["secondary_image"] ?>-<?= $resolution ?>px.webp 1x" media="(min-width: <?= $resolution ?>px)">
+                                            <source type="image/jpeg" srcset="<?= $product["secondary_image"] ?>-<?= $resolution ?>px.jpg 1x" media="(min-width: <?= $resolution ?>px)">
+                                        <?php endforeach; ?>
+                                        <!-- Fallback -->
+                                        <source type="image/jpeg" srcset="<?= $product["secondary_image"] ?>.jpg 1x" media="(min-width: 0px)">
+                                        <img
+                                        src="<?= $product["secondary_image"] ?>.jpg"
+                                        alt="<?= htmlspecialchars($product['name']) ?>"
+                                        loading="lazy"
+                                        sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw">
+                                    </picture>
                                 </a>
-                                <div class="button-wrapper">
-                                    <button class="quick-add" id="<?= htmlspecialchars(format_str($product["name"])); ?>">
-                                        <div>Kosárba</div>
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                                            class="bi bi-bag" viewBox="0 0 16 16">
-                                            <path
-                                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
-                                        </svg>
-                                    </button>
-                                </div>
+                            <div class="button-wrapper">
+                                <button class="quick-add" id="<?= htmlspecialchars(format_str($product["name"])); ?>">
+                                <div>Kosárba</div>
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="16"
+                                    height="16"
+                                    fill="currentColor"
+                                    class="bi bi-bag"
+                                    viewBox="0 0 16 16"
+                                >
+                                    <path
+                                    d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"
+                                    />
+                                </svg>
+                                </button>
+                            </div>
                             </div>
                             <div class="card-body">
-                                <div class="name" title="<?= htmlspecialchars($product["name"]); ?>">
-                                    <?= htmlspecialchars($product["name"]); ?>
-                                </div>
-                                <div class="price" aria-label="Ár">
-                                    <span class="price-value">
-                                        <?= htmlspecialchars($product["unit_price"]); ?>
-                                    </span>
-                                    <span class="price-currency">Ft</span>
-                                </div>
-                                <div class="review-stars stars" data-rating="3.5"></div>
-                                <div class="review-count">123 értékelés</div>
+                            <div class="name" title="<?= htmlspecialchars($product["name"]); ?>">
+                                <?= htmlspecialchars($product["name"]); ?>
+                            </div>
+                            <div class="price" aria-label="Ár">
+                                <span class="price-value">
+                                    <?= htmlspecialchars($product["unit_price"]); ?>
+                                </span>
+                                <span class="price-currency">Ft</span>
+                            </div>
+                            <div class="review-stars stars" data-rating="3.5"></div>
+                            <div class="review-count">123 értékelés</div>
                             </div>
                         </div>
                     <?php endforeach; ?>

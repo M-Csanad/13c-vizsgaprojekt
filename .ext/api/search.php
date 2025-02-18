@@ -2,6 +2,7 @@
 include_once __DIR__ . "/../init.php";
 include_once __DIR__ . "/fuzzySearch.php"; // Itt vannak a damerauLevenshtein(), partialSubstrDistance(), LinearFuzzySearch, stb.
 
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -15,7 +16,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Lekérjük az összes termék adatait az adatbázisból
-    $sql = "SELECT * FROM product";
+    $sql = "SELECT product.*, product_page.*, product.id AS product_id,
+            MAX(CASE WHEN image.uri LIKE '%thumbnail%' THEN image.uri END) AS thumbnail_image,
+            MAX(CASE
+                WHEN image.uri LIKE '%vertical%' THEN image.uri
+                WHEN image.uri NOT LIKE '%vertical%' AND image.uri NOT LIKE '%thumbnail%' THEN image.uri
+                END) AS secondary_image
+        FROM   image
+        INNER JOIN
+            product_image ON product_image.image_id = image.id
+        INNER JOIN
+            product ON product_image.product_id = product.id
+        INNER JOIN
+            product_page ON product_page.product_id = product.id";
     $result = selectData($sql, [], "");
     if ($result->isError()) {
         $_SESSION['search_error'] = "Adatbázis hiba: " . $result->message;
@@ -54,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     var_dump(session_id());
 
     // Átirányítás a search_result.php oldalra
-    header("Location: /search");
+    /* header("Location: /search"); */
     exit;
 }
 
