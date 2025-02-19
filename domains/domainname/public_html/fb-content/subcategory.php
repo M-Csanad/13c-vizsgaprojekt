@@ -84,6 +84,7 @@
     
     <script defer src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" ></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollToPlugin.min.js"></script>
     <script defer src="/fb-content/assets/js/page_transition.js"></script>
     <script defer src="/fb-content/assets/js/lenis.js"></script>
     <script defer src="/fb-content/assets/js/scrollbar.js"></script>
@@ -107,7 +108,7 @@
     <main>
         <section class="filters">
             <header>Szűrés</header>
-            <div class="product-count"><?= htmlspecialchars(is_array($products) ? count($products) : 0); ?> termék</div>
+            <div class="product-count"></div>
             <div class="filter-logo">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
                     <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2z"/>
@@ -174,7 +175,8 @@
                             <?= htmlspecialchars($subcategoryData["category_name"]); ?>
                         </a>
                         <header>
-                            <?= htmlspecialchars($subcategoryData["name"]); ?> <span style="font-size: 18px; color: #dddddd; font-family: Roboto">- <?= htmlspecialchars($subcategoryData['product_count']); ?> termék összesen</span>
+                            <?= htmlspecialchars($subcategoryData["name"]); ?> 
+                            <span class="product-count" style="font-size: 18px; color: #dddddd; font-family: Roboto"><?= htmlspecialchars(is_array($products) ? count($products) : 0); ?> termék összesen</span>
                         </header>
                         <div class="subname">
                             <?= htmlspecialchars($subcategoryData["subname"]); ?>
@@ -195,92 +197,12 @@
                         </button>
                     </div>
                 </div>
-                <?php if (!is_array($products)): ?>
-                    <div class="no-products">
-                        Még nincsenek termékek ebben az alkategóriában.
-                    </div>
-                <?php else: ?>
-                    <div class="cards">
-                        <?php foreach ($products as $product): ?>
-                            <div class="card" data-product-id="<?= htmlspecialchars($product["id"]); ?>">
-                                <div class="card-image">
-                                    <a href="/<?= htmlspecialchars($product["link_slug"]); ?>">
-                                        <?php $resolutions = [1920, 1440, 1024, 768]; ?>
-                                        <picture>
-                                            <?php foreach ($resolutions as $index=>$resolution): ?>
-                                                <source type="image/avif" srcset="<?= $product["thumbnail_image"] ?>-<?= $resolution ?>px.avif 1x" media="(min-width: <?= $resolution ?>px)">
-                                                <source type="image/webp" srcset="<?= $product["thumbnail_image"] ?>-<?= $resolution ?>px.webp 1x" media="(min-width: <?= $resolution ?>px)">
-                                                <source type="image/jpeg" srcset="<?= $product["thumbnail_image"] ?>-<?= $resolution ?>px.jpg 1x" media="(min-width: <?= $resolution ?>px)">
-                                            <?php endforeach; ?>
-                                            <!-- Fallback -->
-                                            <img 
-                                            src="<?= $product["thumbnail_image"] ?>-<?= end($resolutions) ?>px.webp" 
-                                            alt="<?= htmlspecialchars($product['name']) ?>" 
-                                            loading="lazy"
-                                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw">
-                                        </picture>
-                                        <picture class="secondary">
-                                            <?php foreach ($resolutions as $index=>$resolution): ?>
-                                                <source type="image/avif" srcset="<?= $product["secondary_image"] ?>-<?= $resolution ?>px.avif 1x" media="(min-width: <?= $resolution ?>px)">
-                                                <source type="image/webp" srcset="<?= $product["secondary_image"] ?>-<?= $resolution ?>px.webp 1x" media="(min-width: <?= $resolution ?>px)">
-                                                <source type="image/jpeg" srcset="<?= $product["secondary_image"] ?>-<?= $resolution ?>px.jpg 1x" media="(min-width: <?= $resolution ?>px)">
-                                            <?php endforeach; ?>
-                                            <!-- Fallback -->
-                                            <source type="image/jpeg" srcset="<?= $product["secondary_image"] ?>.jpg 1x" media="(min-width: 0px)">
-                                            <img 
-                                            src="<?= $product["secondary_image"] ?>.jpg" 
-                                            alt="<?= htmlspecialchars($product['name']) ?>" 
-                                            loading="lazy"
-                                            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw">
-                                        </picture>
-                                    </a>
-                                <div class="button-wrapper">
-                                    <button class="quick-add" data-product-url="<?= htmlspecialchars(format_str($product["link_slug"])); ?>">
-                                    <div>Kosárba</div>
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="16"
-                                        height="16"
-                                        fill="currentColor"
-                                        class="bi bi-bag"
-                                        viewBox="0 0 16 16"
-                                    >
-                                        <path
-                                        d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"
-                                        />
-                                    </svg>
-                                    </button>
-                                </div>
-                                </div>
-                                <div class="card-body">
-                                <div class="name" title="<?= htmlspecialchars($product["name"]); ?>">
-                                    <?= htmlspecialchars($product["name"]); ?>
-                                </div>
-                                <div class="price" aria-label="Ár">
-                                    <span class="price-value">
-                                        <?= htmlspecialchars($product["unit_price"]); ?>
-                                    </span>
-                                    <span class="price-currency">Ft</span>
-                                </div>
-                                <?php if ($product["review_count"] > 0): ?>
-                                    <div class="card-bottom">
-                                        <div class="review-stars stars" data-rating="<?= htmlspecialchars($product["avg_rating"]); ?>"></div>
-                                        <div class="review-count">
-                                            <?= htmlspecialchars($product["review_count"]) . ' értékelés'; ?>
-                                        </div>
-                                    </div>
-                                <?php else: ?>
-                                    <div class="card-bottom">
-                                        <div class="review-count">
-                                            Még nincs értékelve
-                                        </div>
-                                    </div>
-                                <?php endif; ?>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
+                <div class="cards"></div>
+                <div class="pagination">
+                    <button class="prev-page">Előző</button>
+                    <div class="page-numbers"></div>
+                    <button class="next-page">Következő</button>
+                </div>
             </section>
         </div>
     </main>

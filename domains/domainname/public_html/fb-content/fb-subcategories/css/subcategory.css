@@ -17,6 +17,7 @@ body {
     color: white;
     font-family: Karla;
     height: calc(100vh - 100px) !important;
+    min-height: fit-content;
 }
 
 main {
@@ -210,6 +211,7 @@ main {
     & .info > .subname {
         color: rgb(201, 201, 201);
         font-family: Playfair Display;
+        font-size: 20px;
         padding-top: 0.5rem;
     }
 
@@ -283,8 +285,9 @@ main {
     display: grid;
     grid-template-columns: minmax(auto, 500px) minmax(auto, 500px);
     grid-auto-rows: max-content;  
-    
     gap: 1rem;
+    min-height: 500px;
+    will-change: transform, opacity;
 }
 
 .card {
@@ -296,9 +299,10 @@ main {
     flex-direction: column;
     justify-content: center;
     scroll-snap-align: start;
-  }
-  
-  .card > .card-image {
+    will-change: transform, opacity;
+}
+
+.card > .card-image {
     aspect-ratio: 1 / 1;
     width: 100%;
     height: 100%;
@@ -510,6 +514,80 @@ main {
     text-align: center;
     padding: 2rem;
     margin-top: 5rem;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.pagination button {
+    background: transparent;
+    border: 2px solid #ffe260;
+    color: #ffe260;
+    padding: 0.7rem 1.4rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.pagination button:enabled:hover {
+    background-color: #ffe2601c;
+}
+
+
+.pagination button:enabled:active {
+    background-color: #ffe260;
+    color: #1d1d1d;
+}
+
+.pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #929292;
+    color: #929292;
+}
+
+.pagination button:disabled:hover {
+    background-color: #ffffff1c;
+}
+
+.pagination .page-numbers {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.pagination .page-number {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #666;
+    border-radius: 50%;
+    color: #666;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    will-change: transform, opacity;
+}
+
+.pagination .page-number:hover {
+    border-color: #ffe260;
+    color: #ffe260;
+}
+
+.pagination .page-number:active {
+    background-color: #ffe2601c;
+}
+
+.pagination .page-number.active {
+    background-color: #ffe260;
+    border-color: #ffe260;
+    color: #1d1d1d;
 }
 
 @media screen and (min-width: 950px){

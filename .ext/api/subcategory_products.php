@@ -68,6 +68,12 @@ GROUP BY product.id
 ORDER BY product.name ASC";
 
 $result = selectData($query, [$subcategoryId], "i");
+if ($result->isError()) {
+    http_response_code(500);
+    echo $result->toJSON();
+    exit();
+}
+
 
 if ($result->isSuccess() && !$result->isEmpty()) {
     

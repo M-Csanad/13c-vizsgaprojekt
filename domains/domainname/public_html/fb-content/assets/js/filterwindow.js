@@ -9,50 +9,58 @@ class FilterWindow {
     products = [];
     url = '';
 
-    constructor() {
-        // Fő filter ablak
+    constructor(products, onFilterUpdate) {
+        if (!gsap) throw new Error("A GSAP nem található");
+        
+        this.products = products;
+        this.onFilterUpdate = onFilterUpdate;
+        this.url = window.location.pathname;
+
+        this.initDOM();
+        this.bindEvents();
+
+        this.fetchProducts();
+    }
+
+    // DOM elemek inicializálása
+    initDOM() {
+        // Filter ablak inicializálása
         this.domElement = document.querySelector(".filters");
         if (!this.domElement) throw new Error("Nincs filter osztályú elem.");
-
-        // Id és selector
+        
+        // Egyedi ID generálása a filter ablakhoz
         this.domElement.id = randomId();
         this.selector = `#${this.domElement.id}`;
-
-        // Kinyitó gomb
+        
+        // Kinyitó gomb lekérése
         this.openButton = document.querySelector(".filter-open");
         if (!this.openButton) throw new Error("Nincs kinyitó gomb.");
-
-        // Bezáró gomb
+        
+        // Bezáró gomb lekérése a filter ablakon belül
         this.closeButton = this.domElement.querySelector(".filter-close");
         if (!this.closeButton) throw new Error("Nincs becsukó gomb.");
 
-        // GSAP ellenőrzés
-        if (!gsap) throw new Error("A GSAP nem található");
-
-        // Eseménykezelés
-        this.openButton.addEventListener("click", this.open.bind(this))
-        this.closeButton.addEventListener("click", this.close.bind(this));
-
         this.applyButton = this.domElement.querySelector(".filter-apply");
+        if (!this.applyButton) throw new Error("Nincs szűrő gomb.");
+
         this.clearButton = this.domElement.querySelector(".filter-clear");
-
-        this.initializeFilters();
-
-        if (this.applyButton) {
-            this.applyButton.addEventListener('click', () => this.applyFilters());
-        }
-        if (this.clearButton) {
-            this.clearButton.addEventListener('click', () => this.clearFilters());
-        }
-
-        const pathSegments = window.location.pathname.split('/');
+        if (!this.clearButton) throw new Error("Nincs szűrő visszaállító gomb.");
+        
         this.subcategoryId = document.querySelector('main').dataset.subcategoryId;
-
-        this.url = window.location.pathname;
-
-        this.fetchProducts()
+        
+        // Szűrő elemek inicializálása
+        this.initializeFilters();
     }
 
+    // Események bindelése
+    bindEvents() {
+        this.openButton.addEventListener("click", this.open.bind(this));
+        this.closeButton.addEventListener("click", this.close.bind(this));
+        this.applyButton.addEventListener('click', () => this.applyFilters());
+        this.clearButton.addEventListener('click', () => this.clearFilters());
+    }
+
+    // Szűrő elemek inicializálása
     initializeFilters() {
         const priceFilter = this.domElement.querySelector('[data-target="price"]');
         if (priceFilter) {
@@ -74,7 +82,7 @@ class FilterWindow {
                 });
             }
         }
-
+        
         const stockFilter = this.domElement.querySelector('[data-target="stock"]');
         if (stockFilter) {
             const inStockCheckbox = stockFilter.querySelector('#in_stock');
@@ -91,25 +99,27 @@ class FilterWindow {
         }
     }
 
+    // Termékek lekérése az API segítségével
     async fetchProducts() {
         try {
             const response = await APIFetch('/api/subcategory/products', 'POST', {
                 url: this.url
             });
-
-            if (!response.ok) throw new Error('Network response was not ok');
-
+    
+            if (!response.ok) throw new Error('A hálózati kérés sikertelen');
+    
             const data = await response.json();
             if (data.type !== 'ERROR') {
                 this.products = data.message;
             } else {
-                console.error('Failed to fetch products:', data.message);
+                console.error('Nem sikerült lekérni a termékeket:', data.message);
             }
         } catch (error) {
-            console.error('Error fetching products:', error);
+            console.error('Hiba a termékek lekérésekor:', error);
         }
     }
 
+    // Szűrés alkalmazása a termékekre
     applyFilters() {
         const filteredProducts = this.products.filter(product => {
             if (this.filters.price?.min && product.unit_price < this.filters.price.min) {
@@ -122,16 +132,17 @@ class FilterWindow {
             if (this.filters.stock?.value && product.stock <= 0) {
                 return false;
             }
-
+    
             return true;
         });
-
+    
         this.updateProductDisplay({ 
             type: filteredProducts.length ? 'SUCCESS' : 'EMPTY',
             message: filteredProducts 
         });
     }
 
+    // Szűrők törlése
     clearFilters() {
         if (this.filters.price) {
             this.filters.price.min = null;
@@ -139,60 +150,34 @@ class FilterWindow {
             this.filters.price.inputs.minInput.value = '';
             this.filters.price.inputs.maxInput.value = '';
         }
-
+    
         if (this.filters.stock) {
             this.filters.stock.value = false;
             this.filters.stock.input.checked = false;
         }
-
+    
         this.applyFilters();
     }
 
+    // A megjelenített termékek frissítése a szűrés eredménye alapján
     updateProductDisplay(response) {
-        const cardsContainer = document.querySelector('.cards');
-        if (!cardsContainer) return;
-
         const products = response.message;
         
-        if (response.type === 'EMPTY') {
-            const noProductsMsg = cardsContainer.querySelector('.no-products') || 
-                cardsContainer.appendChild(document.createElement('div'));
-            noProductsMsg.className = 'no-products';
-            noProductsMsg.textContent = 'Nincsenek termékek a megadott szűrési feltételekkel.';
-            noProductsMsg.style.display = 'block';
-
-            cardsContainer.querySelectorAll('.card').forEach(card => {
-                card.style.display = 'none';
-            });
-        } else {
-            const noProductsMsg = cardsContainer.querySelector('.no-products');
-            if (noProductsMsg) {
-                noProductsMsg.style.display = 'none';
-            }
-
-            cardsContainer.querySelectorAll('.card').forEach(card => {
-                const productId = parseInt(card.dataset.productId);
-                const isVisible = products.some(p => p.id === productId);
-                card.style.display = isVisible ? 'flex' : 'none';
-            });
-        }
-        
-        const productCount = document.querySelector('.product-count');
-        if (productCount) {
-            productCount.textContent = `${products.length} termék`;
+        if (this.onFilterUpdate) {
+            this.onFilterUpdate(products);
         }
     }
 
+    // Filter ablak megnyitása animációval
     open() {
         if (this.isOpen) return;
-
+    
         this.isOpen = true;
-
+    
         gsap.killTweensOf(this.domElement);
-        
         gsap.set(this.domElement, { visibility: "visible" });
-
-        // Ablak bejön balról jobbra
+    
+        // Ablak megjelenítése: nagy képernyőn marginLeft és x animáció, kisebbnél x animáció
         if (window.innerWidth >= this.breakpoint) {
             gsap.to(this.domElement, {
                 marginLeft: "0px",
@@ -209,8 +194,8 @@ class FilterWindow {
                 ease: this.ease
             });
         }
-
-        // A filterek bejönnek balról jobbra
+    
+        // Filter csoportok animált megjelenítése
         gsap.fromTo(this.selector + " > .filter-group", { opacity: 0, x: "-100%" }, {
             opacity: 1,
             x: "0%",
@@ -223,17 +208,18 @@ class FilterWindow {
         });
     }
 
+    // Filter ablak bezárása animációval
     close() {
         gsap.killTweensOf(this.domElement);
         
-        // Filterek elhalványodnak
+        // Filter csoportok elhalványítása
         gsap.to(this.selector + " > .filter-group", {
             opacity: 0,
             duration: 0.5,
             ease: this.ease
         });
         
-        // Ablak kimegy jobbról balra
+        // Ablak elrejtése animációval, majd láthatatlanná tétele
         if (window.innerWidth >= this.breakpoint) {
             gsap.to(this.domElement, { 
                 marginLeft: "-400px",
@@ -257,7 +243,7 @@ class FilterWindow {
                 gsap.set(this.domElement, { marginLeft: "-400px" });
             }
         });
-
+    
     }
 }
 
