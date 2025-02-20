@@ -31,7 +31,7 @@ class Cart {
             // Inicializáljuk az elemeket és az eseménykezelőket
             this.initDOM();
             this.bindEvents();
-            this.setupMutationObserver();
+            this.setupCardEvents();
 
             // Megvárjuk a tartalom letöltését
             await fetchPromise;
@@ -87,6 +87,11 @@ class Cart {
         // Kinyitó gomb
         this.openButton = document.querySelector(".cart-open");
         if (!this.openButton) throw new Error("Nincs kinyitó gomb.");
+
+        // Add cart badge
+        this.cartBadge = document.createElement('div');
+        this.cartBadge.className = 'cart-badge';
+        this.openButton.appendChild(this.cartBadge);
 
         // Bezáró gomb
         this.closeButton = this.domElement.querySelector(".cart-close");
@@ -160,22 +165,16 @@ class Cart {
         })
     }
 
-    setupMutationObserver() {
+    setupCardEvents() {
         const cardsContainer = document.querySelector('.cards');
         if (!cardsContainer) return;
-    
-        const observer = new MutationObserver(() => {
-            this.quickAddButtons = cardsContainer.querySelectorAll(".quick-add");
+
+        cardsContainer.addEventListener('click', (e) => {
+            const quickAddButton = e.target.closest('.quick-add');
+            if (!quickAddButton) return;
             
-            this.quickAddButtons?.forEach(button => {
-                const addHandler = () => this.add(null, this.getUrlFromCard(button));
-                button.addEventListener("click", addHandler);
-            });
-        });
-    
-        observer.observe(cardsContainer, {
-            childList: true,
-            subtree: true
+            e.preventDefault();
+            this.add(null, this.getUrlFromCard(quickAddButton));
         });
     }
 
@@ -190,11 +189,16 @@ class Cart {
 
         if (!isCartEmpty) this.priceContainer.innerHTML = this.cartPrice;
 
-        this.cartCount.innerHTML = `${this.data.length} elem`;
+        // Számoljuk ki az összes termék mennyiségét
+        const totalItemCount = this.data.reduce((sum, product) => sum + product.quantity, 0);
+
+        this.cartCount.innerHTML = `${totalItemCount} elem`;
         this.setElementVisibility(this.emptyMessage, isCartEmpty ? "visible" : "hidden");
         this.setElementVisibility(this.checkoutButton, isCartEmpty ? "hidden" : "visible");
 
-        
+        this.cartBadge.textContent = totalItemCount;
+        this.cartBadge.classList.toggle('show', totalItemCount > 0);
+
         if (!flushContainer) return;
 
         this.cartContainer.innerHTML = "";

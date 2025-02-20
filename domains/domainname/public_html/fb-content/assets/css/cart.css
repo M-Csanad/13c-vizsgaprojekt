@@ -283,6 +283,37 @@
         background-color: rgba(197, 255, 110, 0.096);
     }
 }
+
+.cart-open {
+    position: relative;
+}
+
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ffe260;
+    color: #1d1d1d;
+    border-radius: 50%;
+    min-width: 20px;
+    height: 20px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-family: Karla;
+    opacity: 0;
+    transform: scale(0);
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    padding: 0 6px;
+}
+
+.cart-badge.show {
+    opacity: 1;
+    transform: scale(1);
+}
+
 .modal-background {
     position: fixed;
     top: 0;
