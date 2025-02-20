@@ -491,6 +491,41 @@ main {
     background-size: contain;
 }
 
+#top-button {
+    z-index: 999;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 2rem;
+    padding: 0.7rem;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    background-color: white;
+    border: 2px solid white;
+    box-shadow: 0px 0px 5px #494949;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateX(87px) scale(0);
+    transition: background-color 0.2s ease,
+    transform 1s cubic-bezier(0.84, -0.69, 0.16, 1.69);
+}
+
+body.top-show #top-button {
+    transform: translateX(0) scale(1);
+}
+
+#top-button:hover {
+    background-color: #1d1d1d;
+}
+
+#top-button > svg {
+    width: 100%;
+    height: 100%;
+    mix-blend-mode: difference;
+}
+
 #scrollBar {
     z-index: 9998;
     width: 100%;

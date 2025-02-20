@@ -31,6 +31,7 @@ class Cart {
             // Inicializáljuk az elemeket és az eseménykezelőket
             this.initDOM();
             this.bindEvents();
+            this.setupMutationObserver();
 
             // Megvárjuk a tartalom letöltését
             await fetchPromise;
@@ -157,6 +158,25 @@ class Cart {
                 return;
             }
         })
+    }
+
+    setupMutationObserver() {
+        const cardsContainer = document.querySelector('.cards');
+        if (!cardsContainer) return;
+    
+        const observer = new MutationObserver(() => {
+            this.quickAddButtons = cardsContainer.querySelectorAll(".quick-add");
+            
+            this.quickAddButtons?.forEach(button => {
+                const addHandler = () => this.add(null, this.getUrlFromCard(button));
+                button.addEventListener("click", addHandler);
+            });
+        });
+    
+        observer.observe(cardsContainer, {
+            childList: true,
+            subtree: true
+        });
     }
 
     // Segédfüggvény a termék indexének kinyeréséhez (index a kosár adatok tömbjében)

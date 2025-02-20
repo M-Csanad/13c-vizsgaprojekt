@@ -58,6 +58,8 @@ class FilterWindow {
         this.closeButton.addEventListener("click", this.close.bind(this));
         this.applyButton.addEventListener('click', () => this.applyFilters());
         this.clearButton.addEventListener('click', () => this.clearFilters());
+
+        this.domElement.querySelectorAll(".input-group").forEach(e => this.handleInputGroupFocus(e));
     }
 
     // Szűrő elemek inicializálása
@@ -165,6 +167,99 @@ class FilterWindow {
         
         if (this.onFilterUpdate) {
             this.onFilterUpdate(products);
+        }
+    }
+
+    // Beviteli mező validálása
+    validateField(section, name = null) {
+        // A mező lekérdezése a paraméterek alapján
+        const field = name ? this.form[section][name] || undefined : this.form[section] || undefined;
+        if (!field) return false;
+
+        // Validátor függvény, Aktuális érték és hibaüzenet megszerzése
+        const validator = this.validationRules[name];
+        const value = field.value;
+        const error = field.errorMessage;
+
+        // Változók ellenőrzése
+        if (!validator) return null;
+        if (!value) return error;
+
+        // Érték validálása
+        return (typeof validator == 'function') ? validator(value)?null:error : validator.test(value)?null:error;
+    }
+
+    toggleFieldState(section, name = null, error) {
+        // A mező lekérdezése a paraméterek alapján
+        const field = name ? this.form[section][name] || undefined : this.form[section] || undefined;
+        if (!field) return false;
+
+        const errorWrapper = field.dom.closest('.input-group').querySelector('.message-wrapper');
+        const messageContainer = errorWrapper.querySelector(".error-message");
+        const validity = error ? "invalid" : "valid";
+        const oppositeValidity = error ? "valid" : "invalid";
+        const didValidityChange = field.dom.classList.contains(oppositeValidity) || field.dom.classList.length == 0;
+        
+        if (!didValidityChange) return;
+
+        field.dom.classList.add(validity);
+        field.dom.classList.remove(oppositeValidity);
+        
+        if (error) {
+            messageContainer.innerHTML = error;
+
+            gsap.set(errorWrapper, {visibility: "visible"});
+            gsap.to(errorWrapper, {
+                height: 21,
+                opacity: 1,
+                ease: "power2.inOut",
+                duration: 0.3
+            });
+        }
+        else {
+            gsap.to(errorWrapper, {
+                height: 0,
+                opacity: 0,
+                ease: "power2.inOut",
+                duration: 0.3,
+                onComplete: () => {
+                    gsap.set(errorWrapper, {visibility: "hidden"});
+                }
+            })
+        }
+    }
+
+    handleAutofillFocus() {
+        setTimeout(() => {
+            document.querySelectorAll(".input-group").forEach(el => {
+                const label = el.querySelector('label');
+                const input = el.querySelector('input, select');
+    
+                if (!input) return;
+                if (input.value !== "" && input.value !== "def") label.classList.add('focus');
+            });
+        }, 10);
+    }
+
+    handleInputGroupFocus(e) {
+        const inputGroup = e;
+        const label = inputGroup.querySelector('label');
+        const input = inputGroup.querySelector('input, select');
+
+        if (input.nodeName === "SELECT") {
+            input.addEventListener("input", () => {
+                if (input.value != "def") label.classList.add('focus');
+                else label.classList.remove('focus');
+            });
+        }
+        else {
+            input.addEventListener("focus", () => {
+                label.classList.add('focus');
+            });
+    
+            input.addEventListener("focusout", () => {
+                if (input.value === "") label.classList.remove('focus');
+            });
         }
     }
 

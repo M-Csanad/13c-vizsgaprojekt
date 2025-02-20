@@ -37,6 +37,7 @@ class SubcategorySite {
         
         previousButton.addEventListener('click', () => this.changePage(this.currentPage - 1));
         nextButton.addEventListener('click', () => this.changePage(this.currentPage + 1));
+        document.getElementById("top-button").addEventListener("click", () => lenis.scrollTo("top"));
     }
 
     // UI elemek frissítése
@@ -182,14 +183,14 @@ class SubcategorySite {
     // Termékszám frissítése
     updateProductCount() {
         if (this.productCount) {
-            this.productCount.textContent = `- ${this.filteredProducts.length} termék`;
+            this.productCount.textContent = `${this.filteredProducts.length} termék`;
         }
     }
 
     // Oldalváltás kezelése
     changePage(page) {
         const totalPages = Math.ceil(this.filteredProducts.length / this.productsPerPage);
-        if (page >= 1 && page <= totalPages && !this.pageTransitionInProgress) {
+        if (page >= 1 && page <= totalPages && this.currentPage != page && !this.pageTransitionInProgress) {
             this.currentPage = page;
             
             // Lapozó gombok ideiglenes letiltása animáció alatt
@@ -245,6 +246,8 @@ class SubcategorySite {
         this.filteredProducts = filteredProducts;
         this.currentPage = 1;
         this.updateUI();
+
+        lenis.scrollTo('top');
     }
 }
 
