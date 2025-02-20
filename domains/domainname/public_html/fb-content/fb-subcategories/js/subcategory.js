@@ -1,7 +1,8 @@
 import FilterWindow from "../../assets/js/filterwindow.js";
 import APIFetch from "../../assets/js/apifetch.js";
+import SortDropdown from "../../assets/js/sortdropdown.js";
 
-class SubcategorySite {
+export default class SubcategorySite {
     // Osztály tulajdonságok
     productsPerPage = 9;
     currentPage = 1;
@@ -220,6 +221,7 @@ class SubcategorySite {
     async initialize() {
         await this.fetchProducts();
         this.filter = new FilterWindow(this.allProducts, this.handleFilterUpdate.bind(this));
+        this.sortDropdown = new SortDropdown(this.handleSort.bind(this));
         this.updateUI();
     }
 
@@ -244,10 +246,34 @@ class SubcategorySite {
     // Szűrés eredményének kezelése
     handleFilterUpdate(filteredProducts) {
         this.filteredProducts = filteredProducts;
+        
+        // Apply current sorting if there is an active sort
+        if (this.sortDropdown.activeSortType) {
+            const [property, direction] = this.sortDropdown.activeSortType.split('-');
+            this.filteredProducts = this.sortDropdown.sortProducts(
+                this.filteredProducts,
+                property,
+                direction
+            );
+        }
+        
         this.currentPage = 1;
         this.updateUI();
 
         lenis.scrollTo('top');
+    }
+
+    handleSort(property, direction) {
+        if (this.pageTransitionInProgress) return;
+        
+        this.filteredProducts = this.sortDropdown.sortProducts(
+            this.filteredProducts,
+            property,
+            direction
+        );
+        
+        this.currentPage = 1;
+        this.updateUI();
     }
 }
 
