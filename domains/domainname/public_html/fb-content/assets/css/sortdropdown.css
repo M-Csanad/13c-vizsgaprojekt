@@ -16,10 +16,6 @@
     transition: background-color 0.2s ease;
 }
 
-.sort-current:hover {
-    
-}
-
 .sort-current {
     border: 2px solid #ffe260;
     border-radius: 30px;

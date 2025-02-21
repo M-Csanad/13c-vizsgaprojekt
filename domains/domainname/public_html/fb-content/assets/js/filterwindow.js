@@ -18,8 +18,6 @@ class FilterWindow {
 
         this.initDOM();
         this.bindEvents();
-
-        this.fetchProducts();
     }
 
     // DOM elemek inicializálása
@@ -64,6 +62,7 @@ class FilterWindow {
 
     // Szűrő elemek inicializálása
     initializeFilters() {
+        // Ár filter inicializálása
         const priceFilter = this.domElement.querySelector('[data-target="price"]');
         if (priceFilter) {
             const minInput = priceFilter.querySelector('#price_min');
@@ -85,6 +84,7 @@ class FilterWindow {
             }
         }
         
+        // Raktárkészlet filter inicializálása
         const stockFilter = this.domElement.querySelector('[data-target="stock"]');
         if (stockFilter) {
             const inStockCheckbox = stockFilter.querySelector('#in_stock');
@@ -99,26 +99,71 @@ class FilterWindow {
                 });
             }
         }
+
+        // Címkék filter inicializálása
+        const tagFilter = this.domElement.querySelector('[data-target="tags"]');
+        if (tagFilter) {
+            // Címkék összegyűjtése a termékekből
+            const tagList = [];
+            this.products.forEach(product => {
+                if (product.tags) {
+                    product.tags.split(',').forEach(tag => {
+                        const [id, name] = tag.trim().split(':');
+                        // Csak egyedi címkéket adunk hozzá
+                        if (!tagList.find(t => t.id === id)) {
+                            tagList.push({ id, name });
+                        }
+                    });
+                }
+            });
+
+            // Címkék rendezése név szerint
+            tagList.sort((a, b) => a.name.localeCompare(b.name));
+            
+            // Filter állapot inicializálása
+            this.filters.tags = {
+                values: new Set(),
+                container: tagFilter,
+            };
+
+            // Az összes címke megjelenítése
+            this.createTagCheckboxes(tagList, tagFilter);
+        }
     }
 
-    // Termékek lekérése az API segítségével
-    async fetchProducts() {
-        try {
-            const response = await APIFetch('/api/subcategory/products', 'POST', {
-                url: this.url
-            });
-    
-            if (!response.ok) throw new Error('A hálózati kérés sikertelen');
-    
-            const data = await response.json();
-            if (data.type !== 'ERROR') {
-                this.products = data.message;
-            } else {
-                console.error('Nem sikerült lekérni a termékeket:', data.message);
-            }
-        } catch (error) {
-            console.error('Hiba a termékek lekérésekor:', error);
+    createTagCheckboxes(tags, container) {
+        let tagsContainer = container.querySelector('.tags');
+        if (!tagsContainer) {
+            tagsContainer = document.createElement('div');
+            tagsContainer.className = 'tags';
+            container.appendChild(tagsContainer);
         }
+        
+        tags.forEach((e) => {
+            const [id, name] = Object.values(e);
+            const wrapper = document.createElement('div');
+            wrapper.className = 'tag-checkbox';
+
+            const checkbox = document.createElement('input');
+            checkbox.type = 'checkbox';
+            checkbox.id = `tag-${id}`;
+            checkbox.dataset.tagId = id;
+            checkbox.addEventListener('change', () => {
+                if (checkbox.checked) {
+                    this.filters.tags.values.add(id);
+                } else {
+                    this.filters.tags.values.delete(id);
+                }
+            });
+
+            const label = document.createElement('label');
+            label.htmlFor = `tag-${id}`;
+            label.textContent = name;
+
+            wrapper.appendChild(checkbox);
+            wrapper.appendChild(label);
+            tagsContainer.appendChild(wrapper);
+        });
     }
 
     // Szűrés alkalmazása a termékekre
@@ -133,6 +178,17 @@ class FilterWindow {
             
             if (this.filters.stock?.value && product.stock <= 0) {
                 return false;
+            }
+
+            // Tag filter
+            if (this.filters.tags?.values.size > 0) {
+                const productTagIds = product.tags ? 
+                    product.tags.split(',')
+                        .map(t => t.trim().split(':')[0]) : 
+                    [];
+                const hasMatchingTag = Array.from(this.filters.tags.values)
+                    .some(tagId => productTagIds.includes(tagId));
+                if (!hasMatchingTag) return false;
             }
     
             return true;
@@ -156,6 +212,12 @@ class FilterWindow {
         if (this.filters.stock) {
             this.filters.stock.value = false;
             this.filters.stock.input.checked = false;
+        }
+
+        if (this.filters.tags) {
+            this.filters.tags.values.clear();
+            this.filters.tags.container.querySelectorAll('input[type="checkbox"]')
+                .forEach(checkbox => checkbox.checked = false);
         }
     
         this.applyFilters();

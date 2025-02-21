@@ -57,12 +57,15 @@ $query = "SELECT
         THEN REGEXP_REPLACE(image.uri, '\\.[^.]*$', '')
     END) AS secondary_image,
     COALESCE(AVG(review.rating), 0) as avg_rating,
-    COUNT(DISTINCT review.id) as review_count
+    COUNT(DISTINCT review.id) as review_count,
+    GROUP_CONCAT(DISTINCT CONCAT(tag.id, ':', tag.name)) as tags
 FROM product_page 
 INNER JOIN product ON product_page.product_id = product.id
 LEFT JOIN product_image ON product.id = product_image.product_id
 LEFT JOIN image ON product_image.image_id = image.id
 LEFT JOIN review ON product.id = review.product_id
+LEFT JOIN product_tag ON product.id = product_tag.product_id
+LEFT JOIN tag ON product_tag.tag_id = tag.id
 WHERE product_page.subcategory_id = ?
 GROUP BY product.id 
 ORDER BY product.name ASC";

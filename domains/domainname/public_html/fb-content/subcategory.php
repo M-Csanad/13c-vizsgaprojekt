@@ -152,10 +152,7 @@
             <div class="filter-group">
                 <header>Címkék</header>
                 <div class="filter" data-target="tags">
-                    <div class="filter-input">
-                        <input type="radio" name="tags" id="tags">
-                        <label for="tags">Raktáron</label>
-                    </div>
+                    <div class="tags" data-lenis-prevent></div>
                 </div>
             </div>
             <div class="filter-close">

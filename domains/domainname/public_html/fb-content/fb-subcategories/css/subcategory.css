@@ -26,19 +26,35 @@ main {
 }
 
 .filters {
+    display: flex;
+    flex-direction: column;
     background-color: #1d1d1d;
     padding-block: 1rem;
     padding-inline: 2rem;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     z-index: 10000;
     width: 100%;
     transform: translateX(-100%);
     min-height: 100%;
-    max-height: fit-content;
+    max-height: calc(100vh - 87px);
     text-shadow: 0px 0px 5px rgb(0, 0, 0);
-    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #c0fa63 #1d1d1d;
+    
+    &::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: #1d1d1d;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background-color: #c0fa63;
+        border-radius: 4px;
+    }
 
     & > header {
         font-family: Playfair Display;
@@ -122,9 +138,8 @@ main {
     }
 
     & > .bottom-buttons {
-        position: absolute;
-        bottom: 0;
-        left: 0;
+        flex-grow: 1;
+        justify-content: end;
         width: 100%;
         display: flex;
         flex-direction: column;
@@ -164,6 +179,96 @@ main {
     & > .bottom-buttons > .filter-clear:hover {
         background-color: rgba(167, 167, 167, 0.226);
     }
+}
+
+.filter[data-target="tags"] {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 188px;
+    overflow: hidden;
+}
+
+.filter[data-target="tags"] .tags {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 188px;
+    overflow-y: auto;
+    padding-right: 5px;
+    overscroll-behavior: contain;
+    touch-action: pan-y;
+    
+    scrollbar-width: thin;
+    scrollbar-color: #c0fa63 #1d1d1d;
+    
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: #1d1d1d;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background-color: #c0fa63;
+        border-radius: 4px;
+    }
+}
+
+.filter[data-target="tags"] .tag-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filter[data-target="tags"] input[type="checkbox"] {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #818181;
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.filter[data-target="tags"] input[type="checkbox"]:checked {
+    border-color: #c0fa63;
+    background-color: #c0fa63;
+}
+
+.filter[data-target="tags"] input[type="checkbox"]::after {
+    content: '';
+    position: absolute;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(45deg);
+    width: 4px;
+    height: 9px;
+    border: solid #1d1d1d;
+    border-width: 0 2px 2px 0;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.filter[data-target="tags"] input[type="checkbox"]:checked::after {
+    opacity: 1;
+}
+.filter[data-target="tags"] label {
+    cursor: pointer;
+    color: #dddddd;
+    transition: color 0.2s ease;
+}
+
+.filter[data-target="tags"] label:hover {
+    color: #d3fb93;
+}
+
+.show-more-tags,
+.collapse-tags,
+.tag-buttons {
+    display: none;
 }
 
 .products-wrapper {
