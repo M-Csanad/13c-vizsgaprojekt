@@ -44,14 +44,29 @@ class RegisterForm {
             },
             "password": {
                 "dom": this.formDom.querySelector("#password"),
-                "errorMessage": "Kérjük ne hagyja üresen a jelszó mezőt",
+                "errorMessage": "A jelszó nem felel meg a követelményeknek",
                 get value() { return this.dom?.value }
             },
             "passwordConfirm": {
                 "dom": this.formDom.querySelector("#passwordConfirm"),
                 "errorMessage": "A két jelszó nem egyezik meg",
                 get value() { return this.dom?.value }
+            },
+            "terms": {
+                "dom": this.formDom.querySelector("#agree"),
+                "noCustomValidate": true,
+                "showDefaultValidity": true,
+                "errorMessage": "Kérjük fogadja el az ÁSZF-et",
+                get value() { return this.dom?.checked }
             }
+        }
+
+        this.passwordHelperRules = {
+            charlen: /^.{8,64}$/,
+            haslower: /[a-záéöüóőúí]/,
+            hasupper: /[A-ZÁÉÖÜÓŐÚÍ]/,
+            hasdigit: /\d/,
+            hasspecial: /[!@#$%^&*()_\-+=\[\]{}|\\;:'",.<>/?~]/,
         }
 
         this.validationRules = {
@@ -59,11 +74,19 @@ class RegisterForm {
             username: value => /^[\w-]{3,20}$/.test(value),
             firstName: value => value && value.length > 0,
             lastName: value => value && value.length > 0,
-            password: value => value && value.length > 0,
+            password: value => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{}|\\;:\'",.<>\/?~]).{8,64}$/.test(value),
             passwordConfirm: value => value === this.form.password.value
         }
+    }
 
-        this.submitter = this.formDom.querySelector(".action-button");
+    updatePasswordChecks(checks) {
+        for (const [key, value] of Object.entries(checks)) {
+            const matcher = this.formDom.querySelector(`.matcher[data-for="${key}"]`);
+            if (matcher) {
+                matcher.classList.toggle('valid', value);
+                matcher.classList.toggle('invalid', !value);
+            }
+        }
     }
 
     bindEvents() {
@@ -73,10 +96,17 @@ class RegisterForm {
 
         for (let field in this.form) {
             const element = this.form[field];
+
+            if (element.noCustomValidate) continue;
+
             element.dom.addEventListener("change", () => {
                 const error = this.validateField(field);
                 this.toggleFieldState(field, error);
             });
+
+            if (field === "password") {
+                element.dom.addEventListener("input", () => this.updatePasswordHelper(element));
+            }
         }
     }
 
@@ -112,7 +142,6 @@ class RegisterForm {
         let valid = true;
         for (let field in this.form) {
             const error = this.validateField(field);
-            console.log(error)
             this.toggleFieldState(field, error);
             if (error) valid = false;
         }
@@ -122,6 +151,11 @@ class RegisterForm {
     toggleFieldState(name, error) {
         const field = this.form[name];
         if (!field) return;
+
+        if (field.showDefaultValidity) {
+            field.dom.setCustomValidity(error ? "invalid" : "");
+            field.dom.reportValidity();
+        }
 
         const errorWrapper = field.dom.closest('.input-group').querySelector('.message-wrapper');
         const messageContainer = errorWrapper.querySelector(".error-message");
@@ -211,6 +245,25 @@ class RegisterForm {
         setInterval(() => this.cycleImages(), 5000);
     }
 
+    updatePasswordHelper(element) {
+        const value = element.dom.value;
+        const passwordHelperDom = this.formDom.querySelector(".password-state");
+        
+        for (let key in this.passwordHelperRules) {
+            const rule = this.passwordHelperRules[key];
+            const matcherDom = passwordHelperDom.querySelector(`[data-for=${key}]`);
+
+            if (rule.test(value)) {
+                matcherDom.classList.add("valid");
+                matcherDom.classList.remove("invalid");
+            }
+            else {
+                matcherDom.classList.remove("valid");
+                matcherDom.classList.add("invalid");
+            }
+        }
+    }
+
     async send(event) {
         if (this.submitted) return;
         event.preventDefault();
@@ -224,7 +277,7 @@ class RegisterForm {
             const data = new FormData(this.formDom);
             data.append("register", "1");
 
-            const response = await APIFetch("/api/auth/login", "POST", data, false);
+            const response = await APIFetch("/api/auth/register", "POST", data, false);
     
             const result = await response.json();
             if (response.ok) {

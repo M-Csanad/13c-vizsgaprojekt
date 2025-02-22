@@ -112,7 +112,6 @@ form {
     
         padding-bottom: 0.2rem;
         font-weight: 400;
-        margin-top: 0.5rem;
         margin-bottom: 0.5rem;
         
         border-bottom: 1px solid #dfdfdf;
@@ -196,6 +195,14 @@ form {
         color: red;
         animation: shake 0.5s;
         animation-timing-function: ease;
+    }
+    
+    .checkbox-group {
+        font-size: 14px;
+        display: flex;
+        flex-direction: row;
+        gap: 5px;
+        align-items: center;
     }
 }
 

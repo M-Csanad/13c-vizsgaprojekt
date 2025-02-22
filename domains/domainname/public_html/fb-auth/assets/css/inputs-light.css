@@ -221,7 +221,6 @@
 /* PASSWORD INPUT ADDITIONAL CSS */
 
 .password-input {
-    width: 50%;
     margin-bottom: 1rem;
 
     & > .password-state {

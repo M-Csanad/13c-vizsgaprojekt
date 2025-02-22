@@ -9,7 +9,7 @@ function register($username, $password, $email, $firstname, $lastname) {
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
     $result = updateData("INSERT INTO user (user_name, email, password_hash, first_name, last_name) 
-                          VALUES (?, ?, ?, ?, ?, ?)", [$username, $email, $passwordHash, $firstname, $lastname], "sssss");
+                          VALUES (?, ?, ?, ?, ?)", [$username, $email, $passwordHash, $firstname, $lastname], "sssss");
                           
     if ($result->isError()) {
         $error = $result->message;
