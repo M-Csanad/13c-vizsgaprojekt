@@ -116,7 +116,7 @@
                 </svg>
             </div>
             <div class="filter-group">
-                <header>Ár szerint</header>
+                <header>Ár</header>
                 <div class="filter" data-target="price">
                     <div class="input-group-inline">
                         <div class="input-group" tabindex="-1">
@@ -143,7 +143,7 @@
             <div class="filter-group">
                 <header>Elérhetőség</header>
                 <div class="filter" data-target="stock">
-                    <div class="filter-input">
+                    <div class="checkbox-input">
                         <input type="checkbox" name="in_stock" id="in_stock">
                         <label for="in_stock">Raktáron</label>
                     </div>

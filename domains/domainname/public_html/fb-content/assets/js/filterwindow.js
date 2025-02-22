@@ -142,7 +142,7 @@ class FilterWindow {
         tags.forEach((e) => {
             const [id, name] = Object.values(e);
             const wrapper = document.createElement('div');
-            wrapper.className = 'tag-checkbox';
+            wrapper.className = 'checkbox-input';
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
