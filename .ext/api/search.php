@@ -53,7 +53,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $_SESSION['search_results'] = $fuzzyResults;
 
 
-
     exit;
 }
 

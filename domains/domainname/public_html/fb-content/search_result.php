@@ -12,7 +12,8 @@ if (!isset($_SESSION['search_query']) || !isset($_SESSION['search_results'])) {
 // Kivesszük az adatokat
 $searchQuery = $_SESSION['search_query'];
 $searchResults = $_SESSION['search_results'];
-
+// Töröljük a sessionbeli adatokat
+/* unset($_SESSION['search_query'], $_SESSION['search_results'], $_SESSION['search_error'], $_SESSION['search_info']); */
 
 // 1) Kinyerjük a product.id értékeket (integerre castoljuk a hibák elkerülése végett)
 $productIds = [];
