@@ -79,6 +79,9 @@ if ($result->isSuccess()) {
                     </div>
                     <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
                 </div>
+                <div class="loader hidden">
+                    <div class="spinner"></div>
+                </div>
                 <div class="form-bottom">
                     <div class="form-message">
                     </div>

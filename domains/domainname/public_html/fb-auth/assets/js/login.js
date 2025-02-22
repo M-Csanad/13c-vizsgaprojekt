@@ -19,6 +19,7 @@ class LoginForm {
         this.formDom = dom;
         this.formMessage = this.formDom.querySelector(".form-message");
         this.backgroundImages = document.querySelectorAll('.bg');
+        this.loader = this.formDom.querySelector(".loader");
         
         this.form = {
             "username": {
@@ -107,7 +108,7 @@ class LoginForm {
             messageContainer.innerHTML = error;
             gsap.set(errorWrapper, {visibility: "visible"});
             gsap.to(errorWrapper, {
-                height: 21,
+                height: "auto",
                 opacity: 1,
                 ease: "power2.inOut",
                 duration: 0.3
@@ -192,6 +193,7 @@ class LoginForm {
         if (!this.validateForm()) return;
         
         try {
+            this.loader.classList.remove('hidden');
             await this.executeRecaptcha();
             this.submitted = true;
             
@@ -229,8 +231,10 @@ class LoginForm {
                 if (passwdInput) passwdInput.value = "";
             }
         } catch (error) {
-            console.error('Login error:', error);
+            console.error('Hiba a bejelentkezéskor: ', error);
             this.submitted = false;
+        } finally {
+            this.loader.classList.add('hidden');
         }
     }
 }

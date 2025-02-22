@@ -1,159 +1,268 @@
-function shakeElement(element) {
-  const ease = "power1.inOut";
+import APIFetch from "/fb-content/assets/js/apifetch.js";
 
-  const shouldReverse = element.style.transform = "scale(0,0)";
+class RegisterForm {
+    submitted = false;
+    currentImageIndex = 0;
 
-  gsap.set(element, {opacity: 0})
-  gsap.to(element, {
-    opacity: 1,
-    duration: 0.3,
-    ease: ease,
-    scale: shouldReverse ? 1 : 0
-  })
-  gsap.fromTo(
-    element,
-    { x: 0 },
-    {
-      x: `+=5`,
-      duration: 0.1,
-      repeat: 7,
-      yoyo: true,
-      ease: ease,
+    constructor(dom) {
+        if (!dom) throw new Error("Nincs megadva űrlap.");
+        if (dom.nodeName != "FORM") throw new Error("Nem űrlap típusú a megadott elem.");
+        if (!gsap) throw new Error("GSAP nem található");
+        
+        this.initDOM(dom);
+        this.bindEvents();
+        this.startImageCycle();
     }
-  );
-}
 
-function removeElementContent(element) {
-  return new Promise((resolve) => {
-    const ease = "power1.inOut";
-  
-    gsap.to(element, {
-      opacity: 0,
-      scale: 0,
-      duration: 0.3,
-      ease: ease,
-      onComplete: () => {
-        element.innerHTML = "";
-        resolve();
-      }
-    })
-  })
-}
-
-const form = document.getElementById("register");
-const formMessage = form.querySelector(".form-message");
-let submitted = false;
-
-form.addEventListener('submit', async function (event) {
-  if (submitted) return;
-  event.preventDefault();
-
-  grecaptcha.enterprise.ready(async function () {
-      grecaptcha.enterprise.execute('6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj', { action: 'register' }).then(async function (token) {
-          document.getElementById('g-recaptcha-response').value = token;
-          submitted = true;
-
-          const data = new FormData(form);
-          data.append("register", "1");
-          const response = await fetch("/api/auth/register", {
-            method: "POST",
-            headers: {
-              'X-Requested-With': 'XMLHttpRequest'
+    initDOM(dom) {
+        this.formDom = dom;
+        this.formMessage = this.formDom.querySelector(".form-message");
+        this.backgroundImages = document.querySelectorAll('.bg');
+        this.loader = this.formDom.querySelector(".loader");
+        this.submitter = this.formDom.querySelector(".action-button");
+        
+        this.form = {
+            "email": {
+                "dom": this.formDom.querySelector("#email"),
+                "errorMessage": "Kérjük adjon meg egy érvényes email címet",
+                get value() { return this.dom?.value }
             },
-            body: data
-          })
-
-          const result = await response.json();
-          if (response.ok) {
-            if (formMessage.innerHTML) {
-              await removeElementContent(formMessage);
+            "username": {
+                "dom": this.formDom.querySelector("#username"),
+                "errorMessage": "A felhasználónév 3-20 karakter hosszú lehet és csak betűket, számokat és kötőjelet tartalmazhat",
+                get value() { return this.dom?.value }
+            },
+            "firstName": {
+                "dom": this.formDom.querySelector("#firstname"),
+                "errorMessage": "Kérjük adja meg a keresztnevét",
+                get value() { return this.dom?.value }
+            },
+            "lastName": {
+                "dom": this.formDom.querySelector("#lastname"),
+                "errorMessage": "Kérjük adja meg a vezetéknevét",
+                get value() { return this.dom?.value }
+            },
+            "password": {
+                "dom": this.formDom.querySelector("#password"),
+                "errorMessage": "Kérjük ne hagyja üresen a jelszó mezőt",
+                get value() { return this.dom?.value }
+            },
+            "passwordConfirm": {
+                "dom": this.formDom.querySelector("#passwordConfirm"),
+                "errorMessage": "A két jelszó nem egyezik meg",
+                get value() { return this.dom?.value }
             }
+        }
 
-            const outParams = {
-              scaleY: 1, 
-              duration: 1,
-              stagger: {
-                  each: 0.05,
-                  from: "start",
-                  grid: "auto",
-                  axis: "x"
-              },
-              ease: "power4.inOut"
-            }
+        this.validationRules = {
+            email: value => /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/.test(value),
+            username: value => /^[\w-]{3,20}$/.test(value),
+            firstName: value => value && value.length > 0,
+            lastName: value => value && value.length > 0,
+            password: value => value && value.length > 0,
+            passwordConfirm: value => value === this.form.password.value
+        }
 
-            animatePageTransition(outParams).then(() => {
-              window.location.href = "./login";
+        this.submitter = this.formDom.querySelector(".action-button");
+    }
+
+    bindEvents() {
+        this.submitter.addEventListener("click", this.send.bind(this));
+        
+        this.formDom.querySelectorAll(".input-group").forEach(e => this.handleInputGroupFocus(e));
+
+        for (let field in this.form) {
+            const element = this.form[field];
+            element.dom.addEventListener("change", () => {
+                const error = this.validateField(field);
+                this.toggleFieldState(field, error);
             });
+        }
+    }
 
-          }
-          else {
-            submitted = false;
-            if (formMessage.innerHTML) await removeElementContent(formMessage);
-            formMessage.innerHTML = result.message;
-            shakeElement(formMessage);
+    handleInputGroupFocus(e) {
+        const inputGroup = e;
+        const label = inputGroup.querySelector('label');
+        const input = inputGroup.querySelector('input');
+
+        input.addEventListener("focus", () => {
+            label.classList.add('focus');
+        });
+
+        input.addEventListener("focusout", () => {
+            if (input.value === "") label.classList.remove('focus');
+        });
+    }
+
+    validateField(name) {
+        const field = this.form[name];
+        if (!field) return false;
+
+        const validator = this.validationRules[name];
+        const value = field.value;
+        const error = field.errorMessage;
+
+        if (!validator) return null;
+        if (!value) return error;
+
+        return validator(value) ? null : error;
+    }
+
+    validateForm() {
+        let valid = true;
+        for (let field in this.form) {
+            const error = this.validateField(field);
+            console.log(error)
+            this.toggleFieldState(field, error);
+            if (error) valid = false;
+        }
+        return valid;
+    }
+
+    toggleFieldState(name, error) {
+        const field = this.form[name];
+        if (!field) return;
+
+        const errorWrapper = field.dom.closest('.input-group').querySelector('.message-wrapper');
+        const messageContainer = errorWrapper.querySelector(".error-message");
+
+        field.dom.classList.toggle('valid', !error);
+        field.dom.classList.toggle('invalid', !!error);
+        
+        if (error) {
+            messageContainer.innerHTML = error;
+            gsap.set(errorWrapper, {visibility: "visible"});
+            gsap.to(errorWrapper, {
+                height: "auto",
+                opacity: 1,
+                ease: "power2.inOut",
+                duration: 0.3
+            });
+        } else {
+            gsap.to(errorWrapper, {
+                height: 0,
+                opacity: 0,
+                ease: "power2.inOut",
+                duration: 0.3,
+                onComplete: () => {
+                    gsap.set(errorWrapper, {visibility: "hidden"});
+                }
+            });
+        }
+    }
+
+    shakeElement(element) {
+        const ease = "power1.inOut";
+        
+        gsap.set(element, {opacity: 0})
+        gsap.to(element, {
+            opacity: 1,
+            duration: 0.3,
+            ease: ease,
+        })
+        gsap.fromTo(
+            element,
+            { x: 0 },
+            {
+                x: "+=5",
+                duration: 0.1,
+                repeat: 7,
+                yoyo: true,
+                ease: ease,
+            }
+        );
+    }
+
+    async removeElementContent(element) {
+        return new Promise((resolve) => {
+            gsap.to(element, {
+                opacity: 0,
+                scale: 0,
+                duration: 0.3,
+                ease: "power1.inOut",
+                onComplete: () => {
+                    element.innerHTML = "";
+                    resolve();
+                }
+            });
+        });
+    }
+
+    async executeRecaptcha() {
+        return new Promise((resolve) => {
+            grecaptcha.enterprise.ready(() => {
+                grecaptcha.enterprise.execute('6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj', { action: 'register' })
+                    .then(token => {
+                        document.getElementById('g-recaptcha-response').value = token;
+                        resolve();
+                    });
+            });
+        });
+    }
+
+    cycleImages() {
+        if (document.body.clientWidth <= 900) return;
+        this.backgroundImages[this.currentImageIndex].classList.remove('visible');
+        this.currentImageIndex = (this.currentImageIndex + 1) % this.backgroundImages.length;
+        this.backgroundImages[this.currentImageIndex].classList.add('visible');
+    }
+
+    startImageCycle() {
+        setInterval(() => this.cycleImages(), 5000);
+    }
+
+    async send(event) {
+        if (this.submitted) return;
+        event.preventDefault();
+    
+        if (!this.validateForm()) return;
+        
+        try {
+            await this.executeRecaptcha();
+            this.submitted = true;
             
-            form.querySelectorAll("input[type=password").forEach(e => e.value="");
-          }
-      });
-  });
+            const data = new FormData(this.formDom);
+            data.append("register", "1");
+
+            const response = await APIFetch("/api/auth/login", "POST", data, false);
+    
+            const result = await response.json();
+            if (response.ok) {
+                if (this.formMessage.innerHTML) {
+                    await this.removeElementContent(this.formMessage);
+                }
+    
+                const outParams = {
+                    scaleY: 1, 
+                    duration: 1,
+                    stagger: {
+                        each: 0.05,
+                        from: "start",
+                        grid: "auto",
+                        axis: "x"
+                    },
+                    ease: "power4.inOut"
+                };
+    
+                await animatePageTransition(outParams);
+                window.location.href = "./login";
+            } else {
+                this.submitted = false;
+                if (this.formMessage.innerHTML) {
+                    await this.removeElementContent(this.formMessage);
+                }
+                this.formMessage.innerHTML = result.message;
+                this.shakeElement(this.formMessage);
+                
+                this.formDom.querySelectorAll("input[type=password]").forEach(e => e.value = "");
+            }
+        } catch (error) {
+            console.error('Hiba regisztráláskor: ', error);
+            this.submitted = false;
+        }
+    }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    const registerForm = new RegisterForm(document.getElementById("register"));
 });
-
-function validatePasswordInputs() {
-    const password = document.querySelector('input[name=password]');
-    const confirm = document.querySelector('input[name=passwordConfirm]');
-    if (confirm.value === password.value) {
-      confirm.setCustomValidity('');
-    } else if (confirm.value.length){
-      confirm.setCustomValidity('A két jelszó nem egyezik meg.');
-    }
-}
-
-function validateEmailInput() {
-    const email = document.querySelector('input[type=email]');
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (emailRegex.test(email.value)) {
-      email.setCustomValidity('');
-    }
-    else {
-      email.setCustomValidity('Kérjük tartsa magát a kívánt formátumhoz.');
-    }
-}
-
-function validateUserNameInput() {
-  const username = document.querySelector('input[name=username]');
-  const usernameRegex = /^[\w-]{3,20}$/;
-  if (usernameRegex.test(username.value)) {
-    username.setCustomValidity('');
-  }
-  else {
-    username.setCustomValidity('Kérjük tartsa magát a kívánt formátumhoz.');
-  }
-}
-
-window.addEventListener("load", ()=>{
-  document.getElementById("email").addEventListener("input", validateEmailInput);
-  document.getElementById("username").addEventListener("input", validateUserNameInput);
-  document.getElementById("password").addEventListener("input", validatePasswordInputs);
-  document.getElementById("passwordConfirm").addEventListener("input", validatePasswordInputs);
-
-  document.querySelectorAll(".empty").forEach((input)=>{
-    if (input.value) input.classList.remove("empty")
-    else input.classList.add("empty")
-    input.addEventListener("input", ()=>{
-      if (input.value) input.classList.remove("empty")
-      else input.classList.add("empty")
-    });
-  });
-});
-
-const images = document.querySelectorAll('.bg');
-let currentIndex = 0;
-
-function cycleImages() {
-  if (document.body.clientWidth <= 900) return;
-  images[currentIndex].classList.remove('visible');
-  currentIndex = (currentIndex + 1) % images.length;
-  images[currentIndex].classList.add('visible');
-}
-
-setInterval(cycleImages, 5000);

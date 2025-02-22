@@ -31,7 +31,7 @@ if ($result->isSuccess()) {
     <script async defer src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="/fb-content/assets/js/page_transition.js"></script>
-    <script defer src="./fb-auth/assets/js/register.js"></script>
+    <script type="module" defer src="./fb-auth/assets/js/register.js"></script>
 </head>
 <body>
 <div class=transition><div class=transition-background></div><div class=transition-text><div class=hero><div class=char>F</div><div class=char>l</div><div class=char>o</div><div class=char>r</div><div class=char>e</div><div class=char>n</div><div class=char>s</div><div class=char> </div><div class=char>B</div><div class=char>o</div><div class=char>t</div><div class=char>a</div><div class=char>n</div><div class=char>i</div><div class=char>c</div><div class=char>a</div></div><div class=quote><div class=char>"</div><div class=char>A</div><div class=char> </div><div class=char>l</div><div class=char>e</div><div class=char>g</div><div class=char>n</div><div class=char>a</div><div class=char>g</div><div class=char>y</div><div class=char>o</div><div class=char>b</div><div class=char>b</div><div class=char> </div><div class=char>g</div><div class=char>a</div><div class=char>z</div><div class=char>d</div><div class=char>a</div><div class=char>g</div><div class=char>s</div><div class=char>á</div><div class=char>g</div><div class=char> </div><div class=char>a</div><div class=char>z</div><div class=char> </div><div class=char>e</div><div class=char>g</div><div class=char>é</div><div class=char>s</div><div class=char>z</div><div class=char>s</div><div class=char>é</div><div class=char>g</div><div class=char>.</div><div class=char>"</div><div class=char> </div><div class=char>-</div><div class=char> </div><div class=char>V</div><div class=char>e</div><div class=char>r</div><div class=char>g</div><div class=char>i</div><div class=char>l</div><div class=char>i</div><div class=char>u</div><div class=char>s</div></div></div></div>
@@ -121,7 +121,7 @@ if ($result->isSuccess()) {
                 </div>
                 <div class="form-bottom">
                     <div class='form-message'></div>
-                    <input type="submit" name="register" class="action-button g-recaptcha" value="Profil létrehozása">
+                    <input type="button" name="register" class="action-button g-recaptcha" value="Profil létrehozása">
                     <div class="login">Regisztrált már? <a href="./login" class="form-link">Jelentkezzen be!</a></div>
                 </div>
             </div>

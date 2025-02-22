@@ -272,7 +272,7 @@ class FilterWindow {
 
             gsap.set(errorWrapper, {visibility: "visible"});
             gsap.to(errorWrapper, {
-                height: 21,
+                height: "auto",
                 opacity: 1,
                 ease: "power2.inOut",
                 duration: 0.3
