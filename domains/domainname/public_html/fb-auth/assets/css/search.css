@@ -44,31 +44,28 @@
   color: grey;
   flex-shrink: 1;
   min-width: 0;
-
-  input {
-    flex: 1;
-    width: 100%;
-    min-width: 0;
-    max-width: 100%;
-    border-radius: 5px;
-    outline: none;
-    border: none;
-    background-color: var(--background);
-    padding-left: 5px;
-    font-size: 16px;
-    transition: color 0.3s ease;
-  }
-
-  label.search-button {
-    display: flex;
-    align-items: center;
-  }
-
-  label.search-button > svg {
-    transition: all 0.3s ease;
-    margin-inline: 5px;
-    color: grey;
-  }
+}
+.search input {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  border-radius: 5px;
+  outline: none;
+  border: none;
+  background-color: var(--background);
+  padding-left: 5px;
+  font-size: 16px;
+  transition: color 0.3s ease;
+}
+.search label.search-button {
+  display: flex;
+  align-items: center;
+}
+.search label.search-button > svg {
+  transition: all 0.3s ease;
+  margin-inline: 5px;
+  color: grey;
 }
 .search:has(input:valid) {
   border: 2px solid var(--valid);

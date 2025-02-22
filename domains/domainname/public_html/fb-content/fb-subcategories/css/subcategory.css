@@ -42,143 +42,143 @@ main {
     text-shadow: 0px 0px 5px rgb(0, 0, 0);
     scrollbar-width: thin;
     scrollbar-color: #c0fa63 #1d1d1d;
-    
-    &::-webkit-scrollbar {
-        width: 8px;
-    }
-    
-    &::-webkit-scrollbar-track {
-        background: #1d1d1d;
-    }
-    
-    &::-webkit-scrollbar-thumb {
-        background-color: #c0fa63;
-        border-radius: 4px;
-    }
+}
 
-    & > header {
-        font-family: Playfair Display;
-        color: white;
-        text-align: center;
-        font-size: 40px;
-        margin-bottom: 0.5rem;
-    }
-    
-    & > .product-count {
-        text-align: center;
-        color: #c4c4c4;
-        margin-bottom: 2rem;
-    }
+.filters::-webkit-scrollbar {
+    width: 8px;
+}
 
-    & > .filter-logo {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 250px;
-        height: 250px;
-        transform: translate(-35%, -20%) rotate(35deg);
-        opacity: 0.1;
-    }
+.filters::-webkit-scrollbar-track {
+    background: #1d1d1d;
+}
 
-    & > .filter-group {
-        margin-bottom: 2rem;
-    }
+.filters::-webkit-scrollbar-thumb {
+    background-color: #c0fa63;
+    border-radius: 4px;
+}
 
-    & > .filter-group > header {
-        font-family: Playfair Display;
-        font-size: 25px;
-        margin-bottom: 1rem;
-        padding-block: 0.2rem;
-        position: relative;
-    }
+.filters > header {
+    font-family: Playfair Display;
+    color: white;
+    text-align: center;
+    font-size: 40px;
+    margin-bottom: 0.5rem;
+}
 
-    & > .filter-group > header::after {
-        content: '';
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        height: 2px;
-        background: linear-gradient(to right, #414141, transparent);
-    }
+.filters > .product-count {
+    text-align: center;
+    color: #c4c4c4;
+    margin-bottom: 2rem;
+}
 
-    & > .filter-close {
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 35px;
-        height: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        outline: none;
-        border: 2px solid transparent;
-        background-color: #f0f0f0;
-        margin: 1.5rem 1rem;
-        padding: 7px;
-        cursor: pointer;
-        transition: background-color 0.2s ease, border-color 0.2s ease;
-    }
+.filters > .filter-logo {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 250px;
+    transform: translate(-35%, -20%) rotate(35deg);
+    opacity: 0.1;
+}
 
-    & > .filter-close > svg {
-        width: 100%;
-        fill: black;
-        z-index: 999;
-        transition: fill 0.2s ease;
-    }
+.filters > .filter-group {
+    margin-bottom: 2rem;
+}
 
-    & > .filter-close:hover {
-        background-color: transparent;
-        border-color: #f0f0f0;
-    }
+.filters > .filter-group > header {
+    font-family: Playfair Display;
+    font-size: 25px;
+    margin-bottom: 1rem;
+    padding-block: 0.2rem;
+    position: relative;
+}
 
-    & > .filter-close:hover > svg {
-        fill: #f0f0f0;
-    }
+.filters > .filter-group > header::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to right, #414141, transparent);
+}
 
-    & > .bottom-buttons {
-        flex-grow: 1;
-        justify-content: end;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem;
-    }
+.filters > .filter-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    outline: none;
+    border: 2px solid transparent;
+    background-color: #f0f0f0;
+    margin: 1.5rem 1rem;
+    padding: 7px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
 
-    & > .bottom-buttons > button {
-        outline: none;
-        border: none;
-        padding: 0.8rem;
-        font-family: Roboto;
-        letter-spacing: 1px;
-        font-size: 16px;
-        border-radius: 30px;
-        transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        cursor: pointer;
-    }
+.filters > .filter-close > svg {
+    width: 100%;
+    fill: black;
+    z-index: 999;
+    transition: fill 0.2s ease;
+}
 
-    & > .bottom-buttons > .filter-apply {
-        background-color: transparent;
-        color: rgb(192, 250, 99);
-        border: 2px solid rgb(192, 250, 99);
-    }
+.filters > .filter-close:hover {
+    background-color: transparent;
+    border-color: #f0f0f0;
+}
 
-    & > .bottom-buttons > .filter-apply:hover {
-        background-color: rgb(192, 250, 99);
-        color: #242424;
-    }
+.filters > .filter-close:hover > svg {
+    fill: #f0f0f0;
+}
 
-    & > .bottom-buttons > .filter-clear {
-        background-color: transparent;
-        color: rgb(167, 167, 167);
-        border: 2px solid rgb(167, 167, 167);
-    }
+.filters > .bottom-buttons {
+    flex-grow: 1;
+    justify-content: end;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+}
 
-    & > .bottom-buttons > .filter-clear:hover {
-        background-color: rgba(167, 167, 167, 0.226);
-    }
+.filters > .bottom-buttons > button {
+    outline: none;
+    border: none;
+    padding: 0.8rem;
+    font-family: Roboto;
+    letter-spacing: 1px;
+    font-size: 16px;
+    border-radius: 30px;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    cursor: pointer;
+}
+
+.filters > .bottom-buttons > .filter-apply {
+    background-color: transparent;
+    color: rgb(192, 250, 99);
+    border: 2px solid rgb(192, 250, 99);
+}
+
+.filters > .bottom-buttons > .filter-apply:hover {
+    background-color: rgb(192, 250, 99);
+    color: #242424;
+}
+
+.filters > .bottom-buttons > .filter-clear {
+    background-color: transparent;
+    color: rgb(167, 167, 167);
+    border: 2px solid rgb(167, 167, 167);
+}
+
+.filters > .bottom-buttons > .filter-clear:hover {
+    background-color: rgba(167, 167, 167, 0.226);
 }
 
 .filter[data-target="tags"] {
@@ -201,19 +201,19 @@ main {
     
     scrollbar-width: thin;
     scrollbar-color: #c0fa63 #1d1d1d;
-    
-    &::-webkit-scrollbar {
-        width: 4px;
-    }
-    
-    &::-webkit-scrollbar-track {
-        background: #1d1d1d;
-    }
-    
-    &::-webkit-scrollbar-thumb {
-        background-color: #c0fa63;
-        border-radius: 4px;
-    }
+}
+
+.filter[data-target="tags"] .tags::-webkit-scrollbar {
+    width: 4px;
+}
+
+.filter[data-target="tags"] .tags::-webkit-scrollbar-track {
+    background: #1d1d1d;
+}
+
+.filter[data-target="tags"] .tags::-webkit-scrollbar-thumb {
+    background-color: #c0fa63;
+    border-radius: 4px;
 }
 
 .filters .checkbox-input {
@@ -289,106 +289,105 @@ main {
     flex-grow: 1;
     max-width: min(1500px, 100%);
     padding-inline: 1rem;
+}
 
-    & > .topbar-wrapper {
-        display: flex;
-        flex-direction: row;
-        align-items: stretch;
-        justify-content: center;
-        width: 100%;
-        margin-bottom: 2rem;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
+.products > .topbar-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
 
-    & > .topbar-wrapper > .info {
-        flex-grow: 1;
-    }
+.products > .topbar-wrapper > .info {
+    flex-grow: 1;
+}
 
-    & .info > header {
-        font-family: Playfair Display;
-        padding-top: 0.5rem;
-        font-size: max(min( 5vw, 45px ), 30px);
-    }
+.products .info > header {
+    font-family: Playfair Display;
+    padding-top: 0.5rem;
+    font-size: max(min( 5vw, 45px ), 30px);
+}
 
-    & .info > .category {
-        color: rgb(156, 156, 156);
-        padding-top: 2rem;
-        font-size: 20px;
-    }
-    
+.products .info > .category {
+    color: rgb(156, 156, 156);
+    padding-top: 2rem;
+    font-size: 20px;
+}
 
-    & .info > .subname {
-        color: rgb(201, 201, 201);
-        font-family: Playfair Display;
-        font-size: 20px;
-        padding-top: 0.5rem;
-    }
+.products .info > .subname {
+    color: rgb(201, 201, 201);
+    font-family: Playfair Display;
+    font-size: 20px;
+    padding-top: 0.5rem;
+}
 
-    & > .topbar-wrapper > .buttons {
-        display: flex;
-        flex-direction: row;
-        align-items: end;
-        gap: 10px;
-    }
+.products > .topbar-wrapper > .buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+    gap: 10px;
+}
 
-    & > .topbar-wrapper > .buttons > .filter-open {
-        border: 2px solid #ffe260;
-        border-radius: 30px;
-        width: 150px;
-        height: 45px;
-        background-color: transparent;
-        color: #ffe260;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 3px;
-        font-size: 16px;
-        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    }
+.products > .topbar-wrapper > .buttons > .filter-open {
+    border: 2px solid #ffe260;
+    border-radius: 30px;
+    width: 150px;
+    height: 45px;
+    background-color: transparent;
+    color: #ffe260;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    font-size: 16px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
 
-    & > .topbar-wrapper > .buttons > .filter-open > svg {
-        height: 40%;
-    }
+.products > .topbar-wrapper > .buttons > .filter-open > svg {
+    height: 40%;
+}
 
-    & > .topbar-wrapper > .buttons > .filter-open:hover {
-        background-color: #ffe2601c;
-    }
+.products > .topbar-wrapper > .buttons > .filter-open:hover {
+    background-color: #ffe2601c;
+}
 
-    & > .topbar-wrapper > .buttons > .filter-open:active {
-        background-color: #ffe260;
-        color: #1d1d1d;
-    }
+.products > .topbar-wrapper > .buttons > .filter-open:active {
+    background-color: #ffe260;
+    color: #1d1d1d;
+}
 
-    & > .topbar-wrapper > .buttons > .sort-open {
-        border: 2px solid #ffe260;
-        border-radius: 30px;
-        width: 150px;
-        height: 45px;
-        background-color: transparent;
-        color: #ffe260;
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        gap: 3px;
-        font-size: 16px;
-        transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
-    }
+.products > .topbar-wrapper > .buttons > .sort-open {
+    border: 2px solid #ffe260;
+    border-radius: 30px;
+    width: 150px;
+    height: 45px;
+    background-color: transparent;
+    color: #ffe260;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 3px;
+    font-size: 16px;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
 
-    & > .topbar-wrapper > .buttons > .sort-open > svg {
-        height: 50%;
-    }
+.products > .topbar-wrapper > .buttons > .sort-open > svg {
+    height: 50%;
+}
 
-    & > .topbar-wrapper > .buttons > .sort-open:hover {
-        background-color: #ffe2601c;
-    }
+.products > .topbar-wrapper > .buttons > .sort-open:hover {
+    background-color: #ffe2601c;
+}
 
-    & > .topbar-wrapper > .buttons > .sort-open:active {
-        background-color: #ffe260;
-        color: #1d1d1d;
-    }
+.products > .topbar-wrapper > .buttons > .sort-open:active {
+    background-color: #ffe260;
+    color: #1d1d1d;
 }
 
 .cards {
@@ -419,170 +418,169 @@ main {
     overflow: hidden;
     cursor: pointer;
     position: relative;
-  
-    & a {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-    }
-
-    & a > picture {
-      pointer-events: none;
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      will-change: transform, opacity;
-      transition: transform 0.4s ease, filter 0.4s ease, opacity 0.4s ease;
-      z-index: 1;
-    }
-    
-    & img {
-        will-change: transform;
-        object-fit: cover;
-        width: 100%;
-        height: 100%;
-    }
-
-    & a > picture.secondary {
-        z-index: 2;
-        opacity: 0;
-    }
-  
-    & > .button-wrapper {
-      overflow: hidden;
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 9;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: calc(40px + 1rem);
-      transform: translateY(100%);
-      will-change: transform;
-      transition: transform 0.3s ease;
-    }
-  
-    & > .button-wrapper > .quick-add {
-      margin: 1rem 0.5rem;
-      cursor: pointer;
-      width: calc(100% - 2rem);
-      height: calc(100% - 1rem);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      font-family: "Roboto", Arial;
-      background-color: #272727;
-      border: none;
-  
-      display: flex;
-      position: relative;
-      justify-content: center;
-      align-items: center;
-      border: 2px solid #bdb678;
-      color: #bdb678;
-      background-color: #272727;
-      font-size: 15px;
-      box-shadow: 0px 0px 10px #b4ae71;
-      transition: border-color 0.4s ease, scale 0.2s ease, box-shadow 0.4s ease,
-        letter-spacing 0.4s ease, color 0.4s ease;
-      overflow: hidden;
-      gap: 0.5rem;
-      font-family: "Roboto", Arial;
-    }
-  
-    & > .button-wrapper > .quick-add > * {
-      z-index: 9;
-      user-select: none;
-      text-transform: uppercase;
-    }
-  
-    & > .button-wrapper > .quick-add::before {
-      content: "";
-      position: absolute;
-      z-index: 1;
-      border-right: 50px solid transparent;
-      border-bottom: 50px solid #36352c;
-      filter: drop-shadow(5px 5px 5px #d8cd68);
-      width: calc(100% + 20px);
-      transform: translateX(-100%);
-      transition: transform 0.7s ease-in-out;
-    }
-  
-    & > .button-wrapper > .quick-add:hover {
-      color: #fff494;
-      border-color: #fff494;
-      letter-spacing: 2px;
-    }
-  
-    & > .button-wrapper > .quick-add:hover::before {
-      transform: translateX(3%);
-    }
-  
-    & > .button-wrapper > .quick-add:active {
-      scale: 0.95;
-    }
-  
-    & > .button-wrapper > .quick-add > svg {
-      margin-bottom: 5px;
-    }
-  
-    &:hover > .button-wrapper {
-      transform: translateY(0%);
-    }
 }
-  
+
+.card > .card-image a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.card > .card-image a > picture {
+    pointer-events: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    will-change: transform, opacity;
+    transition: transform 0.4s ease, filter 0.4s ease, opacity 0.4s ease;
+    z-index: 1;
+}
+
+.card > .card-image img {
+    will-change: transform;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+}
+
+.card > .card-image a > picture.secondary {
+    z-index: 2;
+    opacity: 0;
+}
+
+.card > .card-image > .button-wrapper {
+    overflow: hidden;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: calc(40px + 1rem);
+    transform: translateY(100%);
+    will-change: transform;
+    transition: transform 0.3s ease;
+}
+
+.card > .card-image > .button-wrapper > .quick-add {
+    margin: 1rem 0.5rem;
+    cursor: pointer;
+    width: calc(100% - 2rem);
+    height: calc(100% - 1rem);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-family: "Roboto", Arial;
+    background-color: #272727;
+    border: none;
+    display: flex;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid #bdb678;
+    color: #bdb678;
+    background-color: #272727;
+    font-size: 15px;
+    box-shadow: 0px 0px 10px #b4ae71;
+    transition: border-color 0.4s ease, scale 0.2s ease, box-shadow 0.4s ease,
+    letter-spacing 0.4s ease, color 0.4s ease;
+    overflow: hidden;
+    gap: 0.5rem;
+    font-family: "Roboto", Arial;
+}
+
+.card > .card-image > .button-wrapper > .quick-add > * {
+    z-index: 9;
+    user-select: none;
+    text-transform: uppercase;
+}
+
+.card > .card-image > .button-wrapper > .quick-add::before {
+    content: "";
+    position: absolute;
+    z-index: 1;
+    border-right: 50px solid transparent;
+    border-bottom: 50px solid #36352c;
+    filter: drop-shadow(5px 5px 5px #d8cd68);
+    width: calc(100% + 20px);
+    transform: translateX(-100%);
+    transition: transform 0.7s ease-in-out;
+}
+
+.card > .card-image > .quick-add:hover {
+    color: #fff494;
+    border-color: #fff494;
+    letter-spacing: 2px;
+}
+
+.card > .card-image > .quick-add:hover::before {
+    transform: translateX(3%);
+}
+
+.card > .card-image > .quick-add:active {
+    scale: 0.95;
+}
+
+.card > .card-image > .quick-add > svg {
+    margin-bottom: 5px;
+}
+
+.card > .card-image:hover > .button-wrapper {
+    transform: translateY(0%);
+}
+
 .card > .card-image:hover > a > picture.secondary {
     transform: scale(1.05);
     opacity: 1;
     filter: saturate(1.1);
 }
-  
+
 .card-body {
     padding-block: 1rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-  
-    & > .name {
-      text-overflow: ellipsis;
-      overflow: hidden;
-      white-space: nowrap;
-      font-family: "Playfair Display";
-      font-size: min(4vw, 25px);
-    }
-  
-    & > .price > .price-value {
-        font-size: min(4vw, 25px);
-    }
+}
 
-    & > .price > .price-currency {
-        font-size: min(2vw, 20px);
-    }
+.card-body > .name {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-family: "Playfair Display";
+    font-size: min(4vw, 25px);
+}
 
-    & > .card-bottom {
-        height: 45px;
-        display: flex;
-        justify-content: flex-end;
-        flex-direction: column;
-        justify-content: space-between;
-    }
-  
-    & .review-count {
-        font-size: min(2.5vw, 14px);
-        color: #dddd;
-    }
+.card-body > .price > .price-value {
+    font-size: min(4vw, 25px);
+}
+
+.card-body > .price > .price-currency {
+    font-size: min(2vw, 20px);
+}
+
+.card-body > .card-bottom {
+    height: 45px;
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-body .review-count {
+    font-size: min(2.5vw, 14px);
+    color: #dddd;
 }
 
 .stars {
     display: flex;
     gap: 4px;
 }
-  
+
 .stars > span {
     width: 24px;
     height: 24px;
@@ -590,12 +588,12 @@ main {
     background: url("../../fb-products/media/images/star-empty.svg") no-repeat center;
     background-size: contain;
 }
-  
+
 .stars > span.filled {
     background: url("../../fb-products/media/images/star-filled.svg") no-repeat center;
     background-size: contain;
 }
-  
+
 .stars > span.half {
     background: url("../../fb-products/media/images/star-half.svg") no-repeat center;
     background-size: contain;
@@ -684,7 +682,6 @@ body.top-show #top-button {
     background-color: #ffe2601c;
 }
 
-
 .pagination button:enabled:active {
     background-color: #ffe260;
     color: #1d1d1d;
@@ -752,10 +749,10 @@ body.top-show #top-button {
         margin-left: -400px;
         padding-inline: 0rem;
         z-index: 1;
+    }
 
-        & > .filter-group {
-            padding-inline: 1rem;
-        }
+    .filters > .filter-group {
+        padding-inline: 1rem;
     }
 
     .card-body > .name {

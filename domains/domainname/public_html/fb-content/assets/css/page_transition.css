@@ -1,17 +1,18 @@
 @import url("../../assets/css/root.css");
 
 .transition {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
-  z-index: 999999;
-  font-family: "Times New Roman", Times, serif;
-  will-change: opacity;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 999999;
+    font-family: "Times New Roman", Times, serif;
+    will-change: opacity;
+}
 
-  & > .transition-background {
+.transition-background {
     background-color: var(--dark_quaternary);
     position: fixed;
     top: 0;
@@ -21,9 +22,9 @@
     visibility: visible;
     opacity: 1;
     will-change: opacity;
-  }
+}
 
-  & > .layer {
+.transition .layer {
     position: absolute;
     top: 0;
     left: 0;
@@ -32,60 +33,60 @@
     display: flex;
     flex-direction: row;
     z-index: 2;
-    overflow:hidden;
-  }
+    overflow: hidden;
+}
 
-  & > .layer > .transition-row {
+.transition .layer .transition-row {
     flex: 1;
     display: flex;
     justify-content: stretch;
-  }
-  
-  & > .layer > .transition-row .block {
+}
+
+.transition .layer .transition-row .block {
     transform-origin: top;
-  }
-  
-  & .block {
+}
+
+.transition .block {
     pointer-events: all;
     flex: 1;
     transform: scaleY(1);
     margin-inline: -0.5px;
     will-change: transform, opacity;
-  }
+}
 
-  & > .layer-0 {
+.transition .layer-0 {
     z-index: 5;
-  }
+}
 
-  & > .layer-0 .block {
+.transition .layer-0 .block {
     background-color: var(--dark_quaternary);
-  }
+}
 
-  & > .layer-1 {
+.transition .layer-1 {
     z-index: 4;
-  }
+}
 
-  & > .layer-1 .block {
+.transition .layer-1 .block {
     background-color: var(--green_tertiary);
-  }
+}
 
-  & > .layer-2 {
+.transition .layer-2 {
     z-index: 3;
-  }
+}
 
-  & > .layer-2 .block {
+.transition .layer-2 .block {
     background-color: var(--green_secondary);
-  }
+}
 
-  & > .layer-3 {
+.transition .layer-3 {
     z-index: 2;
-  }
+}
 
-  & > .layer-3 .block {
+.transition .layer-3 .block {
     background-color: var(--green_primary);
-  }
+}
 
-  & > .transition-text {
+.transition-text {
     z-index: 6;
     position: absolute;
     top: 0;
@@ -98,9 +99,9 @@
     align-items: center;
     gap: 1rem;
     opacity: 0;
-  }
+}
 
-  & > .transition-text > .hero {
+.transition-text .hero {
     font-size: min(11vw, 90px);
     color: white;
     display: flex;
@@ -108,14 +109,14 @@
     align-items: center;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
     line-height: normal;
-  }
+}
 
-  & > .transition-text > .hero > .char {
+.transition-text .hero .char {
     width: auto;
     will-change: transform;
-  }
+}
 
-  & > .transition-text > .quote {
+.transition-text .quote {
     color: #90aa7e;
     font-size: 20px;
     font-style: italic;
@@ -123,10 +124,9 @@
     justify-content: center;
     align-items: center;
     clip-path: polygon(0 5%, 100% 5%, 100% 100%, 0% 100%);
-  }
+}
 
-  & > .transition-text > .quote > .char {
+.transition-text .quote .char {
     width: auto;
     will-change: transform;
-  }
 }

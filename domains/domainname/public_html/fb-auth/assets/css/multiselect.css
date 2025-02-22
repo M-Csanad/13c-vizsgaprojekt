@@ -6,187 +6,185 @@
   height: 30px;
   position: relative;
   font-family: Arial, Helvetica, sans-serif;
+}
 
-  & hr {
-    opacity: 0.3;
-    margin-block: 0.5rem;
-  }
+.multiselect hr {
+  opacity: 0.3;
+  margin-block: 0.5rem;
+}
 
-  & > .body {
-    border-bottom-color: #595959;
-    border-style: solid;
-    border-width: 0px 0px 3px 0px;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-inline: 0.5rem;
-    background-color: #eaeaea;
-    user-select: none;
-    transition: border-color 0.3s ease;
-  }
+.multiselect > .body {
+  border-bottom-color: #595959;
+  border-style: solid;
+  border-width: 0px 0px 3px 0px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-inline: 0.5rem;
+  background-color: #eaeaea;
+  user-select: none;
+  transition: border-color 0.3s ease;
+}
 
-  &:has(.check.on) > .body {
-    border-bottom-color: #399841;
-  }
+.multiselect:has(.check.on) > .body {
+  border-bottom-color: #399841;
+}
 
-  & > .body > .selected-items {
-    user-select: none;
-    color: rgb(0, 0, 0);
-  }
+.multiselect > .body > .selected-items {
+  user-select: none;
+  color: rgb(0, 0, 0);
+}
 
-  & > .body > .expander {
-    display: flex;
-    align-items: center;
-    user-select: none;
-    rotate: 0deg;
-    transition: rotate 0.3s ease;
-  }
+.multiselect > .body > .expander {
+  display: flex;
+  align-items: center;
+  user-select: none;
+  rotate: 0deg;
+  transition: rotate 0.3s ease;
+}
 
-  &.active > .body > .expander {
-    rotate: 180deg;
-  }
+.multiselect.active > .body > .expander {
+  rotate: 180deg;
+}
 
-  &.active > .dropdown {
-    display: block;
-  }
+.multiselect.active > .dropdown {
+  display: block;
+}
 
-  & > .dropdown {
-    display: none;
-    position: absolute;
-    height: auto;
-    top: 100%;
-    width: 100%;
-    left: 0;
-    z-index: 99;
-    border: 2px solid rgb(216, 216, 216);
-    border-top: 0px;
-    border-radius: 0px;
-  }
+.multiselect > .dropdown {
+  display: none;
+  position: absolute;
+  height: auto;
+  top: 100%;
+  width: 100%;
+  left: 0;
+  z-index: 99;
+  border: 2px solid rgb(216, 216, 216);
+  border-top: 0px;
+  border-radius: 0px;
+}
 
-  & > .dropdown > .multiselect-items {
-    width: 100%;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    max-height: 235px;
-    scroll-snap-type: y mandatory;
-    scrollbar-width: thin;
-  }
+.multiselect > .dropdown > .multiselect-items {
+  width: 100%;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 235px;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: thin;
+}
 
-  & > .dropdown > .multiselect-items > .search-input {
-    padding-inline: 0.7rem;
-    scroll-snap-align: start;
-    width: 100%;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    background-color: white;
-    padding-block: 0.7rem;
-  }
+.multiselect > .dropdown > .multiselect-items > .search-input {
+  padding-inline: 0.7rem;
+  scroll-snap-align: start;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  background-color: white;
+  padding-block: 0.7rem;
+}
 
-  & > .dropdown > .multiselect-items > .search-input > input {
-    padding: 0.3rem;
-    border: none;
-    outline: none;
-    font-size: 16px;
-    border: 1px solid rgb(228, 228, 228);
-    border-radius: 5px;
-    width: 100%;
-    outline: 3px solid transparent;
-    transition: outline 0.3s ease;
-  }
+.multiselect > .dropdown > .multiselect-items > .search-input > input {
+  padding: 0.3rem;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  border: 1px solid rgb(228, 228, 228);
+  border-radius: 5px;
+  width: 100%;
+  outline: 3px solid transparent;
+  transition: outline 0.3s ease;
+}
 
-  & > .dropdown > .multiselect-items > .search-input > input:focus {
-    outline: 2px solid rgba(138, 138, 138, 0.25);
-  }
+.multiselect > .dropdown > .multiselect-items > .search-input > input:focus {
+  outline: 2px solid rgba(138, 138, 138, 0.25);
+}
 
-  & > .dropdown > .multiselect-items > .no-result {
-    scroll-snap-align: end;
-    flex-shrink: 0;
-    height: 35px;
-    padding-left: 0.7rem;
-    display: none;
-    align-items: center;
-    color: rgb(70, 70, 70);
-    font-weight: bold;
-  }
+.multiselect > .dropdown > .multiselect-items > .no-result {
+  scroll-snap-align: end;
+  flex-shrink: 0;
+  height: 35px;
+  padding-left: 0.7rem;
+  display: none;
+  align-items: center;
+  color: rgb(70, 70, 70);
+  font-weight: bold;
+}
 
-  & > .dropdown > .multiselect-items > .no-result.visible {
-    display: flex;
-  }
+.multiselect > .dropdown > .multiselect-items > .no-result.visible {
+  display: flex;
+}
 
-  & > .dropdown > .multiselect-items > .option {
-    padding-inline: 0.7rem;
-    scroll-snap-align: end;
-    flex-shrink: 0;
-    display: none;
-    flex-direction: row;
-    width: 100%;
-    align-items: center;
-    height: 35px;
-    user-select: none;
-    gap: 0.7rem;
-    background: linear-gradient(to right, rgb(239, 255, 235), white);
-    background-repeat: no-repeat;
-    background-position: -400px;
-    transition: background-position 0.3s ease;
-  }
+.multiselect > .dropdown > .multiselect-items > .option {
+  padding-inline: 0.7rem;
+  scroll-snap-align: end;
+  flex-shrink: 0;
+  display: none;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  height: 35px;
+  user-select: none;
+  gap: 0.7rem;
+  background: linear-gradient(to right, rgb(239, 255, 235), white);
+  background-repeat: no-repeat;
+  background-position: -400px;
+  transition: background-position 0.3s ease;
+}
 
-  & > .dropdown > .multiselect-items > .option:has(.check.on) {
-    background-position: 0px;
-  }
+.multiselect > .dropdown > .multiselect-items > .option:has(.check.on) {
+  background-position: 0px;
+}
 
-  & > .dropdown > .multiselect-items > .option.visible {
-    display: flex;
-  }
+.multiselect > .dropdown > .multiselect-items > .option.visible {
+  display: flex;
+}
 
-  & > .dropdown > .multiselect-items > .option > .label {
-    transition: color 0.3s ease;
-  }
+.multiselect > .dropdown > .multiselect-items > .option > .label {
+  transition: color 0.3s ease;
+}
 
-  & > .dropdown > .multiselect-items > .option > .check {
-    cursor: pointer;
-    height: 20px;
-    width: 20px;
-    display: block;
-    border: 2px solid rgb(170, 170, 170);
-    border-radius: 5px;
-    padding: 3px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0px 0px 3px grey;
+.multiselect > .dropdown > .multiselect-items > .option > .check {
+  cursor: pointer;
+  height: 20px;
+  width: 20px;
+  display: block;
+  border: 2px solid rgb(170, 170, 170);
+  border-radius: 5px;
+  padding: 3px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0px 0px 3px grey;
+  transition: background-color 0.3s ease, drop-shadow 0.3s ease, border 0.3s ease;
+}
 
-    transition: background-color 0.3s ease, drop-shadow 0.3s ease,
-      border 0.3s ease;
-  }
+.multiselect > .dropdown > .multiselect-items > .option > .check:hover {
+  border-color: rgb(226, 226, 226);
+}
 
-  & > .dropdown > .multiselect-items > .option > .check:hover {
-    border-color: rgb(226, 226, 226);
-  }
+.multiselect > .dropdown > .multiselect-items > .option > .check.on {
+  background-color: rgb(79, 197, 69);
+  border: 2px solid rgb(124, 245, 94);
+  box-shadow: 0px 0px 3px grey;
+}
 
-  & > .dropdown > .multiselect-items > .option > .check.on {
-    background-color: rgb(79, 197, 69);
-    border: 2px solid rgb(124, 245, 94);
-    box-shadow: 0px 0px 3px grey;
-  }
+.multiselect > .dropdown > .multiselect-items > .option > .check.on + .label {
+  color: rgb(59, 148, 50);
+}
 
-  & > .dropdown > .multiselect-items > .option > .check.on + .label {
-    color: rgb(59, 148, 50);
-  }
+.multiselect > .dropdown > .multiselect-items > .option > .check > img {
+  max-width: 100%;
+  max-height: 100%;
+  will-change: scale;
+  scale: 0;
+  filter: invert(1);
+  transition: scale 0.3s ease;
+}
 
-  & > .dropdown > .multiselect-items > .option > .check > img {
-    max-width: 100%;
-    max-height: 100%;
-    will-change: scale;
-    scale: 0;
-    filter: invert(1);
-    transition: scale 0.3s ease;
-  }
-
-  & > .dropdown > .multiselect-items > .option > .check.on > img {
-    scale: 1;
-  }
+.multiselect > .dropdown > .multiselect-items > .option > .check.on > img {
+  scale: 1;
 }

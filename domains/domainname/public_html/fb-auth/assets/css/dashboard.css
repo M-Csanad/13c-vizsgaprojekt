@@ -1,4 +1,4 @@
-*{
+* {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
@@ -9,7 +9,6 @@ body {
     font-family: Raleway;
     padding: 50px;
 }
-
 
 .page-title {
     width: 100%;
@@ -295,418 +294,441 @@ body {
     left: 28px;
 }
 
-section {
-    .section-header {
-        user-select: none;
-        cursor: pointer;
-        display: flex;
-        justify-content: space-between;
-        flex-direction: row;
-        align-items: center;
-        border-bottom: 2px solid #dfdfdf;
-        padding-block: 0.5rem;
-        padding-right: 10px;
-        margin-bottom: 0.5rem;
-    }
-    .section-header > .section-title {
-        font-size: 20px;
-        font-weight: 500;
-        flex-grow: 1;
-    }
-    .section-header > svg {
-        flex-shrink: 0;
-        width: 20px;
-        transition: transform 0.3s ease;
-    }
-
-    .section-body {
-        display: grid;
-        grid-template-rows: 0fr;
-        opacity: 0;
-        transition: grid-template-rows 0.3s ease, opacity 0.3s ease;
-    }
-
-    .section-body > form {
-        overflow: hidden;
-    }
-
-    form > .input-grid {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: column;
-        gap: 15px;
-        margin-bottom: 10px;
-    }
-
-    .inline-input {
-        display: flex;
-        align-items: stretch;
-        flex-direction: row;
-        /* gap: 20px; */
-        width: 66%;
-        height: 30px;
-    }
-
-    .inline-input > label{
-        gap: 5px;
-        display: flex;
-        align-items: center;
-        position: relative;
-        font-weight: 600;
-        font-size: 16px;
-        width: 28%;
-        flex-grow: 1;
-        max-width: 28%;
-        min-width: 110px;
-        transition: color 0.3s ease;
-        flex-shrink: 0;
-        padding-right: 10px;
-    }
-    .inline-input > label > div:first-child {
-        flex-grow: 1;
-        height: 100%;
-        display: flex;
-        align-items: center;
-    }
-    .inline-input > label > div:first-child > svg {
-        flex-shrink: 0;
-        margin-left: 10px;
-        width: 20px;
-    }
-
-    .inline-input > label > .label-tooltip {
-        position: absolute;
-        bottom: 100%;
-        background-color: grey;
-        color: white;
-        font-size: 12px;
-        width: max-content;
-        padding-inline: 1rem;
-        padding-block: 0.2rem;
-        border-radius: 5px;
-        text-align: center;
-        visibility: hidden;
-        opacity: 0;
-        transition: visibility 0.2s ease, opacity 0.2s ease;
-    }
-    .inline-input > label > .label-tooltip::after {
-        content: "";
-        position: absolute;
-        top: 100%;
-        left: 15px;
-        border-width: 5px;
-        border-style: solid;
-        border-color: grey transparent transparent transparent;
-    }
-    .inline-input > label:hover:not(:has(.label-tooltip:hover)) > .label-tooltip {
-        visibility: visible;
-        opacity: 1;
-    }
-
-    
-    .inline-input:has(input) > label > div:first-child:after,
-    .inline-input:has(select) > label > div:first-child:after,
-    .inline-input:has(textarea) > label > div:first-child:after {
-        content: '*';
-        color: red;
-        opacity: 0;
-        font-family:'Courier New', Courier, monospace;
-        transition: opacity 0.3s ease;
-    }
-    .inline-input:has(input:required:enabled) > label > div:first-child:after, 
-    .inline-input:has(select:required:enabled) > label > div:first-child:after,
-    .inline-input:has(textarea:required:enabled) > label > div:first-child:after {
-        opacity: 1;
-    }
-
-    .inline-input > .input-content {
-        display: flex;
-        align-items: stretch;
-        flex-grow: 1;
-        position: relative;
-        flex-direction: column;
-        height: 30px;
-        overflow: hidden;
-    }
-
-    .inline-input > .input-content > .input-container {
-        display: flex;
-        flex-direction: row;
-        align-items: stretch;
-        gap: 10px;
-        flex-grow: 1;
-        height: 30px;
-    }
-
-    .inline-input > .input-content > .input-tooltip {
-        position: absolute;
-        display: flex;
-        align-items: center;
-        font-weight: bold;
-
-        height: 30px;
-        width: 100%;
-
-        color: #666;
-    }
-
-    .inline-input.has-toggle > .input-content > .input-container{
-        position: absolute;
-        /* top: 100%; */
-        transform: translateY(100%);
-        width: 100%;
-        opacity: 0;
-        z-index: -1;
-
-        transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-    .inline-input.has-toggle > .input-content > .input-tooltip {
-        /* bottom: 0; */
-        z-index: -1;
-        transition: transform 0.3s ease, opacity 0.3s ease;
-    }
-
-    .inline-input.has-toggle > .input-content:has(input.visible) > .input-tooltip {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
-
-    .inline-input.has-toggle > .input-content:has(input.visible) > .input-container {
-        transform: translateY(0%);
-        opacity: 1;
-        z-index: 1;
-    }
-
-    .inline-input > .input-content > div > input, .inline-input > .input-content > div > select,
-    .inline-input > .input-content > div > textarea {
-        display: flex;
-        align-items: center;
-        flex-grow: 1;
-        outline: none;
-        border: none;
-        padding-inline: 5px;
-        background-color: #eaeaea;
-        border-bottom: 3px solid black; 
-        font-size: 16px;
-        border-radius: 0%;
-        transition: border-color 0.3s ease;
-        min-width: 0px;
-    }
-
-    .inline-input:has(textarea) {
-        height: 100px;
-    }
-    .inline-input:has(textarea) > .input-content {
-        height: 100px;
-    }
-
-    .inline-input > .input-content > div > textarea {
-        resize: none;
-        height: 100%;
-    }
-
-    .inline-input > .input-content > div > svg {
-        height: 100%;
-        width: 20px;
-        flex-shrink: 0;
-    }
-    .inline-input > .input-content > div > svg.valid {
-        color: var(--valid);
-    }
-    .inline-input > .input-content > div > svg.invalid {
-        color: var(--invalid);
-    }
-
-    .inline-input > .input-content > div > input:valid, .inline-input > .input-content > div > select:valid, 
-    .inline-input > .input-content > div > textarea:valid {
-        border-bottom: 3px solid var(--valid);
-    }
-    .inline-input > .input-content > div > input:invalid, .inline-input > .input-content > div > select:invalid,
-    .inline-input > .input-content > div > textarea:invalid {
-        border-bottom: 3px solid var(--invalid);
-    }
-    .inline-input > .input-content > div > input:valid ~ svg.valid, .inline-input > .input-content > div > select:valid ~ svg.valid,
-    .inline-input > .input-content > div > textarea:valid ~ svg.valid {
-        display: block;
-    }
-    .inline-input > .input-content > div > input:invalid ~ svg.valid, .inline-input > .input-content > div > select:invalid ~ svg.valid,
-    .inline-input > .input-content > div > textarea:invalid ~ svg.valid  {
-        display: none;
-    }
-    .inline-input > .input-content > div > input:valid ~ svg.invalid, .inline-input > .input-content > div > select:valid ~ svg.invalid,
-    .inline-input > .input-content > div > textarea:valid ~ svg.invalid  {
-        display: none;
-    }
-    .inline-input > .input-content > div > input:invalid ~ svg.invalid, .inline-input > .input-content > div > select:invalid ~ svg.invalid,
-    .inline-input > .input-content > div > textarea:invalid ~ svg.invalid  {
-        display: block;
-    }
-    .inline-input > .input-content > div:has(input:disabled) > svg, .inline-input > .input-content > div:has(select:disabled) > svg,
-    .inline-input > .input-content > div:has(textarea:disabled) > svg {
-        display: none;
-    }
-    .inline-input > .input-content > div:has(input:disabled) > svg.disabled, .inline-input > .input-content > div:has(select:disabled) > svg.disabled,
-    .inline-input > .input-content > div:has(textarea:disabled) > svg.disabled {
-        display: block;
-    }
-    .inline-input > .input-content > div > input:enabled ~ svg.disabled, .inline-input > .input-content > div > select:enabled ~ svg.disabled,
-    .inline-input > .input-content > div > textarea:enabled ~ svg.disabled {
-        display: none;
-    }
-    .inline-input > .input-content:has(.multiselect) > div:not(:has(.check.on)) > svg.valid {
-        opacity: 0;
-    }
-    .inline-input > .input-content:has(.multiselect) > div:has(.check.on) > svg.valid {
-        opacity: 1;
-    }
-
-    .inline-input > .input-content > div > input:disabled, 
-    .inline-input > .input-content > div > select:disabled,
-    .inline-input > .input-content > div > textarea:disabled {
-        border-bottom: 3px solid rgb(20, 20, 20) !important;
-        color: #6c6c6c;
-        background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.5) 75%, transparent 75%, transparent);
-        background-size: 20px 20px;
-        background-repeat: repeat;
-        cursor: not-allowed;
-    }
-
-    .inline-input > .input-content > div > textarea:disabled {
-        border-color: rgb(89, 89, 89) !important;
-    }
-    
-    .file-input > .input-content > div {
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .file-input > .input-content > div > .main-wrapper {
-        width: 60%;
-        height: 100%;
-        position: relative;
-        display: flex;
-        flex-direction: row;
-        border: 1px solid var(--text);
-    }
-    .file-input > .input-content > div > .main-wrapper > label.input-wrapper {
-        width: calc(100%);
-        height: 100%;
-        display: flex;
-        gap: 5px;
-        align-items: center;
-        justify-content: center;
-        transition: background-image 0.3s ease, color 0.3s ease;
-        font-size: 16px;
-        cursor: pointer;
-        font-family: Arial, Helvetica, sans-serif;
-        user-select: none;
-    }
-    
-    .file-input > .input-content > div > div.main-wrapper:has(input:disabled) > label {
-        background-image: linear-gradient(135deg, #f7f7f7 25%, #efefef 25%, #efefef 50%, #f7f7f7 50%, #f7f7f7 75%, #efefef 75%, #efefef);
-        background-size: 20px 20px;
-        background-repeat: repeat;
-        cursor: not-allowed;
-        color: #6c6c6c;
-    }
-    .file-input > .input-content > div > div.main-wrapper:has(input:disabled) > label > svg {
-        fill: #6c6c6c;
-    }
-
-    .file-input > .input-content > div > div.main-wrapper > label > svg {
-        transition: fill 0.3s ease;
-    }
-    
-    .file-input:has(input:invalid) > .input-content > div > svg.valid {
-        display: none;
-    }
-    .file-input:has(input:invalid) > .input-content > div > svg.invalid {
-        display: block;
-    }
-    .file-input:has(input:valid) > .input-content > div > svg.valid {
-        display: block;
-    }
-    .file-input:has(input:valid) > .input-content > div > svg.invalid {
-        display: none;
-    }
-    .file-input:has(input:disabled) > .input-content > div > svg.disabled {
-        display: block;
-    }
-    .file-input:has(input:enabled) > .input-content > div > svg.disabled {
-        display: none;
-    }
-
-    .file-input > .input-content > div > .main-wrapper > label.input-wrapper > input {
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-25%);
-        cursor: pointer;
-        opacity: 0;
-        z-index: -1;
-    }
-    .file-input > .input-content > div > .main-wrapper > label.input-wrapper:hover:not(:has(input:disabled))    {
-        background-color: #e8e8e8;
-    }
-
-    .form-submit-primary {
-        background-color: var(--background-dark);
-        color: white;
-        font-family: Raleway;
-        font-weight: 600;
-        border: 2px solid #454545;
-        padding-block: 10px;
-        padding-inline: 20px;
-        border-radius: 5px;
-        transition: 0.4s all ease;
-        max-width: 100%;
-    }
-
-    .form-submit-primary:hover {
-        background-color: #2a2a2a;
-        border: 2px solid #6b6b6b;
-    }
-
-    .form-submit-primary:active {
-        scale: 0.9;
-    }
-
-    .form-submit-danger {
-        background-color: var(--danger);
-        color: white;
-        font-family: Raleway;
-        font-weight: 600;
-        border: 2px solid #bf5d5d;
-        padding-block: 10px;
-        padding-inline: 20px;
-        border-radius: 5px;
-        transition: all 0.4s ease;
-        max-width: 100%;
-    }
-
-    .form-submit-danger:hover {
-        background-color: #ca3535;
-        border: 2px solid #8f1717;
-    }
-
-    .form-submit-danger:active {
-        scale: 0.9;
-    }
+.section-header {
+    user-select: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    align-items: center;
+    border-bottom: 2px solid #dfdfdf;
+    padding-block: 0.5rem;
+    padding-right: 10px;
+    margin-bottom: 0.5rem;
 }
 
-section.active {
-    .section-body {
-        opacity: 1;
-        grid-template-rows: 1fr;
-    }
-    .section-header > svg {
-        transform: rotate(180deg);
-    }
+.section-header > .section-title {
+    font-size: 20px;
+    font-weight: 500;
+    flex-grow: 1;
 }
 
+.section-header > svg {
+    flex-shrink: 0;
+    width: 20px;
+    transition: transform 0.3s ease;
+}
+
+.section-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 0.3s ease, opacity 0.3s ease;
+}
+
+.section-body > form {
+    overflow: hidden;
+}
+
+form > .input-grid {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+.inline-input {
+    display: flex;
+    align-items: stretch;
+    flex-direction: row;
+    /* gap: 20px; */
+    width: 66%;
+    height: 30px;
+}
+
+.inline-input > label{
+    gap: 5px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    font-weight: 600;
+    font-size: 16px;
+    width: 28%;
+    flex-grow: 1;
+    max-width: 28%;
+    min-width: 110px;
+    transition: color 0.3s ease;
+    flex-shrink: 0;
+    padding-right: 10px;
+}
+
+.inline-input > label > div:first-child {
+    flex-grow: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.inline-input > label > div:first-child > svg {
+    flex-shrink: 0;
+    margin-left: 10px;
+    width: 20px;
+}
+
+.inline-input > label > .label-tooltip {
+    position: absolute;
+    bottom: 100%;
+    background-color: grey;
+    color: white;
+    font-size: 12px;
+    width: max-content;
+    padding-inline: 1rem;
+    padding-block: 0.2rem;
+    border-radius: 5px;
+    text-align: center;
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0.2s ease, opacity 0.2s ease;
+}
+
+.inline-input > label > .label-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 15px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: grey transparent transparent transparent;
+}
+
+.inline-input > label:hover:not(:has(.label-tooltip:hover)) > .label-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.inline-input:has(input) > label > div:first-child:after,
+.inline-input:has(select) > label > div:first-child:after,
+.inline-input:has(textarea) > label > div:first-child:after {
+    content: '*';
+    color: red;
+    opacity: 0;
+    font-family:'Courier New', Courier, monospace;
+    transition: opacity 0.3s ease;
+}
+
+.inline-input:has(input:required:enabled) > label > div:first-child:after, 
+.inline-input:has(select:required:enabled) > label > div:first-child:after,
+.inline-input:has(textarea:required:enabled) > label > div:first-child:after {
+    opacity: 1;
+}
+
+.inline-input > .input-content {
+    display: flex;
+    align-items: stretch;
+    flex-grow: 1;
+    position: relative;
+    flex-direction: column;
+    height: 30px;
+    overflow: hidden;
+}
+
+.inline-input > .input-content > .input-container {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    gap: 10px;
+    flex-grow: 1;
+    height: 30px;
+}
+
+.inline-input > .input-content > .input-tooltip {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+
+    height: 30px;
+    width: 100%;
+
+    color: #666;
+}
+
+.inline-input.has-toggle > .input-content > .input-container{
+    position: absolute;
+    /* top: 100%; */
+    transform: translateY(100%);
+    width: 100%;
+    opacity: 0;
+    z-index: -1;
+
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.inline-input.has-toggle > .input-content > .input-tooltip {
+    /* bottom: 0; */
+    z-index: -1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.inline-input.has-toggle > .input-content:has(input.visible) > .input-tooltip {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+
+.inline-input.has-toggle > .input-content:has(input.visible) > .input-container {
+    transform: translateY(0%);
+    opacity: 1;
+    z-index: 1;
+}
+
+.inline-input > .input-content > div > input, .inline-input > .input-content > div > select,
+.inline-input > .input-content > div > textarea {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    outline: none;
+    border: none;
+    padding-inline: 5px;
+    background-color: #eaeaea;
+    border-bottom: 3px solid black; 
+    font-size: 16px;
+    border-radius: 0%;
+    transition: border-color 0.3s ease;
+    min-width: 0px;
+}
+
+.inline-input:has(textarea) {
+    height: 100px;
+}
+
+.inline-input:has(textarea) > .input-content {
+    height: 100px;
+}
+
+.inline-input > .input-content > div > textarea {
+    resize: none;
+    height: 100%;
+}
+
+.inline-input > .input-content > div > svg {
+    height: 100%;
+    width: 20px;
+    flex-shrink: 0;
+}
+
+.inline-input > .input-content > div > svg.valid {
+    color: var(--valid);
+}
+
+.inline-input > .input-content > div > svg.invalid {
+    color: var(--invalid);
+}
+
+.inline-input > .input-content > div > input:valid, .inline-input > .input-content > div > select:valid, 
+.inline-input > .input-content > div > textarea:valid {
+    border-bottom: 3px solid var(--valid);
+}
+
+.inline-input > .input-content > div > input:invalid, .inline-input > .input-content > div > select:invalid,
+.inline-input > .input-content > div > textarea:invalid {
+    border-bottom: 3px solid var(--invalid);
+}
+
+.inline-input > .input-content > div > input:valid ~ svg.valid, .inline-input > .input-content > div > select:valid ~ svg.valid,
+.inline-input > .input-content > div > textarea:valid ~ svg.valid {
+    display: block;
+}
+
+.inline-input > .input-content > div > input:invalid ~ svg.valid, .inline-input > .input-content > div > select:invalid ~ svg.valid,
+.inline-input > .input-content > div > textarea:invalid ~ svg.valid  {
+    display: none;
+}
+
+.inline-input > .input-content > div > input:valid ~ svg.invalid, .inline-input > .input-content > div > select:valid ~ svg.invalid,
+.inline-input > .input-content > div > textarea:valid ~ svg.invalid  {
+    display: none;
+}
+
+.inline-input > .input-content > div > input:invalid ~ svg.invalid, .inline-input > .input-content > div > select:invalid ~ svg.invalid,
+.inline-input > .input-content > div > textarea:invalid ~ svg.invalid  {
+    display: block;
+}
+
+.inline-input > .input-content > div:has(input:disabled) > svg, .inline-input > .input-content > div:has(select:disabled) > svg,
+.inline-input > .input-content > div:has(textarea:disabled) > svg {
+    display: none;
+}
+
+.inline-input > .input-content > div:has(input:disabled) > svg.disabled, .inline-input > .input-content > div:has(select:disabled) > svg.disabled,
+.inline-input > .input-content > div:has(textarea:disabled) > svg.disabled {
+    display: block;
+}
+
+.inline-input > .input-content > div > input:enabled ~ svg.disabled, .inline-input > .input-content > div > select:enabled ~ svg.disabled,
+.inline-input > .input-content > div > textarea:enabled ~ svg.disabled {
+    display: none;
+}
+
+.inline-input > .input-content:has(.multiselect) > div:not(:has(.check.on)) > svg.valid {
+    opacity: 0;
+}
+
+.inline-input > .input-content:has(.multiselect) > div:has(.check.on) > svg.valid {
+    opacity: 1;
+}
+
+.inline-input > .input-content > div > input:disabled, 
+.inline-input > .input-content > div > select:disabled,
+.inline-input > .input-content > div > textarea:disabled {
+    border-bottom: 3px solid rgb(20, 20, 20) !important;
+    color: #6c6c6c;
+    background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.5) 75%, transparent 75%, transparent);
+    background-size: 20px 20px;
+    background-repeat: repeat;
+    cursor: not-allowed;
+}
+
+.inline-input > .input-content > div > textarea:disabled {
+    border-color: rgb(89, 89, 89) !important;
+}
+
+.file-input > .input-content > div {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.file-input > .input-content > div > .main-wrapper {
+    width: 60%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    border: 1px solid var(--text);
+}
+
+.file-input > .input-content > div > .main-wrapper > label.input-wrapper {
+    width: calc(100%);
+    height: 100%;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    justify-content: center;
+    transition: background-image 0.3s ease, color 0.3s ease;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: Arial, Helvetica, sans-serif;
+    user-select: none;
+}
+
+.file-input > .input-content > div > div.main-wrapper:has(input:disabled) > label {
+    background-image: linear-gradient(135deg, #f7f7f7 25%, #efefef 25%, #efefef 50%, #f7f7f7 50%, #f7f7f7 75%, #efefef 75%, #efefef);
+    background-size: 20px 20px;
+    background-repeat: repeat;
+    cursor: not-allowed;
+    color: #6c6c6c;
+}
+
+.file-input > .input-content > div > div.main-wrapper:has(input:disabled) > label > svg {
+    fill: #6c6c6c;
+}
+
+.file-input > .input-content > div > div.main-wrapper > label > svg {
+    transition: fill 0.3s ease;
+}
+
+.file-input:has(input:invalid) > .input-content > div > svg.valid {
+    display: none;
+}
+
+.file-input:has(input:invalid) > .input-content > div > svg.invalid {
+    display: block;
+}
+
+.file-input:has(input:valid) > .input-content > div > svg.valid {
+    display: block;
+}
+
+.file-input:has(input:valid) > .input-content > div > svg.invalid {
+    display: none;
+}
+
+.file-input:has(input:disabled) > .input-content > div > svg.disabled {
+    display: block;
+}
+
+.file-input:has(input:enabled) > .input-content > div > svg.disabled {
+    display: none;
+}
+
+.file-input > .input-content > div > .main-wrapper > label.input-wrapper > input {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-25%);
+    cursor: pointer;
+    opacity: 0;
+    z-index: -1;
+}
+
+.file-input > .input-content > div > .main-wrapper > label.input-wrapper:hover:not(:has(input:disabled))    {
+    background-color: #e8e8e8;
+}
+
+.form-submit-primary {
+    background-color: var(--background-dark);
+    color: white;
+    font-family: Raleway;
+    font-weight: 600;
+    border: 2px solid #454545;
+    padding-block: 10px;
+    padding-inline: 20px;
+    border-radius: 5px;
+    transition: 0.4s all ease;
+    max-width: 100%;
+}
+
+.form-submit-primary:hover {
+    background-color: #2a2a2a;
+    border: 2px solid #6b6b6b;
+}
+
+.form-submit-primary:active {
+    scale: 0.9;
+}
+
+.form-submit-danger {
+    background-color: var(--danger);
+    color: white;
+    font-family: Raleway;
+    font-weight: 600;
+    border: 2px solid #bf5d5d;
+    padding-block: 10px;
+    padding-inline: 20px;
+    border-radius: 5px;
+    transition: all 0.4s ease;
+    max-width: 100%;
+}
+
+.form-submit-danger:hover {
+    background-color: #ca3535;
+    border: 2px solid #8f1717;
+}
+
+.form-submit-danger:active {
+    scale: 0.9;
+}
+
+section.active .section-body {
+    opacity: 1;
+    grid-template-rows: 1fr;
+}
+
+section.active .section-header > svg {
+    transform: rotate(180deg);
+}
 
 @media screen and (max-width: 1100px) {
     .inline-input {

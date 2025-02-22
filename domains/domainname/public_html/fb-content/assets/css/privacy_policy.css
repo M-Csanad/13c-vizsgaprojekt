@@ -42,54 +42,54 @@ header {
     align-items: center;
     flex-direction: column;
     margin-top: 4rem;
-    
-    & > .updated {
-        color: rgb(146, 146, 146);
-        font-size: 20px;
-    }
+}
 
-    & > h1 {
-        color: white;
-        margin: 0;
-        font-size: 45px;
-    }
+header > .updated {
+    color: rgb(146, 146, 146);
+    font-size: 20px;
+}
+
+header > h1 {
+    color: white;
+    margin: 0;
+    font-size: 45px;
 }
 
 section {
     margin-block: 3rem;
+}
 
-    & > h2 {
-        letter-spacing: 1px;
-        color: white;
-    }
+section > h2 {
+    letter-spacing: 1px;
+    color: white;
+}
 
-    & ul, ol {
-        margin-left: 1rem;
-        margin-block: 2rem;
-    }
+section ul, section ol {
+    margin-left: 1rem;
+    margin-block: 2rem;
+}
 
-    & ul > li, ol > li {
-        margin-block: 1rem;
-    }
+section ul > li, section ol > li {
+    margin-block: 1rem;
+}
 
-    & a {
-        color: yellowgreen;
-        text-decoration: underline;
-        transition: color 0.3s ease;
-    }
+section a {
+    color: yellowgreen;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
 
-    & a:visited {
-        color: rgb(163, 196, 98)
-    }
+section a:visited {
+    color: rgb(163, 196, 98);
+}
 
-    & a:hover {
-        color: rgb(118, 158, 38);
-    }
+section a:hover {
+    color: rgb(118, 158, 38);
+}
 
-    & strong {
-        font-family: Arial, Helvetica, sans-serif;
-        color: white;
-    }
+section strong {
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
 }
 
 main {

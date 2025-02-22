@@ -23,105 +23,105 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    
-    & > .form-body-wrapper {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        position: relative;
-    }
-    
-    & header {
-        margin-top: 2rem;
-        font-family: Karla;
-        font-size: 30px;
-        margin-bottom: 1rem;
-    }
+}
 
-    & .form-description {
-        color: rgb(170, 170, 170);
-        margin-bottom: 2rem;
-    }
-    
-    & hr {
-        margin-top: 0.5rem;
-        margin-bottom: 1rem;
-    }
+.autofill-form > .form-body-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
 
-    & > .action-buttons {
-        display: flex;
-        flex-direction: column;
-    }
+.autofill-form header {
+    margin-top: 2rem;
+    font-family: Karla;
+    font-size: 30px;
+    margin-bottom: 1rem;
+}
 
-    & .form-cancel {
-        padding-block: 0.8rem;
-        margin-block: 0.2rem;
-        background-color: #1d1d1d;
-        border: 2px solid grey;
-        color: grey;
-        font-family: Karla;
-        font-size: 16px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-    }
+.autofill-form .form-description {
+    color: rgb(170, 170, 170);
+    margin-bottom: 2rem;
+}
 
-    & .form-cancel:hover {
-        color: lightgray;
-        border-color: lightgray;
-        background-color: #333333;
-    }
+.autofill-form hr {
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+}
 
-    & .form-save {
-        padding-block: 0.8rem;
-        margin-block: 0.2rem;
-        background-color: #1d1d1d;
-        border: 2px solid greenyellow;
-        color: greenyellow;
-        font-family: Karla;
-        font-size: 16px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.2s ease ;
-    }
+.autofill-form > .action-buttons {
+    display: flex;
+    flex-direction: column;
+}
 
-    & .form-save:hover {
-        background-color: rgba(172, 255, 47, 0.26);
-    }
+.autofill-form .form-cancel {
+    padding-block: 0.8rem;
+    margin-block: 0.2rem;
+    background-color: #1d1d1d;
+    border: 2px solid grey;
+    color: grey;
+    font-family: Karla;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
 
-    & .form-close {
-        position: absolute;
-        right: 0;
-        top: 0;
-        width: 35px;
-        height: 35px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 50%;
-        outline: none;
-        border: 2px solid transparent;
-        background-color: #f0f0f0;
-        padding: 7px;
-        cursor: pointer;
-        transition: background-color 0.2s ease, border-color 0.2s ease;
-    }
-    
-    & .form-close > svg {
-        width: 100%;
-        fill: black;
-        z-index: 999;
-        transition: fill 0.2s ease;
-    }
-    
-    & .form-close:hover {
-        background-color: transparent;
-        border-color: #f0f0f0;
-    }
-    
-    & .form-close:hover > svg {
-        fill: #f0f0f0;
-    }
+.autofill-form .form-cancel:hover {
+    color: lightgray;
+    border-color: lightgray;
+    background-color: #333333;
+}
+
+.autofill-form .form-save {
+    padding-block: 0.8rem;
+    margin-block: 0.2rem;
+    background-color: #1d1d1d;
+    border: 2px solid greenyellow;
+    color: greenyellow;
+    font-family: Karla;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.autofill-form .form-save:hover {
+    background-color: rgba(172, 255, 47, 0.26);
+}
+
+.autofill-form .form-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    outline: none;
+    border: 2px solid transparent;
+    background-color: #f0f0f0;
+    padding: 7px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.autofill-form .form-close > svg {
+    width: 100%;
+    fill: black;
+    z-index: 999;
+    transition: fill 0.2s ease;
+}
+
+.autofill-form .form-close:hover {
+    background-color: transparent;
+    border-color: #f0f0f0;
+}
+
+.autofill-form .form-close:hover > svg {
+    fill: #f0f0f0;
 }
 
 @media screen and (min-width: 991px) {
@@ -137,15 +137,14 @@
         box-shadow: 0 0 25px rgb(29, 29, 29);
         border: 2px solid rgb(97, 97, 97);
         border-radius: 5px;
+    }
 
-        & > .action-buttons 
-        {
-            flex-direction: row;
-            gap: 0.5rem;
-        }
+    .autofill-form > .action-buttons {
+        flex-direction: row;
+        gap: 0.5rem;
+    }
 
-        & > .action-buttons > button {
-            flex-grow: 1;
-        }
+    .autofill-form > .action-buttons > button {
+        flex-grow: 1;
     }
 }

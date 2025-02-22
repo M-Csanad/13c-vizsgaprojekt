@@ -51,19 +51,19 @@ main {
     display: flex;
     padding-block: 1rem;
     flex-direction: column;
+}
 
-    & > form {
-        flex-grow: 1;
-    }
+main > form {
+    flex-grow: 1;
+}
 
-    & > form > header {
-        font-size: 40px;
-    }
+main > form > header {
+    font-size: 40px;
+}
 
-    & > .order-details {
-        border-radius: 5px;
-        background-color: #292929;
-    }
+main > .order-details {
+    border-radius: 5px;
+    background-color: #292929;
 }
 
 header {
@@ -73,23 +73,23 @@ header {
 
 form > section {
     padding-block: 0.5rem;
+}
 
-    & header {
-        color: rgb(224, 224, 224);
-        font-size: 25px;
-        margin-bottom: 1rem;
-        position: relative;
-    }
+form > section header {
+    color: rgb(224, 224, 224);
+    font-size: 25px;
+    margin-bottom: 1rem;
+    position: relative;
+}
 
-    & header::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        width: 100%;
-        top: calc(100% + 2px);
-        height: 1px;
-        background: linear-gradient(to right,rgb(224, 224, 224), transparent);
-    }
+form > section header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: calc(100% + 2px);
+    height: 1px;
+    background: linear-gradient(to right,rgb(224, 224, 224), transparent);
 }
 
 form > section.hideable {
@@ -115,10 +115,10 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
 .input-group-inline {
     display: flex;
     gap: 0.5rem;
+}
 
-    & > .input-group {
-        width: 50%;
-    }
+.input-group-inline > .input-group {
+    width: 50%;
 }
 
 .input-group-hideable {
@@ -132,107 +132,105 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
 .input-group {
     margin-bottom: 0.5rem;
     position: relative;
-    
-    & > .input-body {
-        width: 100%;
-        height: 50px;
-        border: 1px solid rgb(55, 55, 55);
-        border-radius: 5px;
-        min-width: 0px;
-        outline: 2px solid transparent;
-        transition: outline 0.3s ease, border-color 0.3s ease;
-        background-color: var(--background-light) !important;
-    }
-
-    & > .input-body:has(input:focus-within) {
-        outline: 2px solid grey;
-    }
-
-    & input, select {
-        padding: 0.5rem;
-        padding-top: 1.6rem;
-        font-family: Roboto;
-        font-size: 16px;
-        line-height: 20px;
-        color: white !important;
-        background-color: transparent !important;
-        border: none;
-        outline: none;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        will-change: opacity;
-        transition: opacity 0.3s ease;
-        border-radius: 5px;
-    }
-
-    & select {
-        padding: 0.3rem;
-        padding-top: 1.4rem;
-        opacity: 1 !important;
-        /* color-scheme: dark; */
-    }
-
-    & option {
-        /* color-scheme: dark; */
-        color: black;
-    }
-
-    & label {
-        z-index: 10;
-        position: absolute;
-        pointer-events: none;
-        user-select: none;
-        top: 17px;
-        left: 0.5rem;
-        width: 100%;
-        height: 16px;
-        color: rgb(176, 176, 176);
-        font-size: 14px;
-        will-change: transform, font-size;
-        transition: transform 0.3s ease, color 0.3s ease;
-        transform-origin: left;
-        backface-visibility: hidden;
-    }
-
-    & label.focus, &:has(input:focus-within) label {
-        transform: translateY(-10px) translateZ(0);
-    }
-
-    & label.focus ~ select, label.focus ~ input, &:focus-within label ~ select, &:focus-within label ~ input{
-        opacity: 1;
-    }
-
-    & .message-wrapper {
-        pointer-events: none;
-        width: 100%;
-        height: 0px;
-        opacity: 0;
-        visibility: hidden;
-        overflow: hidden;
-    }
-    
-    & .error-message {
-        padding-top: .5rem;
-        padding-left: 1px;
-        width: 100%;
-        font-size: 12px;
-        color: rgb(255, 97, 97);
-    }
 }
 
-.input-group:has(input.invalid, select.invalid) {
-    & > .input-body {
-        border-color: rgb(255, 75, 75);
-    }
+.input-group > .input-body {
+    width: 100%;
+    height: 50px;
+    border: 1px solid rgb(55, 55, 55);
+    border-radius: 5px;
+    min-width: 0px;
+    outline: 2px solid transparent;
+    transition: outline 0.3s ease, border-color 0.3s ease;
+    background-color: var(--background-light) !important;
+}
 
-    & > .input-body:focus-within {
-        outline-color: rgba(255, 75, 75, 0.719);
-    }
+.input-group > .input-body:has(input:focus-within) {
+    outline: 2px solid grey;
+}
 
-    & label {
-        color: rgb(255, 97, 97);
-    }
+.input-group input, select {
+    padding: 0.5rem;
+    padding-top: 1.6rem;
+    font-family: Roboto;
+    font-size: 16px;
+    line-height: 20px;
+    color: white !important;
+    background-color: transparent !important;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    will-change: opacity;
+    transition: opacity 0.3s ease;
+    border-radius: 5px;
+}
+
+.input-group select {
+    padding: 0.3rem;
+    padding-top: 1.4rem;
+    opacity: 1 !important;
+    /* color-scheme: dark; */
+}
+
+.input-group option {
+    /* color-scheme: dark; */
+    color: black;
+}
+
+.input-group label {
+    z-index: 10;
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    top: 17px;
+    left: 0.5rem;
+    width: 100%;
+    height: 16px;
+    color: rgb(176, 176, 176);
+    font-size: 14px;
+    will-change: transform, font-size;
+    transition: transform 0.3s ease, color 0.3s ease;
+    transform-origin: left;
+    backface-visibility: hidden;
+}
+
+.input-group label.focus, .input-group:has(input:focus-within) label {
+    transform: translateY(-10px) translateZ(0);
+}
+
+.input-group label.focus ~ select, .input-group label.focus ~ input, .input-group:focus-within label ~ select, .input-group:focus-within label ~ input{
+    opacity: 1;
+}
+
+.input-group .message-wrapper {
+    pointer-events: none;
+    width: 100%;
+    height: 0px;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+}
+
+.input-group .error-message {
+    padding-top: .5rem;
+    padding-left: 1px;
+    width: 100%;
+    font-size: 12px;
+    color: rgb(255, 97, 97);
+}
+
+.input-group:has(input.invalid, select.invalid) .input-body {
+    border-color: rgb(255, 75, 75);
+}
+
+.input-group:has(input.invalid, select.invalid) .input-body:focus-within {
+    outline-color: rgba(255, 75, 75, 0.719);
+}
+
+.input-group:has(input.invalid, select.invalid) label {
+    color: rgb(255, 97, 97);
 }
 
 /* AUTOFILL CSS FIX */
@@ -267,33 +265,33 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     flex-direction: row;
     margin-block: 1rem;
     position: relative;
+}
 
-    & > .radio {
-        padding: 0.5rem;
-        cursor: pointer;
-        width: 50%;
-        text-align: center;
-        font-size: 18px;
-        color: #858585; 
-        transition: color 0.5s ease;
-        user-select: none;
-    }
+.purchase-type-radios > .radio {
+    padding: 0.5rem;
+    cursor: pointer;
+    width: 50%;
+    text-align: center;
+    font-size: 18px;
+    color: #858585; 
+    transition: color 0.5s ease;
+    user-select: none;
+}
 
-    & > .radio.checked {
-        color: white;
-        cursor: auto;
-    }
+.purchase-type-radios > .radio.checked {
+    color: white;
+    cursor: auto;
+}
 
-    & > .border {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        height: 2px;
-        width: 100%;
-        --left: 0%;
-        --right: calc(var(--left) + 50%);
-        background: linear-gradient(to right, #858585 var(--left), white var(--left), white var(--right), #858585 var(--right));
-    }
+.purchase-type-radios > .border {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    --left: 0%;
+    --right: calc(var(--left) + 50%);
+    background: linear-gradient(to right, #858585 var(--left), white var(--left), white var(--right), #858585 var(--right));
 }
 
 .order-details {
@@ -304,151 +302,152 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     height: fit-content;
     gap: 2rem;
     font-family: Roboto;
+}
 
-    & > header {
-        color: white;
-        font-size: 25px;
-        position: relative;
-    }
-    & > header::after {
-        content: '';
-        position: absolute;
-        left: 0;
-        width: 100%;
-        top: calc(100% + 2px);
-        height: 1px;
-        background: linear-gradient(to right,rgb(224, 224, 224), transparent);
-    }
+.order-details > header {
+    color: white;
+    font-size: 25px;
+    position: relative;
+}
 
-    & > .items {
-        width: 100%;
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-        overflow-y: auto;
-        max-height: 440px;
-    }
+.order-details > header::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    top: calc(100% + 2px);
+    height: 1px;
+    background: linear-gradient(to right,rgb(224, 224, 224), transparent);
+}
 
-    & .item {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        gap: 0.5rem;
-    }
+.order-details > .items {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: auto;
+    max-height: 440px;
+}
 
-    & .item > .item-image {
-        position: relative;
-        width: 80px;
-        height: 80px;
-    }
+.order-details .item {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
 
-    & .item > .item-image > picture {
-        display: block;
-        width: 100%;
-        height: 100%;
-    }
+.order-details .item > .item-image {
+    position: relative;
+    width: 80px;
+    height: 80px;
+}
 
-    & .item > .item-image > picture > img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-    }
+.order-details .item > .item-image > picture {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
 
-    & .item-info {
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-    }
+.order-details .item > .item-image > picture > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
 
-    & .item-name {
-        font-family: Playfair Display;
-        font-size: 22px;
-    }
+.order-details .item-info {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
 
-    & .item-price, .price {
-        display: flex;
-        flex-direction: row;
-        gap: 0.2rem;
-        height: 18px;
-    }
-    
-    & .quantity {
-        display: flex;
-        flex-direction: row;
-        align-items: flex-end;
-        flex-grow: 1;
-        color: #d5d5d5;
-    }
-    
-    & .value {
-        font-size: 18px;
-    }
+.order-details .item-name {
+    font-family: Playfair Display;
+    font-size: 22px;
+}
 
-    & .currency {
-        font-size: 14px;
-        line-height: 26px;
-        color: rgb(187, 187, 187);
-    }
+.order-details .item-price, .price {
+    display: flex;
+    flex-direction: row;
+    gap: 0.2rem;
+    height: 18px;
+}
 
-    & .price {
-        height: auto;
-        display: flex;
-        flex-direction: column;
-        color: #eeeeee;
-    }
+.order-details .quantity {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    flex-grow: 1;
+    color: #d5d5d5;
+}
 
-    & .inline-group {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 1rem;
-    }
+.order-details .value {
+    font-size: 18px;
+}
 
-    & .tax {
-        font-style: italic;
-        color: rgb(187, 187, 187);
-    }
+.order-details .currency {
+    font-size: 14px;
+    line-height: 26px;
+    color: rgb(187, 187, 187);
+}
 
-    & .total {
-        padding: 0;
-        padding-top: 1rem;
-    }
+.order-details .price {
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    color: #eeeeee;
+}
 
-    & .total .value, .total .label {
-        font-size: 20px;
-        color: white;
-        font-weight: bold;
-    }
+.order-details .inline-group {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+}
 
-    & .total .currency {
-        line-height: 30px;
-        font-size: 16px;
-    }
+.order-details .tax {
+    font-style: italic;
+    color: rgb(187, 187, 187);
+}
 
-    & .payment-button {
-        background-color: transparent;
-        color: rgb(171, 255, 87);
-        border: 2px solid rgb(171, 255, 87);
-        font-family: Roboto;
-        letter-spacing: 2px;
-        font-size: 18px;
-        text-transform: uppercase;
-        padding-block: 0.8rem;
-        border-radius: 5px;
-        outline: none;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-    }
+.order-details .total {
+    padding: 0;
+    padding-top: 1rem;
+}
 
-    & .payment-button:hover {
-        background-color: rgba(171, 255, 87, 0.105);
-    }
+.order-details .total .value, .total .label {
+    font-size: 20px;
+    color: white;
+    font-weight: bold;
+}
 
-    & .payment-button:active {
-        background-color: rgba(171, 255, 87, 0.037);
-    }
+.order-details .total .currency {
+    line-height: 30px;
+    font-size: 16px;
+}
+
+.order-details .payment-button {
+    background-color: transparent;
+    color: rgb(171, 255, 87);
+    border: 2px solid rgb(171, 255, 87);
+    font-family: Roboto;
+    letter-spacing: 2px;
+    font-size: 18px;
+    text-transform: uppercase;
+    padding-block: 0.8rem;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.order-details .payment-button:hover {
+    background-color: rgba(171, 255, 87, 0.105);
+}
+
+.order-details .payment-button:active {
+    background-color: rgba(171, 255, 87, 0.037);
 }
 
 .checkout-result-overlay {
@@ -466,94 +465,96 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     background-color: #1d1d1de0;
     backdrop-filter: blur(3px);
     visibility: hidden;
+}
 
-    & * {
-        will-change: transform;
-    }
+.checkout-result-overlay * {
+    will-change: transform;
+}
 
-    & .overlay-body {
-        padding: 1rem;
-    }
+.checkout-result-overlay-body {
+    padding: 1rem;
+}
 
-    & .overlay-body > div, .overlay-body > p {
-        opacity: 0;
-    }
+.checkout-result-overlay-body > div,
+.checkout-result-overlay-body > p {
+    opacity: 0;
+}
 
-    & .thank-you {
-        text-align: center;
-        font-size: 40px;
-        font-family: Playfair Display;
-        color: #86d72f;
-        margin-bottom: 2rem;
-    }
+.checkout-result-overlay .thank-you {
+    text-align: center;
+    font-size: 40px;
+    font-family: Playfair Display;
+    color: #86d72f;
+    margin-bottom: 2rem;
+}
 
-    & p {
-        color: #dbdbdb;
-        font-size: 16px;
-        text-align: center;
-    }
+.checkout-result-overlay p {
+    color: #dbdbdb;
+    font-size: 16px;
+    text-align: center;
+}
 
-    & .from {
-        margin-top: 1rem;
-        text-align: right;
-        font-style: italic;
-        font-family: 'Times New Roman', Times, serif;
-    }
-    & .flower {
-        position: absolute;
-        width: 300px;
-        height: 600px;
-        opacity: 1;
-    }
+.checkout-result-overlay .from {
+    margin-top: 1rem;
+    text-align: right;
+    font-style: italic;
+    font-family: 'Times New Roman', Times, serif;
+}
 
-    & #flower-1 {
-        top: -150px;
-        left: -400px;
-        rotate: 15deg;
-        z-index: 3;
-    }
+.checkout-result-overlay .flower {
+    position: absolute;
+    width: 300px;
+    height: 600px;
+    opacity: 1;
+}
 
-    & #flower-2 {
-        top: -150px;
-        right: -400px;
-        rotate: -90deg;
-        filter: blur(5px) brightness(0.8);
-        z-index: 2;
-    }
+.checkout-result-overlay #flower-1 {
+    top: -150px;
+    left: -400px;
+    rotate: 15deg;
+    z-index: 3;
+}
 
-    & #flower-3 {
-        bottom: -150px;
-        left: -300px;
-        rotate: 30deg;
-        filter: blur(8px) brightness(0.5);
-        z-index: 1;
-    }
+.checkout-result-overlay #flower-2 {
+    top: -150px;
+    right: -400px;
+    rotate: -90deg;
+    filter: blur(5px) brightness(0.8);
+    z-index: 2;
+}
 
-    & .back-to-home {
-        transform: translateY(calc(100% + 2rem));
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.8rem;
-        text-decoration: none;
-        color: white;
-        border: 2px solid white;
-        padding: 1rem;
-        border-radius: 50px;
-        position: absolute;
-        bottom: 2rem;
-        transition: background-color 0.2s ease;
-    }
+.checkout-result-overlay #flower-3 {
+    bottom: -150px;
+    left: -300px;
+    rotate: 30deg;
+    filter: blur(8px) brightness(0.5);
+    z-index: 1;
+}
 
-    & .back-to-home > svg {
-        width: 20px;
-        height: 20px;
-        margin-bottom: 2px;
-    }
+.checkout-result-overlay .back-to-home {
+    transform: translateY(calc(100% + 2rem));
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    color: white;
+    border: 2px solid white;
+    padding: 1rem;
+    border-radius: 50px;
+    position: absolute;
+    bottom: 2rem;
+    transition: background-color 0.2s ease;
+}
 
-    & .back-to-home:hover {
-        background-color: rgba(255, 255, 255, 0.164);
-    }
+.checkout-result-overlay .back-to-home > svg {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 2px;
+}
+
+.checkout-result-overlay .back-to-home:hover {
+    background-color: rgba(255, 255, 255, 0.164);
 }
 
 .checkout-error-overlay {
@@ -575,45 +576,45 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     color: rgb(255, 97, 97);
     font-size: 20px;
     text-align: center;
+}
 
-    & svg {
-        fill: rgb(255, 75, 75);
-        opacity: 0;
-        transform: scale(0);
-        will-change: opacity, transform;
-        width: 100px;
-        height: 100px;
-    }
+.checkout-error-overlay > svg {
+    fill: rgb(255, 75, 75);
+    opacity: 0;
+    transform: scale(0);
+    will-change: opacity, transform;
+    width: 100px;
+    height: 100px;
+}
 
-    & .overlay-close {
-        transform: translateY(82px);
-        display: flex;
-        height: 50px;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.8rem;
-        text-decoration: none;
-        color: rgb(255, 75, 75);
-        background-color: transparent;
-        cursor: pointer;
-        border: 2px solid rgb(255, 75, 75);
-        padding: 1rem;
-        border-radius: 50px;
-        position: absolute;
-        bottom: 2rem;
-        transition: background-color 0.2s ease, color 0.2s ease;
-        letter-spacing: 1px;
-    }
+.checkout-error-overlay .overlay-close {
+    transform: translateY(82px);
+    display: flex;
+    height: 50px;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.8rem;
+    text-decoration: none;
+    color: rgb(255, 75, 75);
+    background-color: transparent;
+    cursor: pointer;
+    border: 2px solid rgb(255, 75, 75);
+    padding: 1rem;
+    border-radius: 50px;
+    position: absolute;
+    bottom: 2rem;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    letter-spacing: 1px;
+}
 
-    & .overlay-close:hover {
-        background-color: rgba(255, 75, 75, 0.212);
-        color: white;
-    }
+.checkout-error-overlay .overlay-close:hover {
+    background-color: rgba(255, 75, 75, 0.212);
+    color: white;
+}
 
-    & .overlay-body {
-        opacity: 0;
-        will-change: opacity;
-    }
+.checkout-error-overlay .overlay-body {
+    opacity: 0;
+    will-change: opacity;
 }
 
 @media screen and (min-width: 768px) {

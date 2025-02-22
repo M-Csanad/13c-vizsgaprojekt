@@ -1,18 +1,19 @@
 .input-group-inline {
     display: flex;
     gap: 0.5rem;
+}
 
-    & > .input-group, .notice {
-        height: fit-content;
-        width: 50%;
-    }
+.input-group-inline > .input-group,
+.input-group-inline > .notice {
+    height: fit-content;
+    width: 50%;
+}
 
-    & > .notice {
-        height: 50px;
-        border-radius: 5px;
-        font-size: 14px;
-        margin-bottom: 0;
-    }
+.input-group-inline > .notice {
+    height: 50px;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-bottom: 0;
 }
 
 .input-group-hideable {
@@ -20,171 +21,176 @@
 }
 
 .input-group-check {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
     user-select: none;
 }
 
 .input-group {
     margin-bottom: 0.5rem;
     position: relative;
-    
-    & > .input-body {
-        width: 100%;
-        height: 50px;
-        border: 1px solid rgb(209, 213, 219);
-        border-radius: 5px;
-        min-width: 0px;
-        outline: 2px solid transparent;
-        transition: outline 0.3s ease, border-color 0.3s ease;
-        background-color: #fff !important;
-    }
-
-    & > .input-body:has(input:focus-within) {
-        outline: 2px solid rgb(17, 24, 39);
-    }
-
-    & input, select {
-        cursor: not-allowed;
-        padding: 0.5rem;
-        padding-top: 1.6rem;
-        font-family: Karla;
-        font-size: 16px;
-        line-height: 20px;
-        color: rgb(17, 24, 39) !important;
-        background-color: transparent !important;
-        border: none;
-        outline: none;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        will-change: opacity;
-        transition: opacity 0.3s ease;
-        border-radius: 5px;
-    }
-
-    & select {
-        padding: 0.3rem;
-        padding-top: 1.4rem;
-    }
-
-    & option {
-        color: black;
-    }
-
-    & input:enabled {
-        cursor: text;
-    }
-
-    & label {
-        z-index: 10;
-        position: absolute;
-        pointer-events: none;
-        user-select: none;
-        top: 17px;
-        left: 0.5rem;
-        width: 100%;
-        height: 16px;
-        color: rgb(107, 114, 128);
-        font-size: 14px;
-        will-change: unset;
-        transition: transform 0.3s ease, color 0.3s ease;
-        transform-origin: left;
-        backface-visibility: hidden;
-    }
-
-    & label.focus, &:has(input:enabled):focus-within label, &:has(input:-webkit-autofill) label {
-        transform: translateY(-10px) translateZ(0);
-    }
-
-    & label.focus ~ select, label.focus ~ input, 
-    &:focus-within label ~ select, &:focus-within label ~ input, 
-    &:has(input:-webkit-autofill) label ~ input, &:has(input:-webkit-autofill) label ~ select {
-        opacity: 1;
-    }
-
-    & .message-wrapper {
-        pointer-events: none;
-        width: 100%;
-        height: 0px;
-        opacity: 0;
-        visibility: hidden;
-        overflow: hidden;
-    }
-    
-    & .error-message {
-        padding-top: .2rem;
-        padding-left: 1px;
-        width: 100%;
-        font-size: 12px;
-        color: rgb(239, 68, 68);
-    }
-
-    & .edit-toggler {
-        min-width: 35px;
-        height: 100%;
-        position: relative;
-    }
-
-    & .edit-toggler > svg {
-        width: 35px;
-        height: 100%;
-        padding: 10px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        transform-origin: 0% 0%;
-        cursor: pointer;
-        transition: color 0.2s ease, transform 0.3s ease, opacity 0.2s ease;
-        color: rgb(107, 107, 107);
-    }
-
-    & .edit-toggler > svg:hover {
-        color: rgb(17, 24, 39);
-    }
-
-    & > .input-body:has(input:disabled) > .edit-toggler > .edit {
-        z-index: 10;
-        transform: scale(1) translate(-50%, -50%);
-        opacity: 1;
-    }
-
-    & > .input-body:has(input:disabled) > .edit-toggler > .save {
-        z-index: -1;
-        transform: scale(0) translate(-50%, -50%);
-        opacity: 0;
-    }
-
-    & > .input-body:has(input:enabled) > .edit-toggler > .edit {
-        z-index: -1;
-        transform: scale(0) translate(-50%, -50%);
-        opacity: 0;
-    }
-
-    & > .input-body:has(input:enabled) > .edit-toggler > .save {
-        z-index: 10;
-        transform: scale(1) translate(-50%, -50%);
-        opacity: 1;
-    }
 }
 
-.input-group:has(input.invalid, select.invalid) {
-    & > .input-body {
-        border-color: rgb(239, 68, 68);
-    }
-
-    & > .input-body:focus-within {
-        outline-color: rgba(239, 68, 68, 0.719);
-    }
-
-    & label {
-        color: rgb(239, 68, 68);
-    }
+.input-group > .input-body {
+    width: 100%;
+    height: 50px;
+    border: 1px solid rgb(209, 213, 219);
+    border-radius: 5px;
+    min-width: 0px;
+    outline: 2px solid transparent;
+    transition: outline 0.3s ease, border-color 0.3s ease;
+    background-color: #fff !important;
 }
 
-.input-group:has(.edit-toggler) {
-    & > .input-body {
-        display: flex;
-    }
+.input-group > .input-body:has(input:focus-within) {
+    outline: 2px solid rgb(17, 24, 39);
+}
+
+.input-group input,
+.input-group select {
+    cursor: not-allowed;
+    padding: 0.5rem;
+    padding-top: 1.6rem;
+    font-family: Karla;
+    font-size: 16px;
+    line-height: 20px;
+    color: rgb(17, 24, 39) !important;
+    background-color: transparent !important;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    will-change: opacity;
+    transition: opacity 0.3s ease;
+    border-radius: 5px;
+}
+
+.input-group select {
+    padding: 0.3rem;
+    padding-top: 1.4rem;
+}
+
+.input-group option {
+    color: black;
+}
+
+.input-group input:enabled {
+    cursor: text;
+}
+
+.input-group label {
+    z-index: 10;
+    position: absolute;
+    pointer-events: none;
+    user-select: none;
+    top: 17px;
+    left: 0.5rem;
+    width: 100%;
+    height: 16px;
+    color: rgb(107, 114, 128);
+    font-size: 14px;
+    will-change: unset;
+    transition: transform 0.3s ease, color 0.3s ease;
+    transform-origin: left;
+    backface-visibility: hidden;
+}
+
+.input-group label.focus,
+.input-group:has(input:enabled):focus-within label,
+.input-group:has(input:-webkit-autofill) label {
+    transform: translateY(-10px) translateZ(0);
+}
+
+.input-group label.focus ~ select,
+.input-group label.focus ~ input,
+.input-group:focus-within label ~ select,
+.input-group:focus-within label ~ input,
+.input-group:has(input:-webkit-autofill) label ~ input,
+.input-group:has(input:-webkit-autofill) label ~ select {
+    opacity: 1;
+}
+
+.input-group .message-wrapper {
+    pointer-events: none;
+    width: 100%;
+    height: 0px;
+    opacity: 0;
+    visibility: hidden;
+    overflow: hidden;
+}
+
+.input-group .error-message {
+    padding-top: .2rem;
+    padding-left: 1px;
+    width: 100%;
+    font-size: 12px;
+    color: rgb(239, 68, 68);
+}
+
+.input-group .edit-toggler {
+    min-width: 35px;
+    height: 100%;
+    position: relative;
+}
+
+.input-group .edit-toggler > svg {
+    width: 35px;
+    height: 100%;
+    padding: 10px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: 0% 0%;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.3s ease, opacity 0.2s ease;
+    color: rgb(107, 107, 107);
+}
+
+.input-group .edit-toggler > svg:hover {
+    color: rgb(17, 24, 39);
+}
+
+.input-group > .input-body:has(input:disabled) > .edit-toggler > .edit {
+    z-index: 10;
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+}
+
+.input-group > .input-body:has(input:disabled) > .edit-toggler > .save {
+    z-index: -1;
+    transform: scale(0) translate(-50%, -50%);
+    opacity: 0;
+}
+
+.input-group > .input-body:has(input:enabled) > .edit-toggler > .edit {
+    z-index: -1;
+    transform: scale(0) translate(-50%, -50%);
+    opacity: 0;
+}
+
+.input-group > .input-body:has(input:enabled) > .edit-toggler > .save {
+    z-index: 10;
+    transform: scale(1) translate(-50%, -50%);
+    opacity: 1;
+}
+
+.input-group:has(input.invalid, select.invalid) > .input-body {
+    border-color: rgb(239, 68, 68);
+}
+
+.input-group:has(input.invalid, select.invalid) > .input-body:focus-within {
+    outline-color: rgba(239, 68, 68, 0.719);
+}
+
+.input-group:has(input.invalid, select.invalid) label {
+    color: rgb(239, 68, 68);
+}
+
+.input-group:has(.edit-toggler) > .input-body {
+    display: flex;
 }
 
 .input-group.input-group-half {
@@ -222,57 +228,57 @@
 
 .password-input {
     margin-bottom: 1rem;
+}
 
-    & > .password-state {
-        display: grid;
-        gap: 0.5rem;
-        grid-template-columns: auto auto;
-        grid-template-rows: repeat(3, auto);
-        grid-auto-flow: column;
-        padding-left: 0.5rem;
-    }
+.password-input > .password-state {
+    display: grid;
+    gap: 0.5rem;
+    grid-template-columns: auto auto;
+    grid-template-rows: repeat(3, auto);
+    grid-auto-flow: column;
+    padding-left: 0.5rem;
+}
 
-    & > .password-state > .matcher {
-        display: flex;
-        width: 100%;
-        flex-direction: row;
-        align-items: center;
-        gap: 0.3rem;
-        color: #727272;
-        font-size: 15px;
-        transition: color 0.3s ease;
-    }
+.password-input > .password-state > .matcher {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    gap: 0.3rem;
+    color: #727272;
+    font-size: 15px;
+    transition: color 0.3s ease;
+}
 
-    & > .password-state > .matcher > .state {
-        height: 15px;
-        width: 15px;
-        flex-shrink: 0;
-        color: #5a5a5a;
-        transition: color 0.3s ease;
-    }
+.password-input > .password-state > .matcher > .state {
+    height: 15px;
+    width: 15px;
+    flex-shrink: 0;
+    color: #5a5a5a;
+    transition: color 0.3s ease;
+}
 
-    & > .password-state > .matcher > .state > .valid {
-        display: none;
-    }
+.password-input > .password-state > .matcher > .state > .valid {
+    display: none;
+}
 
-    & > .password-state > .matcher > .state > .invalid {
-        display: block;
-    }
+.password-input > .password-state > .matcher > .state > .invalid {
+    display: block;
+}
 
-    /* Helyes matcher stílus */
-    & > .password-state > .matcher.valid {
-        color: #8dc949;
-    }
+/* Helyes matcher stílus */
+.password-input > .password-state > .matcher.valid {
+    color: #8dc949;
+}
 
-    & > .password-state > .matcher.valid > .state {
-        color: #8dc949;
-    }
+.password-input > .password-state > .matcher.valid > .state {
+    color: #8dc949;
+}
 
-    & > .password-state > .matcher.valid > .state > .valid {
-        display: block;
-    }
+.password-input > .password-state > .matcher.valid > .state > .valid {
+    display: block;
+}
 
-    & > .password-state > .matcher.valid > .state > .invalid {
-        display: none;
-    }
+.password-input > .password-state > .matcher.valid > .state > .invalid {
+    display: none;
 }
