@@ -1,165 +1,240 @@
-function shakeElement(element) {
-  const ease = "power1.inOut";
+import APIFetch from "/fb-content/assets/js/apifetch.js";
 
-  gsap.set(element, {opacity: 0})
-  gsap.to(element, {
-    opacity: 1,
-    duration: 0.3,
-    ease: ease,
-  })
-  gsap.fromTo(
-    element,
-    { x: 0 },
-    {
-      x: `+=5`,
-      duration: 0.1,
-      repeat: 7,
-      yoyo: true,
-      ease: ease,
+class LoginForm {
+    submitted = false;
+    currentImageIndex = 0;
+    isErrorMessageVisible = false;
+
+    constructor(dom) {
+        if (!dom) throw new Error("Nincs megadva űrlap.");
+        if (dom.nodeName != "FORM") throw new Error("Nem űrlap típusú a megadott elem.");
+        if (!gsap) throw new Error("GSAP nem található");
+        
+        this.initDOM(dom);
+        this.bindEvents();
+        this.startImageCycle();
     }
-  );
-}
 
-function removeElementContent(element) {
-  return new Promise((resolve) => {
-    const ease = "power1.inOut";
-  
-    gsap.to(element, {
-      opacity: 0,
-      scale: 0,
-      duration: 0.3,
-      ease: ease,
-      onComplete: () => {
-        element.innerHTML = "";
-        resolve();
-      }
-    })
-  })
-}
-
-const form = document.getElementById("login");
-const formMessage = form.querySelector(".form-message");
-let submitted = false;
-
-form.querySelector(".action-button").addEventListener('click', async function (event) {
-  if (submitted) return;
-  event.preventDefault();
-
-  if (!isFormValid()) return;
-  
-  grecaptcha.enterprise.ready(async function () {
-    grecaptcha.enterprise.execute('6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj', { action: 'login' }).then(async function (token) {
-      document.getElementById('g-recaptcha-response').value = token;
-      submitted = true;
-      
-      const data = new FormData(form);
-      data.append("login", "1");
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest'
-        },
-        body: data
-      })
-
-      const result = await response.json();
-      if (response.ok) {
-        if (formMessage.innerHTML) {
-          await removeElementContent(formMessage);
+    initDOM(dom) {
+        this.formDom = dom;
+        this.formMessage = this.formDom.querySelector(".form-message");
+        this.backgroundImages = document.querySelectorAll('.bg');
+        
+        this.form = {
+            "username": {
+                "dom": this.formDom.querySelector("#username"),
+                "errorMessage": "Kérjük ne hagyja üresen a felhasználónév mezőt",
+                get value() { return this.dom?.value }
+            },
+            "passwd": {
+                "dom": this.formDom.querySelector("#passwd"),
+                "errorMessage": "Kérjük ne hagyja üresen a jelszó mezőt",
+                get value() { return this.dom?.value }
+            }
         }
 
-        const outParams = {
-          scaleY: 1, 
-          duration: 1,
-          stagger: {
-              each: 0.05,
-              from: "start",
-              grid: "auto",
-              axis: "x"
-          },
-          ease: "power4.inOut"
+        this.validationRules = {
+            username: value => value && value.length > 0,
+            passwd: value => value && value.length > 0
         }
 
-        animatePageTransition(outParams).then(() => {
-          window.location.href = "./";
+        this.submitter = this.formDom.querySelector(".action-button");
+    }
+
+    bindEvents() {
+        this.submitter.addEventListener("click", this.send.bind(this));
+        
+        this.formDom.querySelectorAll(".input-group").forEach(e => this.handleInputGroupFocus(e));
+
+        for (let field in this.form) {
+            const element = this.form[field];
+            element.dom.addEventListener("change", () => {
+                const error = this.validateField(field);
+                this.toggleFieldState(field, error);
+            });
+        }
+    }
+
+    handleInputGroupFocus(e) {
+        const inputGroup = e;
+        const label = inputGroup.querySelector('label');
+        const input = inputGroup.querySelector('input');
+
+        input.addEventListener("focus", () => {
+            label.classList.add('focus');
         });
 
-      }
-      else {
-        submitted = false;
-        if (formMessage) formMessage.innerHTML = result.message;
-        shakeElement(formMessage);
+        input.addEventListener("focusout", () => {
+            if (input.value === "") label.classList.remove('focus');
+        });
+    }
+
+    validateField(name) {
+        const field = this.form[name];
+        if (!field) return false;
+
+        const validator = this.validationRules[name];
+        const value = field.value;
+        const error = field.errorMessage;
+
+        if (!validator) return null;
+        if (!value) return error;
+
+        return validator(value) ? null : error;
+    }
+
+    validateForm() {
+        let valid = true;
+        for (let field in this.form) {
+            const error = this.validateField(field);
+            this.toggleFieldState(field, error);
+            if (error) valid = false;
+        }
+        return valid;
+    }
+
+    toggleFieldState(name, error) {
+        const field = this.form[name];
+        if (!field) return;
+
+        const errorWrapper = field.dom.closest('.input-group').querySelector('.message-wrapper');
+        const messageContainer = errorWrapper.querySelector(".error-message");
+
+        field.dom.classList.toggle('valid', !error);
+        field.dom.classList.toggle('invalid', !!error);
         
-        const passwdInput = form.querySelector("input[type=password");
-        if (passwdInput) passwdInput.value = "";
-      }
-    });
-  });
-});
-
-const inputs = document.querySelectorAll('input[type=text], input[type=password]');
-inputs.forEach(e => e.addEventListener('input', () => validateInput(e , e.id, e.value || null)));
-
-const validationRegex = {
-  "username": /^[\w-]{3,20}$/,
-  "passwd": {
-    "length": /^.{8,64}$/,
-    "lowercase": /[a-z]/,
-    "uppercase": /[A-Z]/,
-    "number": /[0-9]/,
-    "specialCharacter": /[!@#$%^&*()_\-+=\[\]{}|\\;:'",.<>\/?~`]/
-  }
-};
-function validateInput(element, id, value) {
-  const regex = validationRegex[id] || null;
-  if (!regex || !value) {
-    element.setCustomValidity('Kérjük tartsa magát a kívánt formátumhoz.');
-    return false;
-  }
-  
-  if (!(regex instanceof RegExp)) {
-    for (const key in regex) {
-      console.log(key, regex[key], regex[key].test(value));
-      if (!regex[key].test(value)) {
-        element.setCustomValidity('Kérjük tartsa magát a kívánt formátumhoz.');
-        return false;
-      }
+        if (error) {
+            messageContainer.innerHTML = error;
+            gsap.set(errorWrapper, {visibility: "visible"});
+            gsap.to(errorWrapper, {
+                height: 21,
+                opacity: 1,
+                ease: "power2.inOut",
+                duration: 0.3
+            });
+        } else {
+            gsap.to(errorWrapper, {
+                height: 0,
+                opacity: 0,
+                ease: "power2.inOut",
+                duration: 0.3,
+                onComplete: () => {
+                    gsap.set(errorWrapper, {visibility: "hidden"});
+                }
+            });
+        }
     }
-  }
-  else {
-    if (!regex.test(value)) {
-      element.setCustomValidity('Kérjük tartsa magát a kívánt formátumhoz.');
-      return false;
+
+    shakeElement(element) {
+        const ease = "power1.inOut";
+        
+        gsap.set(element, {opacity: 0});
+        gsap.to(element, {
+            opacity: 1,
+            duration: 0.3,
+            ease: ease,
+        });
+        gsap.fromTo(
+            element,
+            { x: 0 },
+            {
+                x: "+=5",
+                duration: 0.1,
+                repeat: 7,
+                yoyo: true,
+                ease: ease,
+            }
+        );
     }
-  }
 
-  element.setCustomValidity('');
-  return true;
+    async removeElementContent(element) {
+        return new Promise((resolve) => {
+            gsap.to(element, {
+                opacity: 0,
+                scale: 0,
+                duration: 0.3,
+                ease: "power1.inOut",
+                onComplete: () => {
+                    element.innerHTML = "";
+                    resolve();
+                }
+            });
+        });
+    }
+
+    async executeRecaptcha() {
+        return new Promise((resolve) => {
+            grecaptcha.enterprise.ready(() => {
+                grecaptcha.enterprise.execute('6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj', { action: 'login' })
+                    .then(token => {
+                        document.getElementById('g-recaptcha-response').value = token;
+                        resolve();
+                    });
+            });
+        });
+    }
+
+    cycleImages() {
+        if (document.body.clientWidth <= 900) return;
+        this.backgroundImages[this.currentImageIndex].classList.remove('visible');
+        this.currentImageIndex = (this.currentImageIndex + 1) % this.backgroundImages.length;
+        this.backgroundImages[this.currentImageIndex].classList.add('visible');
+    }
+
+    startImageCycle() {
+        setInterval(() => this.cycleImages(), 5000);
+    }
+
+    async send(event) {
+        if (this.submitted) return;
+        event.preventDefault();
+    
+        if (!this.validateForm()) return;
+        
+        try {
+            await this.executeRecaptcha();
+            this.submitted = true;
+            
+            const data = new FormData(this.formDom);
+            data.append("login", "1");
+
+            const response = await APIFetch("/api/auth/login", "POST", data, false);
+    
+            const result = await response.json();
+            if (response.ok) {
+                if (this.formMessage.innerHTML) {
+                    await this.removeElementContent(this.formMessage);
+                }
+    
+                const outParams = {
+                    scaleY: 1, 
+                    duration: 1,
+                    stagger: {
+                        each: 0.05,
+                        from: "start",
+                        grid: "auto",
+                        axis: "x"
+                    },
+                    ease: "power4.inOut"
+                };
+    
+                await animatePageTransition(outParams);
+                window.location.href = "./";
+            } else {
+                this.submitted = false;
+                if (this.formMessage) this.formMessage.innerHTML = result.message;
+                this.shakeElement(this.formMessage);
+                
+                const passwdInput = this.form.passwd.dom;
+                if (passwdInput) passwdInput.value = "";
+            }
+        } catch (error) {
+            console.error('Login error:', error);
+            this.submitted = false;
+        }
+    }
 }
 
-function isFormValid() {
-  return Array.from(inputs).map(e => validateInput(e , e.id, e.value || null)).filter(e => !e).length == 0;
-}
-
-window.addEventListener("DOMContentLoaded", ()=>{
-  document.querySelectorAll(".empty").forEach((input)=>{
-    if (input.value) input.classList.remove("empty")
-    else input.classList.add("empty")
-    input.addEventListener("input", ()=>{
-      if (input.value) input.classList.remove("empty")
-      else input.classList.add("empty")
-    });
-  });
+window.addEventListener("DOMContentLoaded", () => {
+    const loginForm = new LoginForm(document.getElementById("login"));
 });
-
-const images = document.querySelectorAll('.bg');
-let currentIndex = 0;
-
-function cycleImages() {
-  if (document.body.clientWidth <= 900) return;
-  images[currentIndex].classList.remove('visible');
-  currentIndex = (currentIndex + 1) % images.length;
-  images[currentIndex].classList.add('visible');
-}
-
-setInterval(cycleImages, 5000);

@@ -23,6 +23,7 @@ if ($result->isSuccess()) {
     <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/register.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/inputs-light.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
@@ -41,53 +42,86 @@ if ($result->isSuccess()) {
             <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg2.jpg');"></div>
             <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg3.jpg');"></div>
         </div>
-        <form action="" method="post" id="register">
+        <form action="" method="post" id="register" class="light">
             <div class="form-header">
                 <h1>Üdvözöljük!</h1>
                 <div>Töltse ki az űrlapot a regisztráláshoz.</div>
             </div>
             <div class="form-body">
                 <div class="input-wrapper">
-                    <div class="input-group">
-                        <label for="email">E-mail</label>
-                        <input type="email" name="email" id="email" required placeholder="" autocomplete="email" value="" class="empty">
+                    <div class="input-group" tabindex="-1">
+                        <div class="input-body" tabindex="-1">
+                            <label for="email">E-mail</label>
+                            <input type="email" name="email" id="email" required placeholder="" autocomplete="email" tabindex="1">
+                        </div>
+                        <div class="message-wrapper">
+                            <div class="error-message"></div>
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <label for="username">Felhasználónév</label>
-                        <input type="text" name="username" id="username" required placeholder="" autocomplete="username" value="" class="empty">
+                    
+                    <div class="input-group" tabindex="-1">
+                        <div class="input-body" tabindex="-1">
+                            <label for="username">Felhasználónév</label>
+                            <input type="text" name="username" id="username" required placeholder="" autocomplete="username" tabindex="1">
+                        </div>
+                        <div class="message-wrapper">
+                            <div class="error-message"></div>
+                        </div>
                     </div>
+
                     <div class="input-group-inline">
-                        <div class="input-group">
-                            <label for="lastname">Vezetéknév</label>
-                            <input type="text" name="lastname" id="lastname" required placeholder="" class="empty">
+                        <div class="input-group" tabindex="-1">
+                            <div class="input-body" tabindex="-1">
+                                <label for="lastname">Vezetéknév</label>
+                                <input type="text" name="lastname" id="lastname" required placeholder="" tabindex="1">
+                            </div>
+                            <div class="message-wrapper">
+                                <div class="error-message"></div>
+                            </div>
                         </div>
-                        <div class="input-group">
-                            <label for="firstname">Keresztnév</label>
-                            <input type="text" name="firstname" id="firstname" required placeholder="" class="empty">
+                        <div class="input-group" tabindex="-1">
+                            <div class="input-body" tabindex="-1">
+                                <label for="firstname">Keresztnév</label>
+                                <input type="text" name="firstname" id="firstname" required placeholder="" tabindex="1">
+                            </div>
+                            <div class="message-wrapper">
+                                <div class="error-message"></div>
+                            </div>
                         </div>
                     </div>
+
                     <div class="form-divider"></div>
+                    
                     <div class="input-group-inline">
-                        <div class="input-group">
-                            <label for="password">Jelszó</label>
-                            <input type="password" name="password" id="password" required autocomplete="new-password" placeholder="" class="empty">
+                        <div class="input-group" tabindex="-1">
+                            <div class="input-body" tabindex="-1">
+                                <label for="password">Jelszó</label>
+                                <input type="password" name="password" id="password" required autocomplete="new-password" placeholder="" tabindex="1">
+                            </div>
+                            <div class="message-wrapper">
+                                <div class="error-message"></div>
+                            </div>
                         </div>
-                        <div class="input-group">
-                            <label for="passwordConfirm">Jelszó megerősítése</label>
-                            <input type="password" name="passwordConfirm" id="passwordConfirm" required autocomplete="new-password" placeholder="" class="empty">
+                        <div class="input-group" tabindex="-1">
+                            <div class="input-body" tabindex="-1">
+                                <label for="passwordConfirm">Jelszó megerősítése</label>
+                                <input type="password" name="passwordConfirm" id="passwordConfirm" required autocomplete="new-password" placeholder="" tabindex="1">
+                            </div>
+                            <div class="message-wrapper">
+                                <div class="error-message"></div>
+                            </div>
                         </div>
                     </div>
-                    <div class="input-group-inline">
-                        <div>
-                            <input type="checkbox" name="agree" id="agree" required class="empty">
-                            <label for="agree">Regisztrációmmal elfogadom az <a href="" class="form-link">ÁSZF-et.</a></label>
-                        </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="agree" id="agree" required>
+                        <label for="agree">Regisztrációmmal elfogadom az <a href="" class="form-link">ÁSZF-et.</a></label>
                     </div>
-                    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response" class="empty">
+                    <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
                 </div>
                 <div class="form-bottom">
                     <div class='form-message'></div>
-                    <input type="submit" name="register" class="action-button g-recaptcha" value="Profil létrehozása" class="empty">
+                    <input type="submit" name="register" class="action-button g-recaptcha" value="Profil létrehozása">
                     <div class="login">Regisztrált már? <a href="./login" class="form-link">Jelentkezzen be!</a></div>
                 </div>
             </div>

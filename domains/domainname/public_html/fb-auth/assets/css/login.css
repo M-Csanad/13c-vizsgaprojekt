@@ -121,74 +121,24 @@ form {
 
     .input-wrapper{ 
         width: 80%;
+        margin: 2rem 0;
     }
 
-    .input-group {
-        flex-grow: 1;
-        margin-block: 25px;
-        width: 100%;
-        position: relative;
-        transition: all 0.3s ease;
-        border-bottom: 3px solid var(--text-light);
-    }
-
-    .input-group:has(input:not(.empty)):has(input:valid) {
-        border-bottom: 3px solid var(--valid) !important;
-    }
-    .input-group:has(input:not(.empty)):has(input:invalid) {
-        border-bottom: 3px solid var(--invalid) !important;
-    }
-    
-    .input-group input {
-        height: 35px;
-        width: 100%;
-        border: none;
-        background-color: transparent;
-        position: relative;
-        outline: none;
-        font-size: 16px;
-        z-index: 10;
-    }
-    
-    .input-group label {
-        transition: all 0.3s ease;
-        position: absolute;
-        bottom: 8px;
-        cursor: text;
-        padding-left: 8px;
-        color: var(--text-light);
-        user-select: none;
-        z-index: 2;
-        font-size: 16px !important;
-    }
-
-    .input-group:has(input:focus) label, 
-    .input-group:has(input:valid) label, 
-    .input-group:has(input:-webkit-autofill) label, 
-    .input-group:has(input:not(.empty)) label 
-    {
-        transform: translateY(-25px);
-        font-size: 14px;
-        color: rgb(118, 118, 118);
-    }
-
-    .input-group-inline {
-        margin-block: 5px;
+    .checkbox-group {
         display: flex;
-        flex-direction: row;
-        flex: 1;
-        padding-left: 8px;
-    }
-
-    .input-group-inline > div {
-        display: flex;
-        flex-direction: row;
         align-items: center;
+        margin: 1rem 0;
+        width: 100%;
     }
 
-    .input-group-inline > div > label {
-        flex-grow: 1;
-        padding-left: 5px;
+    .checkbox-group input[type="checkbox"] {
+        cursor: pointer;
+    }
+
+    .checkbox-group label {
+        margin-left: 0.5rem;
+        color: rgb(20, 20, 20);
+        cursor: pointer;
         font-size: 14px;
     }
 
@@ -234,11 +184,7 @@ form {
         width: fit-content;
         margin-left: auto;
         margin-right: 5px;
-    }
-
-    input[type="text"], input[type='password'] {
-        padding: 8px;
-        border-radius: 4px;
+        font-size: 0.875rem;
     }
 
     input[type="checkbox"] {

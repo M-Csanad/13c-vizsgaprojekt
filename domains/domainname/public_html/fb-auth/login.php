@@ -23,6 +23,7 @@ if ($result->isSuccess()) {
 
     <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/inputs-light.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/login.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
@@ -33,7 +34,7 @@ if ($result->isSuccess()) {
 
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="/fb-content/assets/js/page_transition.js"></script>
-    <script defer src="./fb-auth/assets/js/login.js"></script>
+    <script type="module" defer src="./fb-auth/assets/js/login.js"></script>
 </head>
 
 <body>
@@ -46,29 +47,34 @@ if ($result->isSuccess()) {
             <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg2.jpg');"></div>
             <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg3.jpg');"></div>
         </div>
-        <form method="post" id="login">
+        <form method="post" id="login" class="light">
             <div class="form-header">
                 <h1>Üdvözöljük!</h1>
                 <div>Adja meg az e-mail címét és jelszavát.</div>
             </div>
             <div class="form-body">
                 <div class="input-wrapper">
-                    <div class="input-group">
-                        <label for="username">Felhasználónév</label>
-                        <input type="text" class="empty" name="username" id="username" autocomplete="username" required
-                            placeholder=""
-                            value="">
-                    </div>
-                    <div class="input-group">
-                        <label for="passwd">Jelszó</label>
-                        <input type="password" class="empty" name="passwd" id="passwd" autocomplete="current-password"
-                            required placeholder="">
-                    </div>
-                    <div class="input-group-inline">
-                        <div>
-                            <input type="checkbox" name="rememberMe" id="rememberMe" placeholder="">
-                            <label for="rememberMe">Maradjak bejelentkezve</label>
+                    <div class="input-group" tabindex="-1">
+                        <div class="input-body" tabindex="-1">
+                            <label for="username">Felhasználónév</label>
+                            <input type="text" name="username" id="username" autocomplete="username" required placeholder="" tabindex="1">
                         </div>
+                        <div class="message-wrapper">
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                    <div class="input-group" tabindex="-1">
+                        <div class="input-body" tabindex="-1">
+                            <label for="passwd">Jelszó</label>
+                            <input type="password" name="passwd" id="passwd" autocomplete="current-password" required placeholder="" tabindex="1">
+                        </div>
+                        <div class="message-wrapper">
+                            <div class="error-message"></div>
+                        </div>
+                    </div>
+                    <div class="checkbox-group">
+                        <input type="checkbox" name="rememberMe" id="rememberMe">
+                        <label for="rememberMe">Maradjak bejelentkezve</label>
                         <a href="" class="form-link" id="forgotPassword">Elfelejtette a jelszavát?</a>
                     </div>
                     <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
