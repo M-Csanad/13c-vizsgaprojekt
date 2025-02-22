@@ -100,7 +100,10 @@ class Search {
     }
 
     // Indítjuk a fetch()-et a search.php felé (POST metódussal)
-    APIFetch("/api/search", "POST", { query: searchTerm }, false)
+    const data = new FormData();
+    data.append("query", searchTerm);
+    
+    APIFetch("/api/search", "POST", data, false)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Hálózati hiba: " + response.status);
