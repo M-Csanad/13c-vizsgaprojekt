@@ -79,13 +79,13 @@ class Mail {
         }
     }
 
-    public static function getMailBody($type='order', $name, $orderDetails) {
+    public static function getMailBody($type='order', $name, $data) {
         switch ($type) {
             case 'order':
-                $orderNumber = $orderDetails['orderNumber'];
-                $orderDate = $orderDetails['orderDate'];
-                $orderTotal = $orderDetails['orderTotal'];
-                $items = $orderDetails['items'];
+                $orderNumber = $data['orderNumber'];
+                $orderDate = $data['orderDate'];
+                $orderTotal = $data['orderTotal'];
+                $items = $data['items'];
     
                 $mailBody = "
                 <html>
@@ -141,18 +141,61 @@ class Mail {
     
                 return $mailBody;
     
+            case "reset_password":
+                $token = $data["token"];
+                $resetLink = "http://localhost:3000/reset-password?token={$token}";
+                
+                $mailBody = "
+                <html>
+                <head>
+                    <style>
+                        @media only screen and (max-width: 600px) {
+                            .content {
+                                padding: 10px !important;
+                            }
+                            .email-header h1 {
+                                font-size: 22px !important;
+                            }
+                        }
+                    </style>
+                </head>
+                <body style='margin: 0; padding: 0; background-color: #ffffff; font-family: Arial, sans-serif;'>
+                    <div>
+                        <div style='text-align: center; padding: 20px 0; background-color: #f8f8f8;'>
+                            <h1 style='margin: 0; color: #333333;'>Jelszó visszaállítás</h1>
+                        </div>
+                        
+                        <div style='padding: 20px; background-color: #ffffff; text-align: left;'>
+                            <p>Kedves <strong style='color: #333333;'>{$name}</strong>,</p>
+                            <p style='color: #333333;'>Jelszó visszaállítást kért a fiókjához. Kattintson az alábbi gombra a jelszó módosításához:</p>
+                            <div style='text-align: center; margin: 30px 0;'>
+                                <a href='{$resetLink}' style='background-color: #9acd32; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Jelszó visszaállítása</a>
+                            </div>
+                            <p style='color: #333333;'>Ha nem Ön kérte a jelszó visszaállítást, kérjük hagyja figyelmen kívül ezt az emailt.</p>
+                            <p style='color: #333333; font-size: 12px;'>A link 30 percig érvényes.</p>
+                        </div>
+                        
+                        <div style='background-color: #1d1d1d; text-align: center; padding: 20px 0;'>
+                            <p style='color: #f5f5f5;'>© 2025 Florens Botanica. Minden jog fenntartva.</p>
+                        </div>
+                    </div>
+                </body>
+                </html>";
+
+                return $mailBody;
+
             default:
                 break;
         }
     }       
 
-    public static function getMailAltBody($type="order", $name, $orderDetails) {
+    public static function getMailAltBody($type="order", $name, $data) {
         switch ($type) {
             case 'order':
-                $orderNumber = $orderDetails['orderNumber'];
-                $orderDate = $orderDetails['orderDate'];
-                $orderTotal = $orderDetails['orderTotal'];
-                $items = $orderDetails['items'];
+                $orderNumber = $data['orderNumber'];
+                $orderDate = $data['orderDate'];
+                $orderTotal = $data['orderTotal'];
+                $items = $data['items'];
     
                 $altBody = "Kedves {$name},\n\n";
                 $altBody .= "Köszönjük, hogy nálunk vásárolt! A rendelése (#{$orderNumber}) feldolgozás alatt áll.\n\n";
@@ -170,6 +213,20 @@ class Mail {
     
                 return $altBody;
     
+            case "reset_password":
+                $token = $data["token"];
+                $resetLink = "http://localhost:3000/reset-password?token={$token}";
+                
+                $altBody = "Kedves {$name},\n\n";
+                $altBody .= "Jelszó visszaállítást kért a fiókjához.\n\n";
+                $altBody .= "A jelszó visszaállításához kattintson az alábbi linkre vagy másolja böngészőjébe:\n";
+                $altBody .= "{$resetLink}\n\n";
+                $altBody .= "Ha nem Ön kérte a jelszó visszaállítást, kérjük hagyja figyelmen kívül ezt az emailt.\n\n";
+                $altBody .= "A link 30 percig érvényes.\n\n";
+                $altBody .= "Üdvözlettel,\nFlorens Botanica webáruház";
+
+                return $altBody;
+
             default:
                 break;
         }

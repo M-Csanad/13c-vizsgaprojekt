@@ -78,6 +78,28 @@ function modifyPassword($userId, $new) {
     return updateData("UPDATE user SET password_hash=? WHERE id=?", [$new, $userId], "si");
 }
 
+// Jelszó visszaállítása
+function sendPasswordResetEmail($user) {
+
+    $token = bin2hex(random_bytes(32));
+    $expires = time() + 60 * 30;
+
+    $result = updateData("UPDATE user SET reset_token=?, reset_expires_at=? WHERE id=?", [$token, $expires, $user["id"]], "sii");
+
+    if ($result->isSuccess()) {
+        $mail = [
+            "subject" => "Jelszó visszaállítás",
+            "body" => Mail::getMailBody("reset_password", $user["first_name"], $token),
+            "alt" => Mail::getMailAltBody("reset_password", $user["first_name"], $token)
+        ];
+
+        $mailer = new Mail();
+        $mailer->sendTo($user, $mail, true);
+    }
+
+    return $result;
+}
+
 // Jogosultság módosítása
 function modifyRole($userId, $role) {
     return updateData("UPDATE user SET user.role = ? WHERE user.id = ?", [$role, $userId], "si");

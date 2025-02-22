@@ -171,11 +171,6 @@ form {
 
 .form-link {
     text-decoration: underline;
-    transition: all 0.2s ease;
-}
-
-.form-link:hover {
-    transform: translateY(-5px);
 }
 
 .register {

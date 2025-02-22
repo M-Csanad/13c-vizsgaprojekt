@@ -31,6 +31,11 @@ class LoginForm {
                 "dom": this.formDom.querySelector("#passwd"),
                 "errorMessage": "Kérjük ne hagyja üresen a jelszó mezőt",
                 get value() { return this.dom?.value }
+            },
+            "forgotPassword": {
+                "dom": this.formDom.querySelector("#forgotPassword"),
+                "noValidate": true,
+                get value() { return this.dom?.value }
             }
         }
 
@@ -46,9 +51,12 @@ class LoginForm {
         this.submitter.addEventListener("click", this.send.bind(this));
         
         this.formDom.querySelectorAll(".input-group").forEach(e => this.handleInputGroupFocus(e));
+        this.form.forgotPassword.dom.addEventListener("click", );
 
         for (let field in this.form) {
             const element = this.form[field];
+            if (element.noValidate) continue;
+
             element.dom.addEventListener("change", () => {
                 const error = this.validateField(field);
                 this.toggleFieldState(field, error);
@@ -236,6 +244,11 @@ class LoginForm {
         } finally {
             this.loader.classList.add('hidden');
         }
+    }
+
+    async handleForgottenPassword()
+    {  
+        
     }
 }
 

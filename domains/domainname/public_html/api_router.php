@@ -35,6 +35,7 @@ $routes = [
     '/api/auth/dashboard-search' => $API.'/dashboard_search.php',
     '/api/auth/login' => $API.'/login.php',
     '/api/auth/register' => $API.'/register.php',
+    '/api/auth/resetpassword' => $API.'/reset_password.php',
 
     '/api/settings/updatedetails' => $API.'/settings_update_details.php',
     '/api/settings/newpassword' => $API.'/settings_new_password.php',
