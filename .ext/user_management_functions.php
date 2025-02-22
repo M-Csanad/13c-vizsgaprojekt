@@ -84,13 +84,13 @@ function sendPasswordResetEmail($user) {
     $token = bin2hex(random_bytes(32));
     $expires = time() + 60 * 30;
 
-    $result = updateData("UPDATE user SET reset_token=?, reset_expires_at=? WHERE id=?", [$token, $expires, $user["id"]], "sii");
+    $result = updateData("UPDATE user SET reset_token=?, reset_token_expires_at=? WHERE id=?", [$token, $expires, $user["id"]], "sii");
 
     if ($result->isSuccess()) {
         $mail = [
             "subject" => "Jelszó visszaállítás",
-            "body" => Mail::getMailBody("reset_password", $user["first_name"], $token),
-            "alt" => Mail::getMailAltBody("reset_password", $user["first_name"], $token)
+            "body" => Mail::getMailBody("reset_password", $user["first_name"], ['token' => $token]),
+            "alt" => Mail::getMailAltBody("reset_password", $user["first_name"], ['token' => $token])
         ];
 
         $mailer = new Mail();

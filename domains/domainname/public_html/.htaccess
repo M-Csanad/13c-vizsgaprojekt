@@ -43,6 +43,7 @@
 RewriteEngine On
 RewriteRule ^login$ /fb-auth/login.php [L]
 RewriteRule ^logout$ /fb-auth/logout.php [L]
+RewriteRule ^reset$ /fb-auth/reset_password.php [L]
 RewriteRule ^register$ /fb-auth/register.php [L]
 RewriteRule ^privacy-policy$ /fb-content/privacy_policy.html [L]
 RewriteRule ^terms-of-service$ /fb-content/terms_of_service.html [L]

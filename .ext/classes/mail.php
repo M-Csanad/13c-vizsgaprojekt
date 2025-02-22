@@ -143,7 +143,7 @@ class Mail {
     
             case "reset_password":
                 $token = $data["token"];
-                $resetLink = "http://localhost:3000/reset-password?token={$token}";
+                $resetLink = "http://localhost/reset?token={$token}";
                 
                 $mailBody = "
                 <html>
