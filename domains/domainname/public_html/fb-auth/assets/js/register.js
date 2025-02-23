@@ -79,16 +79,6 @@ class RegisterForm {
         }
     }
 
-    updatePasswordChecks(checks) {
-        for (const [key, value] of Object.entries(checks)) {
-            const matcher = this.formDom.querySelector(`.matcher[data-for="${key}"]`);
-            if (matcher) {
-                matcher.classList.toggle('valid', value);
-                matcher.classList.toggle('invalid', !value);
-            }
-        }
-    }
-
     bindEvents() {
         this.submitter.addEventListener("click", this.send.bind(this));
         
@@ -140,9 +130,16 @@ class RegisterForm {
 
     validateForm() {
         let valid = true;
-        for (let field in this.form) {
-            const error = this.validateField(field);
-            this.toggleFieldState(field, error);
+        for (let fieldKey in this.form) {
+            const field = this.form[fieldKey];
+            if (field.noCustomValidate) {
+                valid = field.value;
+                if (!valid) field.dom.reportValidity();
+                continue;
+            }
+
+            const error = this.validateField(fieldKey);
+            this.toggleFieldState(fieldKey, error);
             if (error) valid = false;
         }
         return valid;
@@ -155,6 +152,7 @@ class RegisterForm {
         if (field.showDefaultValidity) {
             field.dom.setCustomValidity(error ? "invalid" : "");
             field.dom.reportValidity();
+            return;
         }
 
         const errorWrapper = field.dom.closest('.input-group').querySelector('.message-wrapper');
@@ -188,12 +186,6 @@ class RegisterForm {
     shakeElement(element) {
         const ease = "power1.inOut";
         
-        gsap.set(element, {opacity: 0})
-        gsap.to(element, {
-            opacity: 1,
-            duration: 0.3,
-            ease: ease,
-        })
         gsap.fromTo(
             element,
             { x: 0 },
@@ -205,6 +197,16 @@ class RegisterForm {
                 ease: ease,
             }
         );
+    }
+
+    async animateElementIn(element) {
+        gsap.set(element, { opacity: 0, scale: 0 });
+        await gsap.to(element, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.3,
+            ease: "power1.inOut"
+        });
     }
 
     async removeElementContent(element) {
@@ -246,7 +248,8 @@ class RegisterForm {
     }
 
     updatePasswordHelper(element) {
-        const value = element.dom.value;
+        const value = element.value;
+        console.log(value)
         const passwordHelperDom = this.formDom.querySelector(".password-state");
         
         for (let key in this.passwordHelperRules) {
@@ -271,6 +274,12 @@ class RegisterForm {
         if (!this.validateForm()) return;
         
         try {
+            if (this.formMessage.innerHTML) {
+                await this.removeElementContent(this.formMessage);
+            }
+
+            this.loader.classList.remove('hidden');
+
             await this.executeRecaptcha();
             this.submitted = true;
             
@@ -278,13 +287,11 @@ class RegisterForm {
             data.append("register", "1");
 
             const response = await APIFetch("/api/auth/register", "POST", data, false);
-    
             const result = await response.json();
-            if (response.ok) {
-                if (this.formMessage.innerHTML) {
-                    await this.removeElementContent(this.formMessage);
-                }
-    
+
+            this.loader.classList.add('hidden');
+
+            if (result.status === "success") {
                 const outParams = {
                     scaleY: 1, 
                     duration: 1,
@@ -301,17 +308,30 @@ class RegisterForm {
                 window.location.href = "./login";
             } else {
                 this.submitted = false;
-                if (this.formMessage.innerHTML) {
-                    await this.removeElementContent(this.formMessage);
-                }
                 this.formMessage.innerHTML = result.message;
+                this.formMessage.innerHTML = result.message;
+                this.formMessage.classList.remove('message-success');
+                this.formMessage.classList.add('message-error');
+                
+                await this.animateElementIn(this.formMessage);
                 this.shakeElement(this.formMessage);
                 
                 this.formDom.querySelectorAll("input[type=password]").forEach(e => e.value = "");
+                this.updatePasswordHelper(this.form.password.dom);
             }
         } catch (error) {
             console.error('Hiba regisztráláskor: ', error);
             this.submitted = false;
+            
+            if (this.formMessage.innerHTML) {
+                await this.removeElementContent(this.formMessage);
+            }
+            this.formMessage.innerHTML = "Váratlan hiba történt. Kérjük próbálja újra később.";
+            this.formMessage.classList.remove('message-success');
+            this.formMessage.classList.add('message-error');
+            
+            await this.animateElementIn(this.formMessage);
+            this.shakeElement(this.formMessage);
         }
     }
 }

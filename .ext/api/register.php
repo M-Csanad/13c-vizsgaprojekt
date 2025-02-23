@@ -1,63 +1,64 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 include_once __DIR__."/../init.php";
+include_once __DIR__."/../classes/inputvalidator.php";
+include_once __DIR__."/../classes/captcha.php";
 
 if (isset($_POST['register']) && $_SERVER["REQUEST_METHOD"] == "POST") {
-    $message = "";
-
-    $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
-    $project_id = 'florens-botanica-1727886723149';
-    $url = "https://recaptchaenterprise.googleapis.com/v1/projects/$project_id/assessments?key=$recaptcha_secret";
-
-    $token = $_POST['g-recaptcha-response']; 
-    $user_action = 'register'; 
-
-    $data = [
-        "event" => [
-            "token" => $token,
-            "expectedAction" => $user_action,
-            "siteKey" => "6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"
+    $validationRules = [
+        "username" => [
+            "rule" => '/^[\w-]{3,20}$/',
+            "message" => "A felhasználónév 3-20 karakter hosszú lehet és csak betűket, számokat és kötőjelet tartalmazhat"
+        ],
+        "email" => [
+            "rule" => '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/',
+            "message" => "Kérjük adjon meg egy érvényes email címet"
+        ],
+        "firstname" => [
+            "rule" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
+            "message" => "Kérjük adja meg a keresztnevét"
+        ],
+        "lastname" => [
+            "rule" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
+            "message" => "Kérjük adja meg a vezetéknevét"
+        ],
+        "password" => [
+            "rule" => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{}|\\;:\'",.<>\/?~]).{8,64}$/',
+            "message" => "A jelszó nem felel meg a követelményeknek"
         ]
     ];
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json'
-    ]);
+    $validator = new InputValidator($_POST, $validationRules);
+    $validationResult = $validator->test();
 
-    $response = curl_exec($ch);
-    curl_close($ch);
-
-    $response_data = json_decode($response, true);
-    if (!isset($response_data['tokenProperties']['valid']) || !$response_data['tokenProperties']['valid']) {
-        $message = "Hibás reCAPTCHA. Kérjük próbálja újra később.";
-        header("Unauthorized", true, 401);
+    if ($validationResult->isError()) {
+        http_response_code(400);
+        echo $validationResult->toJSON();
+        exit;
     }
-    else if ($response_data['event']['expectedAction'] === $user_action && $response_data['riskAnalysis']['score'] >= 0.5) {
 
-        $username = $_POST['username'];
-        $password = $_POST['password'];
-        $email = $_POST['email'];
-        $firstname = $_POST['firstname'];
-        $lastname = $_POST['lastname'];
-
-        $result = register($username, $password, $email, $firstname, $lastname);
-
-        if ($result->isSuccess()) {
-            $message = "Sikeres regisztráció!";
-        }
-        else {
-           $message = $result->message;
-           header("Unauthorized", true, 401);
-        }
+    $captcha = new Captcha();
+    $captchaResult = $captcha->verify($_POST['g-recaptcha-response'] ?? '', 'register');
+    
+    if ($captchaResult->isError()) {
+        http_response_code(401);
+        echo $captchaResult->toJSON();
+        exit;
     }
-    else {
-        $message = "reCAPTCHA ellenőrzés sikertelen. Kérjük próbálja újra.";
-        header("Unauthorized", true, 401);
+
+    // reCAPTCHA sikeres, folytatjuk a regisztrációt
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $email = $_POST['email'];
+    $firstname = $_POST['firstname'];
+    $lastname = $_POST['lastname'];
+
+    $result = register($username, $password, $email, $firstname, $lastname);
+
+    if ($result->isSuccess()) {
+        echo (new Result(Result::SUCCESS, "Sikeres regisztráció!"))->toJSON();
+    } else {
+        http_response_code(401);
+        echo $result->toJSON();
     }
-    echo json_encode(["message" => $message], JSON_UNESCAPED_UNICODE);
 }

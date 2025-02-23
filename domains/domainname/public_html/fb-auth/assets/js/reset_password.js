@@ -1,6 +1,8 @@
 import APIFetch from "/fb-content/assets/js/apifetch.js";
 
 class ResetPasswordForm {
+    currentImageIndex = 0;
+
     constructor(dom) {
         if (!dom) throw new Error("Nincs megadva űrlap.");
         if (dom.nodeName != "FORM") throw new Error("Nem űrlap típusú a megadott elem.");
@@ -9,12 +11,14 @@ class ResetPasswordForm {
         this.formType = dom.dataset.type;
         this.initDOM(dom);
         this.bindEvents();
+        this.startImageCycle();
     }
 
     initDOM(dom) {
         this.formDom = dom;
         this.formMessage = this.formDom.querySelector(".form-message");
         this.loader = this.formDom.querySelector(".loader");
+        this.backgroundImages = document.querySelectorAll('.bg');
         
         if (this.formType === 'request') {
             this.form = {
@@ -28,10 +32,18 @@ class ResetPasswordForm {
                 email: value => value && value.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)
             };
         } else {
+            this.passwordHelperRules = {
+                charlen: /^.{8,64}$/,
+                haslower: /[a-záéöüóőúí]/,
+                hasupper: /[A-ZÁÉÖÜÓŐÚÍ]/,
+                hasdigit: /\d/,
+                hasspecial: /[!@#$%^&*()_\-+=\[\]{}|\\;:'",.<>/?~]/,
+            }
+
             this.form = {
                 "password": {
                     "dom": this.formDom.querySelector("#password"),
-                    "errorMessage": "A jelszónak legalább 8 karaktert kell tartalmaznia",
+                    "errorMessage": "A jelszó nem felel meg a követelményeknek",
                     get value() { return this.dom?.value }
                 },
                 "password_confirm": {
@@ -41,7 +53,7 @@ class ResetPasswordForm {
                 }
             };
             this.validationRules = {
-                password: value => value && value.length >= 8,
+                password: value => /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{}|\\;:\'",.<>\/?~]).{8,64}$/.test(value),
                 password_confirm: value => value === this.form.password.value
             };
         }
@@ -62,6 +74,10 @@ class ResetPasswordForm {
                 const error = this.validateField(field);
                 this.toggleFieldState(field, error);
             });
+        }
+
+        if (this.formType !== 'request') {
+            this.form.password.dom.addEventListener("input", () => this.updatePasswordHelper(this.form.password));
         }
     }
 
@@ -147,25 +163,74 @@ class ResetPasswordForm {
         });
     }
 
+    shakeElement(element) {
+        const ease = "power1.inOut";
+        
+        gsap.fromTo(
+            element,
+            { x: 0 },
+            {
+                x: "+=5",
+                duration: 0.1,
+                repeat: 7,
+                yoyo: true,
+                ease: ease,
+            }
+        );
+    }
+
+    async removeElementContent(element) {
+        return new Promise((resolve) => {
+            gsap.to(element, {
+                opacity: 0,
+                scale: 0,
+                duration: 0.3,
+                ease: "power1.inOut",
+                onComplete: () => {
+                    element.innerHTML = "";
+                    resolve();
+                }
+            });
+        });
+    }
+
+    async animateElementIn(element) {
+        gsap.set(element, { opacity: 0, scale: 0 });
+        await gsap.to(element, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.3,
+            ease: "power1.inOut"
+        });
+    }
+
     async send(event) {
         event.preventDefault();
         if (!this.validateForm()) return;
         
         try {
+            if (this.formMessage.innerHTML) {
+                await this.removeElementContent(this.formMessage);
+            }
+
             this.loader.classList.remove('hidden');
             await this.executeRecaptcha();
             
             const data = new FormData(this.formDom);
             const method = this.formType === 'request' ? 'POST' : 'PUT';
-            const body = this.formType === 'request' ? data : JSON.stringify(Object.fromEntries(data));
 
-            const response = await APIFetch("/api/auth/resetpassword", method, body, false);
+            const response = await APIFetch("/api/auth/resetpassword", method, data, this.formType !== 'request');
             const result = await response.json();
+
+            this.loader.classList.add('hidden');
 
             if (response.ok) {
                 this.formMessage.innerHTML = result.message;
+
                 this.formMessage.classList.remove('message-error');
                 this.formMessage.classList.add('message-success');
+
+                await this.animateElementIn(this.formMessage);
                 
                 if (this.formType !== 'request') {
                     setTimeout(() => {
@@ -173,18 +238,61 @@ class ResetPasswordForm {
                     }, 5000);
                 }
             } else {
-                this.formMessage.innerHTML = result.error;
+                this.formMessage.innerHTML = result.message;
+
                 this.formMessage.classList.remove('message-success');
                 this.formMessage.classList.add('message-error');
+
+                await this.animateElementIn(this.formMessage);
+                this.shakeElement(this.formMessage);
+                
+                if (this.formType !== 'request') {
+                    this.formDom.querySelectorAll("input[type=password]").forEach(e => e.value = "");
+                }
             }
         } catch (error) {
             console.error('Hiba történt:', error);
+            if (this.formMessage.innerHTML) {
+                await this.removeElementContent(this.formMessage);
+            }
             this.formMessage.innerHTML = "Váratlan hiba történt. Kérjük próbálja újra később.";
+
             this.formMessage.classList.remove('message-success');
             this.formMessage.classList.add('message-error');
-        } finally {
-            this.loader.classList.remove('hidden');
+
+            await this.animateElementIn(this.formMessage);
+            this.shakeElement(this.formMessage);
         }
+    }
+
+    updatePasswordHelper(element) {
+        const value = element.dom.value;
+        const passwordHelperDom = this.formDom.querySelector(".password-state");
+        
+        for (let key in this.passwordHelperRules) {
+            const rule = this.passwordHelperRules[key];
+            const matcherDom = passwordHelperDom.querySelector(`[data-for=${key}]`);
+
+            if (rule.test(value)) {
+                matcherDom.classList.add("valid");
+                matcherDom.classList.remove("invalid");
+            }
+            else {
+                matcherDom.classList.remove("valid");
+                matcherDom.classList.add("invalid");
+            }
+        }
+    }
+
+    cycleImages() {
+        if (document.body.clientWidth <= 900) return;
+        this.backgroundImages[this.currentImageIndex].classList.remove('visible');
+        this.currentImageIndex = (this.currentImageIndex + 1) % this.backgroundImages.length;
+        this.backgroundImages[this.currentImageIndex].classList.add('visible');
+    }
+
+    startImageCycle() {
+        setInterval(() => this.cycleImages(), 5000);
     }
 }
 

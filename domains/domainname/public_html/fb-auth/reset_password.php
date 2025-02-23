@@ -13,6 +13,7 @@ if ($hasToken) {
     );
     $isValidToken = !$result->isEmpty();
 }
+load_env(__DIR__ . '/../../../../.ext/.env');
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -24,12 +25,13 @@ if ($hasToken) {
     <link rel="preload" href="/fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
     <link rel="stylesheet" href="/fb-auth/assets/css/root.css">
     <link rel="stylesheet" href="/fb-auth/assets/css/register.css">
+    <link rel="stylesheet" href="/fb-auth/assets/css/reset_password.css">
     <link rel="stylesheet" href="/fb-auth/assets/css/inputs-light.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
 
-    <script async defer src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
+    <script async defer src="https://www.google.com/recaptcha/enterprise.js?render=<?php echo $_ENV['RECAPTCHA_SITE_KEY']; ?>"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="/fb-content/assets/js/page_transition.js"></script>
     <script type="module" defer src="/fb-auth/assets/js/reset_password.js"></script>
@@ -62,13 +64,72 @@ if ($hasToken) {
                     </div>
                     <?php else: ?>
                     <input type="hidden" name="token" value="<?php echo htmlspecialchars($_GET['token']); ?>">
-                    <div class="input-group" tabindex="-1">
-                        <div class="input-body" tabindex="-1">
-                            <label for="password">Új jelszó</label>
-                            <input type="password" name="password" id="password" required placeholder="" autocomplete="new-password" tabindex="1">
+                    <div class="password-input">
+                        <div class="input-group" tabindex="-1">
+                            <div class="input-body" tabindex="-1">
+                                <label for="password">Új jelszó</label>
+                                <input type="password" name="password" id="password" required placeholder="" autocomplete="new-password" tabindex="1">
+                            </div>
+                            <div class="message-wrapper">
+                                <div class="error-message"></div>
+                            </div>
                         </div>
-                        <div class="message-wrapper">
-                            <div class="error-message"></div>
+                        <div class="password-state">
+                            <div class="matcher" data-for="charlen">
+                                <div class="state">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-check-circle-fill valid" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-x-circle-fill invalid" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                                    </svg>
+                                </div>
+                                <div class="description">8-64 karakter hosszú</div>
+                            </div>
+                            <div class="matcher" data-for="haslower">
+                                <div class="state">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-check-circle-fill valid" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-x-circle-fill invalid" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                                    </svg>
+                                </div>
+                                <div class="description">Tartalmaz kisbetűt</div>
+                            </div>
+                            <div class="matcher" data-for="hasupper">
+                                <div class="state">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-check-circle-fill valid" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-x-circle-fill invalid" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                                    </svg>
+                                </div>
+                                <div class="description">Tartalmaz nagybetűt</div>
+                            </div>
+                            <div class="matcher" data-for="hasdigit">
+                                <div class="state">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-check-circle-fill valid" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-x-circle-fill invalid" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                                    </svg>
+                                </div>
+                                <div class="description">Tartalmaz számot</div>
+                            </div>
+                            <div class="matcher" data-for="hasspecial">
+                                <div class="state">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-check-circle-fill valid" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                    </svg>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-x-circle-fill invalid" viewBox="0 0 16 16">
+                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                                    </svg>
+                                </div>
+                                <div class="description">Tartalmaz speciális karaktert</div>
+                            </div>
                         </div>
                     </div>
                     <div class="input-group" tabindex="-1">
@@ -84,8 +145,12 @@ if ($hasToken) {
                     <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
                 </div>
                 <div class="form-bottom">
-                    <div class="form-message"></div>
-                    <div class="loader hidden"></div>
+                    <div class="message-container">
+                        <div class="loader hidden">
+                            <div class="spinner"></div>
+                        </div>
+                        <div class="form-message"></div>
+                    </div>
                     <input type="button" class="action-button" value="<?php echo $hasToken && $isValidToken ? 'Jelszó módosítása' : 'Link küldése'; ?>">
                     <div class="login">Vissza a <a href="./login" class="form-link">bejelentkezéshez</a></div>
                 </div>

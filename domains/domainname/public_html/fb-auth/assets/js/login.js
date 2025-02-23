@@ -133,12 +133,6 @@ class LoginForm {
     shakeElement(element) {
         const ease = "power1.inOut";
         
-        gsap.set(element, {opacity: 0});
-        gsap.to(element, {
-            opacity: 1,
-            duration: 0.3,
-            ease: ease,
-        });
         gsap.fromTo(
             element,
             { x: 0 },
@@ -150,6 +144,16 @@ class LoginForm {
                 ease: ease,
             }
         );
+    }
+
+    async animateElementIn(element) {
+        gsap.set(element, { opacity: 0, scale: 0 });
+        await gsap.to(element, {
+            opacity: 1,
+            scale: 1,
+            duration: 0.3,
+            ease: "power1.inOut"
+        });
     }
 
     async removeElementContent(element) {
@@ -197,7 +201,12 @@ class LoginForm {
         if (!this.validateForm()) return;
         
         try {
+            if (this.formMessage.innerHTML) {
+                await this.removeElementContent(this.formMessage);
+            }
+
             this.loader.classList.remove('hidden');
+
             await this.executeRecaptcha();
             this.submitted = true;
             
@@ -205,13 +214,11 @@ class LoginForm {
             data.append("login", "1");
 
             const response = await APIFetch("/api/auth/login", "POST", data, false);
-    
             const result = await response.json();
+
+            this.loader.classList.add('hidden');
+
             if (response.ok) {
-                if (this.formMessage.innerHTML) {
-                    await this.removeElementContent(this.formMessage);
-                }
-    
                 const outParams = {
                     scaleY: 1, 
                     duration: 1,
@@ -228,7 +235,11 @@ class LoginForm {
                 window.location.href = "./";
             } else {
                 this.submitted = false;
-                if (this.formMessage) this.formMessage.innerHTML = result.message;
+                this.formMessage.innerHTML = result.message;
+                this.formMessage.classList.remove('message-success');
+                this.formMessage.classList.add('message-error');
+                
+                await this.animateElementIn(this.formMessage);
                 this.shakeElement(this.formMessage);
                 
                 const passwdInput = this.form.passwd.dom;
@@ -237,8 +248,16 @@ class LoginForm {
         } catch (error) {
             console.error('Hiba a bejelentkezéskor: ', error);
             this.submitted = false;
-        } finally {
-            this.loader.classList.add('hidden');
+            
+            if (this.formMessage.innerHTML) {
+                await this.removeElementContent(this.formMessage);
+            }
+            this.formMessage.innerHTML = "Váratlan hiba történt. Kérjük próbálja újra később.";
+            this.formMessage.classList.remove('message-success');
+            this.formMessage.classList.add('message-error');
+            
+            await this.animateElementIn(this.formMessage);
+            this.shakeElement(this.formMessage);
         }
     }
 }

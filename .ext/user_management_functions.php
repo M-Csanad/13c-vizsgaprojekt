@@ -100,6 +100,16 @@ function sendPasswordResetEmail($user) {
     return $result;
 }
 
+function resetUserPassword(int $userId, string $password): Result {
+    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+    
+    return updateData(
+        "UPDATE user SET password_hash = ?, reset_token = NULL, reset_token_expires_at = NULL WHERE id = ?",
+        [$passwordHash, $userId],
+        "si"
+    );
+}
+
 // Jogosultság módosítása
 function modifyRole($userId, $role) {
     return updateData("UPDATE user SET user.role = ? WHERE user.id = ?", [$role, $userId], "si");

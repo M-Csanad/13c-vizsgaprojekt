@@ -4,8 +4,7 @@ const APIFetch = async (url, method, body = null, encode = true) => {
       method: method,
       headers: {
         "X-Requested-With": "XMLHttpRequest",
-      },
-      credentials: "include",
+      }
     };
 
     if (["GET", "DELETE"].includes(method) && body) {
@@ -17,8 +16,21 @@ const APIFetch = async (url, method, body = null, encode = true) => {
       url += "?" + paramString;
     }
 
-    if (body && method !== "GET")
-      params.body = encode ? JSON.stringify(body) : body;
+    if (body && method !== "GET") {
+      if (body instanceof FormData) {
+        if (encode) {
+          const jsonObject = {};
+          body.forEach((value, key) => {
+            jsonObject[key] = value;
+          });
+          params.body = JSON.stringify(jsonObject);
+        } else {
+          params.body = body;
+        }
+      } else {
+        params.body = encode ? JSON.stringify(body) : body;
+      }
+    }
 
     const response = await fetch(url, params);
 

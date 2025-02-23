@@ -86,124 +86,119 @@ form {
     flex-direction: column;
     position: relative;
     background-color: #FAFAFA;
+}
 
-    .form-header {
-        display: flex;
-        flex-grow: 1;
-        align-items: flex-start;
-        justify-content: center;
-        flex-direction: column;
-        gap: 10px;
-        width: 80%;
-        
-        h1 {
-            font-size: 40px;
-        }
+.form-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    flex-direction: column;
+    gap: 10px;
+    width: 80%;
+    height: 20%;
+    margin-bottom: 1rem;
+}
 
-        div {
-            color: #565656;
-        }
-    }
-    .form-divider{
-        flex-grow: 1;
-    
-        width: 100%;
-        color: #747474;
-    
-        padding-bottom: 0.2rem;
-        font-weight: 400;
-        margin-bottom: 0.5rem;
-        
-        border-bottom: 1px solid #dfdfdf;
-    }
+.form-header h1 {
+    font-size: 40px;
+}
 
-    .form-body {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        justify-content: space-between;
-        align-items: center;
-    }
+.form-header div {
+    color: #565656;
+}
 
-    .form-bottom {
-        width: 80%;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 10px;
-        flex-grow: 1;
-    }
+.form-divider {
+    flex-grow: 1;
+    width: 100%;
+    color: #747474;
+    font-weight: 400;
+    margin-bottom: 0.5rem;
+    border-bottom: 1px solid #dfdfdf;
+}
 
-    .input-wrapper{ 
-        width: 80%;
-    }
+.form-body {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    .action-button {
-        padding-inline: 10px;
-        padding-block: 10px;
-        margin-bottom: 10px;
-        width: 100%;
-        transition: border 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
-        color: white;
-        box-shadow: 0px 0px 0px var(--border);
-        background-color: #565656;
-        border: 4px solid #9f9f9f;
-        font-size: 18px;
-        letter-spacing: 1px;
-        border-radius: 15px;
-    }
+.form-bottom {
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+    margin-top: 2rem;
+}
 
-    .action-button:hover {
-        border: 4px solid #83b680;
-        background-color: #3a5b32;
-        box-shadow: 0px 0px 10px greenyellow;
-    }
+.input-wrapper {
+    width: 80%;
+}
 
-    .form-link {
-        display: inline-block;
-        text-decoration: underline;
-        transition: all 0.2s ease;
-    }
-    .form-link:hover {
-        transform: translateY(-5px);
-    }
+.action-button {
+    padding-inline: 10px;
+    padding-block: 10px;
+    margin-bottom: 10px;
+    width: 100%;
+    transition: border 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+    color: white;
+    box-shadow: 0px 0px 0px var(--border);
+    background-color: #565656;
+    border: 4px solid #9f9f9f;
+    font-size: 18px;
+    letter-spacing: 1px;
+    border-radius: 15px;
+}
 
-    .login {
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
-        font-size: 14px;
-    }
+.action-button:hover {
+    border: 4px solid #83b680;
+    background-color: #3a5b32;
+    box-shadow: 0px 0px 10px greenyellow;
+}
 
-    #forgotPassword {
-        font-size: 14px;
-        display: block;
-        width: fit-content;
-        margin-left: auto;
-        margin-right: 5px;
-    }
+.form-link {
+    display: inline-block;
+    text-decoration: underline;
+}
 
-    input[type="checkbox"] {
-        width: 15px;
-    }
+.login {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    font-size: 14px;
+}
 
-    .form-message {
-        font-style: italic;
-        height: 60px;
-        color: red;
-        animation: shake 0.5s;
-        animation-timing-function: ease;
-    }
-    
-    .checkbox-group {
-        font-size: 14px;
-        display: flex;
-        flex-direction: row;
-        gap: 5px;
-        align-items: center;
-    }
+#forgotPassword {
+    font-size: 14px;
+    display: block;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: 5px;
+}
+
+input[type="checkbox"] {
+    width: 15px;
+}
+
+.form-message {
+    font-style: italic;
+    height: auto;
+    min-height: 60px;
+    color: red;
+    animation: shake 0.5s;
+    animation-timing-function: ease;
+}
+
+.checkbox-group {
+    font-size: 14px;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    align-items: center;
 }
 
 .message-success, .message-error {
@@ -225,23 +220,43 @@ form {
     border: 1px solid #f5c6cb;
 }
 
-@keyframes shake {
-    0% {transform: translateX(0px);}
-    6% {transform: translateX(-5px);}
-    12% {transform: translateX(0px);}
-    18% {transform: translateX(5px);}
-    24% {transform: translateX(0px);}
-    36% {transform: translateX(-3px);}
-    42% {transform: translateX(0px);}
-    48% {transform: translateX(3px);}
-    54% {transform: translateX(0px);}
-    66% {transform: translateX(-2px);}
-    72% {transform: translateX(0px);}
-    78% {transform: translateX(2px);}
-    84% {transform: translateX(0px);}
-    90% {transform: translateX(-1px);}
-    96% {transform: translateX(0px);}
-    100% {transform: translateX(1px);}
+.message-container {
+    position: relative;
+    width: 100%;
+    min-height: 60px;
+    margin-bottom: 1rem;
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    transition: opacity 0.3s ease;
+    z-index: 2;
+}
+
+.loader.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3a5b32;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 @media screen and (max-width: 285px) {

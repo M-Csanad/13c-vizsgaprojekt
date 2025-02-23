@@ -12,6 +12,7 @@ if ($result->isSuccess()) {
     header("Location: ./logout");
 }
 
+load_env(__DIR__ . '/../../../../.ext/.env');
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -28,7 +29,7 @@ if ($result->isSuccess()) {
     <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
 
-    <script async defer src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
+    <script async defer src="https://www.google.com/recaptcha/enterprise.js?render=<?php echo $_ENV['RECAPTCHA_SITE_KEY']; ?>"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="/fb-content/assets/js/page_transition.js"></script>
     <script type="module" defer src="./fb-auth/assets/js/register.js"></script>
@@ -170,12 +171,17 @@ if ($result->isSuccess()) {
                     </div>
                     <div class="checkbox-group">
                         <input type="checkbox" name="agree" id="agree" required>
-                        <label for="agree">Regisztrációmmal elfogadom az <a href="" class="form-link">ÁSZF-et.</a></label>
+                        <label for="agree">Regisztrációmmal elfogadom az <a href="/terms-of-service" class="form-link">ÁSZF-et.</a></label>
                     </div>
                     <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
                 </div>
                 <div class="form-bottom">
-                    <div class='form-message'></div>
+                    <div class="message-container">
+                        <div class="loader hidden">
+                            <div class="spinner"></div>
+                        </div>
+                        <div class="form-message"></div>
+                    </div>
                     <input type="button" name="register" class="action-button g-recaptcha" value="Profil létrehozása">
                     <div class="login">Regisztrált már? <a href="./login" class="form-link">Jelentkezzen be!</a></div>
                 </div>

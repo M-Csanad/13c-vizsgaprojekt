@@ -12,6 +12,7 @@ if ($result->isSuccess()) {
     header("Location: ./logout");
 }
 
+load_env(__DIR__ . '/../../../../.ext/.env');
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -29,7 +30,7 @@ if ($result->isSuccess()) {
     <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
 
-    <script src="https://www.google.com/recaptcha/enterprise.js?render=6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"></script>
+    <script src="https://www.google.com/recaptcha/enterprise.js?render=<?php echo $_ENV['RECAPTCHA_SITE_KEY']; ?>"></script>
     <script src="./fb-auth/assets/js/prevent-resubmit.js" defer></script>
 
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
@@ -79,15 +80,15 @@ if ($result->isSuccess()) {
                     </div>
                     <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
                 </div>
-                <div class="loader hidden">
-                    <div class="spinner"></div>
-                </div>
                 <div class="form-bottom">
-                    <div class="form-message">
+                    <div class="message-container">
+                        <div class="loader hidden">
+                            <div class="spinner"></div>
+                        </div>
+                        <div class="form-message"></div>
                     </div>
-                    <input type="button" value="Bejelentkezés" name="login" class="action-button g-recaptcha">
-                    <div class="register">Nincs még fiókja? <a href="./register" class="form-link">Regisztráljon!</a>
-                    </div>
+                    <input type="button" name="login" class="action-button g-recaptcha" value="Bejelentkezés">
+                    <div class="register">Nincs még fiókja? <a href="./register" class="form-link">Regisztráljon!</a></div>
                 </div>
             </div>
         </form>

@@ -512,21 +512,21 @@ main {
     transition: transform 0.7s ease-in-out;
 }
 
-.card > .card-image > .quick-add:hover {
+.card > .card-image > .button-wrapper > .quick-add:hover {
     color: #fff494;
     border-color: #fff494;
     letter-spacing: 2px;
 }
 
-.card > .card-image > .quick-add:hover::before {
+.card > .card-image > .button-wrapper > .quick-add:hover::before {
     transform: translateX(3%);
 }
 
-.card > .card-image > .quick-add:active {
+.card > .card-image > .button-wrapper > .quick-add:active {
     scale: 0.95;
 }
 
-.card > .card-image > .quick-add > svg {
+.card > .card-image > .button-wrapper > .quick-add > svg {
     margin-bottom: 5px;
 }
 

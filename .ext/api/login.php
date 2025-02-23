@@ -1,60 +1,51 @@
 <?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 include_once __DIR__."/../init.php";
-// Ha az űrlapot elküldték (post metódussal), a bejelentkezési logika fut le
+include_once __DIR__."/../classes/inputvalidator.php";
+include_once __DIR__."/../classes/captcha.php";
+
 if (isset($_POST['login'])) {
-    $recaptcha_secret = 'AIzaSyCcDQrUSOEaoHn4LhsfQiU7hpqgxzWIxe4';
-    $project_id = 'florens-botanica-1727886723149';
-    $url = "https://recaptchaenterprise.googleapis.com/v1/projects/$project_id/assessments?key=$recaptcha_secret";
-
-    $token = $_POST['g-recaptcha-response'];
-    $user_action = 'login';
-
-    $data = [
-        "event" => [
-            "token" => $token,
-            "expectedAction" => $user_action,
-            "siteKey" => "6Lc93ocqAAAAANIt9nxnKrNav4dcVN8_gv57Fpzj"
+    $validationRules = [
+        "username" => [
+            "rule" => fn($value) => !empty($value),
+            "message" => "Kérjük ne hagyja üresen a felhasználónév mezőt"
+        ],
+        "passwd" => [
+            "rule" => fn($value) => !empty($value),
+            "message" => "Kérjük ne hagyja üresen a jelszó mezőt"
         ]
     ];
 
-    $ch = curl_init();
-    curl_setopt($ch, CURLOPT_URL, $url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt($ch, CURLOPT_POST, 1);
-    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
-    curl_setopt($ch, CURLOPT_HTTPHEADER, [
-        'Content-Type: application/json'
-    ]);
+    $validator = new InputValidator($_POST, $validationRules);
+    $validationResult = $validator->test();
 
-    $response = curl_exec($ch);
-    curl_close($ch);
+    if ($validationResult->isError()) {
+        http_response_code(400);
+        echo $validationResult->toJSON();
+        exit;
+    }
 
-    $response_data = json_decode($response, true);
+    $captcha = new Captcha();
+    $captchaResult = $captcha->verify($_POST['g-recaptcha-response'] ?? '', 'login');
+    
+    if ($captchaResult->isError()) {
+        http_response_code(401);
+        echo $captchaResult->toJSON();
+        exit;
+    }
 
-    if (!isset($response_data['tokenProperties']['valid']) || !$response_data['tokenProperties']['valid']) {
-        $message = "Hibás reCAPTCHA. Kérjük próbálja újra később.";
-        header("Unauthorized", true, 401);
-        
-    } else if ($response_data['event']['expectedAction'] === $user_action && $response_data['riskAnalysis']['score'] >= 0.5) {
-        $username = $_POST['username']; // Felhasználónév lekérése
-        $password = $_POST['passwd']; // Jelszó lekérése
-        $rememberMe = isset($_POST['rememberMe']); // Emlékezz rám opció lekérése
+    // reCAPTCHA sikeres, elvégezzük a bejelentkezést
+    $username = $_POST['username'];
+    $password = $_POST['passwd'];
+    $rememberMe = isset($_POST['rememberMe']);
 
-        // Bejelentkezési függvény meghívása, amely visszaadja a siker vagy hiba állapotát
-        session_start();
-        $result = login($username, $password, $rememberMe);
+    session_start();
+    $result = login($username, $password, $rememberMe);
 
-        if ($result->isSuccess()) {
-            $message = "Sikeres bejelentkezés";
-        } else {
-            $message = "Hibás felhasználónév, vagy jelszó.";
-            header("Unauthorized", true, 401);
-        }
+    if ($result->isSuccess()) {
+        echo (new Result(Result::SUCCESS, "Sikeres bejelentkezés"))->toJSON();
     } else {
-        $message = "reCAPTCHA ellenőrzés sikertelen. Kérjük próbálja újra.";
-        header("Unauthorized", true, 401);
+        http_response_code(401);
+        echo (new Result(Result::ERROR, "Hibás felhasználónév, vagy jelszó."))->toJSON();
     }
 }
-
-echo json_encode(["message" => $message], JSON_UNESCAPED_UNICODE);
