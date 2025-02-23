@@ -10,10 +10,49 @@ export default class SubcategorySite {
     filteredProducts = [];
     pageTransitionInProgress = false;
 
-    constructor() {
+    constructor(shouldInitialize = true) {
         this.initDOM();
         this.bindEvents();
-        this.initialize();
+        this.setupStarsObserver(); // Add this new method call
+        if (shouldInitialize) {
+            this.initialize();
+        }
+    }
+
+    // Csillagok figyelő függvénye
+    setupStarsObserver() {
+        // Csillagokat generáló függvény
+        const generateStars = (element) => {
+            let rating = element.dataset.rating ?? 0;
+            const fullStars = Math.floor(rating);
+            const halfStar = rating % 1 >= 0.5;
+            const totalStars = 5;
+            
+            for (let i = 0; i < totalStars; i++) {
+                const star = document.createElement("span");
+                if (i < fullStars) {
+                    star.classList.add("filled");
+                } else if (i === fullStars && halfStar) {
+                    star.classList.add("half");
+                }
+                element.appendChild(star);
+            }
+        };
+
+        // Létrehozzuk a mutációfigyelőt
+        const observer = new MutationObserver(() => {
+            document.querySelectorAll(".review-stars").forEach((el) => {
+                if (!el.hasChildNodes()) {
+                    generateStars(el);
+                }
+            });
+        });
+
+        // Hozzácsatoljuk a figyelőt a kártyák konténeréhez
+        observer.observe(this.cardsContainer, { 
+            childList: true,
+            subtree: true 
+        });
     }
 
     /**
@@ -222,6 +261,13 @@ export default class SubcategorySite {
         await this.fetchProducts();
         this.filter = new FilterWindow(this.allProducts, this.handleFilterUpdate.bind(this));
         this.sortDropdown = new SortDropdown(this.handleSort.bind(this));
+
+        this.filteredProducts = this.sortDropdown.sortProducts(
+            this.filteredProducts,
+            'name',
+            'asc'
+        );
+        
         this.updateUI();
     }
 
@@ -277,37 +323,7 @@ export default class SubcategorySite {
     }
 }
 
-// Oldal inicializálása
-const site = new SubcategorySite();
-
-// Értékelő csillagok generálása
-function generateStars(element) {
-    let rating = element.dataset.rating ?? 0;
-    const fullStars = Math.floor(rating);
-    const halfStar = rating % 1 >= 0.5;
-    const totalStars = 5;
-    
-    for (let i = 0; i < totalStars; i++) {
-        const star = document.createElement("span");
-        if (i < fullStars) {
-            star.classList.add("filled");
-        } else if (i === fullStars && halfStar) {
-            star.classList.add("half");
-        }
-        element.appendChild(star);
-    }
+// Csak az alkategória oldalon példányosítjuk
+if (document.querySelector('script[src*="subcategory.js"]')) {
+    const site = new SubcategorySite(true);
 }
-
-// Csillagok figyelése és frissítése
-const observer = new MutationObserver(() => {
-    document.querySelectorAll(".review-stars").forEach((el) => {
-        if (!el.hasChildNodes()) {
-            generateStars(el);
-        }
-    });
-});
-
-observer.observe(document.querySelector('.cards'), { 
-    childList: true,
-    subtree: true 
-});

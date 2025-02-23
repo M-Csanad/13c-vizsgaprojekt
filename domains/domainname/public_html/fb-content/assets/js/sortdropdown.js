@@ -1,11 +1,14 @@
+import HungarianComparator from "./hungarianComparator.js";
+
 export default class SortDropdown {
     constructor(updateCallback) {
         this.updateCallback = updateCallback;
         this.isOpen = false;
-        this.activeSortType = 'name-asc'; // Set default sort
+        this.hungarianComparator = new HungarianComparator();
+        this.activeSortType = 'name-asc';
         this.initDOM();
         this.bindEvents();
-        this.updateActiveOption(); // Initialize active option
+        this.updateActiveOption();
     }
 
     initDOM() {
@@ -136,31 +139,26 @@ export default class SortDropdown {
     }
 
     sortProducts(products, property, direction) {
-        return [...products].sort((a, b) => {
-            let valueA, valueB;
-
+        const sorted = [...products].sort((a, b) => {
+            let comparison;
+            
             switch(property) {
                 case 'name':
-                    valueA = a.name.toLowerCase();
-                    valueB = b.name.toLowerCase();
+                    comparison = this.hungarianComparator.compareStrings(a.name, b.name);
                     break;
                 case 'price':
-                    valueA = parseFloat(a.unit_price);
-                    valueB = parseFloat(b.unit_price);
+                    comparison = a.unit_price - b.unit_price;
                     break;
                 case 'rating':
-                    valueA = parseFloat(a.avg_rating) || 0;
-                    valueB = parseFloat(b.avg_rating) || 0;
+                    comparison = a.avg_rating - b.avg_rating;
                     break;
                 default:
-                    return 0;
+                    comparison = 0;
             }
 
-            if (direction === 'asc') {
-                return valueA > valueB ? 1 : -1;
-            } else {
-                return valueA < valueB ? 1 : -1;
-            }
+            return direction === 'asc' ? comparison : -comparison;
         });
+
+        return sorted;
     }
 }

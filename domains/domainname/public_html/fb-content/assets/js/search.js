@@ -84,44 +84,20 @@ class Search {
 
   // Backend függvények
   search() {
-    // Kereső input mező lekérése
-    const inputField = this.domElement.querySelector(
-      "input[name='search_term']"
-    );
+    const inputField = this.domElement.querySelector("input[name='search_term']");
     if (!inputField) {
-      console.error("Keresési input nem található.");
-      return;
+        console.error("Keresési input nem található.");
+        return;
     }
-    console.log(inputField.value.trim());
+
     const searchTerm = inputField.value.trim();
     if (!searchTerm) {
-      console.log("Üres keresési kifejezés.");
-      return;
+        console.log("Üres keresési kifejezés.");
+        return;
     }
 
-    // Indítjuk a fetch()-et a search.php felé (POST metódussal)
-    const data = new FormData();
-    data.append("query", searchTerm);
-    
-    APIFetch("/api/search", "POST", data, false)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Hálózati hiba: " + response.status);
-        }
-
-        window.location = "/search";
-        return response.json();
-      })
-      .then((data) => {
-        if (data.error) {
-          console.error("Keresési hiba:", data.error);
-        } else {
-          console.log("Keresési eredmények:", data.results);
-        }
-      })
-      .catch((err) => {
-        console.error("Keresési hiba:", err);
-      });
+    // Redirect to search page with query parameter
+    window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`;
   }
 }
 

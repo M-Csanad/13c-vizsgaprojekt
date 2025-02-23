@@ -1,33 +1,53 @@
 <?php
 include_once __DIR__ . "/../init.php";
-include_once __DIR__ . "/fuzzySearch.php"; // Itt vannak a damerauLevenshtein(), partialSubstrDistance(), LinearFuzzySearch, stb.
+include_once __DIR__ . "/fuzzySearch.php";
 
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
-}
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $query = trim($_POST["query"] ?? "");
+if ($_SERVER["REQUEST_METHOD"] === "GET") {
+    $query = trim($_GET["q"] ?? "");
 
     // Ha üres a query, hibával térünk vissza
     if ($query === "") {
-        $_SESSION['search_error'] = "Üres keresés.";
+        http_response_code(400);
+        echo (new Result(Result::ERROR, "Üres keresés."))->toJSON();
         exit;
     }
 
-    // Lekérjük az összes termék adatait az adatbázisból
-    $sql = "SELECT * FROM product";
+    // Lekérjük az összes termék adatait az adatbázisból és a hozzá tartozó értékeléseket
+    $sql = "SELECT 
+        product.*, 
+        product_page.link_slug,
+        MAX(CASE 
+            WHEN image.uri LIKE '%thumbnail%' THEN REGEXP_REPLACE(image.uri, '\\.[^.]*$', '')
+        END) AS thumbnail_image,
+        MAX(CASE 
+            WHEN image.uri LIKE '%vertical%' THEN REGEXP_REPLACE(image.uri, '\\.[^.]*$', '')
+            WHEN image.uri NOT LIKE '%vertical%' AND image.uri NOT LIKE '%thumbnail%' 
+            THEN REGEXP_REPLACE(image.uri, '\\.[^.]*$', '')
+        END) AS secondary_image,
+        COALESCE(AVG(review.rating), 0) as avg_rating,
+        COUNT(DISTINCT review.id) as review_count,
+        GROUP_CONCAT(DISTINCT CONCAT(tag.id, ':', tag.name)) as tags
+    FROM product_page 
+    INNER JOIN product ON product_page.product_id = product.id
+    LEFT JOIN product_image ON product.id = product_image.product_id
+    LEFT JOIN image ON product_image.image_id = image.id
+    LEFT JOIN review ON product.id = review.product_id
+    LEFT JOIN product_tag ON product.id = product_tag.product_id
+    LEFT JOIN tag ON product_tag.tag_id = tag.id
+    GROUP BY product.id 
+    ORDER BY product.name ASC";
+    
     $result = selectData($sql, [], "");
     if ($result->isError()) {
-        $_SESSION['search_error'] = "Adatbázis hiba: " . $result->message;
+        echo $result->toJSON(true);
         exit;
     }
     if ($result->isEmpty()) {
-        $_SESSION['search_info'] = "Nincs termék az adatbázisban.";
+        echo (new Result(Result::ERROR, "Nincs termék az adatbázisban."))->toJSON();
         exit;
     }
 
     $rows = $result->message;
-    // Építünk egy termékmappát: termék neve => teljes adatok
     $productMapping = [];
     foreach ($rows as $row) {
         $productMapping[$row['name']] = $row;
@@ -39,22 +59,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $fuzzyResultsRaw = $searchEngine->search($query);
 
     // A fuzzy eredményekhez csatoljuk a termék teljes adatait
-    $fuzzyResults = [];
+    $results = [];
+    $threshold = sqrt(mb_strlen($query));
     foreach ($fuzzyResultsRaw as $item) {
-        if (isset($productMapping[$item['word']])) {
-            $item['product'] = $productMapping[$item['word']];
-            $fuzzyResults[] = $item;
+        if ($item['distance'] <= $threshold && isset($productMapping[$item['word']])) {
+            $results[] = $productMapping[$item['word']];
         }
     }
 
-    // Tároljuk a keresési kifejezést és a találatokat a session-ben
-
-    $_SESSION['search_query'] = $query;
-    $_SESSION['search_results'] = $fuzzyResults;
-
-
+    echo (new Result(Result::SUCCESS, $results))->toJSON();
     exit;
 }
 
 http_response_code(405);
-echo json_encode(["error" => "Method not allowed"], JSON_UNESCAPED_UNICODE);
+echo (new Result(Result::ERROR, "Hibás metódus"))->toJSON();
