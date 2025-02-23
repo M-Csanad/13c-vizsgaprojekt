@@ -1,11 +1,11 @@
 import HungarianComparator from "./hungarianComparator.js";
 
 export default class SortDropdown {
-    constructor(updateCallback) {
+    constructor(updateCallback, activeSortType = 'name-asc') {
         this.updateCallback = updateCallback;
         this.isOpen = false;
         this.hungarianComparator = new HungarianComparator();
-        this.activeSortType = 'name-asc';
+        this.activeSortType = activeSortType;
         this.initDOM();
         this.bindEvents();
         this.updateActiveOption();

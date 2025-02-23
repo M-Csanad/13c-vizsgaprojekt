@@ -17,14 +17,7 @@ class SearchPage extends SubcategorySite {
     async initialize() {
         await this.fetchProducts();
         this.filter = new FilterWindow(this.allProducts, this.handleFilterUpdate.bind(this));
-        this.sortDropdown = new SortDropdown(this.handleSort.bind(this));
-
-        this.filteredProducts = this.sortDropdown.sortProducts(
-            this.filteredProducts,
-            'name',
-            'asc'
-        );
-        
+        this.sortDropdown = new SortDropdown(this.handleSort.bind(this), '');
         this.updateUI();
     }
 
