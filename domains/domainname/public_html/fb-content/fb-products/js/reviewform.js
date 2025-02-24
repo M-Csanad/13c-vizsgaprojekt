@@ -25,15 +25,17 @@ if (sendButton) {
   sendButton.addEventListener("click", () => {
     sendButton.classList.remove("hovered");
     sendButton.classList.add("sent");
-    sendButton.classList.add("unsuccessful")
   })
 }
 
 let isActive = false;
 let isSet = false;
+let didSubmit = false;
 
 if (reviewSubmitter) {
   reviewSubmitter.addEventListener("click", async () => {
+    if (didSubmit) return;
+
     let title = form.querySelector("input[type=text]");
     let body = form.querySelector("textarea");
     let rating = hiddenInput.value;
@@ -64,6 +66,7 @@ if (reviewSubmitter) {
     if (response.ok) {
       reviewSubmitter.classList.remove("unsuccessful");
       reviewSubmitter.classList.add("successful");
+      didSubmit = true;
     }
     else {
       reviewSubmitter.classList.remove("successful");
