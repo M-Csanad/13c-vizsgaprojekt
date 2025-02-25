@@ -1,14 +1,33 @@
 <?php
 include_once __DIR__.'/result.php';
+
+/**
+ * InputValidator osztály
+ * 
+ * Az InputValidator osztály felelős a bemeneti adatok ellenőrzéséért a megadott szabályok alapján.
+ * A bemeneteket reguláris kifejezések vagy megadott függvények segítségével ellenőrzi.
+ */
 class InputValidator {
     public $inputs;
     public $rules;
 
-    public function __construct($inputs, $rules) {
+    /**
+     * InputValidator konstruktor.
+     * 
+     * @param array $inputs Egy asszociatív tömb a validálandó bemeneti adatokkal.
+     * @param array $rules Egy asszociatív tömb a validálási szabályokkal. Minden szabály lehet reguláris kifejezés vagy függvény.
+     */
+    public function __construct(array $inputs, array $rules) {
         $this->inputs = $inputs; 
         $this->rules = $rules;
     }
 
+    /**
+     * A bemenetek validálása a megadott szabályok alapján.
+     * 
+     * @return Result Egy Result objektum, amely tartalmazza a validálás eredményét.
+     * @throws InvalidArgumentException Ha érvénytelen ellenőrzési típus található.
+     */
     public function test(): Result {
         $hasAnyMatcher = array_key_exists("*", $this->rules);
         foreach ($this->inputs as $field => $value) {

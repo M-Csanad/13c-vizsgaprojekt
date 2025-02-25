@@ -6,12 +6,23 @@ require      __DIR__.'/../../vendor/autoload.php';
 include_once __DIR__.'/result.php';
 include_once __DIR__.'/../env_config.php';
 
+/**
+ * Mail osztály
+ * 
+ * A Mail osztály felelős az email küldéséért a PHPMailer könyvtár segítségével.
+ * Támogatja az aszinkron és szinkron email küldést, valamint különböző típusú email sablonokat.
+ */
 class Mail {
     private $mailer;
     private $username;
     private $password;
     private $name;
 
+    /**
+     * Mail konstruktor.
+     * 
+     * Inicializálja a PHPMailer objektumot és betölti a környezeti változókat.
+     */
     public function __construct() {
         $this->mailer = new PHPMailer(true);
 
@@ -21,7 +32,16 @@ class Mail {
         $this->name = $_ENV['EMAIL_NAME'];
     }
 
-    public function sendTo($recipients, $mail, $async = false) {
+    /**
+     * Email küldése a megadott címzetteknek.
+     * 
+     * @param array $recipients A címzettek listája.
+     * @param array $mail Az email tartalma (tárgy, törzs, stb.).
+     * @param bool $async Ha true, az email aszinkron módon kerül küldésre.
+     * @return Result Egy Result objektum, amely tartalmazza a küldés eredményét.
+     */
+    public function sendTo(array $recipients, array $mail, bool $async = false): Result {
+        // Aszinkron küldés egy új háttérfolyamat indításával
         if ($async) {
             $dir = dirname(realpath(__FILE__));
             $recipientBase64 = base64_encode(json_encode($recipients, JSON_UNESCAPED_UNICODE));
@@ -35,7 +55,7 @@ class Mail {
                 putenv('PATH=' . $currentPath . ';' . $phpDir);
             }
 
-            // Parancs elkészítése
+            // Parancs elkészítése Windowsra és Linuxra
             if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
                 $command = "start /B php $dir/mail_async_worker.php $recipientBase64 $mailBase64 > NUL 2>&1";
             } else {
@@ -79,7 +99,15 @@ class Mail {
         }
     }
 
-    public static function getMailBody($type='order', $name, $data) {
+    /**
+     * Email törzsének generálása a megadott típus alapján.
+     * 
+     * @param string $type Az email típusa (pl. 'order', 'reset_password').
+     * @param string $name A címzett neve.
+     * @param array $data Az emailhez szükséges adatok.
+     * @return string Az email törzse HTML formátumban.
+     */
+    public static function getMailBody(string $type='order', string $name, array $data): string {
         switch ($type) {
             case 'order':
                 $orderNumber = $data['orderNumber'];
@@ -169,7 +197,7 @@ class Mail {
                             <p>Kedves <strong style='color: #333333;'>{$name}</strong>,</p>
                             <p style='color: #333333;'>Jelszó visszaállítást kért a fiókjához. Kattintson az alábbi gombra a jelszó módosításához:</p>
                             <div style='text-align: center; margin: 30px 0;'>
-                                <a href='{$resetLink}' style='background-color: #9acd32; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Jelszó visszaállítása</a>
+                                <a href='{$resetLink}' style='background-color: #9acd32; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Jelszó v[...]
                             </div>
                             <p style='color: #333333;'>Ha nem Ön kérte a jelszó visszaállítást, kérjük hagyja figyelmen kívül ezt az emailt.</p>
                             <p style='color: #333333; font-size: 12px;'>A link 30 percig érvényes.</p>
@@ -189,7 +217,15 @@ class Mail {
         }
     }       
 
-    public static function getMailAltBody($type="order", $name, $data) {
+    /**
+     * Az email alternatív törzsének generálása a megadott típus alapján.
+     * 
+     * @param string $type Az email típusa (pl. 'order', 'reset_password').
+     * @param string $name A címzett neve.
+     * @param array $data Az emailhez szükséges adatok.
+     * @return string Az email alternatív törzse egyszerű szöveg formátumban.
+     */
+    public static function getMailAltBody(string $type="order", string $name, array $data) {
         switch ($type) {
             case 'order':
                 $orderNumber = $data['orderNumber'];
