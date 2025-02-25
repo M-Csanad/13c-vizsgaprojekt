@@ -90,7 +90,7 @@
         <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
         </svg>
         <div class="overlay-body">
-            Hiba merült fel a rendelésed leadása során. Kérjük, ellenőrizd a mezők helyességét és próbáld meg újra, vagy keress meg minket. 
+            Hiba merült fel a rendelésed leadása során. Kérjük, ellenőrizd a mezők helyességét, a termékek elérhetőségét és próbáld meg újra, vagy keress meg minket. 
         </div>
         <button class="overlay-close">Újra próbálkozok</button>
     </div>

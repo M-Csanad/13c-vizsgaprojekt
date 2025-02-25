@@ -9,61 +9,6 @@
     }
 
     $subcategoryData = $result->message[0];
-
-    $result = selectData("SELECT product.*, product_page.link_slug, COALESCE(AVG(review.rating), 0) as avg_rating, COUNT(review.id) as review_count 
-    FROM product_page 
-    INNER JOIN product ON product_page.product_id = product.id 
-    LEFT JOIN review ON product.id = review.product_id
-    WHERE product_page.subcategory_id=? 
-    GROUP BY product.id, product_page.link_slug
-    ORDER BY product.id ASC;", $ids[1], "i");
-    if ($result->isError()) {
-        include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
-        exit();
-    }
-    
-    $products = $result->message;
-
-    $result = selectData("SELECT
-            product.id AS product_id,
-            MAX(CASE WHEN image.uri LIKE '%thumbnail%' THEN image.uri END) AS thumbnail_image,
-            MAX(CASE 
-                WHEN image.uri LIKE '%vertical%' THEN image.uri
-                WHEN image.uri NOT LIKE '%vertical%' AND image.uri NOT LIKE '%thumbnail%' THEN image.uri 
-                END) AS secondary_image
-        FROM 
-            image
-        INNER JOIN 
-            product_image ON product_image.image_id = image.id
-        INNER JOIN 
-            product ON product_image.product_id = product.id
-        INNER JOIN 
-            product_page ON product_page.product_id = product.id
-        WHERE product_page.subcategory_id=?
-        GROUP BY 
-            product.id, product.name
-        ORDER BY product.id ASC;", $ids[1], 'i');
-
-    if ($result->isError()) {
-        include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
-        exit();
-    }
-    $images = $result->message;
-
-    if (is_array($products)) {
-        // A termékekhez hozzácsatoljuk a képeket
-        foreach ($products as $index=>$product) {
-            // Mivel a termékek is és a képek is növekvő sorrendbe vannak
-            // rendezve a product.id alapján, így a lista index-szel
-            // is el tudjuk érni a hozzá tartozó képeket
-            $products[$index]["thumbnail_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $images[$index]["thumbnail_image"]);
-            $products[$index]["secondary_image"] = preg_replace('/\.[a-zA-Z0-9]+$/', '', $images[$index]["secondary_image"]);
-        }
-        usort($products, function($a, $b) {
-            return $a["name"] <=> $b["name"];
-        });
-    }
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -174,7 +119,7 @@
                         </a>
                         <header>
                             <?= htmlspecialchars($subcategoryData["name"]); ?> 
-                            <span class="product-count" style="font-size: 18px; color: #dddddd; font-family: Roboto"><?= htmlspecialchars(is_array($products) ? count($products) : 0); ?> termék összesen</span>
+                            <span id="total-product-count" style="font-size: 18px; color: #dddddd; font-family: Roboto"></span>
                         </header>
                         <div class="subname">
                             <?= htmlspecialchars($subcategoryData["subname"]); ?>

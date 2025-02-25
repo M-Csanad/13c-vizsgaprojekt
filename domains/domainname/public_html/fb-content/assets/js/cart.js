@@ -1,3 +1,4 @@
+import { handleQuantityChange } from '../../fb-products/js/numberfield.js';
 import Popup from './popup.js';
 import APIFetch from './apifetch.js';
 
@@ -53,6 +54,9 @@ class Cart {
             else {
                 // UI frissítése, ha nincs felugró ablak
                 this.updateUI();
+                
+                // Kosár ellenőrzése és hibás termékek megjelölése
+                await this.validateCart();
             }
 
         } catch (err) {
@@ -88,7 +92,7 @@ class Cart {
         this.openButton = document.querySelector(".cart-open");
         if (!this.openButton) throw new Error("Nincs kinyitó gomb.");
 
-        // Add cart badge
+        // Kosár jelvény hozzáadása
         this.cartBadge = document.createElement('div');
         this.cartBadge.className = 'cart-badge';
         this.openButton.appendChild(this.cartBadge);
@@ -137,6 +141,11 @@ class Cart {
         this.quickAddButtons?.forEach(button => button.addEventListener("click", () => this.add(null, this.getUrlFromCard(button))));
 
         this.cartContainer.addEventListener("click", async (e) => {
+            const cartItem = e.target.closest('.cart-item');
+            if (!cartItem || cartItem.querySelector('.item-image').classList.contains('invalid-stock')) {
+                return; // Blokkolja az összes interakciót, ha az elem érvénytelen
+            }
+
             if (e.target.closest('.item-remove')) {
                 const index = this.getProductDOMIndex(e);
                 await this.remove(index);
@@ -145,6 +154,7 @@ class Cart {
             
             if (e.target.closest('.number-field-add')) {
                 e.stopPropagation();
+                e.preventDefault(); // Hozzáadja ezt az alapértelmezett viselkedés megakadályozásához
 
                 const index = this.getProductDOMIndex(e);
                 const currentElement = e.target.closest('.number-field').querySelector('.product-quantity');
@@ -155,6 +165,7 @@ class Cart {
 
             if (e.target.closest('.number-field-subtract')) {
                 e.stopPropagation();
+                e.preventDefault(); // Hozzáadja ezt az alapértelmezett viselkedés megakadályozásához
 
                 const index = this.getProductDOMIndex(e);
                 const currentElement = e.target.closest('.number-field').querySelector('.product-quantity');
@@ -162,7 +173,28 @@ class Cart {
                 await this.changeCount('-', index, currentElement.value, currentElement.getAttribute('max'));
                 return;
             }
-        })
+        });
+
+        // Frissíti a vásárlás gomb validációját az API használatával
+        this.checkoutButton.addEventListener('click', async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const result = await APIFetch("/api/cart/check", "GET");
+            
+            if (!result.ok) {
+                console.error("Sikertelen validáció");
+                return;
+            }
+
+            const data = await result.json();
+            if (data.type === "ERROR") {
+                this.markInvalidItems(data.message, this.isOpen);
+                return;
+            }
+
+            window.location.href = this.checkoutButton.href;
+        });
     }
 
     setupCardEvents() {
@@ -231,7 +263,7 @@ class Cart {
                         </div>
                     <div class="number-field">
                         <div class="number-field-subtract">-</div>
-                        <input type="number" disabled name="product-quantity" class="product-quantity" placeholder="Darab" max="${product.stock}" min="1" value="${product.quantity}">
+                        <input type="number" name="product-quantity" class="product-quantity" placeholder="Darab" max="${product.stock}" min="1" value="${product.quantity}" pattern="[0-9]*">
                         <div class="number-field-add">+</div>
                     </div>
                     <div class="item-remove">
@@ -392,13 +424,17 @@ class Cart {
         
         if (operation != '+' && operation != '-') throw new Error("Ismeretlen művelet a changeCount függvényben: "+ operation)
 
-        const change = 1 * (operation == '-' ? -1 : 1);
-        if (Number(currentValue) + change > Number(maxValue) || Number(currentValue) + change < 1) return;
+        const delta = operation === '-' ? -1 : 1;
+        if (Number(currentValue) + delta > Number(maxValue) || Number(currentValue) + delta < 1) return;
 
-        const result = await APIFetch("/api/cart/update", "PUT", { operation: operation, product_id: product.product_id });
+        const result = await APIFetch("/api/cart/update", "PUT", { 
+            delta: delta, 
+            product_id: product.product_id 
+        });
+        
         if (result.ok) {
-            const input = productElement.querySelector(".number-field-" + (operation == '+' ? 'add' : 'subtract'));
-            handleQuantityChange(input, change);
+            const quantityInput = productElement.querySelector('.product-quantity');
+            handleQuantityChange(quantityInput, delta);
             
             await this.fetchCartData();
             this.updateUI(false);
@@ -406,7 +442,6 @@ class Cart {
         else {
             console.log(result)
         }
-        
     }
 
     // Lekéri a kosár tartalmát
@@ -418,6 +453,7 @@ class Cart {
             this.data = data.message;
             this.lastFetchResultType = data.type;
             if (data.type == "SUCCESS") {
+                console.log("Kosár lekérdezve: ", this.data);
                 this.cartPrice = this.data.reduce((a, b) => a + (b.unit_price * b.quantity), 0);
             }
         } else {
@@ -437,6 +473,69 @@ class Cart {
         else {
             console.log(mergeResponse);
         }
+    }
+
+    // Új metódusok hozzáadása a kosár validálásához
+    async validateCart() {
+        // Helyi validálás a meglévő adatok használatával
+        const invalidItems = this.data.filter(item => item.quantity > item.stock)
+            .map(item => ({
+                product_id: item.product_id,
+                stock: item.stock
+            }));
+        
+        if (invalidItems.length > 0) {
+            this.markInvalidItems(invalidItems, this.isOpen);
+            return false;
+        }
+
+        return true;
+    }
+
+    markInvalidItems(invalidItems, animate = false) {
+        const cartItems = this.cartContainer.querySelectorAll('.cart-item');
+        
+        cartItems.forEach((item, index) => {
+            const product = this.data[index];
+            const invalid = invalidItems.find(i => i.product_id === product.product_id);
+            
+            if (invalid) {
+                const imageWrapper = item.querySelector('.item-image');
+                const stockMsg = invalid.stock === 0 ? 
+                    "A termék elfogyott" : 
+                    "Nem megfelelő mennyiség";
+
+                // Hibás stílus hozzáadása
+                imageWrapper.classList.add('invalid-stock');
+                
+                // A mennyiség bevitelének frissítése az aktuális készlet megjelenítéséhez
+                const quantityInput = item.querySelector('.product-quantity');
+                quantityInput.disabled = true;
+
+                // Hiba hozzáadása a képhez, ha még nincs jelen
+                if (!imageWrapper.querySelector('.stock-error')) {
+                    const errorElement = document.createElement('div');
+                    errorElement.className = 'stock-error';
+                    errorElement.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
+                            <path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.15.15 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.2.2 0 0 1-.054.06.1.1 0 0 1-.066.017H1.146a.1.1 0 0 1-.066-.017.2.2 0 0 1-.054-.06.18.18 0 0 1 .002-.183L7.884 2.073a.15.15 0 0 1 .054-.057m1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767z"/>
+                            <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
+                        </svg>
+                        <span>${stockMsg}</span>
+                    `;
+                    imageWrapper.appendChild(errorElement);
+
+                    if (animate && this.isOpen) {
+                        gsap.from(errorElement, {
+                            opacity: 0,
+                            scale: 0.95,
+                            duration: 0.4,
+                            ease: "power2.out"
+                        });
+                    }
+                }
+            }
+        });
     }
 }
 

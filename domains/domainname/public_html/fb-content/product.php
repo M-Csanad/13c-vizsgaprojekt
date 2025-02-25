@@ -281,11 +281,11 @@
           <a href="<?= htmlspecialchars(ROOT_URL."/".format_str($product["category_name"])."/".format_str($product["subcategory_name"])); ?>" class="breadcrumb-item"><?= htmlspecialchars($product["subcategory_name"]); ?></a>
           <div class="breadcrumb-splitter">/</div>
         </div>
+        <div class="price" aria-label="Ár">
+          <span class="price-value"><?= htmlspecialchars($product["unit_price"]); ?></span>
+          <span class="price-currency">Ft</span>
+        </div>
         <div class="inline-container">
-          <div class="price" aria-label="Ár">
-            <span class="price-value"><?= htmlspecialchars($product["unit_price"]); ?></span>
-            <span class="price-currency">Ft</span>
-          </div>
           <?php if (is_array($reviews)): ?>
             <div
               class="avg-review"
@@ -294,16 +294,55 @@
               data-reviews="<?= htmlspecialchars($reviewNum) ?>"
             ></div>
           <?php endif; ?>
+          <div class="stock-indicator">
+              <div class="stock-info">
+                  <div class="stock-count">Készleten: <?= htmlspecialchars($product["stock"]); ?> db</div>
+              </div>
+              <div class="stock-bar-container">
+                  <div class="stock-bar <?= $product["stock"] <= 0 ? 'out-of-stock' : ($product["stock"] > 10 ? 'high' : ($product["stock"] > 5 ? 'medium' : 'low')) ?>" 
+                        style="width: <?= $product["stock"] <= 0 ? '100' : min(($product["stock"] / 15) * 100, 100) ?>%">
+                  </div>
+              </div>
+              <div class="stock-message <?= $product["stock"] <= 0 ? 'out-of-stock' : ($product["stock"] > 10 ? 'high' : ($product["stock"] > 5 ? 'medium' : 'low')) ?>">
+                  <?php if ($product["stock"] <= 0): ?>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                      <span>Jelenleg nem elérhető</span>
+                  <?php elseif ($product["stock"] > 10): ?>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <span>Nagy mennyiségben elérhető</span>
+                  <?php elseif ($product["stock"] > 5): ?>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                      </svg>
+                      <span>Fogyóban van a készlet</span>
+                  <?php else: ?>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                      </svg>
+                      <span>Utolsó darabok! Siessen, mielőtt elfogy!</span>
+                  <?php endif; ?>
+              </div>
+          </div>
         </div>
+        <?php if ($product["stock"] > 0): ?>
         <div class="input-group">
           <label for="product-quantity">Mennyiség:</label>
           <div class="number-field">
             <div class="number-field-subtract">-</div>
-            <input disabled type="number" name="product-quantity" class="product-quantity" placeholder="Darab" max="<?= htmlspecialchars($product['stock']); ?>" min="1" value="1">
+            <input type="text" name="product-quantity" class="product-quantity" 
+                   placeholder="Darab" 
+                   max="<?= htmlspecialchars($product['stock']); ?>" 
+                   min="1" 
+                   value="1"
+                   pattern="[0-9]*">
             <div class="number-field-add">+</div>
           </div>
         </div>
-        <button class="add-to-cart">
+        <button class="add-to-cart" <?= $product["stock"] <= 0 ? 'disabled' : '' ?>>
           <div>Kosárba</div>
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -318,6 +357,7 @@
             />
           </svg>
         </button>
+        <?php endif; ?>
         <div class="share" aria-label="Megosztás">
           <div>Megosztás</div>
           <svg
@@ -664,7 +704,7 @@
           >
             <path
               fill-rule="evenodd"
-              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"
+              d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708-.708"
             />
           </svg>
         </div>

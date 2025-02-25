@@ -64,10 +64,12 @@ export default class SubcategorySite {
         this.cardsContainer = document.querySelector('.cards');
         this.pagination = document.querySelector('.pagination');
         this.productCount = document.querySelector('.product-count');
+        this.totalProductCount = document.querySelector('#total-product-count');
         
         if (!this.cardsContainer) throw new Error("Nem található a kártyák konténere");
         if (!this.pagination) throw new Error("Nem található a lapozó");
         if (!this.productCount) throw new Error("Nem található a termékszámláló");
+        if (!this.totalProductCount) throw new Error("Nem található az összes termék számláló");
     }
 
     // Eseménykezelők beállítása
@@ -165,11 +167,19 @@ export default class SubcategorySite {
     // Termékkártya HTML létrehozása
     createProductCard(product) {
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className = `card${product.stock > 0 ? '' : ' out-of-stock'}`;
         card.dataset.productId = product.id;
 
         card.innerHTML = `
             <div class="card-image">
+                ${product.stock <= 0 ? `
+                    <div class="out-of-stock-label">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Nem elérhető
+                    </div>
+                ` : ''}
                 <a href="/${product.link_slug}">
                     <picture>
                         <source type="image/webp" srcset="${product.thumbnail_image}-768px.webp">
@@ -180,14 +190,16 @@ export default class SubcategorySite {
                         <img src="${product.secondary_image}-768px.webp" alt="${product.name}">
                     </picture>
                 </a>
-                <div class="button-wrapper">
-                    <button class="quick-add" data-product-url="${product.link_slug}">
-                        <div>Kosárba</div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
-                            <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
-                        </svg>
-                    </button>
-                </div>
+                ${product.stock > 0 ? `
+                    <div class="button-wrapper">
+                        <button class="quick-add" data-product-url="${product.link_slug}">
+                            <div>Kosárba</div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bag" viewBox="0 0 16 16">
+                                <path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z"/>
+                            </svg>
+                        </button>
+                    </div>
+                ` : ''}
             </div>
             <div class="card-body">
                 <div class="name" title="${product.name}">${product.name}</div>
@@ -267,6 +279,9 @@ export default class SubcategorySite {
             'name',
             'asc'
         );
+        
+        // Update total product count
+        this.totalProductCount.textContent = `${this.allProducts.length} termék összesen`;
         
         this.updateUI();
     }

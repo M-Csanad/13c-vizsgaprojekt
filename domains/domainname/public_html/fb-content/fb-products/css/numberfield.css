@@ -8,7 +8,8 @@
     font-size: 16px;
     color: rgb(224, 224, 224);
     border: 1px solid transparent;
-    transition: border-color 0.3s ease, background-color 0.3s ease, outline 0.3s ease;
+    transition: opacity 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, outline 0.3s ease;
+    opacity: 1;
 }
 
 .number-field > * {
@@ -24,10 +25,11 @@
     outline: none;
     height: 30px;
     border: none;
-    border-block: 1px solid #494949;
+    border-block: 1px solid #505050;
     background-color: transparent;
     color: white;
     text-align: center;
+    transition: color 0.3s ease, border-color 0.3s ease, outline 0.3s ease;
 }
 
 /* Chrome, Safari, Edge, Opera */
@@ -49,7 +51,7 @@
     aspect-ratio: 1 / 1;
     display: flex;
     justify-content: center;
-    line-height: 26px;
+    align-items: center;
     font-size: 20px;
     border: 1px solid #505050;
     user-select: none;
@@ -59,5 +61,42 @@
 }
 
 .number-field > div:hover {
+    background-color: #303030;
+}
+
+.number-field.disabled,
+.number-field:has(input:disabled) > input {
+    cursor: not-allowed;
+}
+
+.number-field.disabled > div,
+.number-field:has(input:disabled) > div {
+    cursor: not-allowed;
+}
+
+.number-field.disabled > div:hover,
+.number-field:has(input:disabled) > div:hover {
+    background-color: #303030;
+}
+
+.number-field > input.invalid {
+    color: #ff6b6b;
+    border-color: #ff6b6b;
+}
+
+.number-field > input.invalid:focus {
+    outline: 2px solid #ff6b6b33;
+}
+
+.number-field > input.valid {
+    color: #4cd964;
+    border-color: #4cd964;
+}
+
+.number-field > input.valid:focus {
+    outline: 2px solid #4cd96433;
+}
+
+.number-field > div:not(:disabled):hover {
     background-color: #303030;
 }

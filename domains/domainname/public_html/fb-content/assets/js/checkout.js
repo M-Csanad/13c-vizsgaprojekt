@@ -618,6 +618,7 @@ class Checkout {
     }
 
     async fetchAll() {
+        await this.validateCheckoutStocks();
         await this.fetchCartData();
         await this.fetchAutofill();
     }
@@ -634,6 +635,14 @@ class Checkout {
             }
         } else {
             throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());
+        }
+    }
+
+    async validateCheckoutStocks() {
+        const result = await APIFetch("/api/cart/check", "GET");
+        
+        if (!result.ok || (await result.json()).type === "ERROR") {
+            window.location.href = '/';
         }
     }
 

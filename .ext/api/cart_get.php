@@ -21,27 +21,65 @@ if ($user->isSuccess()) {
     $user = $user->message[0];
 }
 
+// Segédfüggvény a készletértékek frissítéséhez a kosár adataiban
+function updateStockValues($cartData) {
+    if (empty($cartData)) return [];
+    
+    // Az összes termékazonosító lekérése
+    $productIds = array_map(function($item) {
+        return $item['product_id'];
+    }, $cartData);
+    
+    // Lekérdezés összeállítása a friss készletértékek lekéréséhez
+    $placeholders = str_repeat('?,', count($productIds) - 1) . '?';
+    $types = str_repeat('i', count($productIds));
+    
+    $stockResult = selectData(
+        "SELECT id, stock FROM product WHERE id IN ($placeholders)",
+        $productIds,
+        $types
+    );
+    
+    if ($stockResult->isError() || $stockResult->isEmpty()) {
+        return $cartData;
+    }
+    
+    // Készletadatok keresési tömbjének létrehozása
+    $stockData = array_column($stockResult->message, 'stock', 'id');
+    
+    // Készletértékek frissítése a kosár adataiban
+    foreach ($cartData as &$item) {
+        if (isset($stockData[$item['product_id']])) {
+            $item['stock'] = $stockData[$item['product_id']];
+        }
+    }
+    
+    return $cartData;
+}
+
 // Ha a Sessionben, vagy sütiben van kosár tartalom, akkor azt adjuk vissza.
 if (isset($_SESSION['cart']) && !empty($_SESSION['cart']) && !$isLoggedIn) {
-
+    $_SESSION['cart'] = updateStockValues($_SESSION['cart']);
+    
     if (!isset($_COOKIE['cart']) || empty(json_decode($_COOKIE['cart'], true))) {
         setCartCookie();
     }
 
     $result = new Result(Result::SUCCESS, $_SESSION['cart']);
     echo $result->toJSON();
+    exit();
 }
 else if (isset($_COOKIE['cart']) && !empty(json_decode($_COOKIE['cart'], true))) {
-
     $cartData = json_decode($_COOKIE['cart'], true);
 
     if (!$isLoggedIn) {
-        if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
-            $_SESSION['cart'] = $cartData;
-        }
+        $cartData = updateStockValues($cartData);
+        $_SESSION['cart'] = $cartData;
+        setCartCookie();
         
         $result = new Result(Result::SUCCESS, $cartData);
         echo $result->toJSON();
+        exit();
     }
     else {
         $result = new Result(Result::PROMPT, [

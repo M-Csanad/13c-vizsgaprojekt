@@ -101,6 +101,7 @@
 
 .cart > .cart-main > .cart-items .cart-item .item-image {
     overflow: hidden;
+    position: relative;
 }
 
 .cart > .cart-main > .cart-items .cart-item .item-image > a > picture {
@@ -324,6 +325,48 @@
     opacity: 0;
     visibility: hidden;
     will-change: opacity;
+}
+
+.stock-error {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: rgba(30, 30, 30, 0.676);
+    will-change: opacity, transform;
+    text-align: center;
+    padding: 8px;
+}
+
+.stock-error svg {
+    width: 24px;
+    height: 24px;
+    fill: #ff6b6b;
+    flex-shrink: 0;
+}
+
+.stock-error span {
+    color: #ff6b6b;
+    font-weight: 500;
+}
+
+.invalid-stock .number-field {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.invalid-stock .number-field input,
+.invalid-stock .number-field-add,
+.invalid-stock .number-field-subtract {
+    cursor: not-allowed;
+    color: rgb(255, 50, 50) !important;
+    border-color: rgb(255, 50, 50);
 }
 
 @media screen and (min-width: 768px) {

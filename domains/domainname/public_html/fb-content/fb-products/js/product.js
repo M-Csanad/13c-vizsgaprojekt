@@ -1,387 +1,401 @@
-// Egyszerű 5 csillagos értékelés generáló segédfüggvény
-function generateStars(element) {
-  let rating = element.dataset.rating ?? 0;
-
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 >= 0.5;
-  const totalStars = 5;
-
-  for (let i = 0; i < totalStars; i++) {
-    const star = document.createElement("span");
-    if (i < fullStars) {
-      star.classList.add("filled");
-    } else if (i === fullStars && halfStar) {
-      star.classList.add("half");
-    }
-    element.appendChild(star);
-  }
-}
-
-// Értékelés generálása
-const avgReviewElement = document.querySelector(".avg-review");
-if (avgReviewElement) {
-  const rating = parseFloat(avgReviewElement.getAttribute("data-rating"));
-  const reviewCount = parseInt(avgReviewElement.getAttribute("data-reviews"));
-  
-  const ratingNumber = document.createElement("div");
-  const starsContainer = document.createElement("div");
-  
-  ratingNumber.classList.add("rating-number");
-  ratingNumber.textContent = rating.toFixed(1);
-  starsContainer.classList.add("stars");
-  
-  const fullStars = Math.floor(rating);
-  const halfStar = rating % 1 >= 0.5;
-  const totalStars = 5;
-  
-  for (let i = 0; i < totalStars; i++) {
-    const star = document.createElement("span");
-    if (i < fullStars) {
-      star.classList.add("filled");
-    } else if (i === fullStars && halfStar) {
-      star.classList.add("half");
-    }
-    starsContainer.appendChild(star);
-  }
-  
-  const reviewCountElement = document.createElement("div");
-  const starsAndReviews = document.createElement("div");
-  
-  reviewCountElement.classList.add("review-count");
-  starsAndReviews.classList.add("stars-and-reviews");
-  reviewCountElement.textContent = `${reviewCount} értékelés`;
-  
-  starsAndReviews.appendChild(starsContainer);
-  starsAndReviews.appendChild(reviewCountElement);
-  avgReviewElement.appendChild(ratingNumber);
-  avgReviewElement.appendChild(starsAndReviews);
-}
-
-// A termékképek mögött megjelenő dinamikus háttér frissítése
-function updateDynamicBackground() {
-  const activeImage = document.querySelector(".images img.active");
-
-  if (activeImage) {
-    const color = getDominantColor(activeImage);
-    activeImage.parentElement.style.boxShadow = `0px 0px 150px ${color}88`;
-  }
-}
-
-// Ahhoz, hogy a termékképnek be tudjunk állítani egy megfelelő színű háttérszínt,
-// egy Canvas trükk segítségével kinyerjük a 'domináns' színt.
-function getDominantColor(image) {
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-
-  // Canvas méretének lecsökkentése 1x1 pixelre
-  canvas.width = 1;
-  canvas.height = 1;
-
-  // A képünket beillesztjük a Canvasba -> Domináns szín fog csak megjelenni.
-  ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
-
-  // A szín kinyerése
-  const imageData = ctx.getImageData(0, 0, 1, 1).data;
-  let [r, g, b] = imageData;
-
-  return `#${((1 << 24) | (r << 16) | (g << 8) | b) // RGB -> Hex
-    .toString(16)
-    .slice(1)
-    .toUpperCase()}`;
-}
-
-// Címkék felett megjelenő tooltip generálása
-const tags = document.querySelectorAll(".tag");
-
-tags.forEach((tag) => {
-  const tooltipText = tag.querySelector("img").alt;
-
-  if (!tooltipText) return;
-
-  const tooltip = document.createElement("div");
-  tooltip.classList.add("tooltip");
-  tooltip.textContent = tooltipText;
-  tooltip.style.setProperty("--visible", 0);
-  tag.appendChild(tooltip);
-
-  let isTooltipActive = false;
-  let animationId = null;
-
-  const updateTooltipPosition = () => {
-    const rect = tag.getBoundingClientRect();
-    const tooltipRect = tooltip.getBoundingClientRect();
-
-    tooltip.classList.remove("right", "left");
-    tooltip.style.top = "auto";
-    tooltip.style.left = "auto";
-
-    let top = rect.top - tooltipRect.height - 8;
-    let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
-
-    if (top < 0) {
-      top = rect.bottom + 8;
-    }
-    if (left + tooltipRect.width > window.innerWidth) {
-      left = window.innerWidth - tooltipRect.width - 30;
-      tooltip.classList.add("right");
-    }
-    if (left < 0) {
-      left = rect.left;
-      tooltip.classList.add("left");
+class ProductPage {
+    constructor() {
+        // Állapot változók inicializálása
+        this.isZoom = false;
+        this.isNavAnimating = false;
+        this.frameId = null;
+        this.scrollFrameId = null;
+        
+        this.initDOM();
+        this.bindEvents();
+        this.initialize();
     }
 
-    tooltip.style.top = `${top}px`;
-    tooltip.style.left = `${left}px`;
+    initDOM() {
+        // DOM elemek referenciáinak létrehozása
+        this.imageViewer = {
+            container: document.querySelector('.images'),
+            images: document.querySelectorAll('.images .image'),
+            navigator: {
+                images: document.querySelectorAll('.navigator-image'),
+                arrows: document.querySelectorAll('.arrow'),
+                scrollbar: document.querySelector('.navigator > .navigator-arrows > .navigator-progress > .progressbar'),
+                carousel: document.querySelector('.navigator > .navigator-images')
+            }
+        };
 
-    animationId = null;
-  };
+        this.recommendations = {
+            container: document.querySelector('.products'),
+            scrollbar: document.querySelector('.product-navigator > .navigator-progress > .progressbar'),
+            arrows: document.querySelectorAll('.navigator-button')
+        };
 
-  const showTooltip = () => {
-    isTooltipActive = true;
-    tooltip.style.setProperty("--visible", 1);
-    updateTooltipPosition();
-  };
-
-  const hideTooltip = () => {
-    isTooltipActive = false;
-    setTimeout(() => {
-      if (!isTooltipActive) {
-        tooltip.style.setProperty("--visible", 0);
-        tooltip.style.top = "auto";
-        tooltip.style.left = "auto";
-      }
-    }, 300);
-    if (animationId) {
-      cancelAnimationFrame(animationId);
-      animationId = null;
-    }
-  };
-
-  tag.addEventListener("mouseenter", showTooltip);
-  tag.addEventListener("mouseleave", hideTooltip);
-
-  const requestTooltipUpdate = () => {
-    if (!animationId) {
-      animationId = requestAnimationFrame(updateTooltipPosition);
-    }
-  };
-
-  window.addEventListener("scroll", () => {
-    if (getComputedStyle(tooltip).getPropertyValue("--visible") == true) {
-      requestTooltipUpdate();
-    }
-  });
-});
-
-const navigatorImages = document.querySelectorAll(".navigator-image");
-let isNavAnimating = false;
-const allImages = document.querySelectorAll(".images .image");
-navigatorImages.forEach((navigatorImage, index) => {
-  allImages[index].style.zIndex = navigatorImages.length - 1 - index;
-  navigatorImage.addEventListener("click", () => {
-    if (isNavAnimating) return;
-    isNavAnimating = true;
-
-    const currentImage = document.querySelector(".image.active");
-    const targetImage = allImages[index];
-
-    if (currentImage == targetImage) {
-      isNavAnimating = false;
-      return;
+        this.tags = document.querySelectorAll('.tag');
+        this.avgReviewElement = document.querySelector('.avg-review');
+        this.reviewStars = document.querySelectorAll('.review-stars');
+        this.topButton = document.getElementById('top-button');
+        this.shareButton = document.querySelector('.share');
     }
 
-    targetImage.classList.add("active");
-    currentImage.classList.remove("active");
+    bindEvents() {
+        // Képnéző események
+        this.imageViewer.navigator.images.forEach((img, index) => 
+            img.addEventListener('click', () => this.switchImage(index)));
 
-    currentImage.style.zIndex = 10;
-    targetImage.style.zIndex = 100;
-
-    targetImage.animate(
-      {
-        scale: [1.2, 1],
-        opacity: [0, 1],
-      },
-      {
-        fill: "forwards",
-        duration: 300,
-        easing: "ease",
-      }
-    );
-
-    updateDynamicBackground();
-    setTimeout(() => {
-      currentImage.style.zIndex = -1;
-      isNavAnimating = false;
-    }, 300);
-  });
-});
-
-function requestZoomUpdate(e) {
-  const wrapper = e.target.parentElement;
-
-  const rect = wrapper.getBoundingClientRect();
-  const imageRect = e.target.getBoundingClientRect();
-
-  // Kurzor relatív pozíciója a .wrapper-hez képest.
-  const relX = (e.clientX - rect.left) / rect.width - 0.5; // [-0.5 ... 0.5]
-  const relY = (e.clientY - rect.top) / rect.height - 0.5; // [-0.5 ... 0.5]
-
-  // Maximális mozgás mindkét tengelyen (px)
-  const maxMoveX = (imageRect.width - rect.width) / 2;
-  const maxMoveY = (imageRect.height - rect.height) / 2;
-
-  // Elmozdulás kiszámítása, normalizálás
-  const moveX = 2 * relX * maxMoveX;
-  const moveY = 2 * relY * maxMoveY;
-
-  if (e.target.classList.contains("image")) {
-    e.target.style.transition = "transform 0.1s ease-out";
-    e.target.style.transform = `translate(${-moveX}px, ${-moveY}px) scale(1.2)`;
-  }
-}
-
-const updateImageLeft = (image) => {
-  const imageRect = image.getBoundingClientRect();
-  const wrapperRect = image.parentElement.getBoundingClientRect();
-  image.style.left = imageRect.width * -0.5 - wrapperRect.width * -0.5 + "px";
-};
-
-let isZoom = false;
-let frameId = null;
-
-allImages.forEach((image) => {
-  image.parentElement.addEventListener("mouseenter", () => {
-    if (image.classList.contains("active")) {
-      isZoom = true;
-      image.style.transition = "transform 0.5s ease-out";
-      image.style.transform = "scale(1.2)";
-      image.classList.add("zoomed");
-    }
-  });
-
-  image.parentElement.addEventListener("mousemove", (e) => {
-    if (isZoom) {
-      if (!frameId) {
-        frameId = requestAnimationFrame(() => {
-          if (isZoom) requestZoomUpdate(e);
-          frameId = null;
+        this.imageViewer.images.forEach(img => {
+            const wrapper = img.parentElement;
+            wrapper.addEventListener('mouseenter', () => this.handleImageZoomEnter(img));
+            wrapper.addEventListener('mousemove', (e) => this.handleImageZoomMove(e));
+            wrapper.addEventListener('mouseleave', () => this.handleImageZoomLeave(img));
         });
-      }
+
+        // Navigációs nyilak
+        this.imageViewer.navigator.arrows.forEach(arrow => {
+            arrow.addEventListener('click', (e) => this.navigatorScroll(
+                e.target.classList.contains('arrow-left') ? 'left' : 'right',
+                this.imageViewer.navigator.carousel
+            ));
+        });
+
+        // Ajánlott termékek navigáció
+        this.recommendations.arrows.forEach(button => {
+            button.addEventListener('click', (e) => this.navigatorScroll(
+                e.target.classList.contains('navigator-left') ? 'left' : 'right',
+                this.recommendations.container
+            ));
+        });
+
+        // Görgetési események
+        this.imageViewer.navigator.carousel.addEventListener('scroll', 
+            () => this.handleScroll(this.imageViewer.navigator.scrollbar, this.imageViewer.navigator.carousel));
+        
+        this.recommendations.container.addEventListener('scroll',
+            () => this.handleScroll(this.recommendations.scrollbar, this.recommendations.container));
+
+        // Ablak események
+        window.addEventListener('resize', () => this.handleResize());
+        window.addEventListener('load', () => this.handleLoad());
+
+        // Felgördítő gomb
+        this.topButton?.addEventListener('click', () => lenis.scrollTo('top'));
+
+        // Címkék feliratozásának beállítása
+        this.tags.forEach(tag => this.setupTooltip(tag));
+
+        // Megosztás gomb kezelése
+        this.shareButton?.addEventListener('click', () => this.handleShare());
     }
-  });
 
-  image.addEventListener("mouseleave", () => {
-    if (image.classList.contains("active")) {
-      isZoom = false;
-      image.style.transition = "transform 0.5s ease-out";
-      image.style.transform = "scale(1)";
-      image.classList.remove("zoomed");
+    initialize() {
+        // Kezdeti állapot beállítása
+        this.generateReviewSection();
+        this.reviewStars.forEach(el => this.generateStars(el));
+        this.updateDynamicBackground();
     }
-  });
-});
 
-function navigatorScroll(direction, scrollElement) {
-  const scrollAmount = 200; // Desired scroll amount
-  const maxScrollLeft = scrollElement.scrollWidth - scrollElement.offsetWidth;
+    // Segéd metódusok
+    generateStars(element) {
+        // Értékelő csillagok generálása
+        const rating = element.dataset.rating ?? 0;
+        const fullStars = Math.floor(rating);
+        const halfStar = rating % 1 >= 0.5;
+        const totalStars = 5;
+        
+        element.innerHTML = '';
+        for (let i = 0; i < totalStars; i++) {
+            const star = document.createElement('span');
+            if (i < fullStars) {
+                star.classList.add('filled');
+            } else if (i === fullStars && halfStar) {
+                star.classList.add('half');
+            }
+            element.appendChild(star);
+        }
+    }
 
-  // Determine the new scroll position
-  let newScrollPosition =
-    direction === "left"
-      ? Math.max(scrollElement.scrollLeft - scrollAmount, 0)
-      : Math.min(scrollElement.scrollLeft + scrollAmount, maxScrollLeft);
+    generateReviewSection() {
+        if (!this.avgReviewElement) return;
 
-  // Use scrollTo or scrollBy to respect snap points
-  scrollElement.scrollTo({
-    left: newScrollPosition,
-    behavior: "smooth",
-  });
+        const rating = parseFloat(this.avgReviewElement.getAttribute('data-rating'));
+        const reviewCount = parseInt(this.avgReviewElement.getAttribute('data-reviews'));
+        
+        this.avgReviewElement.innerHTML = `
+            <div class="rating-number">${rating.toFixed(1)}</div>
+            <div class="stars-and-reviews">
+                <div class="stars" data-rating="${rating}"></div>
+                <div class="review-count">${reviewCount} értékelés</div>
+            </div>
+        `;
+
+        this.generateStars(this.avgReviewElement.querySelector('.stars'));
+    }
+
+    updateDynamicBackground() {
+        // Dinamikus háttér frissítése az aktív kép alapján
+        const activeImage = document.querySelector('.images img.active');
+        if (activeImage) {
+            const color = this.getDominantColor(activeImage);
+            activeImage.parentElement.style.boxShadow = `0px 0px 150px ${color}88`;
+        }
+    }
+
+    getDominantColor(image) {
+        // Domináns szín kinyerése a képből
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 1;
+        canvas.height = 1;
+        ctx.drawImage(image, 0, 0, 1, 1);
+        const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+        return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`;
+    }
+
+    // Eseménykezelők
+    switchImage(index) {
+        if (this.isNavAnimating) return;
+        this.isNavAnimating = true;
+
+        const currentImage = document.querySelector('.image.active');
+        const targetImage = this.imageViewer.images[index];
+
+        if (currentImage === targetImage) {
+            this.isNavAnimating = false;
+            return;
+        }
+
+        targetImage.classList.add('active');
+        currentImage.classList.remove('active');
+
+        currentImage.style.zIndex = '10';
+        targetImage.style.zIndex = '100';
+
+        targetImage.animate(
+            {
+                scale: [1.2, 1],
+                opacity: [0, 1],
+            },
+            {
+                fill: 'forwards',
+                duration: 300,
+                easing: 'ease',
+            }
+        );
+
+        this.updateDynamicBackground();
+        
+        setTimeout(() => {
+            currentImage.style.zIndex = '-1';
+            this.isNavAnimating = false;
+        }, 300);
+    }
+
+    handleImageZoomEnter(image) {
+        if (image.classList.contains('active')) {
+            this.isZoom = true;
+            image.style.transition = 'transform 0.5s ease-out';
+            image.style.transform = 'scale(1.2)';
+            image.classList.add('zoomed');
+        }
+    }
+
+    handleImageZoomMove(e) {
+        if (!this.isZoom) return;
+
+        if (!this.frameId) {
+            this.frameId = requestAnimationFrame(() => {
+                if (this.isZoom) this.requestZoomUpdate(e);
+                this.frameId = null;
+            });
+        }
+    }
+
+    handleImageZoomLeave(image) {
+        if (image.classList.contains('active')) {
+            this.isZoom = false;
+            image.style.transition = 'transform 0.5s ease-out';
+            image.style.transform = 'scale(1)';
+            image.classList.remove('zoomed');
+        }
+    }
+
+    requestZoomUpdate(e) {
+        const wrapper = e.target.parentElement;
+        const rect = wrapper.getBoundingClientRect();
+        const imageRect = e.target.getBoundingClientRect();
+
+        const relX = (e.clientX - rect.left) / rect.width - 0.5;
+        const relY = (e.clientY - rect.top) / rect.height - 0.5;
+
+        const maxMoveX = (imageRect.width - rect.width) / 2;
+        const maxMoveY = (imageRect.height - rect.height) / 2;
+
+        const moveX = 2 * relX * maxMoveX;
+        const moveY = 2 * relY * maxMoveY;
+
+        if (e.target.classList.contains('image')) {
+            e.target.style.transition = 'transform 0.1s ease-out';
+            e.target.style.transform = `translate(${-moveX}px, ${-moveY}px) scale(1.2)`;
+        }
+    }
+
+    navigatorScroll(direction, scrollElement) {
+        const scrollAmount = 200;
+        const maxScrollLeft = scrollElement.scrollWidth - scrollElement.offsetWidth;
+        const newScrollPosition = direction === 'left'
+            ? Math.max(scrollElement.scrollLeft - scrollAmount, 0)
+            : Math.min(scrollElement.scrollLeft + scrollAmount, maxScrollLeft);
+
+        scrollElement.scrollTo({
+            left: newScrollPosition,
+            behavior: 'smooth'
+        });
+    }
+
+    handleScroll(scrollbar, scrollElement) {
+        if (!this.scrollFrameId) {
+            this.scrollFrameId = setTimeout(() => {
+                this.updateScrollbar(scrollbar, scrollElement);
+                this.scrollFrameId = null;
+            }, 100);
+        }
+    }
+
+    updateScrollbar(scrollbar, scrollElement) {
+        const progress = (scrollElement.scrollLeft + scrollElement.offsetWidth) / scrollElement.scrollWidth;
+        scrollbar.style.width = `${progress * 100}%`;
+
+        const shouldHideAfter = scrollElement.scrollWidth === scrollElement.offsetWidth || window.innerWidth <= 414;
+        scrollElement.style.setProperty('--after-end', shouldHideAfter ? 'transparent' : '#1d1d1d');
+    }
+
+    handleResize() {
+        this.imageViewer.images.forEach(image => this.updateImageLeft(image));
+        this.updateScrollbar(this.recommendations.scrollbar, this.recommendations.container);
+        this.updateScrollbar(this.imageViewer.navigator.scrollbar, this.imageViewer.navigator.carousel);
+    }
+
+    handleLoad() {
+        this.imageViewer.images.forEach(image => this.updateImageLeft(image));
+        this.updateScrollbar(this.recommendations.scrollbar, this.recommendations.container);
+        this.updateScrollbar(this.imageViewer.navigator.scrollbar, this.imageViewer.navigator.carousel);
+        setTimeout(() => this.updateDynamicBackground(), 10);
+    }
+
+    updateImageLeft(image) {
+        const imageRect = image.getBoundingClientRect();
+        const wrapperRect = image.parentElement.getBoundingClientRect();
+        image.style.left = `${imageRect.width * -0.5 - wrapperRect.width * -0.5}px`;
+    }
+
+    setupTooltip(tag) {
+        const tooltipText = tag.querySelector('img').alt;
+        if (!tooltipText) return;
+
+        const tooltip = document.createElement('div');
+        tooltip.classList.add('tooltip');
+        tooltip.textContent = tooltipText;
+        tooltip.style.setProperty('--visible', '0');
+        tag.appendChild(tooltip);
+
+        let isTooltipActive = false;
+        let tooltipAnimationId = null;
+
+        const updateTooltipPosition = () => {
+            const rect = tag.getBoundingClientRect();
+            const tooltipRect = tooltip.getBoundingClientRect();
+
+            tooltip.classList.remove('right', 'left');
+            let top = rect.top - tooltipRect.height - 8;
+            let left = rect.left + rect.width / 2 - tooltipRect.width / 2;
+
+            if (top < 0) top = rect.bottom + 8;
+            if (left + tooltipRect.width > window.innerWidth) {
+                left = window.innerWidth - tooltipRect.width - 30;
+                tooltip.classList.add('right');
+            }
+            if (left < 0) {
+                left = rect.left;
+                tooltip.classList.add('left');
+            }
+
+            tooltip.style.top = `${top}px`;
+            tooltip.style.left = `${left}px`;
+            tooltipAnimationId = null;
+        };
+
+        tag.addEventListener('mouseenter', () => {
+            isTooltipActive = true;
+            tooltip.style.setProperty('--visible', '1');
+            updateTooltipPosition();
+        });
+
+        tag.addEventListener('mouseleave', () => {
+            isTooltipActive = false;
+            setTimeout(() => {
+                if (!isTooltipActive) {
+                    tooltip.style.setProperty('--visible', '0');
+                    tooltip.style.top = 'auto';
+                    tooltip.style.left = 'auto';
+                }
+            }, 300);
+            if (tooltipAnimationId) {
+                cancelAnimationFrame(tooltipAnimationId);
+                tooltipAnimationId = null;
+            }
+        });
+
+        window.addEventListener('scroll', () => {
+            if (getComputedStyle(tooltip).getPropertyValue('--visible') === '1') {
+                if (!tooltipAnimationId) {
+                    tooltipAnimationId = requestAnimationFrame(updateTooltipPosition);
+                }
+            }
+        });
+    }
+
+    async handleShare() {
+        const url = window.location.href;
+        const title = document.querySelector('.product-name').textContent.trim();
+
+        try {
+            if (navigator.share) {
+                // Native share API használata mobilon
+                await navigator.share({
+                    title: title,
+                    url: url
+                });
+            } else {
+                // Fallback: URL másolása vágólapra
+                await navigator.clipboard.writeText(url);
+                
+                // Felhasználó értesítése
+                this.shareButton.style.backgroundColor = '#2a332c';
+                this.shareButton.style.borderColor = '#caffb1';
+                this.shareButton.style.color = '#caffb1';
+                this.shareButton.innerHTML = `
+                    <div>Másolva</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                        <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425a.247.247 0 0 1 .02-.022Z"/>
+                    </svg>
+                `;
+
+                // Visszaállítás eredeti állapotra
+                setTimeout(() => {
+                    this.shareButton.style.backgroundColor = '';
+                    this.shareButton.style.borderColor = '';
+                    this.shareButton.style.color = '';
+                    this.shareButton.innerHTML = `
+                        <div>Megosztás</div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
+                            <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.5 2.5 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5m-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3"/>
+                        </svg>
+                    `;
+                }, 2000);
+            }
+        } catch (err) {
+            console.error('Megosztás sikertelen:', err);
+        }
+    }
 }
-function updateScrollbar(scrollbar, scrollElement) {
-  const progress =
-    (scrollElement.scrollLeft + scrollElement.offsetWidth) /
-    scrollElement.scrollWidth;
 
-  scrollbar.style.width = progress * 100 + "%";
-
-  if (
-    scrollElement.scrollWidth == scrollElement.offsetWidth ||
-    window.innerWidth <= 414
-  ) {
-    scrollElement.style.setProperty("--after-end", "transparent");
-  } else {
-    if (scrollElement.style.getPropertyValue("--after-end") != "#1d1d1d") {
-      scrollElement.style.setProperty("--after-end", "#1d1d1d");
-    }
-  }
-}
-
-const productImageScrollbar = document.querySelector(
-  ".navigator > .navigator-arrows > .navigator-progress > .progressbar"
-);
-const productImageCarousel = document.querySelector(
-  ".navigator > .navigator-images"
-);
-const productScrollbar = document.querySelector(
-  ".product-navigator > .navigator-progress > .progressbar"
-);
-const productCarousel = document.querySelector(".products");
-
-document.querySelectorAll(".arrow").forEach((arrow) => {
-  arrow.addEventListener("click", (e) => {
-    navigatorScroll(
-      e.target.classList.contains("arrow-left") ? "left" : "right",
-      productImageCarousel
-    );
-  });
-});
-
-document.querySelectorAll(".navigator-button").forEach((element) =>
-  element.addEventListener("click", (e) => {
-    navigatorScroll(
-      e.target.classList.contains("navigator-left") ? "left" : "right",
-      productCarousel
-    );
-  })
-);
-
-let scrollFrameId = null;
-productImageCarousel.addEventListener("scroll", () => {
-  if (!scrollFrameId) {
-    scrollFrameId = setTimeout(() => {
-      updateScrollbar(productImageScrollbar, productImageCarousel);
-      scrollFrameId = null;
-    }, 100);
-  }
-});
-
-scrollFrameId = null;
-productCarousel.addEventListener("scroll", () => {
-  if (!scrollFrameId) {
-    scrollFrameId = setTimeout(() => {
-      updateScrollbar(productScrollbar, productCarousel);
-      scrollFrameId = null;
-    }, 100);
-  }
-});
-
-window.addEventListener("resize", () => {
-  allImages.forEach((image) => updateImageLeft(image));
-  updateScrollbar(productScrollbar, productCarousel);
-  updateScrollbar(productImageScrollbar, productImageCarousel);
-});
-
-window.addEventListener("load", () => {
-  allImages.forEach((image) => updateImageLeft(image));
-  updateScrollbar(productScrollbar, productCarousel);
-  updateScrollbar(productImageScrollbar, productImageCarousel);
-
-  document.getElementById("top-button").addEventListener("click", () => {
-    lenis.scrollTo("top");
-  });
-  setTimeout(() => {
-    updateDynamicBackground();
-  }, 10);
-});
-
-// Csillagok generálása
-document.querySelectorAll(".review-stars").forEach((el) => generateStars(el));
+new ProductPage();

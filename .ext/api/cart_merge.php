@@ -17,7 +17,9 @@ if (!isset($data['response']) || !is_bool($data['response'])) {
 }
 
 $response = $data['response'];
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 if ($response === true) {
     $result = getUserData();

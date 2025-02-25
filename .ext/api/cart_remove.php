@@ -18,7 +18,9 @@ if (!isset($data['id']) || !is_int($data['id'])) {
 }
 $productId = $data['id'];
 
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Felhasználó adatainak lekérése
 $user = null;

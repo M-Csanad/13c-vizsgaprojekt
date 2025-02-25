@@ -19,6 +19,7 @@ $routes = [
     // Kosár
     '/api/cart/add'                 => $API.'/cart_add.php',
     '/api/cart/get'                 => $API.'/cart_get.php',
+    '/api/cart/check'               => $API.'/cart_check.php',
     '/api/cart/remove'              => $API.'/cart_remove.php',
     '/api/cart/update'              => $API.'/cart_update.php',
     '/api/cart/merge'               => $API.'/cart_merge.php',

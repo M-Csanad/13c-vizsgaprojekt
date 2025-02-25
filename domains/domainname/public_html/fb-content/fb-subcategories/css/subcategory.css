@@ -418,6 +418,45 @@ main {
     overflow: hidden;
     cursor: pointer;
     position: relative;
+    filter: grayscale(0);
+    transition: filter 0.4s ease;
+}
+
+.card.out-of-stock > .card-image a {
+    filter: grayscale(1);
+}
+
+.card.out-of-stock > .card-image > .button-wrapper {
+    display: none;
+}
+
+.card.out-of-stock > .card-image:hover > a > picture.secondary {
+    transform: none;
+    opacity: 0;
+    filter: none;
+}
+
+.out-of-stock-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background: rgba(220, 53, 69, 0.9);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 4px;
+    font-size: 1.2rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.out-of-stock-label svg {
+    width: 24px;
+    height: 24px;
 }
 
 .card > .card-image a {
