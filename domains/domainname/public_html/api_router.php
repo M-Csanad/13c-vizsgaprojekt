@@ -16,32 +16,39 @@ $API = $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/api';
 
 // Végpontok és a kérést kezelő PHP fájl elérési útvonala
 $routes = [
-    '/api/cart/add' => $API.'/cart_add.php',
-    '/api/cart/get' => $API.'/cart_get.php',
-    '/api/cart/remove' => $API.'/cart_remove.php',
-    '/api/cart/update' => $API.'/cart_update.php',
-    '/api/cart/merge' => $API.'/cart_merge.php',
+    // Kosár
+    '/api/cart/add'                 => $API.'/cart_add.php',
+    '/api/cart/get'                 => $API.'/cart_get.php',
+    '/api/cart/remove'              => $API.'/cart_remove.php',
+    '/api/cart/update'              => $API.'/cart_update.php',
+    '/api/cart/merge'               => $API.'/cart_merge.php',
 
-    '/api/order/place' => $API.'/order_place.php',
-    '/api/order/get' => $API.'/order_get.php',
+    // Rendelés
+    '/api/order/place'              => $API.'/order_place.php',
+    '/api/order/get'                => $API.'/order_get.php',
 
-    '/api/review' => $API.'/review.php',
+    // Értékelés
+    '/api/review'                   => $API.'/review.php',
 
-    '/api/autofill/add' => $API.'/autofill_add.php',
-    '/api/autofill/get' => $API.'/autofill_get.php',
-    '/api/autofill/remove' => $API.'/autofill_remove.php',
-    '/api/autofill/update' => $API.'/autofill_update.php',
+    // Automatikus kitöltés
+    '/api/autofill/add'             => $API.'/autofill_add.php',
+    '/api/autofill/get'             => $API.'/autofill_get.php',
+    '/api/autofill/remove'          => $API.'/autofill_remove.php',
+    '/api/autofill/update'          => $API.'/autofill_update.php',
 
-    '/api/auth/dashboard-search' => $API.'/dashboard_search.php',
-    '/api/auth/login' => $API.'/login.php',
-    '/api/auth/register' => $API.'/register.php',
-    '/api/auth/resetpassword' => $API.'/reset_password.php',
+    // Hitelesítendő végpontok
+    '/api/auth/dashboard-search'    => $API.'/dashboard_search.php',
+    '/api/auth/login'               => $API.'/login.php',
+    '/api/auth/register'            => $API.'/register.php',
+    '/api/auth/resetpassword'       => $API.'/reset_password.php',
 
-    '/api/settings/updatedetails' => $API.'/settings_update_details.php',
-    '/api/settings/newpassword' => $API.'/settings_new_password.php',
+    // Beállítások
+    '/api/settings/updatedetails'   => $API.'/settings_update_details.php',
+    '/api/settings/newpassword'     => $API.'/settings_new_password.php',
 
-    '/api/search' => $API.'/search.php',
-    '/api/subcategory/products' => $API.'/subcategory_products.php'
+    // Keresés
+    '/api/search'                   => $API.'/search.php',
+    '/api/subcategory/products'     => $API.'/subcategory_products.php'
 ];
 
 // Ha az aktuális URL-t tartalmazza a $routes változó, akkor az egy létező végpont.
