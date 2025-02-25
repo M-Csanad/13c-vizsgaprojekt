@@ -39,6 +39,8 @@ main {
     transform: translateX(-100%);
     min-height: 100%;
     max-height: calc(100vh - 87px);
+    overscroll-behavior: contain;
+    overflow-y: auto;
     text-shadow: 0px 0px 5px rgb(0, 0, 0);
     scrollbar-width: thin;
     scrollbar-color: #c0fa63 #1d1d1d;
@@ -193,8 +195,6 @@ main {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    max-height: 188px;
-    overflow-y: auto;
     padding-right: 5px;
     overscroll-behavior: contain;
     touch-action: pan-y;
@@ -746,6 +746,7 @@ body.top-show #top-button {
         max-width: 400px;
         margin-left: -400px;
         min-height: calc(100vh - 100px);
+        max-height: calc(100vh - 100px);
         margin-left: -400px;
         padding-inline: 0rem;
         z-index: 1;

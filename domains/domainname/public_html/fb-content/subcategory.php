@@ -107,7 +107,7 @@
     </header>
 
     <main>
-        <section class="filters">
+        <section class="filters" data-lenis-prevent>
             <header>Szűrés</header>
             <div class="product-count"></div>
             <div class="filter-logo">
