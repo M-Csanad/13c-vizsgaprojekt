@@ -1,4 +1,4 @@
-import { handleQuantityChange } from '../../fb-products/js/numberfield.js';
+import { handleQuantityChange, setupNumberField } from '../../fb-products/js/numberfield.js';
 import Popup from './popup.js';
 import APIFetch from './apifetch.js';
 
@@ -275,6 +275,24 @@ class Cart {
                 </div>
             </div>
             <hr>`;
+        });
+
+        // Kézi bevitel eseménykezelője
+        setupNumberField(this.cartContainer, async (delta, _, index) => {
+            const product = this.data[index];
+            const result = await APIFetch("/api/cart/update", "PUT", { 
+                delta: delta, 
+                product_id: product.product_id 
+            });
+            
+            if (result.ok) {
+                await this.fetchCartData();
+                this.updateUI(false);
+            }
+            else {
+                console.log(result);
+                return false;
+            }
         });
     }
 

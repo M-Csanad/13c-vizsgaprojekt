@@ -20,16 +20,23 @@ export const handleBlur = async (input, onCartDelta = null) => {
 
     if (newValue < min) newValue = min;
     if (newValue > max) newValue = max;
+    
     input.value = newValue;
     input.style.color = '';
 
     const delta = newValue - oldValue;
     if (delta !== 0 && onCartDelta) {
         try {
-            await onCartDelta(delta);
+            const success = await onCartDelta(delta, newValue);
+            if (success === false) {
+                // Ha hibás a változtatás, akkor visszaállítjuk az eredeti értékre
+                input.value = oldValue;
+                return;
+            }
         } catch (err) {
             console.error('Sikertelen kosár frissítés:', err);
             input.value = oldValue;
+            return;
         }
     }
     input.setAttribute('data-last-value', newValue);
@@ -51,17 +58,15 @@ export const handleQuantityChange = (input, delta) => {
 export const setupNumberField = (container = document, onCartDelta = null) => {
     const inputs = container.querySelectorAll('.product-quantity');
     inputs.forEach(input => {
-        // Lementjük a kezdeti értéket
+        // Eredeti érték lementése
         input.setAttribute('data-last-value', input.value);
-        input.addEventListener('blur', () => handleBlur(input, (delta) => onCartDelta(delta)));
+        
         const numberField = input.closest('.number-field');
         const addButton = numberField.querySelector('.number-field-add');
         const subtractButton = numberField.querySelector('.number-field-subtract');
         const stock = parseInt(input.getAttribute('max')) || 0;
         const index = Array.from(container.querySelectorAll('.cart-item'))
             .indexOf(numberField.closest('.cart-item'));
-
-        input.setAttribute('data-last-value', input.value);
 
         if (stock <= 0) {
             input.disabled = true;
@@ -75,11 +80,17 @@ export const setupNumberField = (container = document, onCartDelta = null) => {
         input.disabled = false;
         input.addEventListener('input', (e) => validateInput(e.target));
         input.addEventListener('blur', (e) => handleBlur(e.target, 
-            (operation, newValue) => onCartDelta(operation, newValue, index)));
-
-        addButton.addEventListener('click', () => handleQuantityChange(input, 1));
-        subtractButton.addEventListener('click', () => handleQuantityChange(input, -1));
+            async (delta) => {
+                // Csak akkor indítunk kérést ha minden szükséges adat megvan
+                if (typeof index !== 'undefined' && delta !== 0) {
+                    return await onCartDelta(delta, null, index);
+                }
+                return true;
+            }
+        ));
     });
 };
 
-document.addEventListener('DOMContentLoaded', () => setupNumberField());
+if (document.querySelector('script[src*="numberfield.js"]')) {
+    document.addEventListener('DOMContentLoaded', () => setupNumberField());
+}
