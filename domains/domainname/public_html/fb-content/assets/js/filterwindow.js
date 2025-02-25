@@ -18,6 +18,7 @@ class FilterWindow {
 
         this.initDOM();
         this.bindEvents();
+        this.handleResize();
     }
 
     // DOM elemek inicializálása
@@ -48,6 +49,9 @@ class FilterWindow {
         
         // Szűrő elemek inicializálása
         this.initializeFilters();
+        
+        // Ellenőrizzük az overflow-t
+        this.checkOverflow();
     }
 
     // Események bindelése
@@ -58,6 +62,22 @@ class FilterWindow {
         this.clearButton.addEventListener('click', () => this.clearFilters());
 
         this.domElement.querySelectorAll(".input-group").forEach(e => this.handleInputGroupFocus(e));
+
+        window.addEventListener('resize', this.checkOverflow.bind(this));
+    }
+
+    // Ablak átméretezésének kezelése
+    handleResize() {
+        window.addEventListener('resize', this.checkOverflow.bind(this));
+    }
+
+    // Ellenőrizzük, hogy az ablak overflowol-e
+    checkOverflow() {
+        if (this.domElement.scrollHeight > window.innerHeight - 100) {
+            this.domElement.setAttribute('data-lenis-prevent', '');
+        } else {
+            this.domElement.removeAttribute('data-lenis-prevent');
+        }
     }
 
     // Szűrő elemek inicializálása

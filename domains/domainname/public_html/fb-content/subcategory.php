@@ -152,7 +152,7 @@
             <div class="filter-group">
                 <header>Címkék</header>
                 <div class="filter" data-target="tags">
-                    <div class="tags" data-lenis-prevent></div>
+                    <div class="tags"></div>
                 </div>
             </div>
             <div class="filter-close">
