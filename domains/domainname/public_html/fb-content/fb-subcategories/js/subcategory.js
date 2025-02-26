@@ -11,12 +11,12 @@ export default class SubcategorySite {
     pageTransitionInProgress = false;
 
     constructor(shouldInitialize = true) {
+        // Mező, amely meghatározza, hogy a kereső oldal inicializálta-e vagy az alkategória oldal 
+        this.externalCall = !shouldInitialize;
+        
         this.initDOM();
         this.bindEvents();
         this.setupStarsObserver(); // Add this new method call
-
-        // Mező, amely meghatározza, hogy a kereső oldal inicializálta-e vagy az alkategória oldal 
-        this.externalCall = !shouldInitialize;
 
         // Csak akkor futtatjuk a lekéréseket, ha nem kívülről lett példányosítva az oldal
         if (!this.externalCall) {
@@ -66,6 +66,7 @@ export default class SubcategorySite {
 
     // DOM elemek inicializálása
     initDOM() {
+        console.log(this.externalCall)
         this.cardsContainer = document.querySelector('.cards');
         this.pagination = document.querySelector('.pagination');
         this.productCount = document.querySelector('.product-count');
