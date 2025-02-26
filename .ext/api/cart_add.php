@@ -68,9 +68,56 @@ if (isset($data['url']) && isset($data['qty'])) {
     
     // Ellenőrizzük a mennyiséget
     $stock = $product['stock'];
-    $quantity = $data['qty'];
+    $requestedQuantity = $data['qty'];
 
-    if ($quantity > $stock || $quantity < 1) {
+    // Ellenőrizzük, hogy már van-e ilyen termék a kosárban
+    $existingQuantity = 0;
+    
+    // Felhasználó adatainak lekérése, ha van
+    $isLoggedIn = false;
+    $user = getUserData();
+    if ($user->isSuccess()) {
+        $isLoggedIn = true;
+        $user = $user->message[0];
+        
+        // Ha be van jelentkezve, lekérdezzük az adatbázisból a meglévő mennyiséget
+        $existingCartItem = selectData(
+            "SELECT quantity FROM cart WHERE user_id = ? AND product_id = ?", 
+            [intval($user['id']), intval($productId)], 
+            'ii'
+        );
+        
+        if ($existingCartItem->isSuccess() && !$existingCartItem->isEmpty()) {
+            $existingQuantity = $existingCartItem->message[0]['quantity'];
+        }
+    } else if (isset($_SESSION['cart'])) {
+        // Vendég esetén a session-ből ellenőrizzük
+        foreach ($_SESSION['cart'] as $item) {
+            if ($item['product_id'] == $productId) {
+                $existingQuantity = $item['quantity'];
+                break;
+            }
+        }
+    }
+
+    // A meglévő és az új mennyiség összege
+    $totalQuantity = $existingQuantity + $requestedQuantity;
+
+    // Ellenőrizzük, hogy a teljes mennyiség nem haladja-e meg a készletet
+    if ($totalQuantity > $stock) {
+        http_response_code(400);
+        $result = new Result(
+            Result::ERROR, 
+            sprintf(
+                'Nem lehet %d darabot a kosárhoz adni ebből a termékből.', 
+                $requestedQuantity, $existingQuantity, $stock
+            )
+        );
+        echo $result->toJSON();
+        exit();
+    }
+
+    if ($requestedQuantity < 1) {
         http_response_code(400);
         $result = new Result(Result::ERROR, 'A megadott mennyiség nem megfelelő.');
         echo $result->toJSON();
@@ -83,19 +130,11 @@ if (isset($data['url']) && isset($data['qty'])) {
         echo $result->toJSON();
         exit();
     }
-
-    // Felhasználó adatainak lekérése, ha van
-    $isLoggedIn = false;
-    $user = getUserData();
-    if ($user->isSuccess()) {
-        $isLoggedIn=true;
-        $user = $user->message[0];
-    }
     
     // Ha be van jelentkezve, akkor az adatbázissal és a sessionnel dolgozunk
     if ($isLoggedIn) {
         // Adatbázis frissítése
-        $result = updateData('INSERT INTO cart(user_id, product_id, quantity, page_id) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity), modified_at = NOW();', [intval($user['id']), intval($productId), intval($quantity), intval($pageId)], 'iiii');
+        $result = updateData('INSERT INTO cart(user_id, product_id, quantity, page_id) VALUES (?, ?, ?, ?) ON DUPLICATE KEY UPDATE quantity = quantity + VALUES(quantity), modified_at = NOW();', [intval($user['id']), intval($productId), intval($requestedQuantity), intval($pageId)], 'iiii');
         if (!$result->isSuccess()) {
             http_response_code(500);
             echo $result->toJSON();
@@ -111,7 +150,7 @@ if (isset($data['url']) && isset($data['qty'])) {
         $foundExistingRow = false;
         foreach ($_SESSION['cart'] as &$row) {
             if ($row['product_id'] == $productId) {
-                $row['quantity'] += $quantity;
+                $row['quantity'] += $requestedQuantity;
                 $row['modified_at'] = date("Y-m-d H:i:s", time());
                 $foundExistingRow = true;
                 break;
@@ -124,7 +163,7 @@ if (isset($data['url']) && isset($data['qty'])) {
             $_SESSION['cart'][] = [
                 'product_id' => $productId,
                 'name' => $product['name'],
-                'quantity' => $quantity,
+                'quantity' => $requestedQuantity,
                 'unit_price' => $product['unit_price'],
                 'stock' => $stock,
                 'link_slug' => $product['link_slug'],

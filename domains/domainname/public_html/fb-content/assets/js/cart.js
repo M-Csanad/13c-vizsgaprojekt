@@ -1,6 +1,6 @@
-import { handleQuantityChange, setupNumberField } from '../../fb-products/js/numberfield.js';
-import Popup from './popup.js';
+import { setupNumberField } from '../../fb-products/js/numberfield.js';
 import APIFetch from './apifetch.js';
+import Notification from './notification.js';
 
 const randomId = () => "el-" + (Math.random() + 1).toString(36).substring(7);
 
@@ -152,26 +152,6 @@ class Cart {
             if (!cartItem || cartItem.querySelector('.item-image').classList.contains('invalid-stock')) {
                 return;
             }
-            
-            if (e.target.closest('.number-field-add')) {
-                e.stopPropagation();
-
-                const index = this.getProductDOMIndex(e);
-                const currentElement = e.target.closest('.number-field').querySelector('.product-quantity');
-
-                await this.changeCount('+', index, currentElement.value, currentElement.getAttribute('max'));
-                return;
-            }
-
-            if (e.target.closest('.number-field-subtract')) {
-                e.stopPropagation();
-
-                const index = this.getProductDOMIndex(e);
-                const currentElement = e.target.closest('.number-field').querySelector('.product-quantity');
-
-                await this.changeCount('-', index, currentElement.value, currentElement.getAttribute('max'));
-                return;
-            }
         });
 
         // Frissíti a vásárlás gomb validációját az API használatával
@@ -262,7 +242,10 @@ class Cart {
                         </div>
                     <div class="number-field">
                         <div class="number-field-subtract">-</div>
-                        <input type="number" name="product-quantity" class="product-quantity" placeholder="Darab" max="${product.stock}" min="1" value="${product.quantity}" pattern="[0-9]*">
+                        <input type="number" name="product-quantity" class="product-quantity" 
+                               data-product-id="${product.product_id}"
+                               placeholder="Darab" max="${product.stock}" min="1" 
+                               value="${product.quantity}" pattern="[0-9]*">
                         <div class="number-field-add">+</div>
                     </div>
                     <div class="item-remove">
@@ -276,20 +259,25 @@ class Cart {
             <hr>`;
         });
 
-        // Kézi bevitel eseménykezelője
-        setupNumberField(this.cartContainer, async (delta, _, index) => {
-            const product = this.data[index];
+        // A kosár API frissítéséhez callback definiálása
+        setupNumberField(this.cartContainer, async (delta, _, input) => {
+            // Termék azonosító lekérése közvetlenül az input adattulajdonságból
+            const productId = input.dataset.productId;
+            if (!productId) return false;
+            
+            // API kérés küldése
             const result = await APIFetch("/api/cart/update", "PUT", { 
                 delta: delta, 
-                product_id: product.product_id 
+                product_id: Number(productId)
             });
             
             if (result.ok) {
+                // Kosár adatainak egyszeri frissítése
                 await this.fetchCartData();
                 this.updateUI(false);
-            }
-            else {
-                console.log(result);
+                return true;
+            } else {
+                console.error("Sikertelen kosár frissítés:", result);
                 return false;
             }
         });
@@ -383,20 +371,46 @@ class Cart {
         return card.dataset.productUrl;
     }
 
+    /**
+     * Hibaüzenet megjelenítése értesítésben
+     * @param {string} message - A hibaüzenet
+     * @param {string} type - Az értesítés típusa ('error', 'warning', 'success', 'info')
+     */
+    showNotification(message, type = 'info') {
+        Notification.show(message, type);
+    }
+
     // Backend metódusok
     // Hozzáad egy terméket a kosárhoz
     async add(e, url = null) {
-        const result = await APIFetch("/api/cart/add", "POST", {
-            url: url ? url : this.url,
-            qty: this.quantityInput ? Number(this.quantityInput.value) : 1,
-        });
+        try {
+            const result = await APIFetch("/api/cart/add", "POST", {
+                url: url ? url : this.url,
+                qty: this.quantityInput ? Number(this.quantityInput.value) : 1,
+            });
 
-        if (result.ok) {
-            await this.fetchCartData();
-            this.updateUI();
-            this.open();
-        } else {
-            console.log(result);
+            if (result.ok) {
+                await this.fetchCartData();
+                this.updateUI();
+
+                // Nem nyitjuk meg automatikusan a kosarat, csak értesítést küldünk
+                this.showNotification('Termék sikeresen hozzáadva a kosárhoz', 'success');
+            } else {
+                // Ha a szerver HTTP hiba kóddal válaszol (pl. 400)
+                const errorData = await result.json();
+                
+                // Hibaüzenet megjelenítése
+                this.showNotification(
+                    errorData.message || "Nem sikerült a terméket a kosárhoz adni", 
+                    'error'
+                );
+            }
+        } catch (error) {
+            console.error("Kosárba helyezés sikertelen:", error);
+            this.showNotification(
+                "Nem sikerült kapcsolódni a szerverhez. Kérjük, próbálja újra később.",
+                'error'
+            );
         }
     }
 
@@ -430,34 +444,8 @@ class Cart {
             });
 
         } else {
+            this.showNotification("Nem sikerült eltávolítani a terméket", 'error');
             throw new Error("Hiba történt a kosár lekérdezése során: " + await result.json());
-        }
-    }
-
-    // Meglévő kosár elem mennyiségét változtatja
-    async changeCount(operation = '+', index, currentValue, maxValue) {
-        const product = this.data[index];
-        const productElement = Array.from(this.cartContainer.children).filter(e=>e.nodeName!="HR")[index];
-        
-        if (operation != '+' && operation != '-') throw new Error("Ismeretlen művelet a changeCount függvényben: "+ operation)
-
-        const delta = operation === '-' ? -1 : 1;
-        if (Number(currentValue) + delta > Number(maxValue) || Number(currentValue) + delta < 1) return;
-
-        const result = await APIFetch("/api/cart/update", "PUT", { 
-            delta: delta, 
-            product_id: product.product_id 
-        });
-        
-        if (result.ok) {
-            const quantityInput = productElement.querySelector('.product-quantity');
-            handleQuantityChange(quantityInput, delta);
-            
-            await this.fetchCartData();
-            this.updateUI(false);
-        }
-        else {
-            console.log(result)
         }
     }
 
@@ -486,8 +474,13 @@ class Cart {
 
             // Csak akkor kérjük le ismét az atadokat, ha azt meg is változtattuk
             await this.fetchCartData();
+            
+            if (response) {
+                this.showNotification('Korábbi és új kosár sikeresen összevonva', 'success');
+            }
         }
         else {
+            this.showNotification('Nem sikerült összevonni a kosarakat', 'error');
             console.log(mergeResponse);
         }
     }
@@ -511,6 +504,7 @@ class Cart {
 
     markInvalidItems(invalidItems, animate = false) {
         const cartItems = this.cartContainer.querySelectorAll('.cart-item');
+        let notified = false;
         
         cartItems.forEach((item, index) => {
             const product = this.data[index];
@@ -521,6 +515,15 @@ class Cart {
                 const stockMsg = invalid.stock === 0 ? 
                     "A termék elfogyott" : 
                     "Nem megfelelő mennyiség";
+
+                // Csak egyszer jelenítünk meg értesítést a problémás termékekről
+                if (!notified) {
+                    this.showNotification(
+                        'Kosarában olyan termékek vannak, amelyek nem elérhetők a kívánt mennyiségben',
+                        'warning'
+                    );
+                    notified = true;
+                }
 
                 // Hibás stílus hozzáadása
                 imageWrapper.classList.add('invalid-stock');
@@ -557,3 +560,10 @@ class Cart {
 }
 
 export default Cart;
+
+// Automatikusan inicializáljuk, ha önálló szkriptként töltődik be
+if (document.currentScript && document.currentScript.getAttribute('init') !== 'false') {
+    document.addEventListener('DOMContentLoaded', () => {
+        window.cart = new Cart();
+    });
+}

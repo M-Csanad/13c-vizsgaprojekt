@@ -192,6 +192,7 @@
     <link rel="stylesheet" href="/fb-content/fb-products/css/reviewform.css">
     <link rel="stylesheet" href="/fb-content/assets/css/footer.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
+    <link rel="stylesheet" href="/fb-content/assets/css/notification.css">
     <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/footer.css" media="all" />
     <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
@@ -199,7 +200,7 @@
     <script defer src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js" ></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="/fb-content/assets/js/page_transition.js"></script>
-    <script defer src="/fb-content/fb-products/js/product.js"></script>
+    <script defer type="module" src="/fb-content/fb-products/js/product.js"></script>
     <script defer src="/fb-content/assets/js/lenis.js"></script>
     <script defer src="/fb-content/assets/js/scrollbar.js"></script>
     <script defer type="module" src="/fb-content/fb-products/js/reviewform.js"></script>

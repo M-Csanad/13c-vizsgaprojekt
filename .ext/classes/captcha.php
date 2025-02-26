@@ -58,21 +58,31 @@ class Captcha {
             ]
         ];
 
-        // Kérés beállításai
-        $options = [
-            'http' => [
-                'header' => "Content-type: application/json\r\n",
-                'method' => 'POST',
-                'content' => json_encode($data)
-            ]
-        ];
+        // Kérés küldése
+        // cURL használata a gyorsabb és megbízhatóbb kommunikációért
+        $curl = curl_init($url);
+        curl_setopt_array($curl, [
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_POST => true,
+            CURLOPT_POSTFIELDS => json_encode($data),
+            CURLOPT_HTTPHEADER => ['Content-Type: application/json'],
+            CURLOPT_CONNECTTIMEOUT => 3,    // 3 másodperces kapcsolódási időkorlát
+            CURLOPT_TIMEOUT => 5,           // 5 másodperces teljes időkorlát
+            CURLOPT_SSL_VERIFYPEER => true  // SSL ellenőrzés megtartása
+        ]);
 
-        // Kérés elküldése
-        $context = stream_context_create($options);
-        $response = file_get_contents($url, false, $context);
+        $response = curl_exec($curl);
+        $error = curl_error($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
 
+        // Hibakezelés
         if ($response === false) {
-            return new Result(Result::ERROR, "reCAPTCHA ellenőrzési hiba");
+            return new Result(Result::ERROR, "reCAPTCHA kapcsolódási hiba: " . $error);
+        }
+
+        if ($httpCode !== 200) {
+            return new Result(Result::ERROR, "reCAPTCHA API hiba (HTTP $httpCode)");
         }
 
         $assessment = json_decode($response, true);
@@ -80,7 +90,7 @@ class Captcha {
         if (!isset($assessment['tokenProperties']['valid']) || 
             !$assessment['tokenProperties']['valid'] || 
             !isset($assessment['riskAnalysis']['score']) || 
-            $assessment['riskAnalysis']['score'] < Captcha::RISK_THRESHOLD) {
+            $assessment['riskAnalysis']['score'] < self::RISK_THRESHOLD) {
             return new Result(Result::ERROR, "Biztonsági ellenőrzés sikertelen. Kérjük próbálja újra.");
         }
 

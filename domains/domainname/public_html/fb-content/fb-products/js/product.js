@@ -1,3 +1,5 @@
+import { setupNumberField } from './numberfield.js';
+
 class ProductPage {
     constructor() {
         // Állapot változók inicializálása
@@ -35,6 +37,10 @@ class ProductPage {
         this.reviewStars = document.querySelectorAll('.review-stars');
         this.topButton = document.getElementById('top-button');
         this.shareButton = document.querySelector('.share');
+
+        // Numberfield setup
+        this.quantityField = document.querySelector('.product-quantity');
+        this.addToCartButton = document.querySelector('.add-to-cart');
     }
 
     bindEvents() {
@@ -91,6 +97,11 @@ class ProductPage {
         this.generateReviewSection();
         this.reviewStars.forEach(el => this.generateStars(el));
         this.updateDynamicBackground();
+        
+        // Mennyiség beviteli mező inicializálása
+        if (document.querySelector('.number-field')) {
+            setupNumberField();
+        }
     }
 
     // Segéd metódusok
@@ -398,4 +409,10 @@ class ProductPage {
     }
 }
 
-new ProductPage();
+// Modul-stílusú inicializálás az importálás támogatásához
+document.addEventListener('DOMContentLoaded', () => {
+    new ProductPage();
+});
+
+// Az osztály exportálása a potenciális újrafelhasználáshoz
+export default ProductPage;
