@@ -141,20 +141,20 @@ class Cart {
         this.quickAddButtons?.forEach(button => button.addEventListener("click", () => this.add(null, this.getUrlFromCard(button))));
 
         this.cartContainer.addEventListener("click", async (e) => {
-            const cartItem = e.target.closest('.cart-item');
-            if (!cartItem || cartItem.querySelector('.item-image').classList.contains('invalid-stock')) {
-                return; // Blokkolja az összes interakciót, ha az elem érvénytelen
-            }
-
             if (e.target.closest('.item-remove')) {
                 const index = this.getProductDOMIndex(e);
                 await this.remove(index);
                 return;
             }
             
+            // Blokkolja az összes interakciót, kivéve a törlést, ha az elem érvénytelen
+            const cartItem = e.target.closest('.cart-item');
+            if (!cartItem || cartItem.querySelector('.item-image').classList.contains('invalid-stock')) {
+                return;
+            }
+            
             if (e.target.closest('.number-field-add')) {
                 e.stopPropagation();
-                e.preventDefault(); // Hozzáadja ezt az alapértelmezett viselkedés megakadályozásához
 
                 const index = this.getProductDOMIndex(e);
                 const currentElement = e.target.closest('.number-field').querySelector('.product-quantity');
@@ -165,7 +165,6 @@ class Cart {
 
             if (e.target.closest('.number-field-subtract')) {
                 e.stopPropagation();
-                e.preventDefault(); // Hozzáadja ezt az alapértelmezett viselkedés megakadályozásához
 
                 const index = this.getProductDOMIndex(e);
                 const currentElement = e.target.closest('.number-field').querySelector('.product-quantity');
