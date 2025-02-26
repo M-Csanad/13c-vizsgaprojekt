@@ -1,18 +1,22 @@
 /**
- * Toast-style notification component with animated progress bar
- * Uses GSAP for animations and supports multiple notification types
+ * Toast-stílusú értesítési komponens animált folyamatjelzővel
+ * GSAP-et használ animációkhoz és többféle értesítési típust támogat
  */
 class Notification {
+    // Statikus tömb az aktív értesítések nyilvántartására
+    static activeNotifications = [];
+    static notificationGap = 10; // Távolság a halmozott értesítések között pixelben
+    
     /**
-     * Create a new notification
-     * @param {string} message - The message to display
-     * @param {string} type - Notification type: 'success', 'error', 'warning', 'info'
-     * @param {number} duration - Duration in seconds before auto-close (default: 5)
+     * Új értesítés létrehozása
+     * @param {string} message - A megjelenítendő üzenet
+     * @param {string} type - Értesítés típusa: 'success', 'error', 'warning', 'info'
+     * @param {number} duration - Időtartam másodpercben az automatikus bezárásig (alapértelmezett: 5)
      */
     constructor(message, type = 'info', duration = 5) {
-        // Validate dependencies
+        // Függőségek ellenőrzése
         if (typeof gsap === 'undefined') {
-            console.error('GSAP is required for Notification component');
+            console.error('GSAP szükséges a Notification komponenshez');
             return;
         }
         
@@ -23,22 +27,23 @@ class Notification {
         this.progressBar = null;
         this.timeoutId = null;
         this.isClosing = false;
+        this.height = 0; // Halmozási számításokhoz használva
         
         this.create();
     }
     
     /**
-     * Create the notification DOM element
+     * Az értesítés DOM elem létrehozása
      */
     create() {
-        // Create container
+        // Konténer létrehozása
         this.element = document.createElement('div');
         this.element.className = `notification notification-${this.type}`;
         
-        // Get icon based on type
+        // Ikon lekérése típus alapján
         const icon = this.getIconForType();
         
-        // Create content
+        // Tartalom létrehozása
         this.element.innerHTML = `
             <div class="notification-content">
                 <div class="notification-icon">${icon}</div>
@@ -54,22 +59,34 @@ class Notification {
             </div>
         `;
         
-        // Get progress bar element
+        // Folyamatjelző elem lekérése
         this.progressBar = this.element.querySelector('.notification-progress');
         
-        // Add event listeners
+        // Eseményfigyelők hozzáadása
         const closeButton = this.element.querySelector('.notification-close');
         closeButton.addEventListener('click', () => this.close());
         
-        // Add to document
+        // Hozzáadás a dokumentumhoz
         document.body.appendChild(this.element);
     }
     
     /**
-     * Show the notification with animations
+     * Az értesítés megjelenítése animációkkal
      */
     show() {
-        // Initial state
+        // Meglévő értesítések gyors bezárása
+        if (Notification.activeNotifications.length > 0) {
+            Notification.activeNotifications.forEach(notification => {
+                if (notification !== this && !notification.isClosing) {
+                    notification.quickClose();
+                }
+            });
+        }
+        
+        // Értesítés hozzáadása az aktív listához
+        Notification.activeNotifications.push(this);
+        
+        // Kezdeti állapot
         gsap.set(this.element, { 
             x: '100%', 
             opacity: 0,
@@ -77,7 +94,12 @@ class Notification {
             right: '20px'
         });
         
-        // Entrance animation
+        // Értesítés magasságának lekérése (halmozási célokra)
+        setTimeout(() => {
+            this.height = this.element.offsetHeight;
+        }, 10);
+        
+        // Belépési animáció
         gsap.to(this.element, {
             x: '0%',
             opacity: 1,
@@ -86,7 +108,7 @@ class Notification {
             onComplete: () => this.startProgressBar()
         });
         
-        // Set auto-close timeout
+        // Automatikus bezárási időzítő beállítása
         this.timeoutId = setTimeout(() => {
             if (!this.isClosing) this.close();
         }, this.duration * 1000);
@@ -95,7 +117,7 @@ class Notification {
     }
     
     /**
-     * Animate the progress bar
+     * Folyamatjelző animálása
      */
     startProgressBar() {
         gsap.to(this.progressBar, {
@@ -106,7 +128,7 @@ class Notification {
     }
     
     /**
-     * Close the notification with animations
+     * Az értesítés bezárása normál animációkkal
      */
     close() {
         if (this.isClosing) return;
@@ -114,7 +136,13 @@ class Notification {
         this.isClosing = true;
         clearTimeout(this.timeoutId);
         
-        // Exit animation
+        // Eltávolítás az aktív értesítések tömbből
+        const index = Notification.activeNotifications.indexOf(this);
+        if (index > -1) {
+            Notification.activeNotifications.splice(index, 1);
+        }
+        
+        // Kilépési animáció
         gsap.to(this.element, {
             x: '100%',
             opacity: 0,
@@ -127,7 +155,34 @@ class Notification {
     }
     
     /**
-     * Get the appropriate icon SVG based on notification type
+     * Az értesítés gyors bezárása (új értesítés megjelenésekor)
+     */
+    quickClose() {
+        if (this.isClosing) return;
+        
+        this.isClosing = true;
+        clearTimeout(this.timeoutId);
+        
+        // Eltávolítás az aktív értesítések tömbből
+        const index = Notification.activeNotifications.indexOf(this);
+        if (index > -1) {
+            Notification.activeNotifications.splice(index, 1);
+        }
+        
+        // Gyors kilépési animáció
+        gsap.to(this.element, {
+            x: '100%',
+            opacity: 0,
+            duration: 0.3,
+            ease: 'power1.in',
+            onComplete: () => {
+                this.element.remove();
+            }
+        });
+    }
+    
+    /**
+     * Megfelelő ikon SVG lekérése az értesítés típusa alapján
      */
     getIconForType() {
         switch (this.type) {
@@ -152,7 +207,7 @@ class Notification {
     }
     
     /**
-     * Static helper to create and show a notification in one step
+     * Statikus segédfüggvény egy értesítés létrehozásához és megjelenítéséhez egy lépésben
      */
     static show(message, type = 'info', duration = 5) {
         return new Notification(message, type, duration).show();
