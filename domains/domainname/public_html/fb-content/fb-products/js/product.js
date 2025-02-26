@@ -19,7 +19,6 @@ class ProductPage {
       if (!bigAddToCartBtn) return;
 
       const rect = bigAddToCartBtn.getBoundingClientRect();
-      // látszódik-e a nézetablakban?
       const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
 
       // ha látszik, távolítsd el a show-t
@@ -129,6 +128,27 @@ class ProductPage {
 
     // Megosztás gomb kezelése
     this.shareButton?.addEventListener("click", () => this.handleShare());
+
+    // Lebegő mennyiség input, + és - gombok
+    const floatingQtyValue = document.querySelector(".floating-qty-value");
+    const floatingQtyAdd = document.querySelector(".floating-qty-add");
+    const floatingQtySub = document.querySelector(".floating-qty-sub");
+
+    // Növelés
+    floatingQtyAdd?.addEventListener("click", () => {
+      if (!floatingQtyValue) return;
+      let val = parseInt(floatingQtyValue.value, 10) || 1;
+      let maxVal = parseInt(floatingQtyValue.getAttribute("max"), 10) || 999;
+      if (val < maxVal) floatingQtyValue.value = val + 1;
+    });
+
+    // Csökkentés
+    floatingQtySub?.addEventListener("click", () => {
+      if (!floatingQtyValue) return;
+      let val = parseInt(floatingQtyValue.value, 10) || 1;
+      let minVal = parseInt(floatingQtyValue.getAttribute("min"), 10) || 1;
+      if (val > minVal) floatingQtyValue.value = val - 1;
+    });
   }
 
   initialize() {
