@@ -14,7 +14,12 @@ export default class SubcategorySite {
         this.initDOM();
         this.bindEvents();
         this.setupStarsObserver(); // Add this new method call
-        if (shouldInitialize) {
+
+        // Mező, amely meghatározza, hogy a kereső oldal inicializálta-e vagy az alkategória oldal 
+        this.externalCall = !shouldInitialize;
+
+        // Csak akkor futtatjuk a lekéréseket, ha nem kívülről lett példányosítva az oldal
+        if (!this.externalCall) {
             this.initialize();
         }
     }
@@ -64,12 +69,15 @@ export default class SubcategorySite {
         this.cardsContainer = document.querySelector('.cards');
         this.pagination = document.querySelector('.pagination');
         this.productCount = document.querySelector('.product-count');
-        this.totalProductCount = document.querySelector('#total-product-count');
+
+        if (!this.externalCall) {
+            this.totalProductCount = document.querySelector('#total-product-count');
+            if (!this.totalProductCount) throw new Error("Nem található az összes termék számláló");
+        }
         
         if (!this.cardsContainer) throw new Error("Nem található a kártyák konténere");
         if (!this.pagination) throw new Error("Nem található a lapozó");
         if (!this.productCount) throw new Error("Nem található a termékszámláló");
-        if (!this.totalProductCount) throw new Error("Nem található az összes termék számláló");
     }
 
     // Eseménykezelők beállítása
