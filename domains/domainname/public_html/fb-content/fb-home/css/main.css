@@ -185,7 +185,7 @@ h6 {
   align-items: center;
   text-align: justify;
   flex-direction: column;
-  overflow-y: auto;
+  overflow-y: hidden;
   padding: 20px;
   height: 280vh;
 }

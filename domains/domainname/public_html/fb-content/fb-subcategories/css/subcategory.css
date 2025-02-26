@@ -474,6 +474,7 @@ main {
     left: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden;
     will-change: transform, opacity;
     transition: transform 0.4s ease, filter 0.4s ease, opacity 0.4s ease;
     z-index: 1;
@@ -489,6 +490,7 @@ main {
 .card > .card-image a > picture.secondary {
     z-index: 2;
     opacity: 0;
+    transform: translate3d(0, 0, 1px);
 }
 
 .card > .card-image > .button-wrapper {
@@ -574,7 +576,7 @@ main {
 }
 
 .card > .card-image:hover > a > picture.secondary {
-    transform: scale(1.05);
+    transform: scale(1.05) translate3d(0, 0, 1px);
     opacity: 1;
     filter: saturate(1.1);
 }
