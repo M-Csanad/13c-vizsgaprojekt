@@ -306,7 +306,8 @@
     <link rel="stylesheet" href="./fb-auth/assets/css/loader.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/multiselect.css">
 
-    <script defer src="./fb-auth/assets/js/dashboard.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script type="module" defer src="./fb-auth/assets/js/dashboard.js"></script>
     <script defer src="./fb-auth/assets/js/search.js"></script>
     <script defer src="./fb-auth/assets/js/tag-checkbox.js"></script>
     <script defer src="./fb-auth/assets/js/loader.js"></script>
@@ -1085,7 +1086,7 @@
                                                     <path d="M.5 9.9a.5.5 0 0 1 .5.5v2.5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-2.5a.5.5 0 0 1 1 0v2.5a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2v-2.5a.5.5 0 0 1 .5-.5"/>
                                                     <path d="M7.646 1.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 2.707V11.5a.5.5 0 0 1-1 0V2.707L5.354 4.854a.5.5 0 1 1-.708-.708z"/>
                                                 </svg>
-                                                <input type="file" name="thumbnail_image" id="thumbnail_image_create" required accept="image/png, image/jpeg">
+                                                <input type="file" name="thumbnail_image" id="thumbnail_image_create" required accept="image/png, image/jpeg" data-orientation="any" data-type="image" data-count="singular" tabindex="-1">
                                                 Kép kiválasztása
                                             </label>
                                         </div>
