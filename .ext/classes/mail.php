@@ -17,6 +17,7 @@ class Mail {
     private $username;
     private $password;
     private $name;
+    private const TEMPLATE_PATH = __DIR__ . '/../mail/templates/';
 
     /**
      * Mail konstruktor.
@@ -108,114 +109,46 @@ class Mail {
      * @return string Az email törzse HTML formátumban.
      */
     public static function getMailBody(string $type='order', string $name, array $data): string {
+        // Betöltjük a megfelelő sablont
+        $templateFile = Mail::TEMPLATE_PATH . $type . '.html';
+        
+        // Ellenőrizzük, hogy létezik-e a sablon fájl
+        if (!file_exists($templateFile)) {
+            error_log("Email sablon nem található: " . $templateFile);
+            return "Email sablon nem található: ".$templateFile;
+        }
+        
+        // Betöltjük a sablon tartalmát
+        $template = file_get_contents($templateFile);
+        
+        // Alapvető változók cseréje
+        $template = str_replace('{NAME}', $name, $template);
+        
         switch ($type) {
             case 'order':
-                $orderNumber = $data['orderNumber'];
-                $orderDate = $data['orderDate'];
-                $orderTotal = $data['orderTotal'];
-                $items = $data['items'];
-    
-                $mailBody = "
-                <html>
-                <head>
-                    <style>
-                        /* Responsive email styles */
-                        @media only screen and (max-width: 600px) {
-                            .content {
-                                padding: 10px !important;
-                            }
-                            .email-header h1 {
-                                font-size: 22px !important;
-                            }
-                            .content p, .content ul {
-                                font-size: 14px !important;
-                            }
-                        }
-                    </style>
-                </head>
-                <body style='margin: 0; padding: 0; background-color: #ffffff; font-family: Arial, sans-serif;'>
-                    <div>
-                    <div style='text-align: center; padding: 20px 0; background-color: #f8f8f8;'>
-                        <h1 style='margin: 0; color: #333333;'>Köszönjük a rendelését!</h1>
-                        <p style='color: #9acd32; font-weight: bold;'>A rendelése sikeresen rögzítésre került.</p>
-                    </div>
-                    
-                    <div style='padding: 20px; background-color: #ffffff; text-align: left;'>
-                        <p>Kedves <strong style='color: #333333;'>{$name}</strong>,</p>
-                        <p style='color: #333333;'>Köszönjük, hogy nálunk vásárolt! A rendelése (<strong style='color: #333333;'>#{$orderNumber}</strong>) feldolgozás alatt áll.</p>
-                        <p style='color: #333333;'>A rendelés dátuma: <strong style='color: #333333;'>{$orderDate}</strong></p>
-                        <p style='color: #333333;'>A teljes összeg: <strong style='color: #333333;'>{$orderTotal} Ft</strong></p>
-                        <p style='color: #333333;'>Rendelésed tartalma:</p>
-                        <ul style='color: #333333; padding-left: 20px;'>
-                ";
-    
-                foreach ($items as $item) {
-                    $subtotal = $item['unit_price'] * $item['quantity'];
-                    $mailBody .= "<li>{$item['name']} - {$item['quantity']} db - {$subtotal} Ft</li>";
-                }
-    
-                $mailBody .= "
-                        </ul>
-                        <p> Szállítási díj: 1000 Ft </p>
-                        <p style='color: #333333;'>Ha bármilyen kérdése van, bátran <a href='mailto:florensbotanica@gmail.com' style='color: #9acd32;'>lépjen kapcsolatba velünk</a>.</p>
-                    </div>
-                    
-                    <div style='background-color: #1d1d1d; text-align: center; padding: 20px 0;'>
-                        <p style='color: #f5f5f5;'>© 2025 Florens Botanica. Minden jog fenntartva.</p>
-                    </div>
-                    </div>
-                </body>
-                </html>";
-    
-                return $mailBody;
-    
-            case "reset_password":
-                $token = $data["token"];
-                $resetLink = "http://localhost/reset?token={$token}";
+                // Rendelés specifikus változók cseréje
+                $template = str_replace('{ORDER_NUMBER}', $data['orderNumber'], $template);
+                $template = str_replace('{ORDER_DATE}', $data['orderDate'], $template);
+                $template = str_replace('{ORDER_TOTAL}', $data['orderTotal'], $template);
                 
-                $mailBody = "
-                <html>
-                <head>
-                    <style>
-                        @media only screen and (max-width: 600px) {
-                            .content {
-                                padding: 10px !important;
-                            }
-                            .email-header h1 {
-                                font-size: 22px !important;
-                            }
-                        }
-                    </style>
-                </head>
-                <body style='margin: 0; padding: 0; background-color: #ffffff; font-family: Arial, sans-serif;'>
-                    <div>
-                        <div style='text-align: center; padding: 20px 0; background-color: #f8f8f8;'>
-                            <h1 style='margin: 0; color: #333333;'>Jelszó visszaállítás</h1>
-                        </div>
-                        
-                        <div style='padding: 20px; background-color: #ffffff; text-align: left;'>
-                            <p>Kedves <strong style='color: #333333;'>{$name}</strong>,</p>
-                            <p style='color: #333333;'>Jelszó visszaállítást kért a fiókjához. Kattintson az alábbi gombra a jelszó módosításához:</p>
-                            <div style='text-align: center; margin: 30px 0;'>
-                                <a href='{$resetLink}' style='background-color: #9acd32; color: white; padding: 12px 30px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Jelszó v[...]
-                            </div>
-                            <p style='color: #333333;'>Ha nem Ön kérte a jelszó visszaállítást, kérjük hagyja figyelmen kívül ezt az emailt.</p>
-                            <p style='color: #333333; font-size: 12px;'>A link 30 percig érvényes.</p>
-                        </div>
-                        
-                        <div style='background-color: #1d1d1d; text-align: center; padding: 20px 0;'>
-                            <p style='color: #f5f5f5;'>© 2025 Florens Botanica. Minden jog fenntartva.</p>
-                        </div>
-                    </div>
-                </body>
-                </html>";
-
-                return $mailBody;
-
-            default:
+                // Termékek listájának generálása
+                $itemsHtml = '';
+                foreach ($data['items'] as $item) {
+                    $subtotal = $item['unit_price'] * $item['quantity'];
+                    $itemsHtml .= "<li>{$item['name']} - {$item['quantity']} db - {$subtotal} Ft</li>";
+                }
+                $template = str_replace('{ORDER_ITEMS}', $itemsHtml, $template);
+                break;
+                
+            case 'reset_password':
+                // Jelszó visszaállítás specifikus változók cseréje
+                $resetLink = "http://localhost/reset?token={$data['token']}";
+                $template = str_replace('{RESET_LINK}', $resetLink, $template);
                 break;
         }
-    }       
+        
+        return $template;
+    }
 
     /**
      * Az email alternatív törzsének generálása a megadott típus alapján.
@@ -226,45 +159,44 @@ class Mail {
      * @return string Az email alternatív törzse egyszerű szöveg formátumban.
      */
     public static function getMailAltBody(string $type="order", string $name, array $data) {
+        // Betöltjük a megfelelő szöveges sablont
+        $templateFile = Mail::TEMPLATE_PATH . $type . '.txt';
+        
+        // Ellenőrizzük, hogy létezik-e a sablon fájl
+        if (!file_exists($templateFile)) {
+            error_log("Email szöveges sablon nem található: " . $templateFile);
+            return "Email szöveges sablon nem található.";
+        }
+        
+        // Betöltjük a sablon tartalmát
+        $template = file_get_contents($templateFile);
+        
+        // Alapvető változók cseréje
+        $template = str_replace('{NAME}', $name, $template);
+        
         switch ($type) {
             case 'order':
-                $orderNumber = $data['orderNumber'];
-                $orderDate = $data['orderDate'];
-                $orderTotal = $data['orderTotal'];
-                $items = $data['items'];
-    
-                $altBody = "Kedves {$name},\n\n";
-                $altBody .= "Köszönjük, hogy nálunk vásárolt! A rendelése (#{$orderNumber}) feldolgozás alatt áll.\n\n";
-                $altBody .= "A rendelés dátuma: {$orderDate}\n";
-                $altBody .= "A teljes összeg: {$orderTotal} Ft\n\n";
-                $altBody .= "Rendelésed tartalma:\n";
+                // Rendelés specifikus változók cseréje
+                $template = str_replace('{ORDER_NUMBER}', $data['orderNumber'], $template);
+                $template = str_replace('{ORDER_DATE}', $data['orderDate'], $template);
+                $template = str_replace('{ORDER_TOTAL}', $data['orderTotal'], $template);
                 
-                foreach ($items as $item) {
+                // Termékek listájának generálása
+                $itemsText = '';
+                foreach ($data['items'] as $item) {
                     $subtotal = $item['unit_price'] * $item['quantity'];
-                    $altBody .= "<li>{$item['name']} - {$item['quantity']} db - {$subtotal} Ft</li>";
+                    $itemsText .= "- {$item['name']} - {$item['quantity']} db - {$subtotal} Ft\n";
                 }
-
-                $altBody .= "Szállítási díj: 1000 Ft";
-                $altBody .= "\nHa bármilyen kérdése van, bátran lépjen kapcsolatba velünk a florensbotanica@gmail.com email címen.\n";
-    
-                return $altBody;
-    
-            case "reset_password":
-                $token = $data["token"];
-                $resetLink = "http://localhost:3000/reset-password?token={$token}";
+                $template = str_replace('{ORDER_ITEMS}', $itemsText, $template);
+                break;
                 
-                $altBody = "Kedves {$name},\n\n";
-                $altBody .= "Jelszó visszaállítást kért a fiókjához.\n\n";
-                $altBody .= "A jelszó visszaállításához kattintson az alábbi linkre vagy másolja böngészőjébe:\n";
-                $altBody .= "{$resetLink}\n\n";
-                $altBody .= "Ha nem Ön kérte a jelszó visszaállítást, kérjük hagyja figyelmen kívül ezt az emailt.\n\n";
-                $altBody .= "A link 30 percig érvényes.\n\n";
-                $altBody .= "Üdvözlettel,\nFlorens Botanica webáruház";
-
-                return $altBody;
-
-            default:
+            case 'reset_password':
+                // Jelszó visszaállítás specifikus változók cseréje
+                $resetLink = "http://localhost/reset?token={$data['token']}";
+                $template = str_replace('{RESET_LINK}', $resetLink, $template);
                 break;
         }
-    }        
+        
+        return $template;
+    }    
 }

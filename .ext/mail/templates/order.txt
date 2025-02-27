@@ -1,0 +1,16 @@
+Kedves {NAME},
+
+Köszönjük, hogy nálunk vásárolt! A rendelése (#{ORDER_NUMBER}) feldolgozás alatt áll.
+
+A rendelés dátuma: {ORDER_DATE}
+A teljes összeg: {ORDER_TOTAL} Ft
+
+Rendelésed tartalma:
+{ORDER_ITEMS}
+
+Szállítási díj: 1000 Ft
+
+Ha bármilyen kérdése van, bátran lépjen kapcsolatba velünk a florensbotanica@gmail.com email címen.
+
+Üdvözlettel,
+Florens Botanica csapata
