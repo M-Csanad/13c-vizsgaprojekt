@@ -136,6 +136,7 @@ $menu_items = [
 <link rel="stylesheet" href="/fb-content/assets/css/cart.css">
 <link rel="stylesheet" href="/fb-content/assets/css/search.css">
 <link rel="stylesheet" href="/fb-content/assets/css/popup.css">
+<link rel="stylesheet" href="/fb-content/assets/css/notification.css">
 <link rel="stylesheet" href="/fb-content/fb-products/css/numberfield.css">
 
 <script type="module" src="/fb-content/assets/js/popup.js"></script>
