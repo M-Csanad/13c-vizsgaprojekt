@@ -822,7 +822,7 @@ hr {
   transition: var(--after-end) 0.5s ease;
   display: flex;
   flex-direction: row;
-  
+
   gap: 1rem;
 }
 
@@ -1304,5 +1304,77 @@ body.top-show #top-button {
 }
 
 .stock-message.out-of-stock {
-  color: #E57373;
+  color: #e57373;
+}
+
+/* Minimal lebegő panel */
+.floating-cart {
+  position: fixed;
+  top: 50%;
+  right: 1rem;
+
+  transform: translateY(-50%) scale(0);
+  transform-origin: bottom right;
+  opacity: 0;
+  pointer-events: none;
+
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  border: 3px solid transparent;
+  animation: borderPulse 1.4s infinite;
+  background: #272727;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
+  padding: 1.2rem;
+  width: 280px; /* Lehet kisebb, mert nincs +/– */
+  z-index: 999;
+}
+
+/* Megjelenítés, mikor a JS rárakja a .show-t */
+.floating-cart.show {
+  transform: translateY(-50%) scale(1);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Címsor */
+.floating-cart-header {
+  font-size: 1rem;
+  margin-bottom: 0.6rem;
+  text-align: center;
+  color: #eee;
+}
+
+/* Kosár gomb */
+.floating-add-to-cart {
+  display: block;
+  width: 100%;
+  height: 45px;
+  border: 2px solid #85b86d;
+  color: #85b86d;
+  background-color: #272727;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+.floating-add-to-cart:hover {
+  border-color: #caffb1;
+  color: #caffb1;
+}
+.floating-add-to-cart:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Pulzáló keret animáció */
+@keyframes borderPulse {
+  0% {
+    border-color: #85b86d;
+  }
+  50% {
+    border-color: #caffb1;
+  }
+  100% {
+    border-color: #85b86d;
+  }
 }

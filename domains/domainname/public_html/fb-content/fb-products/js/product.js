@@ -1,17 +1,32 @@
 import { setupNumberField } from './numberfield.js';
 
 class ProductPage {
-    constructor() {
-        // Állapot változók inicializálása
-        this.isZoom = false;
-        this.isNavAnimating = false;
-        this.frameId = null;
-        this.scrollFrameId = null;
-        
-        this.initDOM();
-        this.bindEvents();
-        this.initialize();
+  constructor() {
+    // Állapot változók inicializálása
+    this.isZoom = false;
+    this.isNavAnimating = false;
+    this.frameId = null;
+    this.scrollFrameId = null;
+
+    this.initDOM();
+    this.bindEvents();
+    this.initialize();
+
+    const bigAddToCartBtn = document.querySelector(".add-to-cart");
+    const floatingCart = document.getElementById("floatingCart");
+
+    function checkBigButtonVisibility() {
+      if (!bigAddToCartBtn) return;
+      const rect = bigAddToCartBtn.getBoundingClientRect();
+      const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+
+      if (isVisible) {
+        floatingCart.classList.remove("show");
+      } else {
+        floatingCart.classList.add("show");
+      }
     }
+  }
 
     initDOM() {
         // DOM elemek referenciáinak létrehozása
@@ -45,7 +60,7 @@ class ProductPage {
 
     bindEvents() {
         // Képnéző események
-        this.imageViewer.navigator.images.forEach((img, index) => 
+        this.imageViewer.navigator.images.forEach((img, index) =>
             img.addEventListener('click', () => this.switchImage(index)));
 
         this.imageViewer.images.forEach(img => {
@@ -72,9 +87,9 @@ class ProductPage {
         });
 
         // Görgetési események
-        this.imageViewer.navigator.carousel.addEventListener('scroll', 
+        this.imageViewer.navigator.carousel.addEventListener('scroll',
             () => this.handleScroll(this.imageViewer.navigator.scrollbar, this.imageViewer.navigator.carousel));
-        
+
         this.recommendations.container.addEventListener('scroll',
             () => this.handleScroll(this.recommendations.scrollbar, this.recommendations.container));
 
@@ -97,7 +112,7 @@ class ProductPage {
         this.generateReviewSection();
         this.reviewStars.forEach(el => this.generateStars(el));
         this.updateDynamicBackground();
-        
+
         // Mennyiség beviteli mező inicializálása
         if (document.querySelector('.number-field')) {
             setupNumberField();
@@ -111,7 +126,7 @@ class ProductPage {
         const fullStars = Math.floor(rating);
         const halfStar = rating % 1 >= 0.5;
         const totalStars = 5;
-        
+
         element.innerHTML = '';
         for (let i = 0; i < totalStars; i++) {
             const star = document.createElement('span');
@@ -129,7 +144,7 @@ class ProductPage {
 
         const rating = parseFloat(this.avgReviewElement.getAttribute('data-rating'));
         const reviewCount = parseInt(this.avgReviewElement.getAttribute('data-reviews'));
-        
+
         this.avgReviewElement.innerHTML = `
             <div class="rating-number">${rating.toFixed(1)}</div>
             <div class="stars-and-reviews">
@@ -193,7 +208,7 @@ class ProductPage {
         );
 
         this.updateDynamicBackground();
-        
+
         setTimeout(() => {
             currentImage.style.zIndex = '-1';
             this.isNavAnimating = false;
@@ -378,7 +393,7 @@ class ProductPage {
             } else {
                 // Fallback: URL másolása vágólapra
                 await navigator.clipboard.writeText(url);
-                
+
                 // Felhasználó értesítése
                 this.shareButton.style.backgroundColor = '#2a332c';
                 this.shareButton.style.borderColor = '#caffb1';

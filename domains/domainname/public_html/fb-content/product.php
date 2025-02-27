@@ -6,11 +6,11 @@
     $uri = trim(parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH), '/');
     $segments = explode('/', $uri); // 0: category, 1: subcategory, 2: product
     $slug = implode('/', $segments);
-    
+
 
     // Termék és termékoldal adatainak lekérése
     $result = selectData("SELECT product.*, product_page.id as page_id, product_page.created_at, product_page.last_modified, product_page.page_title, product_page.page_content, product_page.category_id, category.name AS category_name, subcategory.name AS subcategory_name FROM product_page INNER JOIN product ON product_page.product_id=product.id INNER JOIN category ON product_page.category_id=category.id INNER JOIN subcategory ON product_page.subcategory_id=subcategory.id WHERE product_page.link_slug LIKE ?", [$slug], "s");
-    
+
     // Ha nem sikeres, akkor 404 oldal betöltése
     if (!$result->isSuccess()) {
       http_response_code(404);
@@ -22,7 +22,7 @@
 
     // Termékképek lekérése
     $result = selectData("SELECT image.uri FROM image INNER JOIN product_image ON product_image.image_id=image.id WHERE product_image.product_id=?", $product["id"], "i");
-    
+
     // Ha nem sikeres, akkor 404 oldal betöltése
     if (!$result->isSuccess()) {
       http_response_code(404);
@@ -34,7 +34,7 @@
 
     // Címkék lekérése
     $result = selectData("SELECT tag.icon_uri, tag.name FROM tag INNER JOIN product_tag ON product_tag.tag_id=tag.id WHERE product_tag.product_id=?", $product["id"], "i");
-    
+
     // Ha nem sikeres, akkor 404 oldal betöltése
     if ($result->isError()) {
       logError("Sikertelen termék címke lekérdezés: " . json_encode($result), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
@@ -43,7 +43,7 @@
       exit;
     }
     $tags = ($result->type == "EMPTY") ? "Nincsenek termékhez csatolt címkék." : $result->message;
-    
+
 
     // Egészségügyi hatások lekérdezése
     $result = selectData("SELECT * FROM health_effect INNER JOIN product_health_effect ON product_health_effect.health_effect_id=health_effect.id WHERE product_health_effect.product_id=?", $product['id'], "i");
@@ -59,7 +59,7 @@
       $benefits = array_filter($result->message, function ($e) {return $e["benefit"] == 1;});
       $side_effects = array_filter($result->message, function ($e) {return $e["benefit"] == 0;});
     }
-  
+
 
     // Értékelések lekérdezése
     $result = selectData("SELECT review.id, review.user_id, review.product_id, review.rating, review.description, review.title, DATE(review.created_at) AS created_at, user.id, user.email, user.user_name, user.password_hash, user.role, user.cookie_id, user.cookie_expires_at, user.first_name, user.last_name, avatar.uri as pfp_uri, user.created_at AS user_created_at FROM review INNER JOIN user ON review.user_id = user.id INNER JOIN avatar ON avatar.id=user.avatar_id WHERE product_id=?", $product["id"], "i");
@@ -71,7 +71,7 @@
       exit;
     }
     $reviews = $result->message;
-    
+
     if (is_array($reviews)) {
       $reviewNum = count($reviews);
       $avgReview = array_sum(array_map(function ($e) { return $e["rating"]; }, $reviews)) / $reviewNum;
@@ -88,9 +88,9 @@
     $result = selectData(
       "SELECT DISTINCT p.*, pp.link_slug,
       MAX(CASE WHEN i.uri LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') END) AS thumbnail_image,
-      MAX(CASE 
+      MAX(CASE
       WHEN i.uri LIKE '%vertical%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '')
-      WHEN i.uri NOT LIKE '%vertical%' AND i.uri NOT LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') 
+      WHEN i.uri NOT LIKE '%vertical%' AND i.uri NOT LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '')
       END) AS secondary_image,
       COALESCE(AVG(r.rating), 0) as avg_rating,
       COUNT(DISTINCT r.id) as review_count
@@ -116,9 +116,9 @@
       $result = selectData(
       "SELECT DISTINCT p.*, pp.link_slug,
       MAX(CASE WHEN i.uri LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') END) AS thumbnail_image,
-      MAX(CASE 
+      MAX(CASE
         WHEN i.uri LIKE '%vertical%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '')
-        WHEN i.uri NOT LIKE '%vertical%' AND i.uri NOT LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') 
+        WHEN i.uri NOT LIKE '%vertical%' AND i.uri NOT LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '')
       END) AS secondary_image,
       COALESCE(AVG(r.rating), 0) as avg_rating,
       COUNT(DISTINCT r.id) as review_count
@@ -127,7 +127,7 @@
       LEFT JOIN product_image pi ON p.id = pi.product_id
       LEFT JOIN image i ON pi.image_id = i.id
       LEFT JOIN review r ON p.id = r.product_id
-      WHERE pp.category_id = ? AND p.id != ? 
+      WHERE pp.category_id = ? AND p.id != ?
       AND p.id NOT IN (" . implode(',', array_map(function($p) { return $p['id']; }, $relatedProducts)) . ")
       GROUP BY p.id
       ORDER BY p.name
@@ -146,9 +146,9 @@
       $result = selectData(
       "SELECT DISTINCT p.*, pp.link_slug,
       MAX(CASE WHEN i.uri LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') END) AS thumbnail_image,
-      MAX(CASE 
+      MAX(CASE
         WHEN i.uri LIKE '%vertical%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '')
-        WHEN i.uri NOT LIKE '%vertical%' AND i.uri NOT LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '') 
+        WHEN i.uri NOT LIKE '%vertical%' AND i.uri NOT LIKE '%thumbnail%' THEN REGEXP_REPLACE(i.uri, '\\.[^.]+$', '')
       END) AS secondary_image,
       COALESCE(AVG(r.rating), 0) as avg_rating,
       COUNT(DISTINCT r.id) as review_count
@@ -157,7 +157,7 @@
       LEFT JOIN product_image pi ON p.id = pi.product_id
       LEFT JOIN image i ON pi.image_id = i.id
       LEFT JOIN review r ON p.id = r.product_id
-      WHERE p.id != ? 
+      WHERE p.id != ?
       AND p.id NOT IN (" . (empty($relatedProducts) ? '-1' : implode(',', array_map(function($p) { return $p['id']; }, $relatedProducts))) . ")
       GROUP BY p.id
       ORDER BY p.name
@@ -165,7 +165,7 @@
       [$product['id'], $limit - count($relatedProducts)],
       "ii"
       );
-    
+
       if ($result->isSuccess() && !$result->isEmpty()) {
       $relatedProducts = array_merge($relatedProducts, $result->message);
       }
@@ -299,7 +299,7 @@
                   <div class="stock-count">Készleten: <?= htmlspecialchars($product["stock"]); ?> db</div>
               </div>
               <div class="stock-bar-container">
-                  <div class="stock-bar <?= $product["stock"] <= 0 ? 'out-of-stock' : ($product["stock"] > 10 ? 'high' : ($product["stock"] > 5 ? 'medium' : 'low')) ?>" 
+                  <div class="stock-bar <?= $product["stock"] <= 0 ? 'out-of-stock' : ($product["stock"] > 10 ? 'high' : ($product["stock"] > 5 ? 'medium' : 'low')) ?>"
                         style="width: <?= $product["stock"] <= 0 ? '100' : min(($product["stock"] / 15) * 100, 100) ?>%">
                   </div>
               </div>
@@ -333,10 +333,10 @@
           <label for="product-quantity">Mennyiség:</label>
           <div class="number-field">
             <div class="number-field-subtract">-</div>
-            <input type="text" name="product-quantity" class="product-quantity" 
-                   placeholder="Darab" 
-                   max="<?= htmlspecialchars($product['stock']); ?>" 
-                   min="1" 
+            <input type="text" name="product-quantity" class="product-quantity"
+                   placeholder="Darab"
+                   max="<?= htmlspecialchars($product['stock']); ?>"
+                   min="1"
                    value="1"
                    pattern="[0-9]*">
             <div class="number-field-add">+</div>
@@ -603,9 +603,9 @@
                                 <source type="image/jpeg" srcset="<?= $relatedProduct["thumbnail_image"] ?>-<?= $resolution ?>px.jpg 1x" media="(min-width: <?= $resolution ?>px)">
                             <?php endforeach; ?>
                             <!-- Fallback -->
-                            <img 
-                            src="<?= $relatedProduct["thumbnail_image"] ?>-<?= end($resolutions) ?>px.webp" 
-                            alt="<?= htmlspecialchars($relatedProduct['name']) ?>" 
+                            <img
+                            src="<?= $relatedProduct["thumbnail_image"] ?>-<?= end($resolutions) ?>px.webp"
+                            alt="<?= htmlspecialchars($relatedProduct['name']) ?>"
                             loading="lazy"
                             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw">
                         </picture>
@@ -617,15 +617,15 @@
                             <?php endforeach; ?>
                             <!-- Fallback -->
                             <source type="image/jpeg" srcset="<?= $relatedProduct["secondary_image"] ?>.jpg 1x" media="(min-width: 0px)">
-                            <img 
-                            src="<?= $relatedProduct["secondary_image"] ?>.jpg" 
-                            alt="<?= htmlspecialchars($relatedProduct['name']) ?>" 
+                            <img
+                            src="<?= $relatedProduct["secondary_image"] ?>.jpg"
+                            alt="<?= htmlspecialchars($relatedProduct['name']) ?>"
                             loading="lazy"
                             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 33vw">
                         </picture>
                     </a>
                 <div class="button-wrapper">
-                    <button class="quick-add" 
+                    <button class="quick-add"
                             data-product-id="<?= htmlspecialchars($relatedProduct["id"]); ?>"
                             data-product-url="<?= htmlspecialchars($relatedProduct["link_slug"]); ?>">
                     <div>Kosárba</div>
@@ -725,8 +725,38 @@
     </div>
     <footer id="fb-footer"></footer>
 
-    <div id="scrollBar">
-        <div id="scrollStatus"></div>
+  <div class="divider-flower">
+    <div class="hr"></div>
+    <!-- SVG by orchidart (www.freepik.com) -->
+    <img src="/fb-content/fb-products/media/images/flower.svg" alt="Oldalzáró virág" draggable="false" />
+    <div class="hr"></div>
+  </div>
+
+  <div id="floatingCart" class="floating-cart">
+    <div class="floating-cart-header">
+      <!-- Termék neve pici betűvel -->
+      <span id="floatingCartProductName"><?= htmlspecialchars($product["name"]); ?></span>
     </div>
-  </body>
+    <button class="floating-add-to-cart" <?= ($product["stock"] <= 0 ? 'disabled' : '') ?>>
+      Kosárba
+    </button>
+  </div>
+
+
+  <div id="top-button">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up"
+      viewBox="0 0 16 16">
+      <path fill-rule="evenodd"
+        d="M8 15a.5.5 0 0 0 .5-.5V2.707l3.146 3.147a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 1 0 .708.708L7.5 2.707V14.5a.5.5 0 0 0 .5.5" />
+    </svg>
+  </div>
+
+  <footer id="fb-footer"></footer>
+
+  <div id="scrollBar">
+    <div id="scrollStatus"></div>
+  </div>
+
+</body>
+
 </html>
