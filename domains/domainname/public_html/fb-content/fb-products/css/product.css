@@ -1159,28 +1159,23 @@ body.top-show #top-button {
   position: fixed;
   top: 50%;
   right: 1rem;
-
-  /* Alapállapotban kicsi és áttetsző */
   transform: translateY(-50%) scale(0);
   transform-origin: bottom right;
   opacity: 0;
   pointer-events: none;
-
-  /* A megjelenés/eltűnés animációhoz */
   transition: transform 0.4s ease, opacity 0.4s ease;
-
-  /* Pulzáló keret + dizájn */
   border: 3px solid transparent;
   animation: borderPulse 1.4s infinite;
   background: #272727;
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
   padding: 1.2rem;
-  width: 320px;
+  /* Tetszőleges szélesség, ha szeretnéd */
+  width: 280px;
   z-index: 999;
 }
 
-/* Ha ráadjuk a "show" osztályt, akkor kinő és látható lesz */
+/* Amikor látszik */
 .floating-cart.show {
   transform: translateY(-50%) scale(1);
   opacity: 1;

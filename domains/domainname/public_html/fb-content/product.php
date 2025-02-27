@@ -742,29 +742,28 @@ usort($relatedProducts, function ($a, $b) {
 
   <div class="divider-flower">
     <div class="hr"></div>
-
+    <!-- SVG by orchidart (www.freepik.com) -->
     <img src="/fb-content/fb-products/media/images/flower.svg" alt="Oldalzáró virág" draggable="false" />
     <div class="hr"></div>
   </div>
 
   <div id="floatingCart" class="floating-cart">
     <div class="floating-cart-header">
-
-      <span id="floatingCartProductName"><?= htmlspecialchars($product["name"]); ?></span>
+      <!-- A termék neve pici betűvel -->
+      <span id="floatingCartProductName">
+        <?= htmlspecialchars($product["name"]); ?>
+      </span>
     </div>
-
-
-    <button class="floating-add-to-cart">Kosárba</button>
-
-
+    <!-- Gomb és mennyiség beállító -->
+    <button class="floating-add-to-cart " <?= $product["stock"] <= 0 ? 'disabled' : '' ?>>
+      Kosárba
+    </button>
     <div class="floating-qty">
       <button class="floating-qty-sub">-</button>
-      <input type="text" class="floating-qty-value" value="1" min="1"
-        max="<?= htmlspecialchars($product["stock"]); ?>" />
+      <input type="text" class="floating-qty-value" value="1" min="1" max="<?= $product['stock']; ?>" />
       <button class="floating-qty-add">+</button>
     </div>
   </div>
-
 
   <div id="top-button">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up"
