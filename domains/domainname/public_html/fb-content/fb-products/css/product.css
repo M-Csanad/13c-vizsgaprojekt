@@ -1309,72 +1309,148 @@ body.top-show #top-button {
 
 /* Minimal lebegő panel */
 .floating-cart {
+  font-family: Karla;
   position: fixed;
-  top: 50%;
-  right: 1rem;
-
-  transform: translateY(-50%) scale(0);
-  transform-origin: bottom right;
+  bottom: -0.25rem;
+  right: 102px;
+  transform: translateY(100%);
   opacity: 0;
   pointer-events: none;
-
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  border: 3px solid transparent;
-  animation: borderPulse 1.4s infinite;
-  background: #272727;
-  border-radius: 12px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
-  padding: 1.2rem;
-  width: 280px; /* Lehet kisebb, mert nincs +/– */
   z-index: 999;
+  transition: transform 0.5s cubic-bezier(0.17, 0.84, 0.44, 1), opacity 0.4s ease;
 }
 
-/* Megjelenítés, mikor a JS rárakja a .show-t */
 .floating-cart.show {
-  transform: translateY(-50%) scale(1);
+  transform: translateY(-50%);
   opacity: 1;
   pointer-events: auto;
 }
 
-/* Címsor */
-.floating-cart-header {
-  font-size: 1rem;
-  margin-bottom: 0.6rem;
-  text-align: center;
-  color: #eee;
-}
-
 /* Kosár gomb */
 .floating-add-to-cart {
-  display: block;
-  width: 100%;
-  height: 45px;
-  border: 2px solid #85b86d;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 1rem 1.5rem;
+  width: auto;
+  min-width: 60px;
+  height: 60px;
   color: #85b86d;
-  background-color: #272727;
-  border-radius: 30px;
+  background-color: rgba(39, 39, 39, 0.95);
+  border: 2px solid #85b86d;
+  border-radius: 50px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 1rem;
-}
-.floating-add-to-cart:hover {
-  border-color: #caffb1;
-  color: #caffb1;
-}
-.floating-add-to-cart:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  overflow: visible;
+  outline: none;
+  animation: borderColorPulse 2s infinite;
+  transition: color 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* Pulzáló keret animáció */
-@keyframes borderPulse {
+@keyframes borderColorPulse {
   0% {
     border-color: #85b86d;
   }
   50% {
     border-color: #caffb1;
+    box-shadow: 0 0 15px rgba(133, 184, 109, 0.4);
   }
   100% {
     border-color: #85b86d;
+  }
+}
+
+.floating-add-to-cart:hover {
+  color: #caffb1;
+  background-color: rgba(42, 51, 44, 0.95);
+}
+
+.floating-add-to-cart svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.floating-add-to-cart span {
+  font-family: Karla;
+  font-size: 1rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  transition: max-width 0.5s ease, opacity 0.3s ease, margin 0.5s ease;
+  max-width: 120px;
+  overflow: hidden;
+  opacity: 1;
+}
+
+.floating-add-to-cart:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  animation: none;
+}
+
+@media screen and (max-width: 768px) {
+  
+  .floating-add-to-cart {
+    width: 60px;
+    height: 60px;
+    min-width: 60px;
+    padding: 0;
+    border-radius: 50%;
+  }
+  
+  .floating-add-to-cart svg {
+    width: 25px;
+    height: 25px;
+    box-sizing: content-box;
+  }
+  
+  .floating-add-to-cart span {
+    max-width: 0;
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    position: absolute;
+    visibility: hidden;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .floating-add-to-cart {
+    padding: 1rem 1.5rem;
+    height: auto;
+    min-width: 64px;
+  }
+  
+  .floating-add-to-cart svg {
+    padding: 0;
+  }
+  
+  .floating-add-to-cart:hover span {
+    max-width: 150px;
+  }
+}
+
+@keyframes borderPulse {
+  0% { border-color: #85b86d; }
+  50% { border-color: #caffb1; }
+  100% { border-color: #85b86d; }
+}
+
+@keyframes outlinePulse {
+  0% {
+    opacity: 0;
+    inset: 4px;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    inset: -6px;
+    border-color: #caffb1;
   }
 }

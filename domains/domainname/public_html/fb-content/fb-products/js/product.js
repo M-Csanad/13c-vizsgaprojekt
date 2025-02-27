@@ -1,32 +1,17 @@
 import { setupNumberField } from './numberfield.js';
 
 class ProductPage {
-  constructor() {
-    // Állapot változók inicializálása
-    this.isZoom = false;
-    this.isNavAnimating = false;
-    this.frameId = null;
-    this.scrollFrameId = null;
+    constructor() {
+        // Állapot változók inicializálása
+        this.isZoom = false;
+        this.isNavAnimating = false;
+        this.frameId = null;
+        this.scrollFrameId = null;
 
-    this.initDOM();
-    this.bindEvents();
-    this.initialize();
-
-    const bigAddToCartBtn = document.querySelector(".add-to-cart");
-    const floatingCart = document.getElementById("floatingCart");
-
-    function checkBigButtonVisibility() {
-      if (!bigAddToCartBtn) return;
-      const rect = bigAddToCartBtn.getBoundingClientRect();
-      const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
-
-      if (isVisible) {
-        floatingCart.classList.remove("show");
-      } else {
-        floatingCart.classList.add("show");
-      }
+        this.initDOM();
+        this.bindEvents();
+        this.initialize();
     }
-  }
 
     initDOM() {
         // DOM elemek referenciáinak létrehozása
@@ -56,12 +41,15 @@ class ProductPage {
         // Numberfield setup
         this.quantityField = document.querySelector('.product-quantity');
         this.addToCartButton = document.querySelector('.add-to-cart');
+
+        // Lebegő kosár gomb
+        this.bigAddToCartBtn = document.querySelector(".add-to-cart");
+        this.floatingCart = document.getElementById("floatingCart");
     }
 
     bindEvents() {
         // Képnéző események
-        this.imageViewer.navigator.images.forEach((img, index) =>
-            img.addEventListener('click', () => this.switchImage(index)));
+        this.imageViewer.navigator.images.forEach((img, index) => img.addEventListener('click', () => this.switchImage(index)));
 
         this.imageViewer.images.forEach(img => {
             const wrapper = img.parentElement;
@@ -87,15 +75,16 @@ class ProductPage {
         });
 
         // Görgetési események
-        this.imageViewer.navigator.carousel.addEventListener('scroll',
-            () => this.handleScroll(this.imageViewer.navigator.scrollbar, this.imageViewer.navigator.carousel));
-
-        this.recommendations.container.addEventListener('scroll',
-            () => this.handleScroll(this.recommendations.scrollbar, this.recommendations.container));
+        this.imageViewer.navigator.carousel.addEventListener('scroll', () => this.handleScroll(this.imageViewer.navigator.scrollbar, this.imageViewer.navigator.carousel));
+        this.recommendations.container.addEventListener('scroll', () => this.handleScroll(this.recommendations.scrollbar, this.recommendations.container));
 
         // Ablak események
-        window.addEventListener('resize', () => this.handleResize());
         window.addEventListener('load', () => this.handleLoad());
+        window.addEventListener('resize', () => this.handleResize());
+        
+        if (this.bigAddToCartBtn) {
+            window.addEventListener('scroll', () => this.checkBigButtonVisibility());
+        }
 
         // Felgördítő gomb
         this.topButton?.addEventListener('click', () => lenis.scrollTo('top'));
@@ -112,6 +101,10 @@ class ProductPage {
         this.generateReviewSection();
         this.reviewStars.forEach(el => this.generateStars(el));
         this.updateDynamicBackground();
+
+        if (this.bigAddToCartBtn) {
+            this.checkBigButtonVisibility();
+        }
 
         // Mennyiség beviteli mező inicializálása
         if (document.querySelector('.number-field')) {
@@ -154,6 +147,17 @@ class ProductPage {
         `;
 
         this.generateStars(this.avgReviewElement.querySelector('.stars'));
+    }
+
+    checkBigButtonVisibility() {
+        const rect = this.bigAddToCartBtn.getBoundingClientRect();
+        const isVisible = document.documentElement.scrollTop <= 450;
+
+        if (isVisible) {
+            this.floatingCart.classList.remove("show");
+        } else {
+            this.floatingCart.classList.add("show");
+        }
     }
 
     updateDynamicBackground() {
@@ -298,6 +302,10 @@ class ProductPage {
         this.imageViewer.images.forEach(image => this.updateImageLeft(image));
         this.updateScrollbar(this.recommendations.scrollbar, this.recommendations.container);
         this.updateScrollbar(this.imageViewer.navigator.scrollbar, this.imageViewer.navigator.carousel);
+
+        if (this.bigAddToCartBtn) {
+            this.checkBigButtonVisibility();
+        }
     }
 
     handleLoad() {
