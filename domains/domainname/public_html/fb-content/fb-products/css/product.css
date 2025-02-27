@@ -1154,46 +1154,47 @@ body.top-show #top-button {
   color: #e57373;
 }
 
-/* A lebegő DIV kezdeti állapota rejtve legyen */
+/* Minimal lebegő panel */
 .floating-cart {
   position: fixed;
   top: 50%;
   right: 1rem;
+
   transform: translateY(-50%) scale(0);
   transform-origin: bottom right;
   opacity: 0;
   pointer-events: none;
-  transition: transform 0.4s ease, opacity 0.4s ease;
+
+  transition: transform 0.3s ease, opacity 0.3s ease;
   border: 3px solid transparent;
   animation: borderPulse 1.4s infinite;
   background: #272727;
   border-radius: 12px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.6);
   padding: 1.2rem;
-  /* Tetszőleges szélesség, ha szeretnéd */
-  width: 280px;
+  width: 280px; /* Lehet kisebb, mert nincs +/– */
   z-index: 999;
 }
 
-/* Amikor látszik */
+/* Megjelenítés, mikor a JS rárakja a .show-t */
 .floating-cart.show {
   transform: translateY(-50%) scale(1);
   opacity: 1;
   pointer-events: auto;
 }
 
-/* A címsor (termék név) */
+/* Címsor */
 .floating-cart-header {
-  font-size: 1.1rem;
+  font-size: 1rem;
   margin-bottom: 0.6rem;
+  text-align: center;
   color: #eee;
 }
 
-/* A lebegő kosár gombod */
+/* Kosár gomb */
 .floating-add-to-cart {
   display: block;
   width: 100%;
-  margin-bottom: 0.6rem;
   height: 45px;
   border: 2px solid #85b86d;
   color: #85b86d;
@@ -1208,52 +1209,19 @@ body.top-show #top-button {
   color: #caffb1;
 }
 .floating-add-to-cart:disabled {
-  opacity: 0.4;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 
-/* Mennyiség állító */
-.floating-qty {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.6rem;
-}
-.floating-qty-sub,
-.floating-qty-add {
-  width: 36px;
-  height: 36px;
-  background-color: #1d1d1d;
-  border: 2px solid #444;
-  color: #ccc;
-  cursor: pointer;
-  border-radius: 50%;
-  transition: background-color 0.3s ease;
-  font-size: 1.1rem;
-}
-.floating-qty-sub:hover,
-.floating-qty-add:hover {
-  background-color: #333;
-}
-.floating-qty-value {
-  width: 60px;
-  text-align: center;
-  background: #1d1d1d;
-  border: 2px solid #444;
-  color: #ddd;
-  font-size: 1.1rem;
-  padding: 0.3rem;
-}
-
-/* A keret animáció – szép pulzáló hatás */
+/* Pulzáló keret animáció */
 @keyframes borderPulse {
   0% {
-    border-color: var(--green_secondary);
+    border-color: #85b86d;
   }
   50% {
-    border-color: var(--green_primary);
+    border-color: #caffb1;
   }
   100% {
-    border-color: var(--green_secondary);
+    border-color: #85b86d;
   }
 }

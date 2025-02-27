@@ -15,12 +15,9 @@ class ProductPage {
 
     function checkBigButtonVisibility() {
       if (!bigAddToCartBtn) return;
-
       const rect = bigAddToCartBtn.getBoundingClientRect();
-      // látszódik-e a nézetablakban?
       const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
 
-      // ha látszik, távolítsd el a show-t
       if (isVisible) {
         floatingCart.classList.remove("show");
       } else {

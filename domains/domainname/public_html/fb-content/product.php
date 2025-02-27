@@ -749,21 +749,14 @@ usort($relatedProducts, function ($a, $b) {
 
   <div id="floatingCart" class="floating-cart">
     <div class="floating-cart-header">
-      <!-- A termék neve pici betűvel -->
-      <span id="floatingCartProductName">
-        <?= htmlspecialchars($product["name"]); ?>
-      </span>
+      <!-- Termék neve pici betűvel -->
+      <span id="floatingCartProductName"><?= htmlspecialchars($product["name"]); ?></span>
     </div>
-    <!-- Gomb és mennyiség beállító -->
-    <button class="floating-add-to-cart " <?= $product["stock"] <= 0 ? 'disabled' : '' ?>>
+    <button class="floating-add-to-cart" <?= ($product["stock"] <= 0 ? 'disabled' : '') ?>>
       Kosárba
     </button>
-    <div class="floating-qty">
-      <button class="floating-qty-sub">-</button>
-      <input type="text" class="floating-qty-value" value="1" min="1" max="<?= $product['stock']; ?>" />
-      <button class="floating-qty-add">+</button>
-    </div>
   </div>
+
 
   <div id="top-button">
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up"

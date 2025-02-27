@@ -105,7 +105,6 @@ class Cart {
     // Kosárba rakó gombok
     this.cartAddButtons = document.querySelectorAll(".add-to-cart");
     this.quickAddButtons = document.querySelectorAll(".quick-add");
-    this.floatingAddButton = document.querySelector(".floating-add-to-cart");
 
     this.quantityInput = document.querySelector(".product-quantity");
 
