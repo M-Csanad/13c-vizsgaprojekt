@@ -45,27 +45,46 @@ class Mail {
         // Aszinkron küldés egy új háttérfolyamat indításával
         if ($async) {
             $dir = dirname(realpath(__FILE__));
-            $recipientBase64 = base64_encode(json_encode($recipients, JSON_UNESCAPED_UNICODE));
-            $mailBase64 = base64_encode(json_encode($mail, JSON_UNESCAPED_UNICODE));
-
-            // PATH ellenőrzés és javítás
-            $phpDir = "C:\\xampp\\php";
-            $currentPath = getenv('PATH');
-
-            if (strpos($currentPath, $phpDir) === false) {
-                putenv('PATH=' . $currentPath . ';' . $phpDir);
+            
+            try {
+                // Egyedi ideiglenes fájl létrehozása
+                $tempFile = tempnam(sys_get_temp_dir(), 'mail_');
+                
+                // Adatok előkészítése asszociatív tömbként
+                $data = [
+                    'recipient' => $recipients,
+                    'mail' => $mail
+                ];
+                
+                // JSON adatok írása az ideiglenes fájlba
+                file_put_contents($tempFile, json_encode($data, JSON_UNESCAPED_UNICODE));
+                
+                // PATH ellenőrzés és javítás
+                $phpDir = "C:\\xampp\\php";
+                $currentPath = getenv('PATH');
+            
+                if (strpos($currentPath, $phpDir) === false) {
+                    putenv('PATH=' . $currentPath . ';' . $phpDir);
+                }
+            
+                // Parancs elkészítése Windowsra és Linuxra
+                if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+                    $command = "start /B php $dir/mail_async_worker.php \"$tempFile\" > NUL 2>&1";
+                } else {
+                    $command = "php $dir/mail_async_worker.php \"$tempFile\" > /dev/null 2>&1 &";
+                }
+            
+                // Háttérfolyamat indítása
+                pclose(popen($command, "r"));
+                
+                return new Result(Result::SUCCESS, 'Email küldés aszinkron módban.');
+            } catch (Exception $e) {
+            // Ideiglenes fájl törlése, ha valami hiba történt
+            if (isset($tempFile) && file_exists($tempFile)) {
+                unlink($tempFile);
             }
-
-            // Parancs elkészítése Windowsra és Linuxra
-            if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-                $command = "start /B php $dir/mail_async_worker.php $recipientBase64 $mailBase64 > NUL 2>&1";
-            } else {
-                $command = "php $dir/mail_async_worker.php $recipientBase64 $mailBase64 > /dev/null 2>&1 &";
+            return new Result(Result::ERROR, 'Hiba az aszinkron email küldés során: ' . $e->getMessage());
             }
-
-            // Háttérfolyamat indítása
-            pclose(popen($command, "r"));
-            return new Result(Result::SUCCESS, 'Email küldés aszinkron módban.');
         }
 
         try {
@@ -109,23 +128,25 @@ class Mail {
      * @return string Az email törzse HTML formátumban.
      */
     public static function getMailBody(string $type='order', string $name, array $data): string {
-        // Betöltjük a megfelelő sablont
-        $templateFile = Mail::TEMPLATE_PATH . $type . '.html';
-        
-        // Ellenőrizzük, hogy létezik-e a sablon fájl
-        if (!file_exists($templateFile)) {
-            error_log("Email sablon nem található: " . $templateFile);
-            return "Email sablon nem található: ".$templateFile;
-        }
-        
-        // Betöltjük a sablon tartalmát
-        $template = file_get_contents($templateFile);
-        
-        // Alapvető változók cseréje
-        $template = str_replace('{NAME}', $name, $template);
+        $template = '';
         
         switch ($type) {
             case 'order':
+                // Betöltjük a megfelelő sablont
+                $templateFile = Mail::TEMPLATE_PATH . $type . '.html';
+                
+                // Ellenőrizzük, hogy létezik-e a sablon fájl
+                if (!file_exists($templateFile)) {
+                    log_Error("Email sablon nem található: " . $templateFile, "mail_error.txt");
+                    throw new Result(Result::ERROR, "Email sablon nem található: ".$templateFile);
+                }
+                
+                // Betöltjük a sablon tartalmát
+                $template = file_get_contents($templateFile);
+                
+                // Alapvető változók cseréje
+                $template = str_replace('{NAME}', $name, $template);
+                
                 // Rendelés specifikus változók cseréje
                 $template = str_replace('{ORDER_NUMBER}', $data['orderNumber'], $template);
                 $template = str_replace('{ORDER_DATE}', $data['orderDate'], $template);
@@ -135,54 +156,90 @@ class Mail {
                 $itemsHtml = '';
                 foreach ($data['items'] as $item) {
                     $subtotal = $item['unit_price'] * $item['quantity'];
-                    $itemsHtml .= "<li>{$item['name']} - {$item['quantity']} db - {$subtotal} Ft</li>";
+                    $itemsHtml .= "<td style='text-align: center;'>{$item['name']}</td><td style='text-align: center;'>{$item['quantity']} db</td><td style='text-align: center;'>{$subtotal} Ft</td></li>";
                 }
                 $template = str_replace('{ORDER_ITEMS}', $itemsHtml, $template);
                 break;
                 
             case 'reset_password':
+                // Betöltjük a megfelelő sablont
+                $templateFile = Mail::TEMPLATE_PATH . $type . '.html';
+                
+                // Ellenőrizzük, hogy létezik-e a sablon fájl
+                if (!file_exists($templateFile)) {
+                    log_Error("Email sablon nem található: " . $templateFile, "mail_error.txt");
+                    throw new Result(Result::ERROR, "Email sablon nem található: ".$templateFile);
+                }
+                
+                // Betöltjük a sablon tartalmát
+                $template = file_get_contents($templateFile);
+                
+                // Alapvető változók cseréje
+                $template = str_replace('{NAME}', $name, $template);
+                
                 // Jelszó visszaállítás specifikus változók cseréje
                 $resetLink = "http://localhost/reset?token={$data['token']}";
                 $template = str_replace('{RESET_LINK}', $resetLink, $template);
                 break;
 
-            case 'status_update':
-                $statuses = ['Visszaigazolva', 'Feldolgozás alatt', 'Szállítás alatt', 'Teljesítve'];
-                $icons = [
-                    // Confirmation icon
-                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>',
-                    // Processing icon
-                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.07.62-.07.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg>',
-                    // Shipping icon
-                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M20 8h-3V4H3c-1.1 0-2 .9-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4zM6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5zm13.5-9l1.96 2.5H17V9.5h2.5zm-1.5 9c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>',
-                    // Complete icon
-                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>'
-                ];
-                
-                // Generate status steps HTML
-                $stepsHtml = '';
-                foreach ($statuses as $index => $status) {
-                    $isActive = $index <= $data['statusIndex'] ? 'active' : '';
-                    $stepsHtml .= "
-                        <div class='status-step'>
-                            <div class='status-icon $isActive'>
-                                {$icons[$index]}
-                            </div>
-                            <div class='status-label $isActive'>$status</div>
-                        </div>";
+            case 'status_update':     
+                $templateFile = Mail::TEMPLATE_PATH . $type . '.html';
+
+                // Ellenőrizzük, hogy létezik-e a sablon fájl
+                if (!file_exists($templateFile)) {
+                    log_Error("Email sablon nem található: " . $templateFile, "mail_error.txt");
+                    throw new Result(Result::ERROR, "Email sablon nem található: ".$templateFile);
                 }
                 
-                // Calculate progress width (0-100%)
-                $progressWidth = ($data['statusIndex'] / (count($statuses) - 1)) * 100;
+                // Betöltjük a status_update.html template-et
+                $template = file_get_contents($templateFile);
                 
-                // Replace placeholders
+                // Alapvető változók cseréje
+                $template = str_replace('{NAME}', $name, $template);
                 $template = str_replace('{ORDER_NUMBER}', $data['orderNumber'], $template);
                 $template = str_replace('{ORDER_DATE}', $data['orderDate'], $template);
                 $template = str_replace('{ORDER_TOTAL}', $data['orderTotal'], $template);
                 $template = str_replace('{NEW_STATUS}', $data['newStatus'], $template);
-                $template = str_replace('{STATUS_STEPS}', $stepsHtml, $template);
-                $template = str_replace('{PROGRESS_WIDTH}', $progressWidth, $template);
+                
+                // Státuszok frissítése a megfelelő jelölésekkel
+                $statusIds = ['processing', 'shipping', 'completed'];
+                
+                // Státuszok beállítása a jelenlegi állapot alapján
+                for ($i = 1; $i <= min($data['statusIndex'], 3); $i++) {
+                    // A státuszokhoz tartozó CSS felülírások
+                    $statusId = $statusIds[$i-1];
+                    
+                    // Kör ikon színének változtatása
+                    $template = str_replace(
+                        "id=\"{$statusId}-circle\" style=\"width: 30px; height: 30px; background-color: #f1f1f1;", 
+                        "id=\"{$statusId}-circle\" style=\"width: 30px; height: 30px; background-color: #9acd32;", 
+                        $template
+                    );
+                    
+                    // Szöveg színének változtatása
+                    $template = str_replace(
+                        "id=\"{$statusId}-text\" style=\"margin: 0 0 5px 0; color: #666;", 
+                        "id=\"{$statusId}-text\" style=\"margin: 0 0 5px 0; color: #9acd32;", 
+                        $template
+                    );
+                }
                 break;
+
+            default:
+                // Betöltjük a megfelelő sablont
+                $templateFile = Mail::TEMPLATE_PATH . $type . '.html';
+                
+                // Ellenőrizzük, hogy létezik-e a sablon fájl
+                if (!file_exists($templateFile)) {
+                    log_Error("Email sablon nem található: " . $templateFile, "mail_error.txt");
+                    throw new Result(Result::ERROR, "Email sablon nem található: ".$templateFile);
+                }
+                
+                // Betöltjük a sablon tartalmát
+                $template = file_get_contents($templateFile);
+                
+                // Alapvető változók cseréje
+                $template = str_replace('{NAME}', $name, $template);
         }
         
         return $template;

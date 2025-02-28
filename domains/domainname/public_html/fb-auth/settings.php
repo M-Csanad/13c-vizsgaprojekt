@@ -403,7 +403,7 @@
                             <div class="order-timeline">
                                 <?php foreach ($orders as $order): ?>
                                     <div class="timeline-event">
-                                        <div class="event-date"><?= htmlspecialchars($order["created_at"]); ?> - <?= htmlspecialchars($order["status"] == "completed" ? "Teljesítve" : "Feldolgozás alatt"); ?></div>
+                                        <div class="event-date"><?= htmlspecialchars($order["created_at"]); ?> - <?= htmlspecialchars($order["status"]); ?></div>
                                         <div class="event-body">
                                             <hr>
                                             <div class="total">

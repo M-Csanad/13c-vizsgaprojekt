@@ -1,94 +1,157 @@
+<!DOCTYPE html>
 <html>
 <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <title>Rendelés állapota frissült</title>
     <style>
-        @media only screen and (max-width: 600px) {
-            .content { padding: 10px !important; }
-            .status-bar { flex-direction: column !important; }
-            .status-step { margin: 10px 0 !important; }
+        /* Alapértelmezett (világos mód) stílusok */
+        :root {
+            color-scheme: light dark;
+            supported-color-schemes: light dark;
         }
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin: 30px 0;
-            position: relative;
-        }
-        .status-step {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            position: relative;
-            z-index: 2;
-            flex: 1;
-        }
-        .status-icon {
-            background: #f8f8f8;
-            padding: 10px;
-            border-radius: 50%;
-            margin-bottom: 10px;
-        }
-        .status-icon.active {
-            background: #9acd32;
-        }
-        .status-icon.active svg {
-            fill: white;
-        }
-        .status-label {
-            text-align: center;
-            font-size: 14px;
-            color: #666;
-        }
-        .status-label.active {
-            color: #9acd32;
-            font-weight: bold;
-        }
-        .progress-line {
-            position: absolute;
-            top: 30px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #f8f8f8;
-            z-index: 1;
-        }
-        .progress-line-active {
-            position: absolute;
-            top: 0;
-            left: 0;
-            height: 100%;
-            background: #9acd32;
-            transition: width 0.3s ease;
+        
+        /* Sötét mód stílusok */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1a1a1a !important;
+                color: #f0f0f0 !important;
+            }
+            .container {
+                background-color: #2a2a2a !important;
+            }
+            .header {
+                background-color: #9acd32 !important;
+                background-image: linear-gradient(to bottom, #9acd32, #2a2a2a) !important;
+            }
+            .content {
+                color: #f0f0f0 !important;
+            }
+            .order-info {
+                background-color: #333333 !important;
+                border-left: 4px solid #9acd32 !important;
+            }
+            .footer {
+                background-color: #222222 !important;
+            }
+            .step-box {
+                background-color: #333333 !important;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.3) !important;
+            }
+            .step-text {
+                color: #f0f0f0 !important;
+            }
+            .cta-button {
+                background-color: #9acd32 !important;
+                color: #ffffff !important;
+            }
         }
     </style>
 </head>
-<body style='margin: 0; padding: 0; background-color: #ffffff; font-family: Arial, sans-serif;'>
-    <div>
-        <div style='text-align: center; padding: 20px 0; background-color: #f8f8f8;'>
-            <h1 style='margin: 0; color: #333333;'>Rendelés állapota frissült</h1>
-        </div>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f7f7f7; color: #333333; line-height: 1.5;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="container" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-collapse: collapse;">
+        <!-- Fejléc -->
+        <tr>
+            <td class="header" style="padding: 25px 0; text-align: center; background-color: #9acd32; color: #333333;">
+                <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Rendelés állapota frissült</h1>
+            </td>
+        </tr>
         
-        <div style='padding: 20px; background-color: #ffffff; text-align: left;'>
-            <p>Kedves <strong style='color: #333333;'>{NAME}</strong>,</p>
-            <p style='color: #333333;'>A(z) #{ORDER_NUMBER} számú rendelésének állapota megváltozott.</p>
-            
-            <div class="status-bar">
-                <div class="progress-line">
-                    <div class="progress-line-active" style="width: {PROGRESS_WIDTH}%"></div>
-                </div>
+        <!-- Tartalom -->
+        <tr>
+            <td class="content" style="padding: 30px 20px;">
+                <p>Kedves <strong>{NAME}</strong>,</p>
+                <p>A(z) <strong>#{ORDER_NUMBER}</strong> számú rendelésének állapota megváltozott.</p>
                 
-                {STATUS_STEPS}
-            </div>
-            
-            <p style='color: #333333;'>Új állapot: <strong>{NEW_STATUS}</strong></p>
-            <p style='color: #333333;'>Rendelés dátuma: {ORDER_DATE}</p>
-            <p style='color: #333333;'>Rendelés összege: {ORDER_TOTAL} Ft</p>
-            
-            <p style='color: #666666; font-size: 14px;'>Kérdése van? Keressen minket bizalommal!</p>
-        </div>
+                <!-- Állapot frissítés kiemelő doboz -->
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin: 25px 0; background-color: #ebf3ff; border-radius: 5px;">
+                    <tr>
+                        <td style="padding: 15px; text-align: center;">
+                            <h3 style="margin: 0; color: #4a6fb5; font-size: 18px;">Új állapot: {NEW_STATUS}</h3>
+                        </td>
+                    </tr>
+                </table>
+                
+                <!-- Rendelési információk -->
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="order-info" style="margin: 20px 0; background-color: #f9f9f9; border-left: 4px solid #4a6fb5;">
+                    <tr>
+                        <td style="padding: 15px 20px;">
+                            <p style="margin: 5px 0;"><strong>Rendelésszám:</strong> #{ORDER_NUMBER}</p>
+                            <p style="margin: 5px 0;"><strong>Rendelés dátuma:</strong> {ORDER_DATE}</p>
+                            <p style="margin: 5px 0;"><strong>Végösszeg:</strong> {ORDER_TOTAL} Ft</p>
+                        </td>
+                    </tr>
+                </table>
+                
+                <h3 style="margin: 25px 0 15px 0;">Rendelés folyamata:</h3>
+                
+                <!-- Állapot lépések -->
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="margin-bottom: 30px;">
+                    <!-- Állapot 1: Visszaigazolva -->
+                    <tr>
+                        <td width="15%" valign="top" style="padding: 0 0 25px 0;">
+                            <div style="width: 30px; height: 30px; background-color: #9acd32; border-radius: 50%; margin: 0 auto; color: white; text-align: center; line-height: 30px; font-weight: bold;">&#10004;</div>
+                        </td>
+                        <td width="85%" style="padding: 0 0 25px 10px;">
+                            <div class="step-box" style="background-color: #ffffff; border-radius: 5px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                <h4 style="margin: 0 0 5px 0; color: #9acd32;">Visszaigazolva</h4>
+                                <p class="step-text" style="margin: 0; color: #666666; font-size: 14px;">Rendelését sikeresen rögzítettük rendszerünkben.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Állapot 2: Feldolgozás alatt -->
+                    <tr id="processing-row">
+                        <td width="15%" valign="top" style="padding: 0 0 25px 0;">
+                            <div id="processing-circle" style="width: 30px; height: 30px; background-color: #f1f1f1; border-radius: 50%; margin: 0 auto; color: #999; text-align: center; line-height: 30px; font-weight: bold;">&#9881;</div>
+                        </td>
+                        <td width="85%" style="padding: 0 0 25px 10px;">
+                            <div id="processing-box" class="step-box" style="background-color: #ffffff; border-radius: 5px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                <h4 id="processing-text" style="margin: 0 0 5px 0; color: #666;">Feldolgozás alatt</h4>
+                                <p class="step-text" style="margin: 0; color: #666666; font-size: 14px;">Rendelését kollégáink előkészítik.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Állapot 3: Szállítás alatt -->
+                    <tr id="shipping-row">
+                        <td width="15%" valign="top" style="padding: 0 0 25px 0;">
+                            <div id="shipping-circle" style="width: 30px; height: 30px; background-color: #f1f1f1; border-radius: 50%; margin: 0 auto; color: #999; text-align: center; line-height: 30px; font-weight: bold;">&#128666;</div>
+                        </td>
+                        <td width="85%" style="padding: 0 0 25px 10px;">
+                            <div id="shipping-box" class="step-box" style="background-color: #ffffff; border-radius: 5px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                <h4 id="shipping-text" style="margin: 0 0 5px 0; color: #666;">Szállítás alatt</h4>
+                                <p class="step-text" style="margin: 0; color: #666666; font-size: 14px;">Rendelése úton van az Ön címére.</p>
+                            </div>
+                        </td>
+                    </tr>
+                    
+                    <!-- Állapot 4: Teljesítve -->
+                    <tr id="completed-row">
+                        <td width="15%" valign="top" style="padding: 0 0 25px 0;">
+                            <div id="completed-circle" style="width: 30px; height: 30px; background-color: #f1f1f1; border-radius: 50%; margin: 0 auto; color: #999; text-align: center; line-height: 30px; font-weight: bold;">&#10004;</div>
+                        </td>
+                        <td width="85%" style="padding: 0 0 25px 10px;">
+                            <div id="completed-box" class="step-box" style="background-color: #ffffff; border-radius: 5px; padding: 15px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+                                <h4 id="completed-text" style="margin: 0 0 5px 0; color: #666;">Teljesítve</h4>
+                                <p class="step-text" style="margin: 0; color: #666666; font-size: 14px;">Rendelését sikeresen kézbesítettük.</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                
+                <p>A rendelésével kapcsolatos további kérdésekben ügyfélszolgálatunk szívesen áll rendelkezésére.</p>
+            </td>
+        </tr>
         
-        <div style='background-color: #1d1d1d; text-align: center; padding: 20px 0;'>
-            <p style='color: #f5f5f5;'>© 2025 Florens Botanica. Minden jog fenntartva.</p>
-        </div>
-    </div>
+        <!-- Lábjegyzet -->
+        <tr>
+            <td class="footer" style="padding: 20px 0; text-align: center; background-color: #1d1d1d; color: #f5f5f5; font-size: 14px;">
+                <p style="margin: 0;">© 2025 Florens Botanica. Minden jog fenntartva.</p>
+            </td>
+        </tr>
+    </table>
 </body>
 </html>

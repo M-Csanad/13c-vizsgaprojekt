@@ -215,8 +215,6 @@ function updateOrderStatus($orderId, $newStatus) {
     ];
 
     $mailer = new Mail();
-    return $mailer->sendTo($recipient, $mail, false);
-
-    return new Result(Result::SUCCESS, "A rendelés státusza sikeresen frissítve.");
+    return $mailer->sendTo($recipient, $mail, true);
 }
 ?>
