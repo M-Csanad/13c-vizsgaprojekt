@@ -124,6 +124,25 @@ function initializeSearch(search) {
         }
       },
     },
+    order: {
+      autofillFields: [
+        { name: "status" }
+      ],
+      template: (order) => {
+        return `<div><b>#${order.id}</b> - ${order.user_name} (${order.user_email}) - <i>${order.status}</i> - ${order.order_total} Ft</div>`;
+      },
+      clickHandler: async (order) => {
+        if (!autofill) {
+          itemClickHandler(order, ["id"]);
+        } else {
+          itemClickHandler(order, ["id"], {
+            fields: [
+              { field: "order_status", value: order.status },
+            ],
+          });
+        }
+      },
+    },
   };
 
   let isSearchEnabled = true;
@@ -256,7 +275,7 @@ function initializeSearch(search) {
       });
     }
 
-    searchInput.value = item.name;
+    searchInput.value = item.name ? item.name : item.id;
     toggleDropdown(false);
     validateSearchInput();
     if (item.role) {

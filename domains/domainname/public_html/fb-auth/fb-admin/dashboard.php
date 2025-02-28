@@ -287,6 +287,21 @@
             $message = "<div class='error'>A művelet sikertelen!</div>";
         }
     }
+
+    // Rendelés állapotának módosítása
+    if (isset($_POST['update_order_status'])) {
+        $orderId = intval($_POST['order_id']);
+        $newStatus = $_POST['order_status'];
+
+        $result = updateOrderStatus($orderId, $newStatus);
+        
+        if (!$result->isError()) {
+            $message = "<div class='success'>A rendelés állapota sikeresen frissítve.</div>";
+        }
+        else {
+            $message = "<div class='error'>A rendelés állapotának módosítása sikertelen! {$result->message}</div>";
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -348,6 +363,12 @@
         </div>
         <div class="page" data-pageid="3" tabindex="0">
             Jogosultságok
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+            </svg>
+        </div>
+        <div class="page" data-pageid="4" tabindex="0">
+            Rendelések
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
             </svg>
@@ -1823,6 +1844,68 @@
                         </div>
                         <div class="form-submit-wrapper">
                             <input type="submit" value="Módosítás" class="form-submit-primary" name='modify_role'>
+                        </div>
+                    </form>
+                    <div class="items"></div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <!------------------------------ Rendelések kezelése ----------------------------->
+    <div class="section-group">
+        <div class="group-body">
+            <!-------------------------- Rendelés módosítása ------------------------>
+            <section>
+                <div class="section-header" tabindex="0">
+                    <div class="section-title">Rendelés állapotának módosítása</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
+                <div class="section-body">
+                    <form method="POST" data-needs-confirm="false">
+                        <div class="input-grid">
+                            <div class="search-wrapper">
+                                <div class="search" data-search-type="order" data-id-input="order_id" data-autofill-fields="true">
+                                    <input type="number" name="order_search" id="order_search" placeholder="Rendelés azonosítója" required autocomplete="off">
+                                    <label for="order_search" class="search-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        </svg>
+                                    </label>
+                                    <input type="hidden" name="order_id" id="order_id" value="null">
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                </svg>
+                            </div>
+                            
+                            <div class="inline-input">
+                                <label for="order_status"><div>Állapot</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <select name="order_status" id="order_status" required disabled>
+                                            <option value="Visszaigazolva">Visszaigazolva</option>
+                                            <option value="Feldolgozás alatt">Feldolgozás alatt</option>
+                                            <option value="Szállítás alatt">Szállítás alatt</option>
+                                            <option value="Teljesítve">Teljesítve</option>
+                                        </select>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                            <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                        </svg>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                            <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-submit-wrapper">
+                            <input type="submit" value="Állapot frissítése" class="form-submit-primary" name="update_order_status">
                         </div>
                     </form>
                     <div class="items"></div>

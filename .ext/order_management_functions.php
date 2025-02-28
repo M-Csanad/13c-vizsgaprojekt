@@ -175,3 +175,48 @@ function checkStocks($cart) {
 function getOrderFromId($id) {
     return selectData("SELECT * FROM `order` WHERE id=?", $id, 'i');
 }
+
+function updateOrderStatus($orderId, $newStatus) {
+    $orderId = intval($orderId);
+    $validStatuses = ['Visszaigazolva', 'Feldolgozás alatt', 'Szállítás alatt', 'Teljesítve'];
+    
+    if (!in_array($newStatus, $validStatuses)) {
+        return new Result(Result::ERROR, "Érvénytelen státusz.");
+    }
+    
+    $orderResult = getOrderFromId($orderId);
+    if ($orderResult->isEmpty()) {
+        return new Result(Result::ERROR, "A megadott rendelés nem található.");
+    }
+    $order = $orderResult->message[0];
+    
+    $updateResult = updateData("UPDATE `order` SET status = ? WHERE id = ?", [$newStatus, $orderId], 'si');
+    if ($updateResult->isError()) {
+        return new Result(Result::ERROR, "Hiba a rendelés státuszának frissítése során: " . $updateResult->message);
+    }
+
+    $recipient = [
+        "email" => $order["email"],
+        "name" => $order["last_name"]." ".$order["first_name"]
+    ];
+
+    $statusDetails = [
+        "orderNumber" => $order["id"],
+        "orderDate" => $order["created_at"],
+        "orderTotal" => $order["order_total"],
+        "newStatus" => $newStatus,
+        "statusIndex" => array_search($newStatus, $validStatuses)
+    ];
+    
+    $mail = [
+        "subject" => "Rendelés állapota frissült",
+        "body" => Mail::getMailBody("status_update", $recipient["name"], $statusDetails),
+        "alt" => Mail::getMailAltBody("status_update", $recipient["name"], $statusDetails)
+    ];
+
+    $mailer = new Mail();
+    return $mailer->sendTo($recipient, $mail, false);
+
+    return new Result(Result::SUCCESS, "A rendelés státusza sikeresen frissítve.");
+}
+?>

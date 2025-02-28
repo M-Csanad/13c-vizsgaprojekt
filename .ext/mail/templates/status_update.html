@@ -1,0 +1,94 @@
+<html>
+<head>
+    <style>
+        @media only screen and (max-width: 600px) {
+            .content { padding: 10px !important; }
+            .status-bar { flex-direction: column !important; }
+            .status-step { margin: 10px 0 !important; }
+        }
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 30px 0;
+            position: relative;
+        }
+        .status-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        .status-icon {
+            background: #f8f8f8;
+            padding: 10px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        .status-icon.active {
+            background: #9acd32;
+        }
+        .status-icon.active svg {
+            fill: white;
+        }
+        .status-label {
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+        .status-label.active {
+            color: #9acd32;
+            font-weight: bold;
+        }
+        .progress-line {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #f8f8f8;
+            z-index: 1;
+        }
+        .progress-line-active {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #9acd32;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body style='margin: 0; padding: 0; background-color: #ffffff; font-family: Arial, sans-serif;'>
+    <div>
+        <div style='text-align: center; padding: 20px 0; background-color: #f8f8f8;'>
+            <h1 style='margin: 0; color: #333333;'>Rendelés állapota frissült</h1>
+        </div>
+        
+        <div style='padding: 20px; background-color: #ffffff; text-align: left;'>
+            <p>Kedves <strong style='color: #333333;'>{NAME}</strong>,</p>
+            <p style='color: #333333;'>A(z) #{ORDER_NUMBER} számú rendelésének állapota megváltozott.</p>
+            
+            <div class="status-bar">
+                <div class="progress-line">
+                    <div class="progress-line-active" style="width: {PROGRESS_WIDTH}%"></div>
+                </div>
+                
+                {STATUS_STEPS}
+            </div>
+            
+            <p style='color: #333333;'>Új állapot: <strong>{NEW_STATUS}</strong></p>
+            <p style='color: #333333;'>Rendelés dátuma: {ORDER_DATE}</p>
+            <p style='color: #333333;'>Rendelés összege: {ORDER_TOTAL} Ft</p>
+            
+            <p style='color: #666666; font-size: 14px;'>Kérdése van? Keressen minket bizalommal!</p>
+        </div>
+        
+        <div style='background-color: #1d1d1d; text-align: center; padding: 20px 0;'>
+            <p style='color: #f5f5f5;'>© 2025 Florens Botanica. Minden jog fenntartva.</p>
+        </div>
+    </div>
+</body>
+</html>

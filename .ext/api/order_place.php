@@ -1,6 +1,6 @@
 <?php
 include_once __DIR__.'/../result_functions.php';
-include_once __DIR__.'/../order_functions.php';
+include_once __DIR__.'/../order_management_functions.php';
 include_once __DIR__.'/../cart_functions.php';
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {

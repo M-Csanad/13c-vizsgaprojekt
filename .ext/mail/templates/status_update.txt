@@ -1,0 +1,11 @@
+Kedves {NAME},
+
+A(z) #{ORDER_NUMBER} számú rendelésének állapota megváltozott.
+
+Új állapot: {NEW_STATUS}
+Rendelés dátuma: {ORDER_DATE}
+Rendelés összege: {ORDER_TOTAL} Ft
+
+Kérdése van? Keressen minket bizalommal!
+
+© 2025 Florens Botanica. Minden jog fenntartva.

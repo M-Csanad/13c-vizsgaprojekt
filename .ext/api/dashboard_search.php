@@ -89,6 +89,16 @@ switch ($searchType) {
 
         include_once "get_categories.php";
         break;
+
+    case 'order':
+        if (!isset($_POST["search_term"]) || is_null($_POST["search_term"])) {
+            header("bad request", true, 400);
+            echo json_encode("Hiányos adat!", JSON_UNESCAPED_UNICODE);
+            return;
+        }
+
+        include_once "search_order.php";
+        break;
     default:
         # code...
         break;
