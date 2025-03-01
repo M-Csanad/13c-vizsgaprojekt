@@ -506,7 +506,6 @@ class Cart {
       this.data = data.message;
       this.lastFetchResultType = data.type;
       if (data.type == "SUCCESS") {
-        console.log("Kosár lekérdezve: ", this.data);
         this.cartPrice = this.data.reduce(
           (a, b) => a + b.unit_price * b.quantity,
           0
