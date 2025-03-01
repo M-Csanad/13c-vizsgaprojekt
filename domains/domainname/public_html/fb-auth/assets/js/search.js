@@ -11,10 +11,10 @@ function initializeSearch(search) {
   const searchConfig = {
     category: {
       autofillFields: [
-        { name: "name" },
-        { name: "subname" },
-        { name: "description" },
-        { name: "type" },
+        { name: "name", disabledByDefault: true },
+        { name: "subname", disabledByDefault: true },
+        { name: "description", disabledByDefault: true },
+        { name: "type", disabledByDefault: true },
         { name: "parent_category", disabledByDefault: true },
       ],
       template: (item) => `
@@ -49,16 +49,19 @@ function initializeSearch(search) {
       },
     },
     user: {
+      autofillFields: [
+        { name: "name", disabledByDefault: true },
+      ],
       template: (user) => `
                 <div><b>${user.name}</b> - ${user.email} (<i>${user.role}</i>)</div>`,
       clickHandler: async (user) => itemClickHandler(user, ["id", "name"]),
     },
     product: {
       autofillFields: [
-        { name: "name" },
-        { name: "description" },
-        { name: "price" },
-        { name: "stock" },
+        { name: "name", disabledByDefault: true },
+        { name: "description", disabledByDefault: true },
+        { name: "price", disabledByDefault: true },
+        { name: "stock", disabledByDefault: true },
         { name: "tags", multiple: true },
         { name: "benefits-container", multiple: true },
         { name: "side-effects-container", multiple: true },
@@ -97,9 +100,8 @@ function initializeSearch(search) {
     },
     product_page: {
       autofillFields: [
-        { name: "category" },
-        { name: "subcategory" },
-        { name: "price" },
+        { name: "category", disabledByDefault: true },
+        { name: "subcategory", disabledByDefault: true },
         { name: "content", disabledByDefault: true },
       ],
       template: (page) => {
@@ -126,7 +128,7 @@ function initializeSearch(search) {
     },
     order: {
       autofillFields: [
-        { name: "status" }
+        { name: "status", disabledByDefault: true }
       ],
       template: (order) => {
         return `<div><b>#${order.id}</b> - ${order.user_name} (${order.user_email}) - <i>${order.status}</i> - ${order.order_total} Ft</div>`;
@@ -410,16 +412,17 @@ function initializeSearch(search) {
       }
     }
 
+    // Ha be van kapcsolva a keresés, akkor lefuttatjuk
     if (isSearchEnabled) {
       await searchHandler();
       validateSearchInput();
     }
 
-    if (!searchInput.checkValidity()) {
-      if (autofill) {
-        clearAutofillFields();
-        disableSelectInputs();
-      }
+
+    // Ha üres, vagy invalid a kereső, akkor kiürítjük az űrlapelemeket és kikapcsoljuk őket.
+    if (!searchInput.value || !searchInput.checkValidity()) {
+      clearAutofillFields();
+      disableSelectInputs();
     }
   });
 }

@@ -172,7 +172,6 @@ class Dashboard {
      * Fájl feltöltés kezelése és validálása
      */
     setupFileInputs() {
-      console.log(this.fileInputs);
         this.fileInputs.forEach(input => {
             const orientation = input.dataset.orientation;
             const inputCount = input.dataset.count;

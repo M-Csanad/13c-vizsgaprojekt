@@ -581,16 +581,13 @@ form > .input-grid {
 .inline-input > .input-content > div > input:disabled, 
 .inline-input > .input-content > div > select:disabled,
 .inline-input > .input-content > div > textarea:disabled {
+    opacity: 0.7;
     border-bottom: 3px solid rgb(20, 20, 20) !important;
     color: #6c6c6c;
     background-image: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 25%, transparent 25%, transparent 50%, rgba(255, 255, 255, 0.5) 50%, rgba(255, 255, 255, 0.5) 75%, transparent 75%, transparent);
     background-size: 20px 20px;
     background-repeat: repeat;
     cursor: not-allowed;
-}
-
-.inline-input > .input-content > div > textarea:disabled {
-    border-color: rgb(89, 89, 89) !important;
 }
 
 .file-input > .input-content > div {
