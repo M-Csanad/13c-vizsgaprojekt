@@ -328,8 +328,10 @@ main {
 .products > .topbar-wrapper > .buttons {
     display: flex;
     flex-direction: row;
+    justify-content: center;
+    flex-wrap: wrap;
     align-items: end;
-    gap: 10px;
+    gap: 1rem;
 }
 
 .products > .topbar-wrapper > .buttons > .filter-open {
@@ -539,6 +541,7 @@ main {
     z-index: 9;
     user-select: none;
     text-transform: uppercase;
+    font-size: min(3cqw, 15px);
 }
 
 .card > .card-image > .button-wrapper > .quick-add::before {

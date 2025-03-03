@@ -119,7 +119,7 @@
                         </a>
                         <header>
                             <?= htmlspecialchars($subcategoryData["name"]); ?> 
-                            <span id="total-product-count" style="font-size: 18px; color: #dddddd; font-family: Roboto"></span>
+                            <span id="total-product-count" style="display: inline-block; font-size: 18px; color: #dddddd; font-family: Roboto"></span>
                         </header>
                         <div class="subname">
                             <?= htmlspecialchars($subcategoryData["subname"]); ?>
