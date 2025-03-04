@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Feb 25. 09:45
+-- Létrehozás ideje: 2025. Már 04. 09:12
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -325,7 +325,7 @@ CREATE TABLE `order` (
   `tax_number` varchar(20) DEFAULT NULL,
   `billing_address` varchar(255) DEFAULT NULL COMMENT 'NULL, ha megegyezik a szállítási címmel',
   `delivery_address` varchar(255) DEFAULT NULL,
-  `status` varchar(50) NOT NULL DEFAULT 'completed',
+  `status` varchar(50) NOT NULL DEFAULT 'Visszigazolva',
   `order_total` int(11) NOT NULL DEFAULT 0,
   `completed_at` timestamp NULL DEFAULT NULL COMMENT 'NULL, ha nyitott a rendelés',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
