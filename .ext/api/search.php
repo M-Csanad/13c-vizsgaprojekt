@@ -13,30 +13,30 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
     }
 
     // Lekérjük az összes termék adatait az adatbázisból és a hozzá tartozó értékeléseket
-    $sql = "SELECT 
-        product.*, 
+    $sql = "SELECT
+        product.*,
         product_page.link_slug,
-        MAX(CASE 
+        MAX(CASE
             WHEN image.uri LIKE '%thumbnail%' THEN REGEXP_REPLACE(image.uri, '\\.[^.]*$', '')
         END) AS thumbnail_image,
-        MAX(CASE 
+        MAX(CASE
             WHEN image.uri LIKE '%vertical%' THEN REGEXP_REPLACE(image.uri, '\\.[^.]*$', '')
-            WHEN image.uri NOT LIKE '%vertical%' AND image.uri NOT LIKE '%thumbnail%' 
+            WHEN image.uri NOT LIKE '%vertical%' AND image.uri NOT LIKE '%thumbnail%'
             THEN REGEXP_REPLACE(image.uri, '\\.[^.]*$', '')
         END) AS secondary_image,
         COALESCE(AVG(review.rating), 0) as avg_rating,
         COUNT(DISTINCT review.id) as review_count,
         GROUP_CONCAT(DISTINCT CONCAT(tag.id, ':', tag.name)) as tags
-    FROM product_page 
+    FROM product_page
     INNER JOIN product ON product_page.product_id = product.id
     LEFT JOIN product_image ON product.id = product_image.product_id
     LEFT JOIN image ON product_image.image_id = image.id
     LEFT JOIN review ON product.id = review.product_id
     LEFT JOIN product_tag ON product.id = product_tag.product_id
     LEFT JOIN tag ON product_tag.tag_id = tag.id
-    GROUP BY product.id 
+    GROUP BY product.id
     ORDER BY product.name ASC";
-    
+
     $result = selectData($sql, [], "");
     if ($result->isError()) {
         echo $result->toJSON(true);
@@ -60,9 +60,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET") {
 
     // A fuzzy eredményekhez csatoljuk a termék teljes adatait
     $results = [];
-    $threshold = sqrt(mb_strlen($query));
     foreach ($fuzzyResultsRaw as $item) {
-        if ($item['distance'] <= $threshold && isset($productMapping[$item['word']])) {
+        if (isset($productMapping[$item['word']])) {
             $results[] = $productMapping[$item['word']];
         }
     }

@@ -165,8 +165,8 @@ class LinearFuzzySearch
 
         // Tetszés szerint állíthatod.
         // Például: threshold = a query hossza,
-        // vagy threshold = max(3, floor(strlen($query)*0.8)), stb.
-        $threshold = sqrt(strlen($query));
+        $threshold = max(2, floor(strlen($query)*0.4));
+        // $threshold = sqrt(strlen($query));
 
         foreach ($this->words as $w) {
             $d = fuzzyDistance($query, $w);
