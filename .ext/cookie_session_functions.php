@@ -74,7 +74,7 @@ function setCartCookie($value = null) {
         $data = $value;
     }
 
-    setcookie('cart', json_encode($data, JSON_UNESCAPED_UNICODE), time() + 7 * 24 * 60 * 60, '/', '', false, true);
+    setcookie('cart', json_encode($data, JSON_UNESCAPED_UNICODE), time() + 3 * 24 * 60 * 60, '/', '', false, true);
 }
 
 function removeCartCookieSession() {
