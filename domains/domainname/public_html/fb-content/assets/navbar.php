@@ -229,11 +229,17 @@ $menu_items = [
 <div id="fb-subcontentContainer" class="fb-nav-subcontent-container">
     <div id="fb-categoryContentWrapper" class="fb-nav-subcontent-wrapper">
         <?php foreach ($category_content as $content): ?>
+            <?php
+            $fileInfo = pathinfo($content['img']);
+            $FileName = $fileInfo['dirname'] . '/' . $fileInfo['filename'];
+            ?>
+
             <a href="<?= htmlspecialchars($content["url"]) ?>">
                 <div class="fb-nav-subcontent-frame">
                     <div class="fb-nav-subcontent-imgblock">
-                        <img src="<?= htmlspecialchars($content['img']) ?>"
-                            alt="<?= htmlspecialchars($content['title']) ?> image" />
+                        <img src="<?= $FileName ?>-768px.webp"
+                            alt="<?php htmlspecialchars($content['title']) ?> image" loading="lazy">
+
                         <h2 class="fb-subcontent-imgblock-title __t02-men1"><?= htmlspecialchars($content['title']) ?></h2>
                     </div>
                 </div>

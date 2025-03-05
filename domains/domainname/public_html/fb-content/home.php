@@ -295,7 +295,80 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
 </head>
 
 <body>
-<div class=transition><div class=transition-background></div><div class=transition-text><div class=hero><div class=char>F</div><div class=char>l</div><div class=char>o</div><div class=char>r</div><div class=char>e</div><div class=char>n</div><div class=char>s</div><div class=char> </div><div class=char>B</div><div class=char>o</div><div class=char>t</div><div class=char>a</div><div class=char>n</div><div class=char>i</div><div class=char>c</div><div class=char>a</div></div><div class=quote><div class=char>"</div><div class=char>A</div><div class=char> </div><div class=char>l</div><div class=char>e</div><div class=char>g</div><div class=char>n</div><div class=char>a</div><div class=char>g</div><div class=char>y</div><div class=char>o</div><div class=char>b</div><div class=char>b</div><div class=char> </div><div class=char>g</div><div class=char>a</div><div class=char>z</div><div class=char>d</div><div class=char>a</div><div class=char>g</div><div class=char>s</div><div class=char>á</div><div class=char>g</div><div class=char> </div><div class=char>a</div><div class=char>z</div><div class=char> </div><div class=char>e</div><div class=char>g</div><div class=char>é</div><div class=char>s</div><div class=char>z</div><div class=char>s</div><div class=char>é</div><div class=char>g</div><div class=char>.</div><div class=char>"</div><div class=char> </div><div class=char>-</div><div class=char> </div><div class=char>V</div><div class=char>e</div><div class=char>r</div><div class=char>g</div><div class=char>i</div><div class=char>l</div><div class=char>i</div><div class=char>u</div><div class=char>s</div></div></div></div>
+  <div class=transition>
+    <div class=transition-background></div>
+    <div class=transition-text>
+      <div class=hero>
+        <div class=char>F</div>
+        <div class=char>l</div>
+        <div class=char>o</div>
+        <div class=char>r</div>
+        <div class=char>e</div>
+        <div class=char>n</div>
+        <div class=char>s</div>
+        <div class=char> </div>
+        <div class=char>B</div>
+        <div class=char>o</div>
+        <div class=char>t</div>
+        <div class=char>a</div>
+        <div class=char>n</div>
+        <div class=char>i</div>
+        <div class=char>c</div>
+        <div class=char>a</div>
+      </div>
+      <div class=quote>
+        <div class=char>"</div>
+        <div class=char>A</div>
+        <div class=char> </div>
+        <div class=char>l</div>
+        <div class=char>e</div>
+        <div class=char>g</div>
+        <div class=char>n</div>
+        <div class=char>a</div>
+        <div class=char>g</div>
+        <div class=char>y</div>
+        <div class=char>o</div>
+        <div class=char>b</div>
+        <div class=char>b</div>
+        <div class=char> </div>
+        <div class=char>g</div>
+        <div class=char>a</div>
+        <div class=char>z</div>
+        <div class=char>d</div>
+        <div class=char>a</div>
+        <div class=char>g</div>
+        <div class=char>s</div>
+        <div class=char>á</div>
+        <div class=char>g</div>
+        <div class=char> </div>
+        <div class=char>a</div>
+        <div class=char>z</div>
+        <div class=char> </div>
+        <div class=char>e</div>
+        <div class=char>g</div>
+        <div class=char>é</div>
+        <div class=char>s</div>
+        <div class=char>z</div>
+        <div class=char>s</div>
+        <div class=char>é</div>
+        <div class=char>g</div>
+        <div class=char>.</div>
+        <div class=char>"</div>
+        <div class=char> </div>
+        <div class=char>-</div>
+        <div class=char> </div>
+        <div class=char>V</div>
+        <div class=char>e</div>
+        <div class=char>r</div>
+        <div class=char>g</div>
+        <div class=char>i</div>
+        <div class=char>l</div>
+        <div class=char>i</div>
+        <div class=char>u</div>
+        <div class=char>s</div>
+      </div>
+    </div>
+  </div>
 
   <header>
     <section id="StickyNavbar_container">
@@ -355,125 +428,14 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
         </div>
       </div>
 
-      <!-- <div id="topProducts_container">
+      <div id="topProducts_container">
         <div class="swiper topProduct_slider">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <div class="swiper-card_wrapper">
-                <div class="card-image">
-                  <img src="/fb-content/media/img/testImg/testProduct01.jpg" alt="" loading="lazy"/>
-                  <button class="book-now">Kosárba</button>
-                </div>
-                <div class="swiper-card">
-                  <div class="text-overlay">
-                    <h1 class="__t03-law1 title">Termék Név Ide Jön</h1>
-                    <div class="rating">
-                      <span>⭐️⭐️⭐️⭐️⭐️</span>
-                      <span>180k értékelés</span>
-                    </div>
-                    <div class="text">
-                      <p class="__t02-men1 description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Est ut pariatur totam facilis, id facere
-                        dolores eos maiores quaerat iste assumenda, amet
-                        recusandae sunt molestias.
-                      </p>
-
-                    </div>
-
-                    <div class="card-footer">
-                      <div class="cast">
-                        <img src="/fb-content/media/img/icons/vegan.png" alt="#" loading="lazy" />
-                        <img src="/fb-content/media/img/icons/bpa-free.png" alt="#" loading="lazy" />
-                        <img src="/fb-content/media/img/icons/serum.png" alt="#" loading="lazy" />
-                        <img src="/fb-content/media/img/icons/gluten-free.png" alt="#" loading="lazy" />
-                      </div>
-                      <div class="actions">
-                        <button class="more-info">Bővebb információ</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="swiper-card_wrapper">
-                <div class="card-image">
-                  <img src="/fb-content/media/img/testImg/testProduct02.jpg" alt="" />
-                  <button class="book-now">Kosárba</button>
-                </div>
-                <div class="swiper-card">
-                  <div class="text-overlay">
-                    <h1 class="__t03-law1 title">Termék Név Ide Jön</h1>
-                    <div class="rating">
-                      <span>⭐️⭐️⭐️⭐️⭐️</span>
-                      <span>97k értékelés</span>
-                    </div>
-                    <div class="text">
-                      <p class="__t02-men1 description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Est ut pariatur totam facilis, id facere
-                        dolores eos maiores quaerat iste assumenda, amet
-                        recusandae sunt molestias.
-                      </p>
-                    </div>
-
-                    <div class="card-footer">
-                      <div class="cast">
-                        <img src="/fb-content/media/img/icons/vegan.png" alt="#" />
-                        <img src="/fb-content/media/img/icons/bpa-free.png" alt="#" />
-                        <img src="/fb-content/media/img/icons/serum.png" alt="#" />
-                        <img src="/fb-content/media/img/icons/pollen.png" alt="#" />
-                        <img src="/fb-content/media/img/icons/peanut-free.png" alt="#" />
-                        <img src="/fb-content/media/img/icons/honeycomb.png" alt="#" />
-                      </div>
-                      <div class="actions">
-                        <button class="more-info">Bővebb információ</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="swiper-slide">
-              <div class="swiper-card_wrapper">
-                <div class="card-image">
-                  <img src="/fb-content/media/img/testImg/testProduct03.jpg" alt="" />
-                  <button class="book-now">Kosárba</button>
-                </div>
-                <div class="swiper-card">
-                  <div class="text-overlay">
-                    <h1 class="__t03-law1 title">Termék Név Ide Jön</h1>
-                    <div class="rating">
-                      <span>⭐️⭐️⭐️⭐️⭐️</span>
-                      <span>120k értékelés</span>
-                    </div>
-                    <div class="text">
-                      <p class="__t02-men1 description">
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Est ut pariatur totam facilis, id facere
-                        dolores eos maiores quaerat iste assumenda, amet
-                        recusandae sunt molestias.
-                      </p>
-                    </div>
-
-                    <div class="card-footer">
-                      <div class="cast">
-                        <img src="/fb-content/media/img/icons/vegan.png" alt="#" />
-                        <img src="/fb-content/media/img/icons/bpa-free.png" alt="#" />
-                        <img src="/fb-content/media/img/icons/serum.png" alt="#" />
-                      </div>
-                      <div class="actions">
-                        <button class="more-info">Bővebb információ</button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <?php include __DIR__ . '/fb-home/__gen_topProducts.php'; ?>
           </div>
         </div>
-      </div> -->
+      </div>
+
     </section>
     <section id="__main_body">
 

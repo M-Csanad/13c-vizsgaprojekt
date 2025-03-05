@@ -63,3 +63,22 @@
     fill: white;
     transform: scale(1.1);
 }
+
+.search > .search-input.search-error {
+    border-color: #e74c3c;
+    outline: 2px solid rgba(231, 76, 60, 0.5);
+}
+
+.search > .search-error-message {
+    position: absolute;
+    top: calc(50% + 25px);
+    left: 12.5%;
+    width: 75%;
+    color: #e74c3c;
+    font-size: 14px;
+    text-align: left;
+    padding-left: 10px;
+    margin-top: 8px;
+    opacity: 0;
+    transform: translateY(0);
+}

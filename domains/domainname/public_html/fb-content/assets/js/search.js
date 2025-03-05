@@ -30,20 +30,77 @@ class Search {
 
     if (!lenis) throw new Error("A Lenis nem található");
 
-    const searchInput = this.domElement.querySelector(
-      "input[name='search_term']"
-    );
-    if (searchInput) {
-      searchInput.addEventListener("keydown", (e) => {
+    // Search input és error message létrehozása
+    this.searchInput = this.domElement.querySelector("input[name='search_term']");
+    
+    // Error message létrehozása
+    this.errorMessage = document.createElement("div");
+    this.errorMessage.className = "search-error-message";
+    this.errorMessage.textContent = "A keresési kifejezés túl rövid. Legalább 4 karakter szükséges.";
+    this.errorMessage.style.opacity = "0";
+    this.errorMessage.style.display = "none";
+    
+    // Add error message to the DOM in the appropriate location
+    const searchInputContainer = this.domElement.querySelector(".search-input");
+    if (searchInputContainer) {
+      // Add error message directly to the search modal element to allow absolute positioning
+      this.domElement.appendChild(this.errorMessage);
+    }
+
+    if (this.searchInput) {
+      this.searchInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           this.search();
         }
       });
+      
+      // Input eseménykezelő a validáláshoz
+      this.searchInput.addEventListener("input", this.validateInput.bind(this));
     }
 
     // Eseménykezelés
     this.openButton.addEventListener("click", this.open.bind(this));
     this.closeButton.addEventListener("click", this.close.bind(this));
+  }
+  
+  // Input validálás
+  validateInput() {
+    if (!this.searchInput) return;
+    
+    const value = this.searchInput.value.trim();
+    const searchInputContainer = this.domElement.querySelector(".search-input");
+    
+    if (value.length > 0 && value.length <= 3) {
+      this.showInputError(true, searchInputContainer);
+    } else {
+      this.showInputError(false, searchInputContainer);
+    }
+  }
+  
+  // Error message megjelenítése/elrejtése animációval
+  showInputError(show, container) {
+    if (show) {
+      container.classList.add("search-error");
+      this.errorMessage.style.display = "block";
+      gsap.to(this.errorMessage, { 
+        opacity: 1, 
+        y: 0, 
+        duration: 0.3, 
+        ease: "power2.out" 
+      });
+    } else {
+      container.classList.remove("search-error");
+      gsap.to(this.errorMessage, { 
+        opacity: 0, 
+        y: -10, 
+        duration: 0.2, 
+        ease: "power2.in",
+        onComplete: () => {
+          this.errorMessage.style.display = "none";
+          gsap.set(this.errorMessage, { y: 0 });
+        }
+      });
+    }
   }
 
   // UI metódusok
@@ -95,8 +152,12 @@ class Search {
         console.log("Üres keresési kifejezés.");
         return;
     }
+    
+    if (searchTerm.length <= 3) {
+        this.showInputError(true, this.domElement.querySelector(".search-input"));
+        return;
+    }
 
-    // Redirect to search page with query parameter
     window.location.href = `/search?q=${encodeURIComponent(searchTerm)}`;
   }
 }
