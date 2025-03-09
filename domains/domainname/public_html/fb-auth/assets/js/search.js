@@ -18,13 +18,17 @@ function initializeSearch(search) {
         { name: "parent_category", disabledByDefault: true },
       ],
       template: (item) => `
-                <img src='${item.thumbnail_image_horizontal_uri}'><div><b>${item.name}</b> - 
+                <picture>
+                  <source srcset="${item.thumbnail_image_horizontal_uri}-768px.avif" type="image/avif">
+                  <source srcset="${item.thumbnail_image_horizontal_uri}-768px.webp" type="image/webp">
+                  <img src="${item.thumbnail_image_horizontal_uri}-768px.jpg" alt="${item.name}">
+                </picture>
+                <div><b>${item.name}</b> - 
                 ${
                   item.type === "category"
                     ? "Főkategória"
                     : `Alkategória <i>(${item.parent_category})</i>`
                 }</div>`,
-
       clickHandler: async (item) => {
         if (!autofill) {
           itemClickHandler(item, ["id", "type", "name"]);
@@ -67,14 +71,16 @@ function initializeSearch(search) {
         { name: "side-effects-container", multiple: true },
       ],
       template: (product) => {
+        const pictureElement = `
+                <picture>
+                  <source srcset="${product.thumbnail_image_horizontal_uri}-768px.avif" type="image/avif">
+                  <source srcset="${product.thumbnail_image_horizontal_uri}-768px.webp" type="image/webp">
+                  <img src="${product.thumbnail_image_horizontal_uri}-768px.jpg" alt="${product.name}">
+                </picture>`;
         if (!product.category || !product.subcategory) {
-          return `<img src='${product.thumbnail_image_horizontal_uri}'><div><b>${
-            product.name
-          }</b> - <i>Még nincs kategóriába sorolva.</i></div>`;
+          return `${pictureElement}<div><b>${product.name}</b> - <i>Még nincs kategóriába sorolva.</i></div>`;
         } else {
-          return `<img src='${product.thumbnail_image_horizontal_uri}'><div><b>${product.name}</b> - <i>${
-            product.category ? product.category : "#"
-          } / ${product.subcategory ? product.subcategory : "#"}</i></div>`;
+          return `${pictureElement}<div><b>${product.name}</b> - <i>${product.category ? product.category : "#"} / ${product.subcategory ? product.subcategory : "#"}</i></div>`;
         }
       },
       clickHandler: async (product) => {
@@ -105,11 +111,12 @@ function initializeSearch(search) {
         { name: "content", disabledByDefault: true },
       ],
       template: (page) => {
-        return `<img src='${page.uri}'><div><b>${page.name}</b> - <i>${
-          page.category_name ? page.category_name : "#"
-        } / ${page.subcategory_name ? page.subcategory_name : "#"}</i> (${
-          page.content_preview
-        }...)</div>`;
+        return `<picture>
+                  <source srcset="${page.uri}-768px.avif" type="image/avif">
+                  <source srcset="${page.uri}-768px.webp" type="image/webp">
+                  <img src="${page.uri}-768px.jpg" alt="${page.name}">
+                </picture>
+                <div><b>${page.name}</b> - <i>${page.category_name ? page.category_name : "#" } / ${page.subcategory_name ? page.subcategory_name : "#"}</i> (${page.content_preview}...)</div>`;
       },
       clickHandler: async (page) => {
         if (!autofill) {

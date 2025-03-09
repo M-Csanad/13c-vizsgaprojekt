@@ -14,7 +14,7 @@ if ($searchTerm) {
         category.name AS category, 
         GROUP_CONCAT(DISTINCT product_tag.tag_id) AS tag_ids, 
         subcategory.name AS subcategory, 
-        image.uri AS thumbnail_image_horizontal_uri,
+        REGEXP_REPLACE(image.uri, '\\.[^.]+$', '') AS thumbnail_image_horizontal_uri,
         GROUP_CONCAT(DISTINCT CASE WHEN health_effect.benefit = 1 THEN health_effect.id END) AS benefit_ids,
         GROUP_CONCAT(DISTINCT CASE WHEN health_effect.benefit = 0 THEN health_effect.id END) AS side_effect_ids
     FROM product

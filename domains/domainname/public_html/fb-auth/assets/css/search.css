@@ -113,9 +113,15 @@
 .items > *:not(.loader-wrapper):hover {
   background-color: rgb(255, 211, 211);
 }
-.items > * > img {
+.items > * > picture {
   width: 48px;
   height: 48px;
+  object-fit: cover;
+}
+
+picture > img {
+  width: 100%;
+  height: 100%;
   object-fit: cover;
 }
 
