@@ -16,10 +16,17 @@ function generateTopProducts()
     }
 
 
-    $sql = "SELECT id, name, unit_price, description
-            FROM product
-            WHERE stock > 0
-            ORDER BY id
+    $sql = "SELECT p.id, p.name, p.unit_price, p.description, p.stock,
+                i.uri AS image_uri,
+                COALESCE(AVG(r.rating), 0) as avg_rating,
+                COUNT(DISTINCT r.id) as review_count
+            FROM product p
+            LEFT JOIN product_image pi ON p.id = pi.product_id
+            LEFT JOIN image i ON pi.image_id = i.id
+            LEFT JOIN review r ON p.id = r.product_id
+            WHERE p.stock > 0
+            GROUP BY p.id, p.name, p.unit_price, p.description, p.stock, i.uri
+            ORDER BY review_count DESC, avg_rating DESC
             LIMIT 10";
 
     try {
@@ -38,22 +45,50 @@ function generateTopProducts()
             $productId = $row['id'];
             $productName = htmlspecialchars($row['name']);
             $productDescription = htmlspecialchars($row['description']);
+            $avgRating = $row['avg_rating'];
+            $reviewCount = $row['review_count'];
+            $reviewText = $reviewCount > 0 ? "{$reviewCount} értékelés" : "Még nincs értékelve";
+            $stock = (int)$row['stock'];
+            $imageUri = $row['image_uri'];
 
-            $slug = slug_gen($row['name']);
+            // Get product page info
+            $pageQuery = "SELECT link_slug FROM product_page WHERE product_id = ?";
+            $stmt = $conn->prepare($pageQuery);
+            $stmt->bind_param("i", $productId);
+            $stmt->execute();
+            $pageResult = $stmt->get_result();
+            $productUrl = "";
 
+            if ($pageResult && $pageResult->num_rows > 0) {
+                $page = $pageResult->fetch_assoc();
+                $productUrl = "/" . $page['link_slug'];
+            }
+
+            $stmt->close();
+
+            // Get base image path without extension
+            $basePath = preg_replace('/\.[^.]+$/', '', $imageUri);
 
             echo '<div class="swiper-slide">
                     <div class="swiper-card_wrapper">
-                      <div class="card-image">
-                        <img src="" alt="' . $productName . '" loading="lazy" />
-                        <button class="book-now">Kosárba</button>
+                      <div class="card-image">';
+
+            if ($imageUri) {
+                echo '<img src="' . $imageUri . '" alt="' . $productName . '" loading="lazy" />';
+            } else {
+                // Fallback for when no image is found
+                echo '<img src="/fb-content/assets/media/images/site/no_image.jpg" alt="' . $productName . '" loading="lazy" />';
+            }
+
+            // Changed the button class from "book-now" to "quick-add" and added data attributes
+            echo '    <button class="quick-add" data-product-id="' . $productId . '" data-product-url="' . $productUrl . '">Kosárba</button>
                       </div>
                       <div class="swiper-card">
                         <div class="text-overlay">
                           <h1 class="__t03-law1 title">' . $productName . '</h1>
                           <div class="rating">
-                            <span>⭐️⭐️⭐️⭐️⭐️</span>
-                            <span>180k értékelés</span>
+                            <div class="review-stars stars" data-rating="' . number_format($avgRating, 1) . '"></div>
+                            <span>' . $reviewText . '</span>
                           </div>
                           <div class="text">
                             <p class="__t02-men1 description">' . $productDescription . '</p>
@@ -79,7 +114,7 @@ function generateTopProducts()
 
             echo '         </div>
                             <div class="actions">
-                              <button class="more-info">Bővebb információ</button>
+                              <a href="' . $productUrl . '" class="more-info">Bővebb információ</a>
                             </div>
                           </div>
                         </div>

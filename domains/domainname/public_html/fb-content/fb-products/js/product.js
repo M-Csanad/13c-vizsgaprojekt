@@ -78,10 +78,22 @@ class ProductPage {
         this.imageViewer.navigator.carousel.addEventListener('scroll', () => this.handleScroll(this.imageViewer.navigator.scrollbar, this.imageViewer.navigator.carousel));
         this.recommendations.container.addEventListener('scroll', () => this.handleScroll(this.recommendations.scrollbar, this.recommendations.container));
 
+        // Add event listeners to quick-add buttons in recommendations
+        document.querySelectorAll('.quick-add').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                const url = button.dataset.productUrl;
+                if (url) {
+                    this.addToCart(url);
+                }
+            });
+        });
+
         // Ablak események
         window.addEventListener('load', () => this.handleLoad());
         window.addEventListener('resize', () => this.handleResize());
-        
+
         if (this.bigAddToCartBtn) {
             window.addEventListener('scroll', () => this.checkBigButtonVisibility());
         }
@@ -428,6 +440,20 @@ class ProductPage {
             }
         } catch (err) {
             console.error('Megosztás sikertelen:', err);
+        }
+    }
+
+    // Add new method to handle cart additions
+    async addToCart(url) {
+        try {
+            // Check if cart module is available
+            if (window.cart) {
+                await window.cart.add(null, url);
+            } else {
+                console.error('Cart module not available');
+            }
+        } catch (err) {
+            console.error('Error adding to cart:', err);
         }
     }
 }

@@ -187,7 +187,8 @@ class Cart {
     const cardsContainer = document.querySelector(".cards");
     if (!cardsContainer) return;
 
-    cardsContainer.addEventListener("click", (e) => {
+    // Handle click events on quick-add buttons within card containers
+    document.addEventListener("click", (e) => {
       const quickAddButton = e.target.closest(".quick-add");
       if (!quickAddButton) return;
 
@@ -407,8 +408,14 @@ class Cart {
     }
   }
 
+  // Improved method to get URL from card
   getUrlFromCard(card) {
-    return card.dataset.productUrl;
+    const url = card.dataset.productUrl;
+    if (!url) {
+      console.error("No product URL found:", card);
+      return null;
+    }
+    return url;
   }
 
   /**
@@ -421,11 +428,19 @@ class Cart {
   }
 
   // Backend metódusok
-  // Hozzáad egy terméket a kosárhoz
+  // Improved add method with better error handling
   async add(e, url = null) {
+    if (e && e.preventDefault) e.preventDefault();
+
     try {
+      if (!url) {
+        url = this.url;
+      }
+
+      console.log("Adding product to cart with URL:", url);
+
       const result = await APIFetch("/api/cart/add", "POST", {
-        url: url ? url : this.url,
+        url: url,
         qty: this.quantityInput ? Number(this.quantityInput.value) : 1,
       });
 
@@ -433,16 +448,14 @@ class Cart {
         await this.fetchCartData();
         this.updateUI();
 
-        // Nem nyitjuk meg automatikusan a kosarat, csak értesítést küldünk
+        // Always show a notification
         this.showNotification(
           "Termék sikeresen hozzáadva a kosárhoz",
           "success"
         );
       } else {
-        // Ha a szerver HTTP hiba kóddal válaszol (pl. 400)
+        // Handle error response
         const errorData = await result.json();
-
-        // Hibaüzenet megjelenítése
         this.showNotification(
           errorData.message || "Nem sikerült a terméket a kosárhoz adni",
           "error"

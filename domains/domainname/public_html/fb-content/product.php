@@ -704,7 +704,7 @@
         </svg>
     </div>
     <footer id="fb-footer"></footer>
-  
+
   <div id="floatingCart" class="floating-cart">
     <button class="floating-add-to-cart quick-add" <?= ($product["stock"] <= 0 ? 'disabled' : '') ?>>
         <svg
@@ -722,7 +722,7 @@
       <span>Kosárba</span>
     </button>
   </div>
-  
+
   <footer id="fb-footer"></footer>
 
   <div id="scrollBar">

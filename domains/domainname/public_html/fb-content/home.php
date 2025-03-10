@@ -262,6 +262,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
   <link rel="stylesheet" href="/fb-content/assets/css/box.css" />
   <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
   <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
+  <link rel="stylesheet" href="/fb-content/assets/css/notification.css">
   <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
 
   <!--main stylesheet-->
@@ -291,6 +292,10 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
   <!--page transition-->
   <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
   <script defer src="/fb-content/assets/js/page_transition.js"></script>
+
+  <!-- Ensure Notification.js is loaded before cart.js -->
+  <script type="module" src="/fb-content/assets/js/notification.js" defer></script>
+  <script type="module" src="/fb-content/assets/js/cart.js" defer></script>
 
 </head>
 

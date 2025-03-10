@@ -93,3 +93,31 @@ var productSwiper = new Swiper(".topProduct_slider", {
   watchSlidesVisibility: true,
   watchSlidesProgress: true,
 });
+
+// Add this function to generate stars based on rating
+function generateStars() {
+  const reviewStars = document.querySelectorAll('.review-stars');
+
+  reviewStars.forEach(element => {
+    const rating = parseFloat(element.dataset.rating) || 0;
+    const fullStars = Math.floor(rating);
+    const halfStar = rating % 1 >= 0.5;
+    const totalStars = 5;
+
+    element.innerHTML = '';
+    for (let i = 0; i < totalStars; i++) {
+      const star = document.createElement('span');
+      if (i < fullStars) {
+        star.classList.add('filled');
+      } else if (i === fullStars && halfStar) {
+        star.classList.add('half');
+      }
+      element.appendChild(star);
+    }
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Generate stars for ratings
+  generateStars();
+});

@@ -288,14 +288,45 @@ h6 {
 .swiper-slide .card-image .book-now {
   position: absolute;
   bottom: 24px;
-  margin-inline: auto;
+  left: 50%;
+  transform: translateX(-50%);
   background-color: var(--dark_tertiary);
   color: var(--light_main);
-  padding: 8px 12px;
+  padding: 8px 16px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 0.9em;
+  transition: background-color 0.3s ease;
+  font-family: 'Karla', sans-serif;
+  white-space: nowrap;
+}
+
+.swiper-slide .card-image .book-now:hover {
+  background-color: var(--dark_secondary);
+}
+
+.swiper-slide .card-image .quick-add,
+.swiper-slide .card-image .book-now {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--dark_tertiary);
+  color: var(--light_main);
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.9em;
+  transition: background-color 0.3s ease;
+  font-family: 'Karla', sans-serif;
+  white-space: nowrap;
+}
+
+.swiper-slide .card-image .quick-add:hover,
+.swiper-slide .card-image .book-now:hover {
+  background-color: var(--dark_secondary);
 }
 
 .swiper-slide .swiper-card {
@@ -380,12 +411,20 @@ h6 {
 .swiper-slide .swiper-card .text-overlay .card-footer .actions .more-info {
   background-color: var(--light_main);
   color: var(--dark_primary);
-  padding: 8px 12px;
+  padding: 8px 16px;
   position: relative;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 0.9em;
+  transition: background-color 0.3s ease;
+  font-family: 'Karla', sans-serif;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.swiper-slide .swiper-card .text-overlay .card-footer .actions .more-info:hover {
+  background-color: var(--light_secondary);
 }
 
 /*
@@ -1059,4 +1098,38 @@ h6 {
 
 .ImgGallery_container .caption .subcontent_caption .productCount_caption {
   color: var(--light_main-op6);
+}
+
+/* Star rating styles */
+.review-stars {
+  display: flex;
+  gap: 3px;
+}
+
+.review-stars span {
+  width: 16px;
+  height: 16px;
+  background-image: url('/fb-content/fb-products/media/images/star-empty.svg');
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.review-stars .filled {
+  background-image: url('/fb-content/fb-products/media/images/star-filled.svg');
+}
+
+.review-stars .half {
+  background-image: url('/fb-content/fb-products/media/images/star-half.svg');
+}
+
+.rating {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.rating span {
+  font-size: 12px;
+  color: var(--light_secondary);
 }
