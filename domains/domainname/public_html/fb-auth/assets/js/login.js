@@ -47,6 +47,16 @@ class LoginForm {
         
         this.formDom.querySelectorAll(".input-group").forEach(e => this.handleInputGroupFocus(e));
 
+        this.formDom.querySelectorAll("input[type='password']").forEach(e => {
+            e.parentElement.addEventListener("click", () => {
+                const input = this.form.passwd.dom;
+                const type = input.getAttribute("type") === "password" ? "text" : "password";
+
+                input.classList.toggle("shown");
+                input.setAttribute("type", type);
+            });
+        });
+
         for (let field in this.form) {
             const element = this.form[field];
             if (element.noValidate) continue;
@@ -242,8 +252,8 @@ class LoginForm {
                 await this.animateElementIn(this.formMessage);
                 this.shakeElement(this.formMessage);
                 
-                const passwdInput = this.form.passwd.dom;
-                if (passwdInput) passwdInput.value = "";
+                const input = this.form.passwd.dom;
+                if (input) input.value = "";
             }
         } catch (error) {
             console.error('Hiba a bejelentkezéskor: ', error);

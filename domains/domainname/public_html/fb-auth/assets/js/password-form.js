@@ -68,6 +68,16 @@ class PasswordForm {
         // Beviteli mező fókusz eseményei
         this.formDom.querySelectorAll(".input-group").forEach((e) => this.handleInputGroupFocus(e));
 
+        this.formDom.querySelectorAll("input[type='password']").forEach(e => {
+            e.parentElement.querySelector(".show-password").addEventListener("click", (e) => {
+                const input = e.target.closest(".input-group").querySelector("input");
+                const type = input.getAttribute("type") === "password" ? "text" : "password";
+
+                input.classList.toggle("shown");
+                input.setAttribute("type", type);
+            });
+        });
+
         // Beviteli mezők validálási eseményei
         for (let field in this.form) {
             let element = this.form[field];

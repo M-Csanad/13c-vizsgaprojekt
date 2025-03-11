@@ -38,10 +38,68 @@
     outline: 2px solid transparent;
     transition: outline 0.3s ease, border-color 0.3s ease;
     background-color: var(--background-light) !important;
+    display: flex;
 }
 
 .input-group > .input-body:focus-within {
     outline: 2px solid grey;
+}
+
+.show-password {
+    width: 48px;
+    flex-shrink: 0;
+    cursor: pointer;
+    position: relative;
+}
+
+.show-password > svg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease;
+}
+
+input:not(.shown) ~ .show-password > .eye-show.default {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+input:not(.shown) ~ .show-password > .eye-show.hover {
+    opacity: 0;
+    pointer-events: none;
+}
+
+input:not(.shown) ~ .show-password:hover > .eye-show.hover {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+input:not(.shown) ~ .show-password:hover > .eye-show.default {
+    opacity: 0;
+    pointer-events: none;
+}
+
+input.shown ~ .show-password > .eye-hide.default {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+input.shown ~ .show-password > .eye-hide.hover {
+    opacity: 0;
+    pointer-events: none;
+}
+
+input.shown ~ .show-password:hover > .eye-hide.hover {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+input.shown ~ .show-password:hover > .eye-hide.default {
+    opacity: 0;
+    pointer-events: none;
 }
 
 .input-group input,
@@ -95,14 +153,16 @@
 }
 
 .input-group label.focus,
-.input-group:focus-within label {
+.input-group:has(input:enabled):not(:has(.show-password:focus-within)):focus label,
+.input-group:has(input:-webkit-autofill) label {
     transform: translateY(-10px) translateZ(0);
 }
 
 .input-group label.focus ~ select,
 .input-group label.focus ~ input,
 .input-group:focus-within label ~ select,
-.input-group:focus-within label ~ input {
+.input-group:has(input:-webkit-autofill) label ~ input,
+.input-group:has(input:-webkit-autofill) label ~ select {
     opacity: 1;
 }
 
