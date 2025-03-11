@@ -1,4 +1,4 @@
-<?php 
+<?php
 include_once $_SERVER['DOCUMENT_ROOT'] . '/config.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
 ?>
@@ -174,7 +174,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
               </div>
               <div class="col-8_inner Card_body">
                 <div class="Card_header">
-                  <div class="Card_headerProductCounter"><?= $subcategory['product_count'] ?> products</div>
+                  <div class="Card_headerProductCounter"><?= $subcategory['product_count'] ?> termék</div>
                   <div class="Card_headerProductTitle"><?= htmlspecialchars($subcategory['name']) ?></div>
                 </div>
 
@@ -201,7 +201,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
           <div class="CardContainer verticalCard">
             <a href="<?= $url ?>" class="card-link">
               <div class="Card_header">
-                <div class="Card_headerProductCounter"><?= $category['product_count'] ?> products</div>
+                <div class="Card_headerProductCounter"><?= $category['product_count'] ?> termék</div>
                 <div class="Card_headerProductTitle"><?= htmlspecialchars($category['name']) ?></div>
               </div>
               <div class="Card_body">
