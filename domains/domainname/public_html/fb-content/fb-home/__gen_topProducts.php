@@ -91,7 +91,8 @@ function generateTopProducts()
                             <span>' . $reviewText . '</span>
                           </div>
                           <div class="text">
-                            <p class="__t02-men1 description">' . $productDescription . '</p>
+                            <p class="__t02-men1 description">'. implode(' ', array_slice(explode(' ', htmlspecialchars($productDescription)), 0, 20));
+              echo '...</p>
                           </div>
                           <div class="card-footer">
                             <div class="cast">';
