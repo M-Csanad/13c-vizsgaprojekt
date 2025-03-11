@@ -260,7 +260,7 @@ function initializeSearch(search) {
       outputData.fields.forEach(({ field, value }) => {
         const input = parentForm.querySelector(`[name=${field}]`);
         if (input) {
-          if (value) {
+          if (value || value == 0) {
 
             // Ha a value egy tömb, akkor checkboxokhoz, vagy selecthez tartoznak,
             // Ezért itt végigmegyünk rajtuk és rákattintunk a megfelelő elemre
