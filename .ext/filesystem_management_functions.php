@@ -11,11 +11,24 @@ function format_str($s)
         'ő' => 'o',
         'ú' => 'u',
         'ü' => 'u',
-        'ű' => 'u'
+        'ű' => 'u',
+        'Á' => 'a',
+        'É' => 'e',
+        'Í' => 'i',
+        'Ó' => 'o',
+        'Ö' => 'o',
+        'Ő' => 'o',
+        'Ú' => 'u',
+        'Ü' => 'u',
+        'Ű' => 'u'
     ];
 
-    $temp = str_replace(" ", "-", trim(mb_strtolower($s)));
-    return strtr($temp, $hungarian_to_english);
+    $s = strtr(mb_strtolower($s), $hungarian_to_english);
+    $s = preg_replace('/[^a-z0-9 -]/', '', $s);
+    $s = str_replace(' ', '-', $s);
+    $s = preg_replace('/-+/', '-', $s);
+
+    return trim($s, '-');
 }
 
 function reverse_format_str($s)

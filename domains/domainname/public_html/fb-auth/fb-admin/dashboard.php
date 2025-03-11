@@ -1262,7 +1262,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" enctype="multipart/form-data" data-needs-confirm="false" data-confirm-message="" data-show-loader="true">
+                    <form method="POST" enctype="multipart/form-data"  data-needs-confirm="true" data-confirm-message="A termék módosítása nem visszavonható művelet!" data-show-loader="true">
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-search-type="product" data-id-input="product_id" data-autofill-fields="true">
