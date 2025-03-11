@@ -50,7 +50,7 @@ var mainSwiper = new Swiper(".bg_slider", {
   },
   autoplay: {
     delay: 4000,
-    disableOnInteraction: false,
+    disableOnInteraction: true,
     pauseOnMouseEnter: true,
   },
   watchSlidesVisibility: true,
@@ -96,28 +96,28 @@ var productSwiper = new Swiper(".topProduct_slider", {
 
 // Add this function to generate stars based on rating
 function generateStars() {
-  const reviewStars = document.querySelectorAll('.review-stars');
+  const reviewStars = document.querySelectorAll(".review-stars");
 
-  reviewStars.forEach(element => {
+  reviewStars.forEach((element) => {
     const rating = parseFloat(element.dataset.rating) || 0;
     const fullStars = Math.floor(rating);
     const halfStar = rating % 1 >= 0.5;
     const totalStars = 5;
 
-    element.innerHTML = '';
+    element.innerHTML = "";
     for (let i = 0; i < totalStars; i++) {
-      const star = document.createElement('span');
+      const star = document.createElement("span");
       if (i < fullStars) {
-        star.classList.add('filled');
+        star.classList.add("filled");
       } else if (i === fullStars && halfStar) {
-        star.classList.add('half');
+        star.classList.add("half");
       }
       element.appendChild(star);
     }
   });
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener("DOMContentLoaded", function () {
   // Generate stars for ratings
   generateStars();
 });
