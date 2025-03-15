@@ -3,7 +3,7 @@ class Popup {
     visible = false;
     ease = "power3.inOut";
 
-    constructor(title, message, onReply) {
+    constructor(title, message, onReply, buttonText = "Összevonás") {
         if (!gsap) throw new Error("A GSAP nem található");
         if (!lenis) throw new Error("A Lenis nem található");
 
@@ -25,7 +25,7 @@ class Popup {
             <div class='button-group-wrapper'>
             <div class='button-group'>
                 <button class='confirm'>
-                    Összevonás
+                    ${buttonText}
                 </button>
                 <button class='cancel'>
                     Mégse

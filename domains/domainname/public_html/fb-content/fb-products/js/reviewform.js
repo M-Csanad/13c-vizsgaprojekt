@@ -1,4 +1,5 @@
 import APIFetch from '/fb-content/assets/js/apifetch.js';
+import Popup from '/fb-content/assets/js/popup.js';
 
 const isMobile = (getComputedStyle(document.body).getPropertyValue("--is-mobile") == "1") || (('ontouchstart' in window) || (navigator.msMaxTouchPoints > 0));
 
@@ -17,11 +18,11 @@ if (sendButton) {
   sendButton.addEventListener("mouseenter", () => {
     sendButton.classList.add("hovered");
   })
-  
+
   sendButton.addEventListener("mouseleave", () => {
     sendButton.classList.remove("hovered");
   })
-  
+
   sendButton.addEventListener("click", () => {
     sendButton.classList.remove("hovered");
     sendButton.classList.add("sent");
@@ -32,6 +33,7 @@ let isActive = false;
 let isSet = false;
 let didSubmit = false;
 
+// Értékelés beküldésének kezelése
 if (reviewSubmitter) {
   reviewSubmitter.addEventListener("click", async () => {
     if (didSubmit) return;
@@ -39,40 +41,84 @@ if (reviewSubmitter) {
     let title = form.querySelector("input[type=text]");
     let body = form.querySelector("textarea");
     let rating = hiddenInput.value;
-  
+
     if (rating == "null") {
       reviewStarsContainer.classList.add("invalid");
       return;
     }
-    
+
     if (!title.value) {
       title.classList.add("invalid");
       return;
     }
-  
+
     if (!body.value) {
       body.classList.add("invalid");
       return;
     }
 
-    const response = await APIFetch("/api/review", "PUT", 
+    const response = await APIFetch("/api/review", "PUT",
       {
         "review-title": title.value,
         "review-body": body.value,
         "rating": rating
       },
     true);
-    
+
     if (response.ok) {
+      const result = await response.json();
       reviewSubmitter.classList.remove("unsuccessful");
       reviewSubmitter.classList.add("successful");
+
+      const successText = reviewSubmitter.querySelector('.success .send-text');
+      if (successText) {
+        successText.textContent = "Sikeres küldés!";
+      }
       didSubmit = true;
+
+      // Oldal újratöltése rövid késleltetés után az új értékelés megjelenítéséhez
+      setTimeout(() => {
+        window.location.reload();
+      }, 2000);
     }
     else {
-      reviewSubmitter.classList.remove("successful");
-      reviewSubmitter.classList.add("unsuccessful");
+      // Hibaüzenet megjelenítése
+      try {
+        const errorData = await response.json();
+        const errorMessage = errorData.message || "Sikertelen küldés!";
+
+        // Felugró ablak megjelenítése minden hibához
+        try {
+          const popup = new Popup(
+            "Értékelés nem lehetséges",
+            errorMessage,
+            (confirmed) => {
+              // Csak zárja be a felugró ablakot
+            },
+            "Rendben" // Egyéni gombszöveg
+          );
+          popup.open();
+        } catch (popupError) {
+          console.error("Hiba a felugró ablak megjelenítésekor:", popupError);
+          // Visszalépés az eredeti hibajelzésre
+          showDefaultErrorMessage(errorMessage);
+        }
+      } catch (e) {
+        console.error("Hiba a válasz értelmezésekor:", e);
+        showDefaultErrorMessage("Sikertelen küldés!");
+      }
     }
   });
+}
+
+// Segédfüggvény az alapértelmezett hibaüzenet megjelenítéséhez a gombban
+function showDefaultErrorMessage(message) {
+  const errorText = reviewSubmitter.querySelector('.unsuccessful .send-text');
+  if (errorText) {
+    errorText.textContent = message;
+  }
+  reviewSubmitter.classList.remove("successful");
+  reviewSubmitter.classList.add("unsuccessful");
 }
 
 if (reviewStarsContainer && reviewStars) {
@@ -86,11 +132,11 @@ if (reviewStarsContainer && reviewStars) {
     }
     isActive = false;
   });
-  
+
   reviewStarsContainer.addEventListener("mouseenter", () => {
     isActive = true; // Aktiválja az állapotot, ha az egér belép a csillagba
   });
-  
+
   reviewStars.forEach((star) => {
     if (!isMobile) {
       star.addEventListener("click", (e) => handleClick(e, star));
@@ -110,10 +156,10 @@ if (reviewStarsContainer && reviewStars) {
 function handleStarMove(star, mouseEvent) {
   const starRect = star.getBoundingClientRect();
   const starCenter = starRect.left + starRect.width / 2;
-  
+
   const dx = mouseEvent.clientX - starCenter;
   const isInFirstHalf = dx <= 0;
-  
+
   if (isInFirstHalf) {
     toggleHalfState(star); // Fél csillag állapot
   } else {
