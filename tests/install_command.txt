@@ -1,0 +1,5 @@
+pip install -r "C:\xampp\htdocs\13c-vizsgaprojekt\tests\requirements.txt"
+
+VAGY
+
+py -m pip install -r "C:\xampp\htdocs\13c-vizsgaprojekt\tests\requirements.txt"

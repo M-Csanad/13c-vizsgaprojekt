@@ -48,7 +48,7 @@ class LoginForm {
         this.formDom.querySelectorAll(".input-group").forEach(e => this.handleInputGroupFocus(e));
 
         this.formDom.querySelectorAll("input[type='password']").forEach(e => {
-            e.parentElement.addEventListener("click", () => {
+            e.parentElement.querySelector(".show-password").addEventListener("click", () => {
                 const input = this.form.passwd.dom;
                 const type = input.getAttribute("type") === "password" ? "text" : "password";
 
