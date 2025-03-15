@@ -2,8 +2,8 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Gép: 127.0.0.1
--- Létrehozás ideje: 2025. Már 11. 10:21
+-- Gép: 127.0.0.1:3307
+-- Létrehozás ideje: 2025. Már 15. 19:47
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -1094,6 +1094,7 @@ CREATE TABLE `review` (
   `product_id` int(11) DEFAULT NULL,
   `rating` double DEFAULT NULL,
   `description` text DEFAULT NULL,
+  `verified_purchase` tinyint(1) NOT NULL DEFAULT 0,
   `title` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
