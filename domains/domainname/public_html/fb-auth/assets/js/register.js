@@ -301,7 +301,7 @@ class RegisterForm {
 
             this.loader.classList.add('hidden');
 
-            if (result.status === "success") {
+            if (result.type === "SUCCESS") {
                 const outParams = {
                     scaleY: 1, 
                     duration: 1,
