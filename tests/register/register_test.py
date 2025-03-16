@@ -43,7 +43,7 @@ try:
     print("\nRegisztráció...")
     driver.find_element(by=By.CSS_SELECTOR, value="input.action-button").click()
     
-    WebDriverWait(driver, 10).until(lambda d: d.current_url != "http://localhost/register")
+    WebDriverWait(driver, 10).until(lambda d: d.current_url == "http://localhost/login")
     print("✓ Átirányítás megtörtént")
     
     Login(driver, user["username"], user["password"], False)
