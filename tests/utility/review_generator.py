@@ -1,6 +1,6 @@
 import random
 
-class Review:
+class ReviewGenerator:
     
     # Robot felhasználók azonosítói
     users = [ 1, 2, 3, 4, 5 ]
@@ -46,11 +46,11 @@ class Review:
     @staticmethod
     def random(count = 1, product_name = "termék"):
         
-        if (count > len(Review.users)):
+        if (count > len(ReviewGenerator.users)):
             return "Nem áll rendelkezésre ennyi felhasználó!"
         
         reviews = []
-        available_users = Review.users.copy()
+        available_users = ReviewGenerator.users.copy()
         if count > len(available_users):
             count = len(available_users)
         for _ in range(count):
@@ -59,7 +59,7 @@ class Review:
             
             rating = round(random.random() * 4 + 1, 1)
             rating = round(rating * 2) / 2
-            review = random.choice(Review.content[round(rating)])
+            review = random.choice(ReviewGenerator.content[round(rating)])
             review = (review[0], review[1].replace("{product_name}", product_name))
             
             reviews.append({

@@ -6,11 +6,12 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-def Login(driver, username, password):
+def Login(driver, username, password, findLink = True):
     print("\nBejeletkezés...")
     
     # Navigálás a bejelentkező oldalra
-    driver.find_element(by=By.CSS_SELECTOR, value="a[href='/login']").click()
+    if findLink:
+        driver.find_element(by=By.CSS_SELECTOR, value="a[href='/login']").click()
 
     # Űrlap kitöltése
     usernameElement = WebDriverWait(driver, 10).until(

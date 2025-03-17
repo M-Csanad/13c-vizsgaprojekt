@@ -31,7 +31,7 @@ try:
     )
 
     usernameElement.send_keys("admin")
-    driver.find_element(by=By.ID, value="passwd").send_keys("Alma_123")
+    driver.find_element(by=By.ID, value="passwd").send_keys("Alma_1234")
     print("✓ Felhasználónév és jelszó megadva")
 
     # Bejelentkezés gombra kattintás
