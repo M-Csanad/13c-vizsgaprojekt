@@ -26,6 +26,8 @@ logs/
 log/
 debugs/
 debug/
+error/
+errors/
 *.log
 *.logs
 *.tmp
