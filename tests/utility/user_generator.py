@@ -39,7 +39,7 @@ class UserGenerator:
         "Bálint", "Barta", "Bodnár", "Bognár", "Borbély", "Deák", "Fazekas", "Fülöp",
         "Gál", "Hegedűs", "Jakab", "Kelemen", "Lukács", "Major", "Mezei", "Nemes",
         "Pál", "Péter", "Rózsa", "Soós", "Székely", "Szőke", "Tóth", "Vass",
-        "Veres", "Vincze", "Vörös", "Zsiga", "Zsiga", "Blank"
+        "Veres", "Vincze", "Vörös", "Zsiga", "Kecske", "Blank"
     ]
 
     
@@ -199,7 +199,7 @@ class UserGenerator:
         
         pyperclip.copy(sql)
         print("\033[42m✓ SQL kód vágólapra másolva\033[0m")
-        
+
         return sql
     
 if __name__ == "__main__":
