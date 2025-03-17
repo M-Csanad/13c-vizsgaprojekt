@@ -36,7 +36,7 @@ class UserGenerator:
         "Nagy", "Kovács", "Tóth", "Szabó", "Horváth", "Varga", "Kiss", "Molnár",
         "Németh", "Farkas", "Balogh", "Papp", "Takács", "Juhász", "Mészáros", "Szűcs",
         "Simon", "Rácz", "Fekete", "Boros", "Kuksó", "Kocsis", "Lakatos", "Szalai",
-        "Szilágyi", "Szép", "Bálint", "Barta", "Bodnár", "Bognár", "Borbély", "Deák", "Fazekas", "Fülöp",
+        "Szilágyi", "Szép", "Bálint", "Barta", "Bodnár", "Bognár", "Borbély", "Deák", "Fazekas", "Fülöp", "Hegyessy",
         "Gál", "Hegedűs", "Jakab", "Kelemen", "Lukács", "Major", "Mezei", "Nemes",
         "Pál", "Péter", "Rózsa", "Soós", "Székely", "Szőke", "Tóth", "Vass",
         "Veres", "Vincze", "Vörös", "Zsiga", "Kecske", "Blank"
