@@ -24,7 +24,7 @@ try:
     print("✓ Regisztrációs oldal megnyitva")
     
     print("\nFelhasználó generálása...")
-    user = UserGenerator.generate();
+    user = UserGenerator.generate()
     print(f"✓ Felhasználó generálva: {user['username']} {user['email']}")
     
     print("\nŰrlap kitöltése...")
