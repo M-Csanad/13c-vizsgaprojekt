@@ -81,6 +81,13 @@ class RegisterForm {
 
     bindEvents() {
         this.submitter.addEventListener("click", this.send.bind(this));
+
+        document.addEventListener("keypress", (event) => {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                this.send(event);
+            }
+        });
         
         this.formDom.querySelectorAll(".input-group").forEach(e => this.handleInputGroupFocus(e));
 
