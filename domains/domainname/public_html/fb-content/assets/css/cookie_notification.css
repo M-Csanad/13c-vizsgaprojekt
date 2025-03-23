@@ -4,11 +4,12 @@
     left: 1rem;
     z-index: 9999;
     width: calc(100% - 2rem);
-    height: 75px;
-    min-height: fit-content;
     max-width: 500px;
+    /* Remove fixed height to allow content to determine height */
+    height: auto;
+    min-height: fit-content;
     font-family: 'Karla', sans-serif;
-    transition: width 0.3s ease;
+    transition: width 0.3s ease, height 0.3s ease;
 }
 
 .cookie-notification-container {
@@ -99,14 +100,10 @@
         max-width: none;
     }
     
-    body.cookienotice-shown #top-button {
-        bottom: 88px;
-        transition: bottom 0.3s ease, transform 1s cubic-bezier(0.84, -0.69, 0.16, 1.69);
-    }
-    
+    /* Remove fixed bottom values - these will be set by JavaScript */
+    body.cookienotice-shown #top-button,
     body.cookienotice-shown .floating-cart {
-        bottom: 85px;
-        transition: bottom 0.3s ease, transform 0.5s cubic-bezier(0.17, 0.84, 0.44, 1), opacity 0.4s ease;
+        transition: bottom 0.3s ease, transform 1s cubic-bezier(0.84, -0.69, 0.16, 1.69);
     }
 }
 
@@ -115,13 +112,13 @@
         bottom: 20px;
     }
     
-    body.cookienotice-shown #top-button {
-        bottom: 130px;
-    }
-    
-    body.cookienotice-shown .floating-cart {
-        bottom: 125px;
-    }
+    /* Remove fixed bottom values here too */
+}
+
+/* Remove the fixed right positioning from this class so elements keep their original positions */
+.dynamic-bottom-position {
+    position: fixed;
+    z-index: 998;
 }
 
 #top-button {
