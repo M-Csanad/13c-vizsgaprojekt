@@ -5,6 +5,7 @@
     z-index: 9999;
     width: calc(100% - 2rem);
     height: 75px;
+    min-height: fit-content;
     max-width: 500px;
     font-family: 'Karla', sans-serif;
     transition: width 0.3s ease;
@@ -62,7 +63,7 @@
     background-color: #85b86d3a;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 400px) {
     .cookie-notification-container {
         flex-direction: column;
         text-align: center;
