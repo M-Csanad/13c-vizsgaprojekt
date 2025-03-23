@@ -23,7 +23,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 $requiredFields = ['type', 'data'];
 foreach ($requiredFields as $field) {
     if (empty($data[$field])) {
-        sendResponse(new Result(Result::ERROR, 'Kérlek töltsd ki mindegyik mezőt!'), 400);
+        sendResponse(new Result(Result::ERROR, 'Kérlek töltse ki mindegyik mezőt!'), 400);
     }
 }
 

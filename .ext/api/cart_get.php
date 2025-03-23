@@ -84,7 +84,7 @@ else if (isset($_COOKIE['cart']) && !empty(json_decode($_COOKIE['cart'], true)))
     else {
         $result = new Result(Result::PROMPT, [
             "title" => "Kosár összevonása",
-            "description" => "A vendégként létrehozott kosarad tartalmát hozzá tudjuk adni a fiókodhoz. Összevonod őket?"
+            "description" => "A vendégként létrehozott kosara tartalmát hozzá tudjuk adni a fiókjához. Össze kivánja vonni őket?"
         ]);
         echo $result->toJSON();
     }
