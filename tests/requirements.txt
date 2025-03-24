@@ -2,3 +2,4 @@ selenium
 mysql-connector-python
 bcrypt
 pyperclip
+python-dotenv
