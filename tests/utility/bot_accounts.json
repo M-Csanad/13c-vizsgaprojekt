@@ -1,0 +1,98 @@
+[
+  {
+    "email": "kinga.blank@bot.example.org",
+    "user_name": "blank-k596",
+    "last_name": "Blank",
+    "first_name": "Kinga",
+    "password": ".R8%L9LDwT{g:&h@nn",
+    "password_hash": "$2b$12$EVWIRPc/xvEIEKn1BQH6RuwPWGkes9PJPv1.Ke4/ILRcLdPa3S8ri",
+    "role": "Bot",
+    "avatar_id": 1,
+    "gender": "female",
+    "is_bot": true
+  },
+  {
+    "email": "agnes.szep@bot.example.net",
+    "user_name": "szep-a6",
+    "last_name": "Szép",
+    "first_name": "Ágnes",
+    "password": "AFK#c8fTS&Wz19]bm-6u||XiOY<#A]I}?p;N_Zl$,%uT=Bg7}kxT9y^YI82+lF",
+    "password_hash": "$2b$12$YejAJ25ZqDRSIUZtudpJEem08zUxgQMRDlE6I875whjE23DNQRlZ2",
+    "role": "Bot",
+    "avatar_id": 1,
+    "gender": "female",
+    "is_bot": true
+  },
+  {
+    "email": "beata.kiss@bot.example.org",
+    "user_name": "kiss-b745",
+    "last_name": "Kiss",
+    "first_name": "Beáta",
+    "password": "<#elY+JtpWF\\D>2cQj(O<3&9u:R~Ew2Y+#,*^h`tU^B-J'9JjTJf?'Jy6a^",
+    "password_hash": "$2b$12$iPReEQ2GnHUJRMSi2wHS4.ox7ul3xK5Dk7BlWwjZeC2vWPc4VJCta",
+    "role": "Bot",
+    "avatar_id": 1,
+    "gender": "female",
+    "is_bot": true
+  },
+  {
+    "email": "maria.deak@bot.example.com",
+    "user_name": "deak_m961",
+    "last_name": "Deák",
+    "first_name": "Mária",
+    "password": "rU!%{/.$IZpu,G8P+;W9+{XW31HIf-')}",
+    "password_hash": "$2b$12$xha/xhSIYLCinUN8oKPkQefJIMxaUTJ9iWPVcwZc0a.37fAMl5vnW",
+    "role": "Bot",
+    "avatar_id": 1,
+    "gender": "female",
+    "is_bot": true
+  },
+  {
+    "email": "mimiviktoria.meszaros@bot.example.com",
+    "user_name": "meszarosm240",
+    "last_name": "Mészáros",
+    "first_name": "MimiViktória",
+    "password": "PJ-b^;|iCsYoBXlTQ/{dzGH^H6>Sxw!dgIV2A[/@QPm|6$#5p5,6+%A(%)wR3",
+    "password_hash": "$2b$12$32wJQbVoIUysVfj7j151zeSxwSKwvrdpvbFAJJeoz4BO6gIEfa.Gy",
+    "role": "Bot",
+    "avatar_id": 1,
+    "gender": "female",
+    "is_bot": true
+  },
+  {
+    "email": "flora.szalai@bot.example.org",
+    "user_name": "szal_flo509",
+    "last_name": "Szalai",
+    "first_name": "Flóra",
+    "password": "vHY38`6wtMxG3(dS}m3/s9cc&Z>WAP!T&B[!RM|1J$^W0\"3",
+    "password_hash": "$2b$12$797rai9DUEQ3VUJq5JQH6uz2ShPTeZQCPQ3qR8XABj94m4xq7sGJK",
+    "role": "Bot",
+    "avatar_id": 1,
+    "gender": "female",
+    "is_bot": true
+  },
+  {
+    "email": "lilla.kiss@bot.example.com",
+    "user_name": "kiss_l149",
+    "last_name": "Kiss",
+    "first_name": "Lilla",
+    "password": "!dV(y*.R8_8*jQgYfV)S5;cY!6`D-brd1f(WRbn*",
+    "password_hash": "$2b$12$a5WtikQVWbT1JleDheYUNueV0LXdCJBvLWeEthypdR4DC1cFdylE6",
+    "role": "Bot",
+    "avatar_id": 1,
+    "gender": "female",
+    "is_bot": true
+  },
+  {
+    "email": "csilla.farkas@bot.example.com",
+    "user_name": "c_farkas807",
+    "last_name": "Farkas",
+    "first_name": "Csilla",
+    "password": "db^Hj9^^5Xe|3<^aW$by\\P,e`",
+    "password_hash": "$2b$12$nRRbAKw2S/3sSrxTheBwfObV3vsjNg1IJAtoFNL45SfUNDBMbcldG",
+    "role": "Bot",
+    "avatar_id": 1,
+    "gender": "female",
+    "is_bot": true
+  }
+]

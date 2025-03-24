@@ -27,7 +27,7 @@ if (isset($_POST['login'])) {
 
     $captcha = new Captcha();
     $captchaResult = $captcha->verify($_POST['g-recaptcha-response'] ?? '', 'login');
-    
+
     if ($captchaResult->isError()) {
         http_response_code(401);
         echo $captchaResult->toJSON();

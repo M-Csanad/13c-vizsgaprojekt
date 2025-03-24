@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Már 15. 19:47
+-- Létrehozás ideje: 2025. Már 17. 21:16
 -- Kiszolgáló verziója: 10.4.32-MariaDB
 -- PHP verzió: 8.2.12
 
@@ -332,6 +332,17 @@ CREATE TABLE `order` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
+-- A tábla adatainak kiíratása `order`
+--
+
+INSERT INTO `order` (`id`, `user_id`, `email`, `phone`, `first_name`, `last_name`, `company_name`, `tax_number`, `billing_address`, `delivery_address`, `status`, `order_total`, `completed_at`, `created_at`) VALUES
+(1, 3, '13c-milkovics@ipari.vein.hu', '+36203094010', 'Csanád', 'Milkovics', NULL, NULL, NULL, '8444 Szentgál, Akoj utca 25.', 'Teljesítve', 5000, '2025-03-15 20:02:58', '2025-03-15 20:02:58'),
+(2, NULL, 'szilvia.horvath@bot.example.org', '+36208797573', 'Szilvia', 'Horváth', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 82', 'Visszigazolva', 5000, '2025-03-17 19:14:43', '2025-03-17 19:14:43'),
+(4, NULL, 'emese.kovacs@bot.example.org', '+36305882137', 'Emese', 'Kovács', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 86', 'Visszigazolva', 4000, '2025-03-17 19:34:37', '2025-03-17 19:34:37'),
+(5, NULL, 'ilona.soos@bot.example.com', '+36705721018', 'Ilona', 'Soós', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 98', 'Visszigazolva', 5500, '2025-03-17 19:34:37', '2025-03-17 19:34:37'),
+(6, NULL, 'lilla.fazekas@bot.example.net', '+36207785351', 'Lilla', 'Fazekas', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 34', 'Visszigazolva', 5000, '2025-03-17 19:34:37', '2025-03-17 19:34:37');
+
+--
 -- Eseményindítók `order`
 --
 DELIMITER $$
@@ -354,6 +365,17 @@ CREATE TABLE `order_item` (
   `quantity` int(11) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
+
+--
+-- A tábla adatainak kiíratása `order_item`
+--
+
+INSERT INTO `order_item` (`id`, `order_id`, `product_id`, `quantity`, `created_at`) VALUES
+(1, 1, 11, 1, '2025-03-15 20:02:58'),
+(2, 2, 11, 1, '2025-03-17 19:14:43'),
+(4, 4, 17, 1, '2025-03-17 19:34:37'),
+(5, 5, 7, 1, '2025-03-17 19:34:37'),
+(6, 6, 18, 1, '2025-03-17 19:34:37');
 
 --
 -- Eseményindítók `order_item`
@@ -418,18 +440,18 @@ INSERT INTO `product` (`id`, `name`, `unit_price`, `stock`, `description`) VALUE
 (4, 'Kasvirág gyökér', 8000, 30, 'Az Echinacea angustifolia, egy észak-amerikai gyógynövény, amely támogatja az immunrendszert. Organikus gyökereit teák, tinktúrák és helyi olajok készítésére használják, hogy erősítse a test védelmi rendszereit és javítsa a közérzetet.'),
 (5, 'Darált fokhagyma', 3200, 40, 'Az Allium sativum, közismert nevén fokhagyma, egy ízletes és erőteljes fűszer, mely számos kultúrában népszerű. Szárított, aprított fokhagymánk a legnagyobb szemcseméretű, és kiválóan alkalmas olajok infúziójához vagy főzéshez. Emellett a fokhagyma híres '),
 (6, 'Ánizs', 3500, 15, 'Az ánizs egy aromás gyógynövény, amely segíthet az emésztés támogatásában és a puffadás enyhítésében.'),
-(7, 'Árnika', 4500, 20, 'Az árnika erőteljes gyulladáscsökkentő és fájdalomcsillapító hatásairól ismert, gyakran alkalmazzák zúzódások és izomfájdalmak kezelésére.'),
+(7, 'Árnika', 4500, 19, 'Az árnika erőteljes gyulladáscsökkentő és fájdalomcsillapító hatásairól ismert, gyakran alkalmazzák zúzódások és izomfájdalmak kezelésére.'),
 (8, 'Búzavirág', 4000, 25, 'A búzavirág nyugtató és gyulladáscsökkentő hatású gyógynövény, amelyet gyakran használnak szem- és bélproblémák kezelésére.'),
 (9, 'Chili', 5000, 15, 'A chili erőteljes antioxidáns és fájdalomcsillapító hatású, és javítja a vérkeringést, ezáltal fokozza az anyagcserét.'),
 (10, 'Citromfű', 3500, 20, 'A citromfű nyugtató hatásáról ismert, gyakran használják stresszoldásra és a pihentető alvás elősegítésére.'),
-(11, 'Csipkebogyó', 4000, 20, 'A csipkebogyó rendkívül gazdag C-vitaminban, segít az immunrendszer erősítésében és a bélflóra támogatásában.'),
+(11, 'Csipkebogyó', 4000, 18, 'A csipkebogyó rendkívül gazdag C-vitaminban, segít az immunrendszer erősítésében és a bélflóra támogatásában.'),
 (12, 'Galagonya bogyók', 4500, 25, 'A galagonya kiváló szív- és érrendszeri támogatást nyújt, javítja a keringést és segít csökkenteni a vérnyomást.'),
 (13, 'Ginzeng gyökér', 5000, 15, 'A ginzeng egy erőteljes gyógynövény, amely segít a fáradtság leküzdésében és az általános vitalitás növelésében.'),
 (14, 'Körömvirág', 3500, 10, 'A körömvirág bőrápoló tulajdonságairól ismert, segít a sebgyógyulásban és enyhíti a bőr irritációit.'),
 (15, 'Pillangóborsó', 5000, 20, 'A pillangóborsó gazdag antioxidánsokban, javítja a bélflóra működését és segít a méregtelenítésben.'),
 (16, 'Reishi', 5500, 10, 'A reishi gomba immunerősítő és stresszoldó hatású, segít a test és az elme harmonizálásában.'),
-(17, 'Rozmaring', 3000, 20, 'A rozmaring kiváló antioxidáns és memóriajavító hatással rendelkezik, valamint segít az emésztésben.'),
-(18, 'Valeriána gyökér', 4000, 25, 'A valeriána nyugtató hatású, segít az alvás elősegítésében és a szorongás csökkentésében.'),
+(17, 'Rozmaring', 3000, 19, 'A rozmaring kiváló antioxidáns és memóriajavító hatással rendelkezik, valamint segít az emésztésben.'),
+(18, 'Valeriána gyökér', 4000, 24, 'A valeriána nyugtató hatású, segít az alvás elősegítésében és a szorongás csökkentésében.'),
 (19, 'Ashwagandha por', 4600, 25, 'Az Ashwagandha (Withania somnifera) az ájurvédikus gyógyászat egyik legismertebb adaptogén növénye, amely támogatja a stresszkezelést, a hormonális egyensúlyt és az általános energiaszintet.'),
 (21, 'Ashwagandha durvára őrölt', 4800, 30, 'Az Ashwagandha (Withania somnifera) Indiában és Afrikában honos gyógynövény, amelyet hagyományosan az ájurvédikus gyógyászatban alkalmaznak. Durvára őrölt formában megőrzi természetes aromáját.'),
 (22, 'Damiana őrölt', 5200, 20, 'A Damiana (Turnera diffusa) egy Közép- és Dél-Amerikában őshonos, lágy illatú gyógynövény, amelyet évszázadok óta hagyományosan aphrodisiakumként és enyhe stresszoldóként használnak. '),
@@ -1099,6 +1121,13 @@ CREATE TABLE `review` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
+--
+-- A tábla adatainak kiíratása `review`
+--
+
+INSERT INTO `review` (`id`, `user_id`, `product_id`, `rating`, `description`, `verified_purchase`, `title`, `created_at`) VALUES
+(2, 3, 11, 3.5, 'Ez ütött, de nagyot', 1, 'Jó a cucc báttya', '2025-03-15 20:06:19');
+
 -- --------------------------------------------------------
 
 --
@@ -1213,7 +1242,15 @@ CREATE TABLE `user` (
 INSERT INTO `user` (`id`, `email`, `user_name`, `password_hash`, `role`, `cookie_id`, `cookie_expires_at`, `reset_token`, `reset_token_expires_at`, `first_name`, `last_name`, `phone`, `avatar_id`, `created_at`) VALUES
 (1, '13c-blank@ipari.vein.hu', 'admin', '$2y$10$akYNgkIySgEjOb7zwRUo7utSWw3S0OGOJZ6i1gx3wQCT9hr.DGdHq', 'Administrator', NULL, NULL, NULL, NULL, 'Máté', 'Blank', '+36302166162', 7, '2024-11-02 13:27:24'),
 (2, 'teszt-elek@gmail.com', 'teszt-elek', '$2y$10$.BZLWK4qrkNB7jVCWxpkyeCpo/wRGMA/7QmSb7j4MnSZc/Ez4huMa', 'Guest', NULL, NULL, NULL, NULL, 'Elek', 'Teszt', NULL, 7, '2024-11-26 17:24:56'),
-(3, '13c-milkovics@ipari.vein.hu', 'Kecske', '$2y$10$VX.1kRDv2h6x0x4lqNYxMe1NWBWsPIAs1qxXA0/vk71YdCVugcCu6', 'Administrator', NULL, NULL, NULL, NULL, 'Csanád', 'Milkovics', NULL, 7, '2025-02-09 09:09:02');
+(3, '13c-milkovics@ipari.vein.hu', 'Kecske', '$2y$10$VX.1kRDv2h6x0x4lqNYxMe1NWBWsPIAs1qxXA0/vk71YdCVugcCu6', 'Administrator', NULL, NULL, NULL, NULL, 'Csanád', 'Milkovics', NULL, 7, '2025-01-01 09:09:02'),
+(4, 'kinga.blank@bot.example.org', 'blank-k596', '$2b$12$EVWIRPc/xvEIEKn1BQH6RuwPWGkes9PJPv1.Ke4/ILRcLdPa3S8ri', 'Bot', NULL, NULL, NULL, NULL, 'Kinga', 'Blank', NULL, 1, '2025-03-17 20:12:46'),
+(5, 'agnes.szep@bot.example.net', 'szep-a6', '$2b$12$YejAJ25ZqDRSIUZtudpJEem08zUxgQMRDlE6I875whjE23DNQRlZ2', 'Bot', NULL, NULL, NULL, NULL, 'Ágnes', 'Szép', NULL, 1, '2025-03-17 20:12:46'),
+(6, 'beata.kiss@bot.example.org', 'kiss-b745', '$2b$12$iPReEQ2GnHUJRMSi2wHS4.ox7ul3xK5Dk7BlWwjZeC2vWPc4VJCta', 'Bot', NULL, NULL, NULL, NULL, 'Beáta', 'Kiss', NULL, 1, '2025-03-17 20:12:46'),
+(7, 'maria.deak@bot.example.com', 'deak_m961', '$2b$12$xha/xhSIYLCinUN8oKPkQefJIMxaUTJ9iWPVcwZc0a.37fAMl5vnW', 'Bot', NULL, NULL, NULL, NULL, 'Mária', 'Deák', NULL, 1, '2025-03-17 20:12:46'),
+(8, 'mimiviktoria.meszaros@bot.example.com', 'meszarosm240', '$2b$12$32wJQbVoIUysVfj7j151zeSxwSKwvrdpvbFAJJeoz4BO6gIEfa.Gy', 'Bot', NULL, NULL, NULL, NULL, 'MimiViktória', 'Mészáros', NULL, 1, '2025-03-17 20:12:46'),
+(9, 'flora.szalai@bot.example.org', 'szal_flo509', '$2b$12$797rai9DUEQ3VUJq5JQH6uz2ShPTeZQCPQ3qR8XABj94m4xq7sGJK', 'Bot', NULL, NULL, NULL, NULL, 'Flóra', 'Szalai', NULL, 1, '2025-03-17 20:12:46'),
+(10, 'lilla.kiss@bot.example.com', 'kiss_l149', '$2b$12$a5WtikQVWbT1JleDheYUNueV0LXdCJBvLWeEthypdR4DC1cFdylE6', 'Bot', NULL, NULL, NULL, NULL, 'Lilla', 'Kiss', NULL, 1, '2025-03-17 20:15:53'),
+(11, 'csilla.farkas@bot.example.com', 'c_farkas807', '$2b$12$nRRbAKw2S/3sSrxTheBwfObV3vsjNg1IJAtoFNL45SfUNDBMbcldG', 'Bot', NULL, NULL, NULL, NULL, 'Csilla', 'Farkas', NULL, 1, '2025-03-17 20:15:53');
 
 --
 -- Indexek a kiírt táblákhoz
@@ -1378,7 +1415,7 @@ ALTER TABLE `avatar`
 -- AUTO_INCREMENT a táblához `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT a táblához `category`
@@ -1402,13 +1439,13 @@ ALTER TABLE `image`
 -- AUTO_INCREMENT a táblához `order`
 --
 ALTER TABLE `order`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT a táblához `order_item`
 --
 ALTER TABLE `order_item`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT a táblához `product`
@@ -1444,7 +1481,7 @@ ALTER TABLE `product_tag`
 -- AUTO_INCREMENT a táblához `review`
 --
 ALTER TABLE `review`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT a táblához `subcategory`
@@ -1462,7 +1499,7 @@ ALTER TABLE `tag`
 -- AUTO_INCREMENT a táblához `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Megkötések a kiírt táblákhoz

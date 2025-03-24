@@ -2,6 +2,29 @@
 include_once __DIR__.'/../review_functions.php';
 include_once __DIR__.'/../result_functions.php';
 
+// Handle GET request for fetching reviews with pagination
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    if (!isset($_GET['product_id'])) {
+        http_response_code(400);
+        echo (new Result(Result::ERROR, "Hiányzó termék azonosító"))->toJSON();
+        exit();
+    }
+
+    $productId = intval($_GET['product_id']);
+    $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+    $perPage = isset($_GET['per_page']) ? intval($_GET['per_page']) : 5;
+
+    $result = getProductReviews($productId, $page, $perPage);
+
+    if ($result->isError()) {
+        http_response_code(400);
+    }
+
+    echo $result->toJSON();
+    exit();
+}
+
+// Handle PUT request for submitting a new review
 if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
     http_response_code(405);
     $result = new Result(Result::ERROR, 'Hibás metódus! Várt: PUT');

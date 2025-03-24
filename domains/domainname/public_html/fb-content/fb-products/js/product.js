@@ -159,6 +159,32 @@ class ProductPage {
         `;
 
         this.generateStars(this.avgReviewElement.querySelector('.stars'));
+
+        // Update review pagination links to maintain other URL parameters
+        this.updatePaginationLinks();
+    }
+
+    updatePaginationLinks() {
+        const paginationLinks = document.querySelectorAll('.review-pagination .page-link');
+        if (!paginationLinks.length) return;
+
+        // Get current URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Update each pagination link to preserve other parameters
+        paginationLinks.forEach(link => {
+            const href = new URL(link.href);
+            const pageParam = href.searchParams.get('review_page');
+
+            if (pageParam) {
+                // Create a new URL with all current parameters
+                const newParams = new URLSearchParams(urlParams);
+                newParams.set('review_page', pageParam);
+
+                // Update href
+                link.href = `${window.location.pathname}?${newParams.toString()}`;
+            }
+        });
     }
 
     checkBigButtonVisibility() {
