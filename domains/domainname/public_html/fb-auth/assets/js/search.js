@@ -66,6 +66,7 @@ function initializeSearch(search) {
         { name: "description", disabledByDefault: true },
         { name: "price", disabledByDefault: true },
         { name: "stock", disabledByDefault: true },
+        { name: "net_weight", disabledByDefault: true },
         { name: "tags", multiple: true },
         { name: "benefits-container", multiple: true },
         { name: "side-effects-container", multiple: true },
@@ -93,6 +94,7 @@ function initializeSearch(search) {
               { field: "description", value: product.description },
               { field: "price", value: product.unit_price },
               { field: "stock", value: product.stock },
+              { field: "net_weight", value: product.net_weight },
               {
                 field: "tags",
                 value: product.tag_ids ? product.tag_ids.split(",") : null,
