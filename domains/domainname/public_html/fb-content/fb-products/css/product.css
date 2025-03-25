@@ -466,6 +466,45 @@ hr {
   height: 40px;
   align-items: center;
   gap: 1rem;
+  margin-top: 1rem;
+}
+
+.input-group label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #85b86d;
+  width: 120px;
+}
+
+.input-group label svg {
+  filter: drop-shadow(0px 1px 1px rgba(0, 0, 0, 0.3));
+}
+
+.input-group label span {
+  display: inline-block;
+}
+
+.weight-group {
+  margin-bottom: 1rem;
+}
+
+.weight-value {
+  padding-left: 0.1rem;
+  display: flex;
+  align-items: baseline;
+  gap: 0.2rem;
+}
+
+.weight {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.weight-unit {
+  font-size: 0.9rem;
+  color: #a0a0a0;
 }
 
 .add-to-cart {

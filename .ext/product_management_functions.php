@@ -75,7 +75,7 @@ function uploadProductData($data)
     $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
     $query = "INSERT INTO `product`($fieldList) VALUES ($placeholderList);";
 
-    return updateData($query, $values, "siiis");
+    return updateData($query, $values, "siisi");
 }
 
 // A termék képeinek feltöltése az `image` táblába

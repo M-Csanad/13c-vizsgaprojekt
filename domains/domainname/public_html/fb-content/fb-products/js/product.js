@@ -468,20 +468,6 @@ class ProductPage {
             console.error('Megosztás sikertelen:', err);
         }
     }
-
-    // Add new method to handle cart additions
-    async addToCart(url) {
-        try {
-            // Check if cart module is available
-            if (window.cart) {
-                await window.cart.add(null, url);
-            } else {
-                console.error('Cart module not available');
-            }
-        } catch (err) {
-            console.error('Error adding to cart:', err);
-        }
-    }
 }
 
 // Modul-stílusú inicializálás az importálás támogatásához

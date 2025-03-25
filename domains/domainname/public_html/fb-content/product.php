@@ -340,7 +340,9 @@
         </div>
         <?php if ($product["stock"] > 0): ?>
         <div class="input-group">
-          <label for="product-quantity">Mennyiség:</label>
+          <label for="product-quantity">
+            <span>Mennyiség:</span>
+          </label>
           <div class="number-field">
             <div class="number-field-subtract">-</div>
             <input type="text" name="product-quantity" class="product-quantity"
@@ -352,6 +354,17 @@
             <div class="number-field-add">+</div>
           </div>
         </div>
+        
+        <div class="input-group weight-group">
+          <label>
+            <span>Nettó súly:</span>
+          </label>
+          <div class="weight-value">
+            <span class="weight"><?= htmlspecialchars($product["net_weight"]); ?></span>
+            <span class="weight-unit">g/csomag</span>
+          </div>
+        </div>
+        
         <button class="add-to-cart" <?= $product["stock"] <= 0 ? 'disabled' : '' ?>>
           <div>Kosárba</div>
           <svg
@@ -549,7 +562,7 @@
               </div>
               <div class="unsuccessful send-feedback">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
-                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
+                  <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0M5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 7.293l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293z"/>
                 </svg>
                 <div class="send-text">Sikertelen küldés!</div>
               </div>
