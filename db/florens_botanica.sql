@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Már 17. 21:16
--- Kiszolgáló verziója: 10.4.32-MariaDB
--- PHP verzió: 8.2.12
+-- Gép: localhost:3306
+-- Létrehozás ideje: 2025. Már 27. 07:57
+-- Kiszolgáló verziója: 10.4.32-MariaDB-log
+-- PHP verzió: 8.3.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -325,7 +325,7 @@ CREATE TABLE `order` (
   `tax_number` varchar(20) DEFAULT NULL,
   `billing_address` varchar(255) DEFAULT NULL COMMENT 'NULL, ha megegyezik a szállítási címmel',
   `delivery_address` varchar(255) DEFAULT NULL,
-  `status` varchar(50) NOT NULL DEFAULT 'Visszigazolva',
+  `status` varchar(50) NOT NULL DEFAULT 'Visszaigazolva',
   `order_total` int(11) NOT NULL DEFAULT 0,
   `completed_at` timestamp NULL DEFAULT NULL COMMENT 'NULL, ha nyitott a rendelés',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -337,10 +337,10 @@ CREATE TABLE `order` (
 
 INSERT INTO `order` (`id`, `user_id`, `email`, `phone`, `first_name`, `last_name`, `company_name`, `tax_number`, `billing_address`, `delivery_address`, `status`, `order_total`, `completed_at`, `created_at`) VALUES
 (1, 3, '13c-milkovics@ipari.vein.hu', '+36203094010', 'Csanád', 'Milkovics', NULL, NULL, NULL, '8444 Szentgál, Akoj utca 25.', 'Teljesítve', 5000, '2025-03-15 20:02:58', '2025-03-15 20:02:58'),
-(2, NULL, 'szilvia.horvath@bot.example.org', '+36208797573', 'Szilvia', 'Horváth', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 82', 'Visszigazolva', 5000, '2025-03-17 19:14:43', '2025-03-17 19:14:43'),
-(4, NULL, 'emese.kovacs@bot.example.org', '+36305882137', 'Emese', 'Kovács', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 86', 'Visszigazolva', 4000, '2025-03-17 19:34:37', '2025-03-17 19:34:37'),
-(5, NULL, 'ilona.soos@bot.example.com', '+36705721018', 'Ilona', 'Soós', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 98', 'Visszigazolva', 5500, '2025-03-17 19:34:37', '2025-03-17 19:34:37'),
-(6, NULL, 'lilla.fazekas@bot.example.net', '+36207785351', 'Lilla', 'Fazekas', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 34', 'Visszigazolva', 5000, '2025-03-17 19:34:37', '2025-03-17 19:34:37');
+(2, NULL, 'szilvia.horvath@bot.example.org', '+36208797573', 'Szilvia', 'Horváth', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 82', 'Visszaigazolva', 5000, '2025-03-17 19:14:43', '2025-03-17 19:14:43'),
+(4, NULL, 'emese.kovacs@bot.example.org', '+36305882137', 'Emese', 'Kovács', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 86', 'Visszaigazolva', 4000, '2025-03-17 19:34:37', '2025-03-17 19:34:37'),
+(5, NULL, 'ilona.soos@bot.example.com', '+36705721018', 'Ilona', 'Soós', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 98', 'Visszaigazolva', 5500, '2025-03-17 19:34:37', '2025-03-17 19:34:37'),
+(6, NULL, 'lilla.fazekas@bot.example.net', '+36207785351', 'Lilla', 'Fazekas', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 34', 'Visszaigazolva', 5000, '2025-03-17 19:34:37', '2025-03-17 19:34:37');
 
 --
 -- Eseményindítók `order`
@@ -427,7 +427,7 @@ CREATE TABLE `product` (
   `unit_price` int(11) DEFAULT NULL,
   `stock` int(11) DEFAULT NULL,
   `description` varchar(255) DEFAULT NULL,
-  `net_weight` int DEFAULT NULL
+  `net_weight` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
@@ -1416,7 +1416,7 @@ ALTER TABLE `avatar`
 -- AUTO_INCREMENT a táblához `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `category`

@@ -127,7 +127,7 @@ class Mail {
      * @param array $data Az emailhez szükséges adatok.
      * @return string Az email törzse HTML formátumban.
      */
-    public static function getMailBody(string $type='order', string $name, array $data): string {
+    public static function getMailBody(string $type, string $name, array $data): string {
         $template = '';
         
         switch ($type) {
@@ -253,7 +253,7 @@ class Mail {
      * @param array $data Az emailhez szükséges adatok.
      * @return string Az email alternatív törzse egyszerű szöveg formátumban.
      */
-    public static function getMailAltBody(string $type="order", string $name, array $data) {
+    public static function getMailAltBody(string $type, string $name, array $data) {
         // Betöltjük a megfelelő szöveges sablont
         $templateFile = Mail::TEMPLATE_PATH . $type . '.txt';
         

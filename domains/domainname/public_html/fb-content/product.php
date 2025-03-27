@@ -1,6 +1,6 @@
 <?php
     include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/init.php';
-    include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/review_functions.php';  // Add this line
+    include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/review_functions.php';
     include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
     include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
 
@@ -61,10 +61,60 @@
       $side_effects = array_filter($result->message, function ($e) {return $e["benefit"] == 0;});
     }
 
+    $canReview = false;
+
+    if ($isLoggedIn) {
+      // Ellenőrizzük, hogy a felhasználó megvásárolta-e a terméket
+      $purchaseResult = selectData(
+        "SELECT COUNT(*) as purchase_count
+         FROM `order_item`
+         JOIN `order` ON order_item.order_id = `order`.id
+         WHERE `order`.user_id = ?
+         AND order_item.product_id = ?
+         AND `order`.status IN ('Teljesítve', 'Kiszállítva', 'Kifizetett')",
+        [$user["id"], $product["id"]],
+        "ii"
+      );
+  
+      if ($purchaseResult->isError()) {
+          log_Error(new Result(Result::ERROR, "Hiba a vásárlás ellenőrzése során."), "product_error.txt");
+      }
+      else {
+
+        $hasPurchased = ($purchaseResult->message[0]['purchase_count'] > 0);
+    
+        // Ez a blokk megakadályozza, hogy a nem vásárlók értékelést írjanak
+        if (!$hasPurchased) {
+            log_Error(new Result(Result::ERROR, "Csak olyan felhasználók értékelhetnek, akik már megvásárolták, és megkapták a terméket!"), "product_error.txt");
+        }
+        else {
+          // Ellenőrizzük, hogy a felhasználó már adott-e értékelést ehhez a termékhez
+          $existingReviewResult = selectData(
+              "SELECT COUNT(*) as review_count FROM review WHERE user_id = ? AND product_id = ?",
+              [$_SESSION["user_id"], $product["id"]],
+              "ii"
+          );
+      
+          if ($existingReviewResult->isError()) {
+              log_Error(new Result(Result::ERROR, "Hiba az értékelés ellenőrzése során."), "product_error.txt");
+          }
+          else {
+            $hasReviewed = ($existingReviewResult->message[0]['review_count'] > 0);
+        
+            if ($hasReviewed) {
+                log_Error(new Result(Result::ERROR, "Ehhez a termékhez már adtál értékelést!"), "product_error.txt");
+            }
+            else {
+              $canReview = true;
+            }
+          }
+        }
+      }
+    }
 
     // Értékelések lekérdezése
     $page = isset($_GET['review_page']) ? intval($_GET['review_page']) : 1;
-    $perPage = 5; // Number of reviews per page
+    $perPage = 5;
 
     $reviewsResult = getProductReviews($product["id"], $page, $perPage);
 
@@ -513,7 +563,7 @@
     </main>
     <section class="reviews">
       <header class="title">Értékelések</header>
-      <?php if ($isLoggedIn): ?>
+      <?php if ($isLoggedIn && $canReview): ?>
         <div class="review-form-container">
           <form class="review-form" action="">
             <?php if (is_string($reviews) || empty($reviews)): ?>
