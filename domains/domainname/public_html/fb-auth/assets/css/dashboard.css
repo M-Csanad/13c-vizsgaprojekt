@@ -731,6 +731,14 @@ section.active .section-header > svg {
     .inline-input {
         width: 75% !important;
     }
+
+    .pages {
+        gap: 25px;
+    }
+
+    .pages > * {
+        gap: 2px;
+    }
 }
 
 @media screen and (max-width: 991px) {
@@ -744,7 +752,14 @@ section.active .section-header > svg {
         width: 100% !important;
     }
     .pages {
-        gap: 20px;
+        gap: 15px;
+        font-size: 20px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .pages {
+        gap: 8px;
     }
 }
 
