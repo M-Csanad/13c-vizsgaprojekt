@@ -92,9 +92,6 @@ class DynamicPositioning {
      * Inicializálja a figyelőket és eseménykezelőket
      */
     init() {
-        // Pozíciók frissítése kezdetben
-        this.updateElementPositions();
-        
         // ResizeObserver a célelem méretváltozásának figyeléséhez
         if (typeof ResizeObserver !== 'undefined') {
             this.resizeObserver = new ResizeObserver(this.updateElementPositions.bind(this));
@@ -111,6 +108,9 @@ class DynamicPositioning {
         
         // Ablak átméretezésének figyelése
         window.addEventListener('resize', this.updateElementPositions.bind(this));
+        setTimeout(() => {
+            this.updateElementPositions();
+        }, 1);
     }
     
     /**
