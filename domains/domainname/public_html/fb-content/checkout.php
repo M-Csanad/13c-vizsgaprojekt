@@ -354,7 +354,7 @@
                         </div>
                         <div class="item-body">
                             <div class="item-info">
-                                <div class="item-name"><?= htmlspecialchars($item['name']); ?></div>
+                                <div class="item-name" title="<?= htmlspecialchars($item['name']); ?>"><?= htmlspecialchars($item['name']); ?></div>
                                 <div class="quantity">
                                     Mennyiség: <?= htmlspecialchars($item['quantity']); ?>
                                 </div>
