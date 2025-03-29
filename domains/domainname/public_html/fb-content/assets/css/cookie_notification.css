@@ -5,7 +5,6 @@
     z-index: 9999;
     width: calc(100% - 2rem);
     max-width: 500px;
-    /* Remove fixed height to allow content to determine height */
     height: auto;
     min-height: fit-content;
     font-family: 'Karla', sans-serif;
@@ -99,23 +98,14 @@
         width: calc(100% - 2rem);
         max-width: none;
     }
-    
-    /* Remove fixed bottom values - these will be set by JavaScript */
-    body.cookienotice-shown #top-button,
-    body.cookienotice-shown .floating-cart {
-        transition: bottom 0.3s ease, transform 1s cubic-bezier(0.84, -0.69, 0.16, 1.69);
-    }
 }
 
 @media (max-width: 400px) {
     body.cookienotice-shown .cookie-notification {
         bottom: 20px;
     }
-    
-    /* Remove fixed bottom values here too */
 }
 
-/* Remove the fixed right positioning from this class so elements keep their original positions */
 .dynamic-bottom-position {
     position: fixed;
     z-index: 998;

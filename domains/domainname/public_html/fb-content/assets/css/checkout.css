@@ -108,6 +108,10 @@ form > section:has(.input-group-hideable) > * {
     padding: 0.5rem;
 }
 
+form > section:has(.input-group-hideable) > header::after {
+    margin-left: 0.5rem;
+}
+
 form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     margin-inline: 0.5rem;
 }
@@ -615,6 +619,24 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
 .checkout-error-overlay .overlay-body {
     opacity: 0;
     will-change: opacity;
+}
+
+.notice {
+    display: flex;
+    flex-direction: row;
+    gap: 0.8rem;
+    align-items: center;
+    margin-block: 1rem;
+    font-family: Karla;
+    color: rgb(255, 203, 91);
+    background-color: rgba(255, 203, 91, 0.068);
+    padding: 1rem 0.8rem;
+    border-radius: 5px;
+}
+
+.notice > svg {
+    width: 25px;
+    height: 25px;
 }
 
 @media screen and (min-width: 768px) {

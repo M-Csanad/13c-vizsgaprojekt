@@ -110,7 +110,7 @@ class DynamicPositioning {
         window.addEventListener('resize', this.updateElementPositions.bind(this));
         setTimeout(() => {
             this.updateElementPositions();
-        }, 1);
+        }, 1100);
     }
     
     /**
@@ -229,14 +229,17 @@ class DynamicPositioning {
 
 // Példák az osztály használatára a DOM betöltése után
 document.addEventListener('DOMContentLoaded', function() {
-    // Süti értesítés és a hozzá igazodó gombok
-    const cookieDynamicPositioning = new DynamicPositioning({
-        targetElement: '.cookie-notification',
-        elementsToReposition: [
-            '#top-button',
-            { element: '.floating-cart', offset: -3 } // 3px-el lejjebb a vizuális egyensúly miatt
-        ],
-        visibilityTriggerClass: 'cookienotice-shown',
-        requiredSpace: 100
-    });
+    // Ha nincs beállítva süti arra, hogy elolvasta az üzenetet, akkor megjelenik a 
+    // süti értesítés és ezzel együtt kell a dinamikus pozicionálás is
+    if (!document.cookie.split(';').some(cookie => cookie.trim().startsWith(`read_cookie_notification=`))) {
+        const cookieDynamicPositioning = new DynamicPositioning({
+            targetElement: '.cookie-notification',
+            elementsToReposition: [
+                '#top-button',
+                { element: '.floating-cart', offset: -3 } // 3px-el lejjebb a vizuális egyensúly miatt
+            ],
+            visibilityTriggerClass: 'cookienotice-shown',
+            requiredSpace: 100
+        });
+    }
 });

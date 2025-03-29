@@ -282,11 +282,11 @@
           <?= $product["name"]; ?>
         </header>
         <div class="breadcrumb">
-          <a href="<?= htmlspecialchars(ROOT_URL); ?>/" class="breadcrumb-item">Főoldal</a>
+          <a title="Főoldal" href="<?= htmlspecialchars(ROOT_URL); ?>/" class="breadcrumb-item">Főoldal</a>
           <div class="breadcrumb-splitter">/</div>
-          <a href="<?= htmlspecialchars(ROOT_URL."/".format_str($product["category_name"])); ?>" class="breadcrumb-item"><?= htmlspecialchars($product["category_name"]); ?></a>
+          <a title="<?= htmlspecialchars($product["category_name"]); ?>" href="<?= htmlspecialchars(ROOT_URL."/".format_str($product["category_name"])); ?>" class="breadcrumb-item"><?= htmlspecialchars($product["category_name"]); ?></a>
           <div class="breadcrumb-splitter">/</div>
-          <a href="<?= htmlspecialchars(ROOT_URL."/".format_str($product["category_name"])."/".format_str($product["subcategory_name"])); ?>" class="breadcrumb-item"><?= htmlspecialchars($product["subcategory_name"]); ?></a>
+          <a title="<?= htmlspecialchars($product["subcategory_name"]); ?>" href="<?= htmlspecialchars(ROOT_URL."/".format_str($product["category_name"])."/".format_str($product["subcategory_name"])); ?>" class="breadcrumb-item"><?= htmlspecialchars($product["subcategory_name"]); ?></a>
           <div class="breadcrumb-splitter">/</div>
         </div>
         <div class="price" aria-label="Ár">

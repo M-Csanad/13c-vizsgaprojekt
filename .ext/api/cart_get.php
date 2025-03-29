@@ -92,7 +92,8 @@ else if (isset($_COOKIE['cart']) && !empty(json_decode($_COOKIE['cart'], true)))
 else {
     if ($isLoggedIn) {
         $result = selectData("SELECT CAST(cart.product_id AS INT) AS product_id, 
-            CAST(cart.quantity AS INT) AS quantity, CAST(product.stock AS INT) AS stock, cart.created_at, cart.modified_at,
+            CAST(cart.quantity AS INT) AS quantity, CAST(product.stock AS INT) AS stock, CAST(product.net_weight AS INT) AS net_weight,
+            cart.created_at, cart.modified_at,
             product.name, product.unit_price, product_page.link_slug, cart.page_id, 
             ( 
                 SELECT DISTINCT image.uri FROM image INNER JOIN product_image ON product_image.image_id=image.id 

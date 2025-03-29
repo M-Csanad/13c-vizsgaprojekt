@@ -50,7 +50,7 @@ if (isset($data['url']) && isset($data['qty'])) {
     $pageId = $result->message[0]['page_id'];
     
     // A termék lekérdezése
-    $result = selectData("SELECT CAST(product.stock AS INT) AS stock, product.name, CAST(product.unit_price AS INT) AS unit_price, 
+    $result = selectData("SELECT CAST(product.stock AS INT) AS stock, CAST(product.net_weight AS INT) AS net_weight, product.name, CAST(product.unit_price AS INT) AS unit_price, 
         product_page.link_slug, 
         ( 
             SELECT DISTINCT image.uri FROM image INNER JOIN product_image ON product_image.image_id=image.id 
@@ -166,6 +166,7 @@ if (isset($data['url']) && isset($data['qty'])) {
                 'quantity' => $requestedQuantity,
                 'unit_price' => $product['unit_price'],
                 'stock' => $stock,
+                'net_weight' => $product['net_weight'],
                 'link_slug' => $product['link_slug'],
                 'page_id' => $pageId,
                 'thumbnail_uri' => $product['thumbnail_uri'],
