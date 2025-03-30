@@ -57,7 +57,7 @@ function initializeSearch(search) {
         { name: "name", disabledByDefault: true },
       ],
       template: (user) => `
-                <div><b>${user.name}</b> - ${user.email} (<i>${user.role}</i>)</div>`,
+                <div><b>#${user.id} ${user.name}</b> - ${user.email} (<i>${user.role}</i>)</div>`,
       clickHandler: async (user) => itemClickHandler(user, ["id", "name"]),
     },
     product: {

@@ -304,6 +304,18 @@
             $message = "<div class='error'>A rendelés állapotának módosítása sikertelen! {$result->message}</div>";
         }
     }
+
+    if (isset($_POST['delete_user'])) {
+        $userId = intval($_POST['user_id']);
+        $result = deleteUser($userId);
+        
+        if (!$result->isError()) {
+            $message = "<div class='success'>A felhasználó sikeresen törölve.</div>";
+        }
+        else {
+            $message = "<div class='error'>A felhasználó törlése sikertelen! {$result->message}</div>";
+        }
+    }
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -370,7 +382,7 @@
             </svg>
         </div>
         <div class="page" data-pageid="4" tabindex="0">
-            Rendelések
+            Felhasználók
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
             </svg>
@@ -1905,7 +1917,7 @@
             </section>
         </div>
     </div>
-    <!------------------------------ Rendelések kezelése ----------------------------->
+    <!------------------------------ Felhasználók kezelése ----------------------------->
     <div class="section-group">
         <div class="group-body">
             <!-------------------------- Rendelés módosítása ------------------------>
@@ -1963,6 +1975,44 @@
                         
                         <div class="form-submit-wrapper">
                             <input type="submit" value="Állapot frissítése" class="form-submit-primary" name="update_order_status">
+                        </div>
+                    </form>
+                    <div class="items"></div>
+                </div>
+            </section>
+
+            <!-------------------------- Felhasználó törlése ------------------------>
+            <section>
+                <div class="section-header" tabindex="0">
+                    <div class="section-title">Felhasználó törlése</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
+                <div class="section-body">
+                    <form method="POST" data-needs-confirm="true" data-confirm-message="A felhasználó törlése nem visszavonható művelet!">
+                        <div class="input-grid">
+                            <div class="search-wrapper">
+                                <div class="search" data-search-type="user" data-id-input="user_id" data-autofill-fields="true">
+                                    <input type="text" name="user_search" id="user_search" placeholder="Felhasználó azonosítója / neve" required autocomplete="off">
+                                    <label for="user_search" class="search-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        </svg>
+                                    </label>
+                                    <input type="hidden" name="user_id" id="user_id" value="null">
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        
+                        <div class="form-submit-wrapper">
+                            <input type="submit" value="Törlés" class="form-submit-danger" name="delete_user">
                         </div>
                     </form>
                     <div class="items"></div>

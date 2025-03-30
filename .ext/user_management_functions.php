@@ -119,3 +119,8 @@ function modifyRole($userId, $role) {
 function updatePersonalDetails($column, $data, $userId, $type) {
     return updateData("UPDATE user SET $column=? WHERE id=?", [$data, $userId], $type);
 }
+
+// Felhasználó törlése
+function deleteUser($userId) {
+    return updateData("DELETE FROM user WHERE id=?", $userId, "i");
+}
