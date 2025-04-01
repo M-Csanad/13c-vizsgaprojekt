@@ -17,7 +17,7 @@ class Dashboard {
             }
         };
 
-        this.imageUpdates = {};
+        this.imageUpdates = [];
 
         // Az osztály inicializálása
         this.init();
@@ -40,6 +40,9 @@ class Dashboard {
             this.setupFileInputs();
             this.setupToggleButtons();
             this.setupCategories();
+            
+            // Setup image card observer
+            this.setupImageCardObserver();
             
             // Kezdeti állapot beállítása
             this.hideDisplayMessages();
@@ -127,6 +130,9 @@ class Dashboard {
     setupForms() {
         // Betöltési animációt megjelenítő űrlapok
         this.loaderForms.forEach(form => {
+            // Biztosítsuk, hogy az űrlapok rendelkezzenek enctype attribútummal a fájl feltöltésekhez
+            form.setAttribute('enctype', 'multipart/form-data');
+            
             form.addEventListener("submit", () => {
                 if (form.dataset.needsConfirm === "false") {
                     toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
@@ -152,6 +158,25 @@ class Dashboard {
                 // Megerősítés gomb kezelése
                 popup.querySelector("input.confirm").addEventListener("click", () => {
                     this.closePopup(popup);
+
+                    if (form.dataset.role === "modify") {
+                        let hiddenInput = form.querySelector('input[name="image_updates"]');
+            
+                        // Ha nincs, létrehozunk egyet
+                        if (!hiddenInput) {
+                            hiddenInput = document.createElement('input');
+                            hiddenInput.type = 'hidden';
+                            hiddenInput.name = 'image_updates';
+                            form.appendChild(hiddenInput);
+                        }
+
+                        // Az imageUpdates tömb szerializálása JSON formátumba
+                        if (this.imageUpdates.length > 0) {
+                            hiddenInput.value = JSON.stringify(this.imageUpdates);
+                            console.log('Kép frissítések szerializálva:', this.imageUpdates);
+                        }
+                    }
+
                     setTimeout(() => {
                         if (this.hasImage(form)) {
                             toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
@@ -446,6 +471,228 @@ class Dashboard {
             }
             
             if (isValid) input.setCustomValidity("");
+        }
+    }
+
+    /**
+     * Beállít egy MutationObserver-t a képkártyák figyeléséhez
+     */
+    setupImageCardObserver() {
+        // A DOM-hoz adott képkártyák figyelése
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                if (mutation.addedNodes.length) {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1) { // Element csomópont
+                            // Képkártyák keresése
+                            const imageCards = node.querySelectorAll ? 
+                                Array.from(node.querySelectorAll('.image-card')) : [];
+                            
+                            if (node.classList && node.classList.contains('image-card')) {
+                                imageCards.push(node);
+                            }
+                            
+                            // Eseménykezelők csatolása az új képkártyákhoz
+                            imageCards.forEach(card => this.attachImageCardHandlers(card));
+                            
+                            // Hozzáadás gombok keresése
+                            const addButtons = node.querySelectorAll ? 
+                                Array.from(node.querySelectorAll('.add-field-light')) : [];
+                            
+                            if (node.classList && node.classList.contains('add-field-light')) {
+                                addButtons.push(node);
+                            }
+                            
+                            // Eseménykezelők csatolása az új hozzáadás gombokhoz
+                            addButtons.forEach(button => this.attachAddButtonHandlers(button));
+                        }
+                    });
+                }
+            });
+        });
+        
+        // Dokumentum megfigyelésének indítása
+        observer.observe(document.body, { 
+            childList: true, 
+            subtree: true 
+        });
+        
+        // Meglévő képkártyák kezelése
+        document.querySelectorAll('.image-card').forEach(card => {
+            this.attachImageCardHandlers(card);
+        });
+        
+        // Meglévő hozzáadás gombok kezelése
+        document.querySelectorAll('.add-field-light').forEach(button => {
+            this.attachAddButtonHandlers(button);
+        });
+    }
+    
+    /**
+     * Csatolja az eseménykezelőket egy képkártyához
+     * @param {HTMLElement} card - A képkártya elem
+     */
+    attachImageCardHandlers(card) {
+        // Törlés gomb kezelése
+        const deleteBtn = card.querySelector('.action-delete');
+        if (deleteBtn) {
+            deleteBtn.addEventListener('click', () => {
+                const imageId = deleteBtn.dataset.imageId;
+                const imageType = deleteBtn.dataset.imageType || 'item';
+                
+                console.log(`Törlési művelet a(z) ${imageType} képen (ID: ${imageId})`);
+                
+                this.imageUpdates.push({
+                    type: 'delete',
+                    imageType: imageType,
+                    imageId: imageId
+                });
+                
+                // Kártya eltávolítása a DOM-ból
+                card.remove();
+            });
+        }
+        
+        // Fájl beviteli mező változásának kezelése
+        const fileInput = card.querySelector('input[type="file"]');
+        if (fileInput) {
+            fileInput.addEventListener('change', async () => {
+                if (fileInput.files.length > 0) {
+                    // Fájl validálása
+                    const orientation = fileInput.dataset.orientation || 'any';
+                    const inputCount = fileInput.dataset.count || 'singular';
+                    const acceptedType = fileInput.dataset.type || 'image';
+                    const imageId = fileInput.dataset.imageId;
+                    const imageType = fileInput.dataset.imageType || 'item';
+                    
+                    try {
+                        await this.validateFile(fileInput, orientation, inputCount, acceptedType);
+                        
+                        if (fileInput.validity.valid) {
+                            // Kép előnézet frissítése
+                            const img = card.querySelector('img');
+                            if (img) {
+                                const file = fileInput.files[0];
+                                const reader = new FileReader();
+                                reader.onload = (e) => {
+                                    img.src = e.target.result;
+                                };
+                                reader.readAsDataURL(file);
+                                
+                                console.log(`Szerkesztési művelet a(z) ${imageType} képen (ID: ${imageId})`);
+                                
+                                // A fájl beviteli mező engedélyezve marad és nem módosítjuk
+                                // Az űrlap automatikusan tartalmazza ezt a fájlt beküldéskor
+                                const newUpdate = {
+                                    type: 'edit',
+                                    imageType: imageType,
+                                    orientation: orientation
+                                }
+
+                                if (imageId) {
+                                    newUpdate.imageId = imageId;
+                                    newUpdate.key = (imageType == "thumbnail" ? "thumbnail" : "product") + "-edit-" + imageId;
+                                }
+                                this.imageUpdates.push(newUpdate);
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Fájl validálási hiba:", error);
+                    }
+                }
+            });
+        }
+    }
+    
+    /**
+     * Csatolja az eseménykezelőket egy hozzáadás gombhoz
+     * @param {HTMLElement} button - A hozzáadás gomb elem
+     */
+    attachAddButtonHandlers(button) {
+        const fileInput = button.querySelector('input[type="file"]');
+        if (fileInput) {
+            fileInput.addEventListener('change', async () => {
+                if (fileInput.files.length > 0) {
+                    // Fájl validálása
+                    const orientation = fileInput.dataset.orientation || 'any';
+                    const inputCount = fileInput.dataset.count || 'singular';
+                    const acceptedType = fileInput.dataset.type || 'image';
+                    const itemId = fileInput.dataset.productId || fileInput.dataset.categoryId || fileInput.dataset.id;
+                    const itemType = fileInput.dataset.itemType || (fileInput.dataset.productId ? 'product' : 'category');
+                    
+                    try {
+                        await this.validateFile(fileInput, orientation, inputCount, acceptedType);
+                        
+                        if (fileInput.validity.valid) {
+                            const file = fileInput.files[0];
+
+                            // Ideiglenes azonosító generálása az új kártyához
+                            const tempId = 'new_' + Math.random().toString(36).substr(2, 9);
+                            
+                            // Változtatás naplózása
+                            console.log(`Új kép hozzáadása ehhez: ${itemType} ID: ${itemId}`);
+                            
+                            this.imageUpdates.push({
+                                type: 'add',
+                                itemType: itemType,
+                                itemId: itemId,
+                                key: `new-${tempId}`,
+                            });
+                            
+                            // Új képkártya létrehozása
+                            const imagesContainer = button.closest('.image-cards');
+                            if (imagesContainer) {
+                                const reader = new FileReader();
+                                reader.onload = (e) => {
+                                    
+                                    // Új kártya elem létrehozása megfelelő fájl beviteli mezővel
+                                    const newCard = document.createElement('div');
+                                    newCard.className = 'image-card';
+                                    newCard.dataset.id = tempId;
+                                    
+                                    // HTML létrehozása az új kártyához
+                                    newCard.innerHTML = `
+                                        <img src="${e.target.result}" alt="Új kép"/>
+                                        <div class="card-actions">
+                                            <input type="file" name="new-item-${tempId}" id="item-edit-${tempId}" class="visually-hidden" accept="image/png, image/jpeg" data-orientation="any" data-type="image" data-count="singular" data-image-type="${itemType}" data-image-id="${tempId}" data-id="${itemId}" tabindex="-1">
+                                            <label for="item-edit-${tempId}" class="action-edit" role="button" aria-label="Kép szerkesztése">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                                                </svg>
+                                            </label>
+                                            <button type="button" class="action-delete" role="button" aria-label="Kép törlése" data-image-id="${tempId}" data-image-type="new-${itemType}">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                                                    <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    `;
+                                    
+                                    // Új kártya behelyezése a hozzáadás gomb elé
+                                    imagesContainer.insertBefore(newCard, button);
+                                    
+                                    // Az újonnan létrehozott fájl beviteli mező megszerzése
+                                    const newFileInput = newCard.querySelector('input[type="file"]');
+                                    
+                                    // Fájl-átvitel létrehozása az eredeti fájlból
+                                    const dataTransfer = new DataTransfer();
+                                    dataTransfer.items.add(file);
+                                    newFileInput.files = dataTransfer.files;
+                                    
+                                    // Eseménykezelők csatolása az új kártyához
+                                    this.attachImageCardHandlers(newCard);
+                                    
+                                    // Az eredeti fájl beviteli mező kiürítése jövőbeli használatra
+                                    fileInput.value = '';
+                                };
+                                reader.readAsDataURL(file);
+                            }
+                        }
+                    } catch (error) {
+                        console.error("Fájl validálási hiba:", error);
+                    }
+                }
+            });
         }
     }
 

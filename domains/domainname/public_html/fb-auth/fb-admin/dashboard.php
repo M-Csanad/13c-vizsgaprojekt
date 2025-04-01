@@ -110,14 +110,17 @@
             $categoryData['parent_category_id'] = intval($_POST['parent_category_id']);
         }
 
-        $result = updateCategory($categoryData);
+        $imageUpdates = $_POST['image_updates'] ?? null;
+        var_dump($imageUpdates, $_FILES);
+
+        // $result = updateCategory($categoryData);
         
-        if (!$result->isError()) {
-            $message = "<div class='success'>A kategória sikeresen módosítva.</div></div>";
-        }
-        else {
-            $message = "<div class='error'>A kategória módosítása sikertelen! {$result->message}</div></div>";
-        }
+        // if (!$result->isError()) {
+        //     $message = "<div class='success'>A kategória sikeresen módosítva.</div></div>";
+        // }
+        // else {
+        //     $message = "<div class='error'>A kategória módosítása sikertelen! {$result->message}</div></div>";
+        // }
     }
 
     // Termék létrehozása
@@ -185,13 +188,16 @@
             $productHealthEffectsData["side_effects"] = explode(",", $_POST["side_effects"]);
         }
 
-        $result = updateProduct($productData, $productHealthEffectsData);
-        if (!$result->isError()) {
-            $message = "<div class='success'>Termék sikeresen módosítva!</div></div>";
-        }
-        else {
-            $message = "<div class='error'>A termék módosítása sikertelen! {$result->message}</div></div>";
-        }
+        $imageUpdates = $_POST['image_updates'] ?? null;
+        var_dump($imageUpdates, $_FILES);
+         
+        // $result = updateProduct($productData, $productHealthEffectsData);
+        // if (!$result->isError()) {
+        //     $message = "<div class='success'>Termék sikeresen módosítva!</div></div>";
+        // }
+        // else {
+        //     $message = "<div class='error'>A termék módosítása sikertelen! {$result->message}</div></div>";
+        // }
     }
     
     //Termék törlése
@@ -605,7 +611,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" enctype="multipart/form-data" data-needs-confirm="true" data-confirm-message="A kategória módosítása nem visszavonható művelet!" data-show-loader="true">
+                    <form method="POST" enctype="multipart/form-data" data-role="modify" data-needs-confirm="true" data-confirm-message="A kategória módosítása nem visszavonható művelet!" data-show-loader="true">
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-autofill-fields="true" data-search-type="category" data-id-input="category_id_modify" data-type-input="category_type_modify">
@@ -1107,7 +1113,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" enctype="multipart/form-data"  data-needs-confirm="true" data-confirm-message="A termék módosítása nem visszavonható művelet!" data-show-loader="true">
+                    <form method="POST" enctype="multipart/form-data" data-role="modify" data-needs-confirm="true" data-confirm-message="A termék módosítása nem visszavonható művelet!" data-show-loader="true">
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-search-type="product" data-id-input="product_id" data-autofill-fields="true">
