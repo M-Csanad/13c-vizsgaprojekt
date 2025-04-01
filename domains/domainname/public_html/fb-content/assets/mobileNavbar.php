@@ -54,7 +54,7 @@ $conn->close();
 ?>
 <div class="navbar">
 
-    <ul id="main-menu" class="menu first-menu">
+    <ul id="main-menu" class="menu first-menu active">
         <li class="menu-item __t01-mew2" data-target="shop-all">
             <p class="__t01-mew2">Minden termék</p> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30"
                 width="25" height="25" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink">
