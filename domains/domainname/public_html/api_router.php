@@ -49,7 +49,8 @@ $routes = [
 
     // Keresés
     '/api/search'                   => $API.'/search.php',
-    '/api/subcategory/products'     => $API.'/subcategory_products.php'
+    '/api/subcategory/products'     => $API.'/subcategory_products.php',
+    '/api/images'                   => $API.'/image_search.php'
 ];
 
 // Ha az aktuális URL-t tartalmazza a $routes változó, akkor az egy létező végpont.

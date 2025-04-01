@@ -10,6 +10,7 @@ function initializeSearch(search) {
   const autofill = search.dataset.autofillFields ?? null;
   const searchConfig = {
     category: {
+      hasImageCards: true,
       autofillFields: [
         { name: "name", disabledByDefault: true },
         { name: "subname", disabledByDefault: true },
@@ -33,6 +34,7 @@ function initializeSearch(search) {
         if (!autofill) {
           itemClickHandler(item, ["id", "type", "name"]);
         } else {
+          await generateImageCards(item);
           itemClickHandler(item, ["id", "type", "name"], {
             fields: [
               { field: "name", value: item.name },
@@ -61,6 +63,7 @@ function initializeSearch(search) {
       clickHandler: async (user) => itemClickHandler(user, ["id", "name"]),
     },
     product: {
+      hasImageCards: true,
       autofillFields: [
         { name: "name", disabledByDefault: true },
         { name: "description", disabledByDefault: true },
@@ -88,6 +91,7 @@ function initializeSearch(search) {
         if (!autofill) {
           itemClickHandler(product, ["id", "name"]);
         } else {
+          await generateImageCards(product);
           itemClickHandler(product, ["id", "name"], {
             fields: [
               { field: "name", value: product.name },
@@ -202,13 +206,121 @@ function initializeSearch(search) {
     }
   }
 
-  function toggleLoader(show) {
-    const loader = searchItemsContainer.querySelector(".loader");
-    if (show) {
-      loader.style.display = "block";
-    } else {
-      loader.style.display = "none";
+  async function getImages(item) {
+    let categoryType = null;
+    if (searchType == "category") {
+      if (item.parent_category) {
+        categoryType = "subcategory";
+      } else {
+        categoryType = "category";
+      }
     }
+
+    const response = await fetch(
+      `/api/images?search_type=${searchType}${categoryType ? "&type="+categoryType : ""}&id=${item.id}`,
+      {
+        method: "GET",
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      }
+    );
+
+    if (response.ok) {
+      let data = await response.json();
+      if (data.type == "SUCCESS") {
+        return data.message;
+      } else {
+        console.log("Hiba a képek lekérésekor: " + data.message);
+      }
+    }
+  }
+
+  async function generateImageCards(item) {
+    const images = await getImages(item);
+    if (images) {
+      if (searchType == "category") {
+        generateCard(item, images[0]);
+      }
+      else if (searchType == "product") {
+        generateCard(item, images);
+      }
+    }
+  }
+
+  function generateCard(item, images) {
+    if (searchType == "category") {
+      searchInput.closest("form").querySelector(".image-cards.horizontal").innerHTML =
+      `
+        <div class="image-card" data-orientation="horizontal">
+          <img src="${images.thumbnail_image_horizontal_uri}-768px.jpg" alt="${images.name}"/>
+          <div class="card-actions">
+              <button type="button" class="action-edit">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                      <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                  </svg>
+              </button>
+          </div>
+        </div>
+      `;
+
+      searchInput.closest("form").querySelector(".image-cards.vertical").innerHTML =
+      `
+        <div class="image-card" data-orientation="vertical">
+          <img src="${images.thumbnail_image_vertical_uri}-768px.jpg" alt="${images.name}"/>
+          <div class="card-actions">
+              <button type="button" class="action-edit">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                      <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                  </svg>
+              </button>
+          </div>
+        </div>
+      `;
+    }
+    else if (searchType == "product") {
+      const thumbnailContainer = searchInput.closest("form").querySelector(".image-cards.thumbnail");
+      const productImagesContainer = searchInput.closest("form").querySelector(".image-cards.product-images");
+      const thumbnail_image = images.filter(x => x.is_thumbnail)[0];
+      const product_images = images.filter(x => !x.is_thumbnail);
+
+      thumbnailContainer.innerHTML =
+      `
+        <div class="image-card" data-orientation="horizontal" data-id="${thumbnail_image.id}">
+          <img src="${thumbnail_image.uri}-768px.jpg" alt="${item.name}"/>
+          <div class="card-actions">
+              <button type="button" class="action-edit">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                      <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                  </svg>
+              </button>
+          </div>
+        </div>
+      `;
+
+      productImagesContainer.innerHTML = "";
+      for (let image of product_images) {
+        productImagesContainer.innerHTML +=
+        `
+          <div class="image-card" data-orientation="vertical" data-id="${image.id}">
+            <img src="${image.uri}-768px.jpg" alt="${item.name}"/>
+            <div class="card-actions">
+                <button type="button" class="action-edit">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                        <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                    </svg>
+                </button>
+            </div>
+          </div>
+        `;
+      }
+    }
+  }
+
+  function clearImageCards() {
+    searchInput.closest("form").querySelectorAll(".image-cards").forEach((e) => {
+      e.innerHTML = `<div class="none-selected">Nincs kiválasztva ${searchType == "category" ? "kategória" : "termék"}!</div>`;
+    });
   }
 
   // A legördülömenü feltöltése találatokkal
@@ -427,11 +539,13 @@ function initializeSearch(search) {
       validateSearchInput();
     }
 
-
     // Ha üres, vagy invalid a kereső, akkor kiürítjük az űrlapelemeket és kikapcsoljuk őket.
     if (!searchInput.value || !searchInput.checkValidity()) {
       clearAutofillFields();
       disableSelectInputs();
+      if (searchConfig[searchType].hasImageCards) {
+        clearImageCards();
+      }
     }
   });
 }

@@ -17,6 +17,8 @@ class Dashboard {
             }
         };
 
+        this.imageUpdates = {};
+
         // Az osztály inicializálása
         this.init();
     }
