@@ -51,3 +51,7 @@
 .no-overflow {
     overflow: visible !important;
 }
+
+::-ms-reveal {
+    display: none;
+}

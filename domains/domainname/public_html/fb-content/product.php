@@ -67,7 +67,7 @@
 
     $reviewsResult = getProductReviews($product["id"], $page, $perPage);
     if ($reviewsResult->isError()) {
-      logError("Sikertelen termék értékelés lekérdezés: ".json_encode($reviewsResult), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
+      logError("Sikertelen termék értékelés lekérdezés: ".$reviewsResult->toJSON(true), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
       http_response_code(404);
       include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
       exit;

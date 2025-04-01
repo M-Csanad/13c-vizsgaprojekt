@@ -132,6 +132,13 @@ class Cart {
     this.openButton.addEventListener("click", this.open.bind(this));
     this.closeButton.addEventListener("click", this.close.bind(this));
 
+    // Close the cart when clicking outside the cart menu
+    this.background.addEventListener("click", () => {
+      if (this.isOpen) {
+        this.close();
+      }
+    });
+
     this.cartAddButtons.forEach((button) =>
       button.addEventListener("click", this.add.bind(this))
     );
