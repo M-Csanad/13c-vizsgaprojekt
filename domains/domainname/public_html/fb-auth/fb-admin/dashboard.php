@@ -110,8 +110,21 @@
             $categoryData['parent_category_id'] = intval($_POST['parent_category_id']);
         }
 
+        echo "<h1>{$categoryData['name']} módosítása (#{$categoryData['id']})</h1>";
+
         $imageUpdates = $_POST['image_updates'] ?? null;
-        var_dump($imageUpdates, $_FILES);
+        if ($imageUpdates) {
+            $imageUpdates = json_decode($imageUpdates, true);
+
+            echo "<h2>Image updates</h2><ul>";
+            foreach ($imageUpdates as $key => $value) {
+                echo "<li>";
+                var_dump($value);
+                echo "</li>";
+            }
+            echo "</ul>";
+        }
+        echo "<br>";
 
         // $result = updateCategory($categoryData);
         

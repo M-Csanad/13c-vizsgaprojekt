@@ -564,6 +564,11 @@ class Dashboard {
 
             this.attachAddButtonHandlers(button, formTitle);
         });
+
+        // Meglévő képkonténerek kezelése
+        document.querySelectorAll('.image-cards').forEach(container => {
+            this.updateDeleteButtonsState(container);
+        });
     }
     
     /**
@@ -574,10 +579,42 @@ class Dashboard {
     attachImageCardHandlers(card, formTitle = 'default') {
         // Törlés gomb kezelése
         const deleteBtn = card.querySelector('.action-delete');
+        const parent = card.parentElement;
         if (deleteBtn) {
+            const imageType = deleteBtn.dataset.imageType || 'item';
+            
+            // Ellenőrizzük, hogy ez termék kép-e és az utolsó-e a sorában
+            const isProductImage = !['horizontal', 'vertical'].includes(imageType) && 
+                                   !imageType.includes('category');
+            
+            if (isProductImage) {
+                // Megkeressük a képek konténerét és megszámoljuk a képeket
+                const container = parent;
+                const imageCards = container ? container.querySelectorAll('.image-card') : [];
+                const isLastImage = imageCards.length === 1;
+                
+                // Ha ez az utolsó kép, letiltjuk a törlés gombot
+                if (isLastImage) {
+                    deleteBtn.classList.add('disabled');
+                    deleteBtn.setAttribute('disabled', 'true');
+                    deleteBtn.setAttribute('aria-disabled', 'true');
+                    deleteBtn.setAttribute('title', 'Legalább egy képnek maradnia kell');
+                    return; // Nem adunk hozzá kattintás eseménykezelőt
+                }
+            }
+            
+            // Ha nem az utolsó kép vagy nem termék kép, akkor hozzáadjuk a törlés funkciót
             deleteBtn.addEventListener('click', () => {
                 const imageId = deleteBtn.dataset.imageId;
-                const imageType = deleteBtn.dataset.imageType || 'item';
+                
+                // Még egyszer ellenőrizzük, hogy nem az utolsó kép-e egy termék képsornál
+                if (isProductImage) {
+                    const container = parent;
+                    const imageCards = container ? container.querySelectorAll('.image-card') : [];
+                    if (imageCards.length === 1) {
+                        return; // Ha valahogy mégis aktívvá vált, ne csináljon semmit
+                    }
+                }
                 
                 // Biztosítjuk a formTitle map létezését
                 if (!this.imageUpdates.has(formTitle)) {
@@ -586,7 +623,7 @@ class Dashboard {
                 
                 const formUpdates = this.imageUpdates.get(formTitle);
                 
-                // Új képek törlése - teljesen eltávolítjuk a rendszerből
+                // Új képek törlése - teljesen eltávolítjuk
                 if (imageType.startsWith('new-')) {
                     // A card.dataset.updateKey tartalmazza a pontos kulcsot, amellyel az elem hozzáadásra került
                     const updateKey = card.dataset.updateKey;
@@ -595,12 +632,17 @@ class Dashboard {
                         // Ha ez egy új kép, egyszerűen töröljük a nyilvántartásból
                         formUpdates.delete(updateKey);
                         card.remove();
+                        
+                        // Törlés után ellenőrizzük és frissítjük a többi képet
+                        this.updateDeleteButtonsState(parent);
                         return;
                     }
                     
                     // Ha nincs updateKey, vagy nem találjuk a listában, de új elem, akkor egyszerűen eltávolítjuk
-                    // anélkül, hogy új műveletet hoznánk létre
                     card.remove();
+                    
+                    // Törlés után ellenőrizzük és frissítjük a többi képet
+                    this.updateDeleteButtonsState(parent);
                     return;
                 }
                 
@@ -619,11 +661,14 @@ class Dashboard {
                 
                 // Törlési adatok rögzítése meglévő képekhez
                 formUpdates.set(updateKey, {
-                    type: 'delete',
+                    action: 'delete',
                     id: imageId
                 });
                 
                 card.remove();
+                
+                // Törlés után ellenőrizzük és frissítjük a többi képet
+                this.updateDeleteButtonsState(parent);
             });
         }
 
@@ -668,67 +713,89 @@ class Dashboard {
                                     if (formUpdates.has(updateKey)) {
                                         const currentUpdate = formUpdates.get(updateKey);
                                         
-                                        if (currentUpdate.type === 'add') {
-                                            // Kép típusának meghatározása
-                                            const cardContainer = card.closest('.image-cards');
-                                            let imageTypeValue;
-                                            if (cardContainer && cardContainer.classList.contains('thumbnail')) {
-                                                imageTypeValue = 'thumbnail';
-                                            } else {
-                                                imageTypeValue = 'product_image';
-                                            }
-                                            
-                                            // Frissítjük a meglévő adatokat, megőrizve az eredeti azonosítókat
-                                            currentUpdate.orientation = orientation;
-                                            currentUpdate.inputName = fileInput.name;
+                                        if (currentUpdate.action === 'add') {
+                                            // Frissítjük a fájl kulcsot
+                                            currentUpdate.fileKey = fileInput.name;
                                             
                                             return;
                                         }
                                     }
                                 }
                                 
-                                // Meglévő képek szerkesztése - standard folyamat
                                 let updateKey;
                                 
+                                // Képfrissítések egyszerűsített adatstruktúrája
                                 if (imageType === 'horizontal' || imageType === 'vertical') {
+                                    // Kategória képeknél
                                     updateKey = `${imageType}-edit`;
-                                } else {
+                                    
+                                    formUpdates.set(updateKey, {
+                                        action: 'edit',
+                                        imageType: imageType,
+                                        fileKey: fileInput.name
+                                    });
+                                } 
+                                else {
+                                    // Termék képeknél
                                     const editId = imageId || this.getNextImageId(formTitle, 'edit');
                                     updateKey = `${imageType}-edit-${editId}`;
+                                    
+                                    // Kép indexének meghatározása (0-indexált)
+                                    const imageCards = card.parentElement.querySelectorAll('.image-card');
+                                    const index = Array.from(imageCards).indexOf(card);
+                                    
+                                    formUpdates.set(updateKey, {
+                                        action: 'edit',
+                                        imageType: imageType === 'thumbnail' ? 'thumbnail' : 'product_image',
+                                        fileKey: fileInput.name,
+                                        index: index,
+                                        id: imageId || editId
+                                    });
                                 }
                                 
-                                // Csak akkor frissítünk, ha nincs aktív törlési művelet
-                                if (!formUpdates.has(updateKey) || formUpdates.get(updateKey).type !== 'delete') {
-                                    // Kép típusának meghatározása
-                                    let imageTypeValue;
-                                    if (imageType === 'thumbnail') {
-                                        imageTypeValue = 'thumbnail';
-                                    } else if (imageType === 'product') {
-                                        imageTypeValue = 'product_image';
-                                    } else {
-                                        imageTypeValue = imageType;
-                                    }
-                                    
-                                    // Szerkesztési adatok rögzítése
-                                    const newUpdate = {
-                                        type: 'edit',
-                                        id: imageId || updateKey,
-                                        imageType: imageTypeValue,
-                                        orientation: orientation,
-                                        inputName: fileInput.name
-                                    };
-                                    
-                                    formUpdates.set(updateKey, newUpdate);
-                                    
-                                    if (!card.dataset.updateKey) {
-                                        card.dataset.updateKey = updateKey;
-                                    }
+                                if (!card.dataset.updateKey) {
+                                    card.dataset.updateKey = updateKey;
                                 }
                             }
                         }
                     } catch (error) {
                         console.error("Fájl validálási hiba:", error);
                     }
+                }
+            });
+        }
+    }
+
+    /**
+     * Frissíti a törlés gombok állapotát egy képkonténerben
+     * @param {HTMLElement} container - A képkártyákat tartalmazó konténer
+     */
+    updateDeleteButtonsState(container) {
+        if (!container) return;
+        
+        const imageCards = container.querySelectorAll('.image-card');
+        const isProductContainer = !container.classList.contains('vertical') && 
+                                   !container.classList.contains('horizontal');
+                                   
+        // Ha ez egy termék képkonténer és csak egy kép van, letiltjuk a törlés gombot
+        if (isProductContainer && imageCards.length === 1) {
+            const deleteBtn = imageCards[0].querySelector('.action-delete');
+            if (deleteBtn) {
+                deleteBtn.classList.add('disabled');
+                deleteBtn.setAttribute('disabled', 'true');
+                deleteBtn.setAttribute('aria-disabled', 'true');
+                deleteBtn.setAttribute('title', 'Legalább egy képnek maradnia kell');
+            }
+        } 
+        // Ha több kép van, engedélyezzük a törlés gombokat
+        else if (isProductContainer && imageCards.length > 1) {
+            imageCards.forEach(card => {
+                const deleteBtn = card.querySelector('.action-delete');
+                if (deleteBtn) {
+                    deleteBtn.classList.remove('disabled');
+                    deleteBtn.removeAttribute('disabled');
+                    deleteBtn.setAttribute('aria-disabled', 'false');
+                    deleteBtn.setAttribute('title', 'Kép törlése');
                 }
             });
         }
@@ -775,17 +842,33 @@ class Dashboard {
                             const updateKey = `${itemType}-new-${newId}`;
                             
                             // Kép típusának meghatározása
-                            const imageTypeValue = button.closest('.image-cards.thumbnail') ? 'thumbnail' : 'product_image';
+                            const isCategory = itemType === 'category';
+                            const imageTypeValue = isCategory ? 
+                                (button.closest('.image-cards.vertical') ? 'vertical' : 'horizontal') : 
+                                (button.closest('.image-cards.thumbnail') ? 'thumbnail' : 'product_image');
                             
-                            // Hozzáadási adatok rögzítése
-                            formUpdates.set(updateKey, {
-                                type: 'add',
-                                itemId: itemId,
-                                id: newId,
-                                imageType: imageTypeValue,
-                                orientation: orientation,
-                                inputName: inputName
-                            });
+                            // Hozzáadási adatok egyszerűsített struktúrában
+                            if (isCategory) {
+                                // Kategória képeknél
+                                formUpdates.set(updateKey, {
+                                    action: 'add',
+                                    imageType: imageTypeValue,
+                                    fileKey: inputName
+                                });
+                            } else {
+                                // Termék képeknél
+                                // Kép indexének meghatározása (hány kép van már a containerben)
+                                const imagesContainer = button.closest('.image-cards');
+                                const currentCount = imagesContainer ? imagesContainer.querySelectorAll('.image-card').length : 0;
+                                
+                                formUpdates.set(updateKey, {
+                                    action: 'add',
+                                    imageType: imageTypeValue,
+                                    fileKey: inputName,
+                                    index: currentCount, // 0-indexált pozíció
+                                    id: newId
+                                });
+                            }
                             
                             // Új képkártya létrehozása és beillesztése
                             const imagesContainer = button.closest('.image-cards');
@@ -830,6 +913,9 @@ class Dashboard {
                                     
                                     // Eredeti mező kiürítése későbbi használatra
                                     fileInput.value = '';
+                                    
+                                    // Frissítjük a törlés gombok állapotát a konténerben
+                                    this.updateDeleteButtonsState(imagesContainer);
                                 };
                                 reader.readAsDataURL(file);
                             }
