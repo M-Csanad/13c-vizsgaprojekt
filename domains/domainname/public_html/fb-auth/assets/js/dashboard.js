@@ -838,7 +838,7 @@ class Dashboard {
                         console.error("Fájl validálási hiba:", error);
                     }
                 }
-            }); // Fixed: Properly closing the addEventListener with '});'
+            });
         }
     }
 
