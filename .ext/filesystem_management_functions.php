@@ -132,3 +132,14 @@ function hasUploadError()
         return $e['error'] == 1;
     })) > 0;
 }
+
+function removeFilesLike($dirURI, $needle) {
+    $files = scandir($dirURI);
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') continue;
+
+        if (strpos($file, $needle) !== false) {
+            unlink($dirURI . $file);
+        }
+    }
+}

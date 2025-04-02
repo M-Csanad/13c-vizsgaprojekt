@@ -181,6 +181,8 @@ function convertWithGD($inputFile, $width, $outputFile, $quality = 60)
         return;
     }
 
+    $width = intval($width);
+
     $origWidth = imagesx($image);
     $origHeight = imagesy($image);
     $newHeight = intval($origHeight * ($width / $origWidth));
