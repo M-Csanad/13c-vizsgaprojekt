@@ -20,6 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Adatbázis: `florens_botanica`
 --
+DROP DATABASE IF EXISTS `florens_botanica`;
 CREATE DATABASE IF NOT EXISTS `florens_botanica` DEFAULT CHARACTER SET utf8 COLLATE utf8_hungarian_ci;
 USE `florens_botanica`;
 
