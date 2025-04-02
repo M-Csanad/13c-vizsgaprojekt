@@ -79,7 +79,7 @@ function getAddressFromComponents($zip, $city, $streetHouse) {
     return "$zip $city, $streetHouse";
 }
 
-function createOrderRow($data, $user = null, $isLoggedIn, $total) {
+function createOrderRow($data, $user, $isLoggedIn, $total) {
 
     $data['customer']["userId"] = $isLoggedIn ? $user['id'] : null;
 

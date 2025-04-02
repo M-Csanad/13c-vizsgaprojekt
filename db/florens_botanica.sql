@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.2
 -- https://www.phpmyadmin.net/
 --
--- Gép: 127.0.0.1:3307
--- Létrehozás ideje: 2025. Már 17. 21:16
--- Kiszolgáló verziója: 10.4.32-MariaDB
--- PHP verzió: 8.2.12
+-- Gép: localhost:3306
+-- Létrehozás ideje: 2025. Már 27. 07:57
+-- Kiszolgáló verziója: 10.4.32-MariaDB-log
+-- PHP verzió: 8.3.16
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -326,7 +326,7 @@ CREATE TABLE `order` (
   `tax_number` varchar(20) DEFAULT NULL,
   `billing_address` varchar(255) DEFAULT NULL COMMENT 'NULL, ha megegyezik a szállítási címmel',
   `delivery_address` varchar(255) DEFAULT NULL,
-  `status` varchar(50) NOT NULL DEFAULT 'Visszigazolva',
+  `status` varchar(50) NOT NULL DEFAULT 'Visszaigazolva',
   `order_total` int(11) NOT NULL DEFAULT 0,
   `completed_at` timestamp NULL DEFAULT NULL COMMENT 'NULL, ha nyitott a rendelés',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
@@ -338,10 +338,10 @@ CREATE TABLE `order` (
 
 INSERT INTO `order` (`id`, `user_id`, `email`, `phone`, `first_name`, `last_name`, `company_name`, `tax_number`, `billing_address`, `delivery_address`, `status`, `order_total`, `completed_at`, `created_at`) VALUES
 (1, 3, '13c-milkovics@ipari.vein.hu', '+36203094010', 'Csanád', 'Milkovics', NULL, NULL, NULL, '8444 Szentgál, Akoj utca 25.', 'Teljesítve', 5000, '2025-03-15 20:02:58', '2025-03-15 20:02:58'),
-(2, NULL, 'szilvia.horvath@bot.example.org', '+36208797573', 'Szilvia', 'Horváth', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 82', 'Visszigazolva', 5000, '2025-03-17 19:14:43', '2025-03-17 19:14:43'),
-(4, NULL, 'emese.kovacs@bot.example.org', '+36305882137', 'Emese', 'Kovács', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 86', 'Visszigazolva', 4000, '2025-03-17 19:34:37', '2025-03-17 19:34:37'),
-(5, NULL, 'ilona.soos@bot.example.com', '+36705721018', 'Ilona', 'Soós', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 98', 'Visszigazolva', 5500, '2025-03-17 19:34:37', '2025-03-17 19:34:37'),
-(6, NULL, 'lilla.fazekas@bot.example.net', '+36207785351', 'Lilla', 'Fazekas', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 34', 'Visszigazolva', 5000, '2025-03-17 19:34:37', '2025-03-17 19:34:37');
+(2, NULL, 'szilvia.horvath@bot.example.org', '+36208797573', 'Szilvia', 'Horváth', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 82', 'Visszaigazolva', 5000, '2025-03-17 19:14:43', '2025-03-17 19:14:43'),
+(4, NULL, 'emese.kovacs@bot.example.org', '+36305882137', 'Emese', 'Kovács', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 86', 'Visszaigazolva', 4000, '2025-03-17 19:34:37', '2025-03-17 19:34:37'),
+(5, NULL, 'ilona.soos@bot.example.com', '+36705721018', 'Ilona', 'Soós', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 98', 'Visszaigazolva', 5500, '2025-03-17 19:34:37', '2025-03-17 19:34:37'),
+(6, NULL, 'lilla.fazekas@bot.example.net', '+36207785351', 'Lilla', 'Fazekas', NULL, NULL, NULL, '8200 Veszprém, Robotics utca 34', 'Visszaigazolva', 5000, '2025-03-17 19:34:37', '2025-03-17 19:34:37');
 
 --
 -- Eseményindítók `order`
@@ -427,46 +427,47 @@ CREATE TABLE `product` (
   `name` varchar(255) DEFAULT NULL,
   `unit_price` int(11) DEFAULT NULL,
   `stock` int(11) DEFAULT NULL,
-  `description` varchar(255) DEFAULT NULL
+  `description` varchar(255) DEFAULT NULL,
+  `net_weight` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci;
 
 --
 -- A tábla adatainak kiíratása `product`
 --
 
-INSERT INTO `product` (`id`, `name`, `unit_price`, `stock`, `description`) VALUES
-(1, 'Kamilla virág', 4900, 30, 'A Matricaria chamomilla, azaz a kamilla, az egyik legismertebb és leggyengédebb gyógynövény. Gyakran teaként használják a relaxáció elősegítésére és az emésztés támogatására. A kamilla finoman nyugtatja a bőrt, ezért előszeretettel alkalmazzák bőrápolási '),
-(2, 'Levendula virág', 6000, 20, 'A Lavandula angustifolia, közismert nevén levendula, mediterrán eredetű növény, amely édes, nyugtató, virágos illatáról ismert. Virágai és levelei évszázadok óta részei a nyugati gyógynövényhasználatnak, és a szépségápolástól kezdve a főzésig sokoldalúan '),
-(3, 'Kurkuma gyökér', 2000, 50, 'A Curcuma longa, azaz a kurkuma, az indiai és délkelet-ázsiai trópusi régiókból származó, gyömbérfélék családjába tartozó évelő növény. Élénk narancssárga-sárga színe miatt fűszerként és természetes színezőanyagként egyaránt népszerű. A kurkuma különleges'),
-(4, 'Kasvirág gyökér', 8000, 30, 'Az Echinacea angustifolia, egy észak-amerikai gyógynövény, amely támogatja az immunrendszert. Organikus gyökereit teák, tinktúrák és helyi olajok készítésére használják, hogy erősítse a test védelmi rendszereit és javítsa a közérzetet.'),
-(5, 'Darált fokhagyma', 3200, 40, 'Az Allium sativum, közismert nevén fokhagyma, egy ízletes és erőteljes fűszer, mely számos kultúrában népszerű. Szárított, aprított fokhagymánk a legnagyobb szemcseméretű, és kiválóan alkalmas olajok infúziójához vagy főzéshez. Emellett a fokhagyma híres '),
-(6, 'Ánizs', 3500, 15, 'Az ánizs egy aromás gyógynövény, amely segíthet az emésztés támogatásában és a puffadás enyhítésében.'),
-(7, 'Árnika', 4500, 19, 'Az árnika erőteljes gyulladáscsökkentő és fájdalomcsillapító hatásairól ismert, gyakran alkalmazzák zúzódások és izomfájdalmak kezelésére.'),
-(8, 'Búzavirág', 4000, 25, 'A búzavirág nyugtató és gyulladáscsökkentő hatású gyógynövény, amelyet gyakran használnak szem- és bélproblémák kezelésére.'),
-(9, 'Chili', 5000, 15, 'A chili erőteljes antioxidáns és fájdalomcsillapító hatású, és javítja a vérkeringést, ezáltal fokozza az anyagcserét.'),
-(10, 'Citromfű', 3500, 20, 'A citromfű nyugtató hatásáról ismert, gyakran használják stresszoldásra és a pihentető alvás elősegítésére.'),
-(11, 'Csipkebogyó', 4000, 18, 'A csipkebogyó rendkívül gazdag C-vitaminban, segít az immunrendszer erősítésében és a bélflóra támogatásában.'),
-(12, 'Galagonya bogyók', 4500, 25, 'A galagonya kiváló szív- és érrendszeri támogatást nyújt, javítja a keringést és segít csökkenteni a vérnyomást.'),
-(13, 'Ginzeng gyökér', 5000, 15, 'A ginzeng egy erőteljes gyógynövény, amely segít a fáradtság leküzdésében és az általános vitalitás növelésében.'),
-(14, 'Körömvirág', 3500, 10, 'A körömvirág bőrápoló tulajdonságairól ismert, segít a sebgyógyulásban és enyhíti a bőr irritációit.'),
-(15, 'Pillangóborsó', 5000, 20, 'A pillangóborsó gazdag antioxidánsokban, javítja a bélflóra működését és segít a méregtelenítésben.'),
-(16, 'Reishi', 5500, 10, 'A reishi gomba immunerősítő és stresszoldó hatású, segít a test és az elme harmonizálásában.'),
-(17, 'Rozmaring', 3000, 19, 'A rozmaring kiváló antioxidáns és memóriajavító hatással rendelkezik, valamint segít az emésztésben.'),
-(18, 'Valeriána gyökér', 4000, 24, 'A valeriána nyugtató hatású, segít az alvás elősegítésében és a szorongás csökkentésében.'),
-(19, 'Ashwagandha por', 4600, 25, 'Az Ashwagandha (Withania somnifera) az ájurvédikus gyógyászat egyik legismertebb adaptogén növénye, amely támogatja a stresszkezelést, a hormonális egyensúlyt és az általános energiaszintet.'),
-(21, 'Ashwagandha durvára őrölt', 4800, 30, 'Az Ashwagandha (Withania somnifera) Indiában és Afrikában honos gyógynövény, amelyet hagyományosan az ájurvédikus gyógyászatban alkalmaznak. Durvára őrölt formában megőrzi természetes aromáját.'),
-(22, 'Damiana őrölt', 5200, 20, 'A Damiana (Turnera diffusa) egy Közép- és Dél-Amerikában őshonos, lágy illatú gyógynövény, amelyet évszázadok óta hagyományosan aphrodisiakumként és enyhe stresszoldóként használnak. '),
-(23, 'Kanos Kecskefű őrölt', 5900, 35, 'Az Epimedium, közismert nevén Horny Goat Weed, egy Kelet-Ázsiából származó gyógynövény, amelyet a hagyományos kínai orvoslás már évszázadok óta alkalmaz.'),
-(24, 'Kanos Kecskefű por', 5500, 30, 'Az Epimedium, közismert nevén Horny Goat Weed, egy Kelet-Ázsiából származó gyógynövény, amelyet a hagyományos kínai orvoslás már évszázadok óta alkalmaz.'),
-(25, 'Ginzeng por', 6000, 60, 'A ginzeng (Panax ginseng) a hagyományos keleti orvoslás egyik legismertebb energianövelő és immunerősítő gyógynövénye.'),
-(26, 'Maca por', 5500, 50, 'A maca (Lepidium meyenii) gyökérből készül, amely a perui Andok magasföldjein terem. Por formájában sokoldalúan felhasználható, és közismert arról, hogy támogathatja a hormonális egyensúlyt.'),
-(27, 'Bársonybab por', 5800, 50, 'A Mucuna pruriens (bársonybab) a trópusi és szubtrópusi területeken honos növény, amelynek magja a dopamin előanyagaként ismert L-DOPA-ban gazdag.'),
-(28, 'Muira Puama őrölt', 6800, 50, 'A Muira Puama (Ptychopetalum olacoides) az Amazonas-medence őshonos fájának kérgéből és gyökéréből származik, amit évtizedek óta aphrodisiakumként és általános erőnlétfokozóként alkalmaznak.'),
-(29, 'Muira Puama por', 6300, 40, 'A Muira Puama (Ptychopetalum olacoides) az Amazonas-medence őshonos fájának kérgéből és gyökéréből származik, amit évtizedek óta aphrodisiakumként és általános erőnlétfokozóként alkalmaznak.'),
-(30, 'Királydinnye', 4990, 50, 'A Tribulus terrestris, magyarul királydinnye, a hagyományos gyógyászatban főként a hormonális egyensúly és a szexuális egészség támogatására kedvelt növény'),
-(31, 'Királydinnye por', 5300, 60, 'A Tribulus terrestris, magyarul királydinnye, a hagyományos gyógyászatban főként a hormonális egyensúly és a szexuális egészség támogatására kedvelt növény.'),
-(32, 'Barátcserje por', 4800, 60, 'A Vitex agnus-castus (barátcserje) por formájában egy népszerű gyógynövény, amelyet elsősorban a női hormonális egyensúly támogatására alkalmaznak.'),
-(34, 'Vitex szárított bogyók', 5200, 20, 'A Vitex agnus-castus, ismertebb nevén barátcserje, szárított, bio minősítésű bogyói. Hagyományosan a női hormonális egyensúly, valamint a menstruációs ciklus támogatására használják, de számos egyéb jótékony hatással is bír.');
+INSERT INTO `product` (`id`, `name`, `unit_price`, `stock`, `description`, `net_weight`) VALUES
+(1, 'Kamilla virág', 4900, 30, 'A Matricaria chamomilla, azaz a kamilla, az egyik legismertebb és leggyengédebb gyógynövény. Gyakran teaként használják a relaxáció elősegítésére és az emésztés támogatására. A kamilla finoman nyugtatja a bőrt, ezért előszeretettel alkalmazzák bőrápolási ', 50),
+(2, 'Levendula virág', 6000, 20, 'A Lavandula angustifolia, közismert nevén levendula, mediterrán eredetű növény, amely édes, nyugtató, virágos illatáról ismert. Virágai és levelei évszázadok óta részei a nyugati gyógynövényhasználatnak, és a szépségápolástól kezdve a főzésig sokoldalúan ', 50),
+(3, 'Kurkuma gyökér', 2000, 50, 'A Curcuma longa, azaz a kurkuma, az indiai és délkelet-ázsiai trópusi régiókból származó, gyömbérfélék családjába tartozó évelő növény. Élénk narancssárga-sárga színe miatt fűszerként és természetes színezőanyagként egyaránt népszerű. A kurkuma különleges', 100),
+(4, 'Kasvirág gyökér', 8000, 30, 'Az Echinacea angustifolia, egy észak-amerikai gyógynövény, amely támogatja az immunrendszert. Organikus gyökereit teák, tinktúrák és helyi olajok készítésére használják, hogy erősítse a test védelmi rendszereit és javítsa a közérzetet.', 75),
+(5, 'Darált fokhagyma', 3200, 40, 'Az Allium sativum, közismert nevén fokhagyma, egy ízletes és erőteljes fűszer, mely számos kultúrában népszerű. Szárított, aprított fokhagymánk a legnagyobb szemcseméretű, és kiválóan alkalmas olajok infúziójához vagy főzéshez. Emellett a fokhagyma híres ', 125),
+(6, 'Ánizs', 3500, 15, 'Az ánizs egy aromás gyógynövény, amely segíthet az emésztés támogatásában és a puffadás enyhítésében.', 50),
+(7, 'Árnika', 4500, 19, 'Az árnika erőteljes gyulladáscsökkentő és fájdalomcsillapító hatásairól ismert, gyakran alkalmazzák zúzódások és izomfájdalmak kezelésére.', 50),
+(8, 'Búzavirág', 4000, 25, 'A búzavirág nyugtató és gyulladáscsökkentő hatású gyógynövény, amelyet gyakran használnak szem- és bélproblémák kezelésére.', 50),
+(9, 'Chili', 5000, 15, 'A chili erőteljes antioxidáns és fájdalomcsillapító hatású, és javítja a vérkeringést, ezáltal fokozza az anyagcserét.', 50),
+(10, 'Citromfű', 3500, 20, 'A citromfű nyugtató hatásáról ismert, gyakran használják stresszoldásra és a pihentető alvás elősegítésére.', 50),
+(11, 'Csipkebogyó', 4000, 18, 'A csipkebogyó rendkívül gazdag C-vitaminban, segít az immunrendszer erősítésében és a bélflóra támogatásában.', 75),
+(12, 'Galagonya bogyók', 4500, 25, 'A galagonya kiváló szív- és érrendszeri támogatást nyújt, javítja a keringést és segít csökkenteni a vérnyomást.', 75),
+(13, 'Ginzeng gyökér', 5000, 15, 'A ginzeng egy erőteljes gyógynövény, amely segít a fáradtság leküzdésében és az általános vitalitás növelésében.', 100),
+(14, 'Körömvirág', 3500, 10, 'A körömvirág bőrápoló tulajdonságairól ismert, segít a sebgyógyulásban és enyhíti a bőr irritációit.', 50),
+(15, 'Pillangóborsó', 5000, 20, 'A pillangóborsó gazdag antioxidánsokban, javítja a bélflóra működését és segít a méregtelenítésben.', 75),
+(16, 'Reishi', 5500, 10, 'A reishi gomba immunerősítő és stresszoldó hatású, segít a test és az elme harmonizálásában.', 50),
+(17, 'Rozmaring', 3000, 19, 'A rozmaring kiváló antioxidáns és memóriajavító hatással rendelkezik, valamint segít az emésztésben.', 50),
+(18, 'Valeriána gyökér', 4000, 24, 'A valeriána nyugtató hatású, segít az alvás elősegítésében és a szorongás csökkentésében.', 50),
+(19, 'Ashwagandha por', 4600, 25, 'Az Ashwagandha (Withania somnifera) az ájurvédikus gyógyászat egyik legismertebb adaptogén növénye, amely támogatja a stresszkezelést, a hormonális egyensúlyt és az általános energiaszintet.', 75),
+(21, 'Ashwagandha durvára őrölt', 4800, 30, 'Az Ashwagandha (Withania somnifera) Indiában és Afrikában honos gyógynövény, amelyet hagyományosan az ájurvédikus gyógyászatban alkalmaznak. Durvára őrölt formában megőrzi természetes aromáját.', 100),
+(22, 'Damiana őrölt', 5200, 20, 'A Damiana (Turnera diffusa) egy Közép- és Dél-Amerikában őshonos, lágy illatú gyógynövény, amelyet évszázadok óta hagyományosan aphrodisiakumként és enyhe stresszoldóként használnak. ', 75),
+(23, 'Kanos Kecskefű őrölt', 5900, 35, 'Az Epimedium, közismert nevén Horny Goat Weed, egy Kelet-Ázsiából származó gyógynövény, amelyet a hagyományos kínai orvoslás már évszázadok óta alkalmaz.', 75),
+(24, 'Kanos Kecskefű por', 5500, 30, 'Az Epimedium, közismert nevén Horny Goat Weed, egy Kelet-Ázsiából származó gyógynövény, amelyet a hagyományos kínai orvoslás már évszázadok óta alkalmaz.', 75),
+(25, 'Ginzeng por', 6000, 60, 'A ginzeng (Panax ginseng) a hagyományos keleti orvoslás egyik legismertebb energianövelő és immunerősítő gyógynövénye.', 100),
+(26, 'Maca por', 5500, 50, 'A maca (Lepidium meyenii) gyökérből készül, amely a perui Andok magasföldjein terem. Por formájában sokoldalúan felhasználható, és közismert arról, hogy támogathatja a hormonális egyensúlyt.', 100),
+(27, 'Bársonybab por', 5800, 50, 'A Mucuna pruriens (bársonybab) a trópusi és szubtrópusi területeken honos növény, amelynek magja a dopamin előanyagaként ismert L-DOPA-ban gazdag.', 50),
+(28, 'Muira Puama őrölt', 6800, 50, 'A Muira Puama (Ptychopetalum olacoides) az Amazonas-medence őshonos fájának kérgéből és gyökéréből származik, amit évtizedek óta aphrodisiakumként és általános erőnlétfokozóként alkalmaznak.', 75),
+(29, 'Muira Puama por', 6300, 40, 'A Muira Puama (Ptychopetalum olacoides) az Amazonas-medence őshonos fájának kérgéből és gyökéréből származik, amit évtizedek óta aphrodisiakumként és általános erőnlétfokozóként alkalmaznak.', 75),
+(30, 'Királydinnye', 4990, 50, 'A Tribulus terrestris, magyarul királydinnye, a hagyományos gyógyászatban főként a hormonális egyensúly és a szexuális egészség támogatására kedvelt növény', 50),
+(31, 'Királydinnye por', 5300, 60, 'A Tribulus terrestris, magyarul királydinnye, a hagyományos gyógyászatban főként a hormonális egyensúly és a szexuális egészség támogatására kedvelt növény.', 50),
+(32, 'Barátcserje por', 4800, 60, 'A Vitex agnus-castus (barátcserje) por formájában egy népszerű gyógynövény, amelyet elsősorban a női hormonális egyensúly támogatására alkalmaznak.', 50),
+(34, 'Vitex szárított bogyók', 5200, 20, 'A Vitex agnus-castus, ismertebb nevén barátcserje, szárított, bio minősítésű bogyói. Hagyományosan a női hormonális egyensúly, valamint a menstruációs ciklus támogatására használják, de számos egyéb jótékony hatással is bír.', 50);
 
 -- --------------------------------------------------------
 
@@ -1416,7 +1417,7 @@ ALTER TABLE `avatar`
 -- AUTO_INCREMENT a táblához `cart`
 --
 ALTER TABLE `cart`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT a táblához `category`

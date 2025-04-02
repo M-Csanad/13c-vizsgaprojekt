@@ -127,7 +127,7 @@ class Dashboard {
         this.loaderForms.forEach(form => {
             form.addEventListener("submit", () => {
                 if (form.dataset.needsConfirm === "false") {
-                    this.toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
+                    toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
                 }
             });
         });
@@ -152,7 +152,7 @@ class Dashboard {
                     this.closePopup(popup);
                     setTimeout(() => {
                         if (this.hasImage(form)) {
-                            this.toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
+                            toggleLoader("Képek optimalizálása... Ez több percig is eltarthat.");
                         }
                         formSubmitter.click();
                         this.isPopupVisible = false;

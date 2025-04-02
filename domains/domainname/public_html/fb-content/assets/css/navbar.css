@@ -399,7 +399,7 @@
 }
 
 .hamburger-icon.active .line3 {
-  transform: rotate(-45deg) translate(5px, -5px);
+  transform: rotate(-45deg) translate(4px, -4px);
 }
 
 /* Hamburger menü teljes képernyőn */

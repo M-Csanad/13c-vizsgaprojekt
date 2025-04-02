@@ -21,9 +21,7 @@ export default class SortDropdown {
             { id: 'rating-desc', label: 'Értékelés szerint csökkenő', icon: 'star-fill' }
         ];
 
-        this.dropdown = document.createElement('div');
-        this.dropdown.className = 'sort-dropdown';
-        this.dropdown.innerHTML = `
+        document.querySelector('.sort-open').innerHTML = `
             <div class="sort-current">
                 <span>Rendezés</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16">
@@ -42,7 +40,7 @@ export default class SortDropdown {
             </div>
         `;
 
-        document.querySelector('.sort-open').replaceWith(this.dropdown);
+        this.dropdown = document.querySelector('.sort-open');
     }
 
     getSVGPath(icon) {

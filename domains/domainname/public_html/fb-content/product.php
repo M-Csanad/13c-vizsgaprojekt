@@ -1,6 +1,6 @@
 <?php
     include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/init.php';
-    include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/review_functions.php';  // Add this line
+    include_once $_SERVER["DOCUMENT_ROOT"].'/../../../.ext/review_functions.php';
     include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
     include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
 
@@ -61,15 +61,13 @@
       $side_effects = array_filter($result->message, function ($e) {return $e["benefit"] == 0;});
     }
 
-
     // Értékelések lekérdezése
     $page = isset($_GET['review_page']) ? intval($_GET['review_page']) : 1;
-    $perPage = 5; // Number of reviews per page
+    $perPage = 5;
 
     $reviewsResult = getProductReviews($product["id"], $page, $perPage);
-
     if ($reviewsResult->isError()) {
-      logError("Sikertelen termék értékelés lekérdezés: ".json_encode($reviewsResult), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
+      logError("Sikertelen termék értékelés lekérdezés: ".$reviewsResult->toJSON(true), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
       http_response_code(404);
       include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
       exit;
@@ -284,11 +282,11 @@
           <?= $product["name"]; ?>
         </header>
         <div class="breadcrumb">
-          <a href="<?= htmlspecialchars(ROOT_URL); ?>/" class="breadcrumb-item">Főoldal</a>
+          <a title="Főoldal" href="<?= htmlspecialchars(ROOT_URL); ?>/" class="breadcrumb-item">Főoldal</a>
           <div class="breadcrumb-splitter">/</div>
-          <a href="<?= htmlspecialchars(ROOT_URL."/".format_str($product["category_name"])); ?>" class="breadcrumb-item"><?= htmlspecialchars($product["category_name"]); ?></a>
+          <a title="<?= htmlspecialchars($product["category_name"]); ?>" href="<?= htmlspecialchars(ROOT_URL."/".format_str($product["category_name"])); ?>" class="breadcrumb-item"><?= htmlspecialchars($product["category_name"]); ?></a>
           <div class="breadcrumb-splitter">/</div>
-          <a href="<?= htmlspecialchars(ROOT_URL."/".format_str($product["category_name"])."/".format_str($product["subcategory_name"])); ?>" class="breadcrumb-item"><?= htmlspecialchars($product["subcategory_name"]); ?></a>
+          <a title="<?= htmlspecialchars($product["subcategory_name"]); ?>" href="<?= htmlspecialchars(ROOT_URL."/".format_str($product["category_name"])."/".format_str($product["subcategory_name"])); ?>" class="breadcrumb-item"><?= htmlspecialchars($product["subcategory_name"]); ?></a>
           <div class="breadcrumb-splitter">/</div>
         </div>
         <div class="price" aria-label="Ár">
@@ -340,7 +338,9 @@
         </div>
         <?php if ($product["stock"] > 0): ?>
         <div class="input-group">
-          <label for="product-quantity">Mennyiség:</label>
+          <label for="product-quantity">
+            <span>Mennyiség:</span>
+          </label>
           <div class="number-field">
             <div class="number-field-subtract">-</div>
             <input type="text" name="product-quantity" class="product-quantity"
@@ -352,6 +352,17 @@
             <div class="number-field-add">+</div>
           </div>
         </div>
+        
+        <div class="input-group weight-group">
+          <label>
+            <span>Nettó súly:</span>
+          </label>
+          <div class="weight-value">
+            <span class="weight"><?= htmlspecialchars($product["net_weight"]); ?></span>
+            <span class="weight-unit">g/csomag</span>
+          </div>
+        </div>
+        
         <button class="add-to-cart" <?= $product["stock"] <= 0 ? 'disabled' : '' ?>>
           <div>Kosárba</div>
           <svg

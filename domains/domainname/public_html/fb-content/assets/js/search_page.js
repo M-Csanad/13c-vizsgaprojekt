@@ -42,6 +42,10 @@ class SearchPage extends SubcategorySite {
             this.allProducts = data.message;
             this.filteredProducts = [...this.allProducts];
             this.headerProductCount.textContent = `${this.filteredProducts.length} találat`;
+            
+            if (this.filteredProducts.length === 0) {
+                this.noResults();
+            }
         } else {
             console.error('Hiba a keresési találatok lekérésében:', data.message);
         }

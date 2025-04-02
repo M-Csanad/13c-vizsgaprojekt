@@ -66,10 +66,11 @@ export default class SubcategorySite {
 
     // DOM elemek inicializálása
     initDOM() {
-        console.log(this.externalCall)
         this.cardsContainer = document.querySelector('.cards');
         this.pagination = document.querySelector('.pagination');
         this.productCount = document.querySelector('.product-count');
+        this.filterButton = document.querySelector('.filter-open');
+        this.sortButton = document.querySelector('.sort-open');
 
         if (!this.externalCall) {
             this.totalProductCount = document.querySelector('#total-product-count');
@@ -152,6 +153,11 @@ export default class SubcategorySite {
         const start = (this.currentPage - 1) * this.productsPerPage;
         const end = start + this.productsPerPage;
         const pageProducts = this.filteredProducts.slice(start, end);
+
+        if (pageProducts.length === 0 && this.filteredProducts.length === 0) {
+            this.noResults();
+            return;
+        }
 
         pageProducts.forEach(product => {
             const card = this.createProductCard(product);
@@ -280,6 +286,8 @@ export default class SubcategorySite {
     // Kezdeti adatok betöltése
     async initialize() {
         await this.fetchProducts();
+        if (!Array.isArray(this.allProducts) || this.allProducts.length === 0) return;
+            
         this.filter = new FilterWindow(this.allProducts, this.handleFilterUpdate.bind(this));
         this.sortDropdown = new SortDropdown(this.handleSort.bind(this));
 
@@ -310,6 +318,10 @@ export default class SubcategorySite {
             const data = await response.json();
             this.allProducts = data.message;
             this.filteredProducts = [...this.allProducts]; // Lemásoljuk a tömböt, hogy ne változzon az eredeti
+
+            if (this.filteredProducts.length === 0 || !Array.isArray(this.allProducts)) {
+                this.noResults();
+            }
         }
     }
 
@@ -344,6 +356,42 @@ export default class SubcategorySite {
         
         this.currentPage = 1;
         this.updateUI();
+    }
+
+    // Nincs találat kezelése
+    noResults() {
+        // Töröljük a meglévő tartalmakat
+        this.cardsContainer.innerHTML = '';
+        
+        // Nincs találat üzenet hozzáadása SVG grafikákkal
+        const noResultsMessage = document.createElement('div');
+        noResultsMessage.className = 'no-results-message';
+        noResultsMessage.innerHTML = `
+            <div class="no-results-graphics">
+                <svg class="no-results-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300">
+                    <!-- Felhők -->
+                    <path class="cloud cloud-1" d="M100,120 C90,110 70,110 65,120 C50,95 10,105 10,130 C10,155 50,160 65,150 C75,165 100,160 110,150 C125,160 145,150 140,130 C135,115 115,110 100,120 Z" />
+                    
+                    <path class="cloud cloud-2" d="M430,100 C420,90 400,90 395,100 C380,75 340,85 340,110 C340,135 380,140 395,130 C405,145 430,140 440,130 C455,140 475,130 470,110 C465,95 445,90 430,100 Z" />
+                    
+                    <path class="cloud cloud-3" d="M250,210 C245,205 235,205 230,210 C225,195 205,200 205,215 C205,230 225,235 230,225 C235,235 250,235 255,225 C265,230 275,225 270,215 C265,205 255,205 250,210 Z" />
+                    
+                    <!-- Nagyító -->
+                    <circle class="magnifier-glass" cx="250" cy="140" r="70" stroke-width="12" fill="none" />
+                    <path class="magnifier-handle" d="M200,200 L160,240" stroke-width="15" stroke-linecap="round" />
+                    
+                    <!-- Centered and bigger question mark -->
+                    <path class="question-mark" transform="translate(204, 98) scale(6)" fill-rule="evenodd" d="M4.475 5.458c-.284 0-.514-.237-.47-.517C4.28 3.24 5.576 2 7.825 2c2.25 0 3.767 1.36 3.767 3.215 0 1.344-.665 2.288-1.79 2.973-1.1.659-1.414 1.118-1.414 2.01v.03a.5.5 0 0 1-.5.5h-.77a.5.5 0 0 1-.5-.495l-.003-.2c-.043-1.221.477-2.001 1.645-2.712 1.03-.632 1.397-1.135 1.397-2.028 0-.979-.758-1.698-1.926-1.698-1.009 0-1.71.529-1.938 1.402-.066.254-.278.461-.54.461h-.777ZM7.496 14c.622 0 1.095-.474 1.095-1.09 0-.618-.473-1.092-1.095-1.092-.606 0-1.087.474-1.087 1.091S6.89 14 7.496 14"/>
+                </svg>
+            </div>
+            <div class="no-results-text">Nincsenek találatok!</div>
+        `;
+        this.cardsContainer.appendChild(noResultsMessage);
+        
+        // UI elemek elrejtése
+        if (this.filterButton) this.filterButton.style.display = 'none';
+        if (this.sortButton) this.sortButton.style.display = 'none';
+        if (this.pagination) this.pagination.style.display = 'none';
     }
 }
 

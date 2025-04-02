@@ -62,19 +62,20 @@ function saveFile($file, $directory, $filename)
 function uploadProductData($data)
 {
 
-    $fields = array("name", "unit_price", "stock", "description");
+    $fields = array("name", "unit_price", "stock", "description", "net_weight");
     $values = array(
         $data['name'],
         $data['unit_price'],
         $data['stock'],
         $data['description'],
+        $data['net_weight']
     );
 
     $fieldList = implode(", ", $fields);
     $placeholderList = implode(", ", array_fill(0, count($fields), "?"));
     $query = "INSERT INTO `product`($fieldList) VALUES ($placeholderList);";
 
-    return updateData($query, $values, "siis");
+    return updateData($query, $values, "siisi");
 }
 
 // A termék képeinek feltöltése az `image` táblába
@@ -462,12 +463,13 @@ function updateProductImages($productData, $images, $paths)
 function updateProductData($productData, $images, $paths, $productHealthEffectsData)
 {
 
-    $fields = array("name", "unit_price", "stock", "description");
+    $fields = array("name", "unit_price", "stock", "description", "net_weight");
     $values = array(
         $productData["name"],
         $productData["price"],
         $productData["stock"],
         $productData["description"],
+        $productData["net_weight"],
         $productData["id"]
     );
 
@@ -479,7 +481,7 @@ function updateProductData($productData, $images, $paths, $productHealthEffectsD
     }
     $query .= " WHERE `product`.`id`=?;";
 
-    $result = updateData($query, $values, "siisi");
+    $result = updateData($query, $values, "siisii");
     if ($result->isError()) {
         return new Result(Result::ERROR, "Sikertelen frissítés: ". $result->toJSON());
     }

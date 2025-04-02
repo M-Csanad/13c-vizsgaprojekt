@@ -108,6 +108,10 @@ form > section:has(.input-group-hideable) > * {
     padding: 0.5rem;
 }
 
+form > section:has(.input-group-hideable) > header::after {
+    margin-left: 0.5rem;
+}
+
 form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     margin-inline: 0.5rem;
 }
@@ -262,7 +266,7 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
 
 .purchase-type-radios {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     margin-block: 1rem;
     position: relative;
 }
@@ -270,7 +274,6 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
 .purchase-type-radios > .radio {
     padding: 0.5rem;
     cursor: pointer;
-    width: 50%;
     text-align: center;
     font-size: 18px;
     color: #858585; 
@@ -287,11 +290,11 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     position: absolute;
     bottom: 0;
     left: 0;
-    height: 2px;
-    width: 100%;
+    height: 100%;
+    width: 2px;
     --left: 0%;
     --right: calc(var(--left) + 50%);
-    background: linear-gradient(to right, #858585 var(--left), white var(--left), white var(--right), #858585 var(--right));
+    background: linear-gradient(to bottom, #858585 var(--left), white var(--left), white var(--right), #858585 var(--right));
 }
 
 .order-details {
@@ -339,6 +342,7 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
 
 .order-details .item > .item-image {
     position: relative;
+    flex-shrink: 0;
     width: 80px;
     height: 80px;
 }
@@ -355,15 +359,29 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     object-fit: cover;
 }
 
+.order-details .item-body {
+    flex-grow: 1;
+    min-width: 0;
+    max-width: 100%;
+    overflow: hidden;
+}
+
 .order-details .item-info {
     height: 100%;
     display: flex;
     flex-direction: column;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .order-details .item-name {
     font-family: Playfair Display;
     font-size: 22px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    min-width: 0;
+    max-width: 100%;
 }
 
 .order-details .item-price, .price {
@@ -531,7 +549,7 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     z-index: 1;
 }
 
-.checkout-result-overlay .back-to-home {
+checkout-result-overlay .back-to-home {
     transform: translateY(calc(100% + 2rem));
     display: flex;
     flex-direction: row;
@@ -617,10 +635,54 @@ form > *:not(section.hideable):not(section:has(.input-group-hideable)) {
     will-change: opacity;
 }
 
+.notice {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    gap: 0.8rem;
+    align-items: center;
+    margin-block: 1rem;
+    font-family: Karla;
+    color: rgb(255, 203, 91);
+    background-color: rgba(255, 203, 91, 0.068);
+    padding: 1rem 0.8rem;
+    border-radius: 5px;
+}
+
+.notice > svg {
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+}
+
+@media screen and (min-width: 444px) {
+    .notice {
+        flex-direction: row;
+        text-align: left;
+    }
+
+    .purchase-type-radios {
+        flex-direction: row;
+    }
+
+    .purchase-type-radios > .radio {
+        width: 50%;
+    }
+
+    .purchase-type-radios > .border {
+        width: 100%;
+        height: 2px;
+        --left: 0%;
+        --right: calc(var(--left) + 50%);
+        background: linear-gradient(to right, #858585 var(--left), white var(--left), white var(--right), #858585 var(--right));
+    }
+}
+
 @media screen and (min-width: 768px) {
     main {
         flex-direction: row;
     }
+
     .order-details {
         width: 500px;
     }

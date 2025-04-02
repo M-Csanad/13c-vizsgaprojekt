@@ -5,7 +5,9 @@ document.addEventListener("DOMContentLoaded", function () {
     item.addEventListener("click", () => {
       const target = document.getElementById(item.dataset.target);
       if (target) {
-        const currentMenu = document.querySelector(".submenu.active");
+        const currentMenu = document.querySelector(
+          ".submenu.active, .menu.active"
+        );
         if (currentMenu) {
           menuHistory.push(currentMenu.id);
         }
@@ -20,7 +22,9 @@ document.addEventListener("DOMContentLoaded", function () {
   // Vissza gomb kezelése
   document.querySelectorAll("[data-back]").forEach((backBtn) => {
     backBtn.addEventListener("click", () => {
-      const currentMenu = document.querySelector(".submenu.active");
+      const currentMenu = document.querySelector(
+        ".submenu.active, .menu.active"
+      );
       if (currentMenu) {
         setTimeout(() => {
           currentMenu.classList.remove("active");

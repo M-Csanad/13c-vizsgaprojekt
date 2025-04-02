@@ -25,7 +25,7 @@ $data = json_decode(file_get_contents('php://input'), true);
 foreach ($fields as $field) {
     if (!isset($data[$field]) || empty($data[$field])) {
         http_response_code(400);
-        $result = new Result(Result::ERROR, 'Kérlek töltsd ki mindegyik mezőt!');
+        $result = new Result(Result::ERROR, 'Kérlek töltse ki mindegyik mezőt!');
         echo $result->toJSON();
         exit();
     }

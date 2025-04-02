@@ -34,6 +34,20 @@ window.addEventListener("load", () => {
         ease: ease
     }
 
+
+    window.addEventListener("pageshow", function(event) {
+        if (event.persisted) {
+            isBackForwardNav = true;
+            gsap.set(".transition-background", { visibility: "visible", opacity: 1 });
+            setTimeout(() => {
+                revealPageTransition(inParams).then(() => { 
+                    isAnimating = false;
+                    gsap.set(".transition-background", { visibility: "hidden" });
+                });
+            }, 200)
+        }
+    });
+
     document.addEventListener("click", (e) => {
         if (e.target.nodeName === "A" || e.target.closest('a')) {
             const link = e.target.closest('a');
@@ -64,33 +78,6 @@ window.addEventListener("load", () => {
         }
     });
 
-    // document.querySelectorAll("a").forEach((link) => {
-    //     if (!link.href || link.href.includes("#")) return;
-    //     link.addEventListener("click", (e) => {
-    //         if (e.ctrlKey || e.metaKey) {
-    //             return; // CTRL + kattintás esetén marad az alap működés
-    //         }
-
-    //         e.preventDefault();
-            
-    //         if (isAnimating) return;
-
-    //         isAnimating = true;
-    //         const href = link.href;
-
-    //         if (href.includes("dashboard")) {
-    //             window.location.href = href;
-    //             return;
-    //         }
-
-    //         if (href && !href.startsWith("#") && href !== window.location.pathname) {
-    //             animatePageTransition(outParams).then(() => {
-    //                 window.location.href = href;
-    //             });
-    //         }
-    //     });
-    // });
-
     Promise.all(imagePromises).then(() => {
         setTimeout(() => {
             revealPageTransition(inParams).then(() => { 
@@ -108,27 +95,19 @@ function revealPageTransition(inParams) {
             opacity: 0,
             duration: 0.3,
             ease: inParams.ease,
-            onComplete: resolve
-        })
+            onComplete: () => {
+                gsap.set(".transition-background", { visibility: "hidden" });
+                resolve();
+            }
+        });
+        
         gsap.to(".quote > .char", {
             opacity: 0,
-            // stagger: {
-            //     each: 0.005,
-            //     from: "start",
-            //     grid: "auto",
-            //     axis: "x"
-            // },
             duration: 0.3,
             ease: inParams.ease,
         })
         gsap.to(".hero > .char", {
             opacity: 0,
-            // stagger: {
-            //     each: 0.01,
-            //     from: "start",
-            //     grid: "auto",
-            //     axis: "x"
-            // },
             duration: 0.3,
             ease: inParams.ease,
             

@@ -33,6 +33,11 @@ if (!function_exists('log_Error')) {
                 return;
             }
         }
+
+        // QueryResult és Result osztályok támogatása
+        if ($message instanceof Result || $message instanceof QueryResult) {
+            $message = $message->toJSON(true);
+        }
     
         // Időbélyeg hozzáadása az üzenethez - átláthatóság és debug miatt
         $timestamp = date('Y-m-d H:i:s');

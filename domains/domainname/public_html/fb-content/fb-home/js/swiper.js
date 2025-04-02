@@ -1,6 +1,11 @@
 /*
  ===== Swiper =====
 */
+
+function $id(id) {
+  return document.getElementById(id);
+}
+
 // Thumbnail Swiper
 var thumbSwiper = new Swiper(".bg_slider-thumbs", {
   loop: false,
@@ -45,6 +50,7 @@ var mainSwiper = new Swiper(".bg_slider", {
   slidesPerView: 1,
   spaceBetween: 0,
   speed: 1000,
+  watchOverflow: false,
   thumbs: {
     swiper: thumbSwiper, // thumbnail swiper link
   },
@@ -60,8 +66,13 @@ var mainSwiper = new Swiper(".bg_slider", {
     prevEl: ".swiper-button-prev",
   },
   on: {
+    init: function () {
+      removeDisabledFromNavButtons();
+    },
     slideChange: function () {
       const activeIndex = this.realIndex; // Aktuális index a loop miatt
+
+      removeDisabledFromNavButtons();
 
       // Minden thumbSlide-ra alapértelmezett inaktív stílus
       thumbSwiper.slides.forEach((slide) => {
@@ -121,3 +132,24 @@ document.addEventListener("DOMContentLoaded", function () {
   // Generate stars for ratings
   generateStars();
 });
+
+function removeDisabledFromNavButtons() {
+  const nextButtons = document.querySelectorAll(".swiper-button-next");
+  const prevButtons = document.querySelectorAll(".swiper-button-prev");
+
+  // Minden .swiper-button-next gombon eltávolítjuk a disable-t
+  nextButtons.forEach((btn) => {
+    if (btn.classList.contains("swiper-button-disabled")) {
+      btn.classList.remove("swiper-button-disabled");
+      btn.removeAttribute("aria-disabled");
+    }
+  });
+
+  // Minden .swiper-button-prev gombon eltávolítjuk a disable-t
+  prevButtons.forEach((btn) => {
+    if (btn.classList.contains("swiper-button-disabled")) {
+      btn.classList.remove("swiper-button-disabled");
+      btn.removeAttribute("aria-disabled");
+    }
+  });
+}

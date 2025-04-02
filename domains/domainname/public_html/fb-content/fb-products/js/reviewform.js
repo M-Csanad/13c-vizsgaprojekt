@@ -98,6 +98,7 @@ if (reviewSubmitter) {
             "Rendben" // Egyéni gombszöveg
           );
           popup.open();
+          showDefaultErrorMessage("Sikertelen küldés!");
         } catch (popupError) {
           console.error("Hiba a felugró ablak megjelenítésekor:", popupError);
           // Visszalépés az eredeti hibajelzésre

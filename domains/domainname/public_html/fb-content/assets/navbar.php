@@ -137,11 +137,14 @@ $menu_items = [
 <link rel="stylesheet" href="/fb-content/assets/css/search.css">
 <link rel="stylesheet" href="/fb-content/assets/css/popup.css">
 <link rel="stylesheet" href="/fb-content/assets/css/notification.css">
+<link rel="stylesheet" href="/fb-content/assets/css/cookie_notification.css">
 <link rel="stylesheet" href="/fb-content/fb-products/css/numberfield.css">
 
 <script type="module" src="/fb-content/assets/js/popup.js"></script>
 <script type="module" src="/fb-content/fb-products/js/numberfield.js"></script>
+<script type="module" src="/fb-content/assets/js/cookie_notification.js"></script>
 <script type="module" src="/fb-content/assets/js/cart.js"></script>
+<script defer src="/fb-content/assets/js/dynamic_positioning.js"></script>
 <script type="module">
     import Cart from "/fb-content/assets/js/cart.js";
     const cart = new Cart();
