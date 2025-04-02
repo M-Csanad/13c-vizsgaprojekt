@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  <img src="./domains/domainname/public_html/fb-content/assets/media/images/logos/herbalLogo_white_transparent.png" alt="Florens Botanica" width="600">
+  <img src="./domains/domainname/public_html/fb-content/assets/media/images/logos/herbalLogoWhite.png" alt="Florens Botanica" width="600">
 
 </h1>
 
@@ -8,7 +8,6 @@
 
 <p align="center">
   <a href="#felhasznált-technológiák">Felhasznált technológiák</a> •
-  <a href="#használati-útmutató">Használati útmutató</a> •
   <a href="#letöltés">Letöltés</a> •
   <a href="#források">Források</a> •
   <a href="#licenc">Licenc</a>
@@ -35,31 +34,6 @@
   - A lokális szerver futtatására
 - Python
   - Az alkalmazás tesztelésére és a dinamikus tartalmak kezelésére
-
-## Használati útmutató
-
-Az alkalmazás klónozásához és használatához szükséged lesz a [Git](https://git-scm.com) és a [Node.js](https://nodejs.org/en/download/) (ami az [npm-hez](http://npmjs.com) tartozik) telepítésére. A konzolba az alábbi sorokat kell írnod:
-
-```bash
-# A repository klónozása
-$ git clone https://github.com/M-Csanad/13c-vizsgaprojekt/
-
-# Belépés a repositoryba
-$ cd 13c-vizsgaprojekt
-```
-
-Utolsó sorban pedig keresd meg a httpd.conf fájlt (C:/xampp/apache/conf/httpd.conf), és írd át a következő sort:
-
-```conf
-[...]
-#
-# DocumentRoot: The directory out of which you will serve your
-# documents. By default, all requests are taken from this directory, but
-# symbolic links and aliases may be used to point to other locations.
-#
-DocumentRoot "C:/xampp/htdocs/" ==> "C:/xampp/htdocs/13c-vizsgaprojekt/domains/domainname/public_html"
-[...]
-```
 
 ## Letöltés
 
