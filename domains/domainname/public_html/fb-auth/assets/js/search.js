@@ -298,7 +298,6 @@ function initializeSearch(search) {
       productImagesContainer.innerHTML = "";
       for (let i = 0; i < product_images.length; i++) {
         const image = product_images[i];
-        const imageNumber = i + 1; // Human readable number for each image
         
         productImagesContainer.innerHTML +=
         `

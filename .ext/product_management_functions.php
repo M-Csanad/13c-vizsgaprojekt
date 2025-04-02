@@ -510,19 +510,42 @@ function updateProductDirectory($productData, $imageUpdates)
     }
 
     $paths = array();
-    $galleryCounter = 0;
-
-    var_dump($imageUpdates);
 
     echo "<br>Image Updates:<br>";
     prettyPrintArray($imageUpdates);
 
+
     foreach ($imageUpdates as $imageType => $actions) {
-        foreach ($actions as $action => $update) {
-            
+        foreach ($actions as $action => $updates) {
+            foreach ($updates as $update) {
+                $fileName = null;
+                if ($imageType == "thumbnail_image") {
+                    $fileName = "thumbnail";
+                } 
+                else {
+                    $fileName = "image" . $update["index"];
+                }
+                
+                switch ($action) {
+                    case 'delete':
+                        removeFilesLike($productDirURI, $fileName);
+                        break;
+                    
+                    case 'edit':
+                    case 'add':
+                        $file = $_FILES[$update["fileKey"]];
+                        removeFilesLike($productDirURI, $fileName);
+                        $path = moveFile($file["tmp_name"], $file["name"], $fileName, $productDirURI);
+                        $paths[] = $path;
+                        break;
+    
+                    default:
+                        return new Result(Result::ERROR, "Ismeretlen művelet: $action");
+                        break;
+                }
+            }
         }
     }
-
 
     // foreach ($images as $image) {
     //     $files = scandir($productDirURI);
@@ -594,6 +617,7 @@ function updateProduct($productData, $productHealthEffectsData, $imageUpdates)
             optimizeImage($path);
         }
     }
+    var_dump($paths);
     return new Result(Result::SUCCESS, "Sikeres termék módosítás!");
 
     $result = updateProductData($productData, $images, $paths, $productHealthEffectsData);

@@ -45,7 +45,7 @@ class Dashboard {
             this.setupToggleButtons();
             this.setupCategories();
             
-            // Setup image card observer
+            // Képkártya figyelő beállítása
             this.setupImageCardObserver();
             
             // Kezdeti állapot beállítása
@@ -127,6 +127,27 @@ class Dashboard {
             }
         });
     }
+    /**
+     * Kép indexének kinyerése az URL-ből
+     * @param {string} src - Kép URL/forrás
+     * @returns {number} - A kép indexe vagy -1, ha nem található
+     */
+    extractImageIndexFromSrc(src) {
+        if (!src) return -1;
+        
+        // Mintákat keresünk, mint "image1.jpg" vagy "product_image2.jpg" vagy hasonló
+        const matches = src.match(/image(\d+)|product_image(\d+)|thumbnail(\d+)|.*?(\d+)\.(?:jpg|jpeg|png|gif)/i);
+        if (matches) {
+            // A csoportok egyike tartalmazza majd a számot
+            for (let i = 1; i < matches.length; i++) {
+                if (matches[i]) {
+                    return parseInt(matches[i], 10);
+                }
+            }
+        }
+        
+        return -1;
+    };
 
     /**
      * Következő képazonosító megszerzése az adott típushoz
@@ -524,21 +545,34 @@ class Dashboard {
                                 imageCards.push(node);
                             }
                             
-                            const formTitle = node.closest('form')?.dataset.title;
+                            if (!imageCards.length) return; // Nincs képkártya a csomópontban
+                            
+                            // Form title meghatározása
+                            let formTitle = 'default';
+                            const formElement = node.closest('form');
+                            if (formElement && formElement.dataset.title) {
+                                formTitle = formElement.dataset.title;
+                            }
 
                             // Eseménykezelők csatolása az új képkártyákhoz
-                            imageCards.forEach(card => this.attachImageCardHandlers(card, formTitle));
+                            imageCards.forEach(card => {
+                                if (!card.classList.contains('processed-card')) {
+                                    card.classList.add('processed-card');
+                                    this.attachImageCardHandlers(card, formTitle);
+                                }
+                            });
                             
                             // Hozzáadás gombok keresése
-                            const addButtons = node.querySelectorAll ? 
-                                Array.from(node.querySelectorAll('.add-field-light')) : [];
-                            
-                            if (node.classList && node.classList.contains('add-field-light')) {
-                                addButtons.push(node);
-                            }
+                            if (!formElement) return;
+                            const addButtons = Array.from(formElement.querySelectorAll('.add-field-light'));
                             
                             // Eseménykezelők csatolása az új hozzáadás gombokhoz
-                            addButtons.forEach(button => this.attachAddButtonHandlers(button, formTitle));
+                            addButtons.forEach(button => {
+                                if (!button.classList.contains('processed-button')) {
+                                    button.classList.add('processed-button');
+                                    this.attachAddButtonHandlers(button, formTitle);
+                                }
+                            });
                         }
                     });
                 }
@@ -551,18 +585,24 @@ class Dashboard {
             subtree: true 
         });
         
-        // Meglévő képkártyák kezelése
+        // Meglévő képkártyák kezelése - aktiváljuk ezt a kódot újra
         document.querySelectorAll('.image-card').forEach(card => {
-            const formTitle = card.closest('form')?.dataset.title;
-
-            this.attachImageCardHandlers(card, formTitle);
+            if (!card.classList.contains('processed-card')) {
+                card.classList.add('processed-card');
+                const formElement = card.closest('form');
+                const formTitle = formElement ? formElement.dataset.title || 'default' : 'default';
+                this.attachImageCardHandlers(card, formTitle);
+            }
         });
         
-        // Meglévő hozzáadás gombok kezelése
+        // Meglévő hozzáadás gombok kezelése - ezt is aktiváljuk
         document.querySelectorAll('.add-field-light').forEach(button => {
-            const formTitle = button.closest('form')?.dataset.title;
-
-            this.attachAddButtonHandlers(button, formTitle);
+            if (!button.classList.contains('processed-button')) {
+                button.classList.add('processed-button');
+                const formElement = button.closest('form');
+                const formTitle = formElement ? formElement.dataset.title || 'default' : 'default';
+                this.attachAddButtonHandlers(button, formTitle);
+            }
         });
 
         // Meglévő képkonténerek kezelése
@@ -570,13 +610,22 @@ class Dashboard {
             this.updateDeleteButtonsState(container);
         });
     }
-    
+
     /**
      * Csatolja az eseménykezelőket egy képkártyához
      * @param {HTMLElement} card - A képkártya elem
      * @param {string} formTitle - Az űrlap címe (azonosításhoz)
      */
     attachImageCardHandlers(card, formTitle = 'default') {
+        // Kép indexének kinyerése a képből és mentése a dataset-be
+        const img = card.querySelector('img');
+        if (img && img.src && !card.dataset.imageIndex) {
+            const imageIndex = this.extractImageIndexFromSrc(img.src);
+            if (imageIndex >= 0) {
+                card.dataset.imageIndex = imageIndex;
+            }
+        }
+
         // Törlés gomb kezelése
         const deleteBtn = card.querySelector('.action-delete');
         const parent = card.parentElement;
@@ -599,7 +648,6 @@ class Dashboard {
                     deleteBtn.setAttribute('disabled', 'true');
                     deleteBtn.setAttribute('aria-disabled', 'true');
                     deleteBtn.setAttribute('title', 'Legalább egy képnek maradnia kell');
-                    return; // Nem adunk hozzá kattintás eseménykezelőt
                 }
             }
             
@@ -649,6 +697,11 @@ class Dashboard {
                 // Ha idáig eljutunk, akkor ez egy meglévő elem törlése
                 let updateKey;
                 
+                // Kép indexének meghatározása - elsősorban a dataset-ből
+                const storedIndex = card.dataset.imageIndex ? parseInt(card.dataset.imageIndex, 10) : -1;
+                const imageCards = parent ? parent.querySelectorAll('.image-card') : [];
+                const positionIndex = Array.from(imageCards).indexOf(card);
+                
                 // Kategóriaképekhez fix kulcsok
                 if (imageType === 'horizontal' || imageType === 'vertical') {
                     updateKey = `${imageType}-edit`;
@@ -663,7 +716,8 @@ class Dashboard {
                 formUpdates.set(updateKey, {
                     action: 'delete',
                     imageType: imageType,
-                    id: imageId
+                    id: imageId,
+                    index: storedIndex >= 0 ? storedIndex : positionIndex // Elsősorban a tárolt indexet használjuk
                 });
                 
                 card.remove();
@@ -741,15 +795,16 @@ class Dashboard {
                                     const editId = imageId || this.getNextImageId(formTitle, 'edit');
                                     updateKey = `${imageType}-edit-${editId}`;
                                     
-                                    // Kép indexének meghatározása (0-indexált)
+                                    // Kép indexének meghatározása - elsősorban a dataset-ből
+                                    const storedIndex = card.dataset.imageIndex ? parseInt(card.dataset.imageIndex, 10) : -1;
                                     const imageCards = card.parentElement.querySelectorAll('.image-card');
-                                    const index = Array.from(imageCards).indexOf(card);
+                                    const positionIndex = Array.from(imageCards).indexOf(card);
                                     
                                     formUpdates.set(updateKey, {
                                         action: 'edit',
                                         imageType: imageType === 'thumbnail' ? 'thumbnail' : 'product_image',
                                         fileKey: fileInput.name,
-                                        index: index,
+                                        index: storedIndex >= 0 ? storedIndex : positionIndex,
                                         id: imageId || editId
                                     });
                                 }
@@ -848,6 +903,38 @@ class Dashboard {
                                 (button.closest('.image-cards.vertical') ? 'vertical' : 'horizontal') : 
                                 (button.closest('.image-cards.thumbnail') ? 'thumbnail' : 'product_image');
                             
+                            // Kép indexének meghatározása
+                            let nextIndex = 0;
+                            if (!isCategory) {
+                                const imagesContainer = button.closest('.image-cards');
+                                if (imagesContainer) {
+                                    const existingCards = Array.from(imagesContainer.querySelectorAll('.image-card'));
+                                    
+                                    // Megkeressük a legmagasabb indexet a meglévő képek között
+                                    let highestIndex = -1;
+                                    for (const existingCard of existingCards) {
+                                        const cardIndex = existingCard.dataset.imageIndex ? 
+                                                          parseInt(existingCard.dataset.imageIndex, 10) : -1;
+                                        
+                                        if (cardIndex > highestIndex) {
+                                            highestIndex = cardIndex;
+                                        } else if (cardIndex === -1) {
+                                            // Ha nincs index a dataset-ben, próbáljuk kinyerni a képből
+                                            const cardImg = existingCard.querySelector('img');
+                                            if (cardImg && cardImg.src) {
+                                                const extractedIndex = this.extractImageIndexFromSrc(cardImg.src);
+                                                if (extractedIndex > highestIndex) {
+                                                    highestIndex = extractedIndex;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    // Következő index a legmagasabb + 1
+                                    nextIndex = highestIndex + 1;
+                                }
+                            }
+                            
                             // Hozzáadási adatok egyszerűsített struktúrában
                             if (isCategory) {
                                 // Kategória képeknél
@@ -858,15 +945,11 @@ class Dashboard {
                                 });
                             } else {
                                 // Termék képeknél
-                                // Kép indexének meghatározása (hány kép van már a containerben)
-                                const imagesContainer = button.closest('.image-cards');
-                                const currentCount = imagesContainer ? imagesContainer.querySelectorAll('.image-card').length : 0;
-                                
                                 formUpdates.set(updateKey, {
                                     action: 'add',
                                     imageType: imageTypeValue,
                                     fileKey: inputName,
-                                    index: currentCount, // 0-indexelt pozíció
+                                    index: nextIndex // Az új képindex
                                 });
                             }
                             
@@ -880,6 +963,11 @@ class Dashboard {
                                     newCard.className = 'image-card';
                                     newCard.dataset.id = newId;
                                     newCard.dataset.updateKey = updateKey;
+                                    
+                                    // Kártyába mentjük az indexet is
+                                    if (!isCategory) {
+                                        newCard.dataset.imageIndex = nextIndex.toString();
+                                    }
                                     
                                     // Kártya HTML létrehozása
                                     newCard.innerHTML = `
