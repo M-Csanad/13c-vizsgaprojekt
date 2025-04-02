@@ -460,7 +460,7 @@ function updateProductImages($productData, $images, $paths)
     return connectProductImages($ids, $productData["id"]);
 }
 
-function updateProductData($productData, $images, $paths, $productHealthEffectsData)
+function updateProductData($productData, $productHealthEffectsData)
 {
 
     $fields = array("name", "unit_price", "stock", "description", "net_weight");
@@ -497,18 +497,10 @@ function updateProductData($productData, $images, $paths, $productHealthEffectsD
     }
 
     $result = updateProductHealthEffect($productData['id'], $productHealthEffectsData);
-    if (!$result->isSuccess()) {
-        return $result;
-    }
-
-    if (count($images) > 0 && count($paths) > 0) {
-        return updateProductImages($productData, $images, $paths);
-    }
-
     return $result;
 }
 
-function updateProductDirectory($productData, $images)
+function updateProductDirectory($productData, $imageUpdates)
 {
 
     $productDirURI = getProductDir($productData);
@@ -517,59 +509,67 @@ function updateProductDirectory($productData, $images)
         return new Result(Result::ERROR, "Hiányzó mappa: $productDirURI");
     }
 
-    $thumbnailImages = array('thumbnail_image');
-    if (isset($_FILES['product_video']))
-        array_push($thumbnailImages, 'product_video');
-
     $paths = array();
     $galleryCounter = 0;
 
-    foreach ($images as $image) {
-        $files = scandir($productDirURI);
+    var_dump($imageUpdates);
 
-        if ($image["name"] != "product_image") {
-            $tmp = $image["tmp_name"];
-            $name = "thumbnail";
-            $ext = $image["ext"];
-            $path = $productDirURI . "$name." . $ext;
+    echo "<br>Image Updates:<br>";
+    prettyPrintArray($imageUpdates);
 
-            $existingImage = null;
-            foreach ($files as $file) {
-                $path = $productDirURI . $file;
-                if (pathinfo($path, PATHINFO_FILENAME) == $name && str_contains($image["name"], explode("/", mime_content_type($path))[0])) {
-                    $existingImage = $path;
-                }
-            }
-
-            if ($existingImage) {
-                array_push($paths, replaceFile($existingImage, $tmp, "$name.$ext", $name));
-            } else {
-                array_push($paths, moveFile($tmp, "$name.$ext", $name, $productDirURI));
-            }
-        } else {
-            $tmp = $image["tmp_name"];
-            $name = "image$galleryCounter";
-            $ext = $image["ext"];
-            $path = $productDirURI . "$name." . $ext;
-
-            if ($galleryCounter == 0) {
-                foreach ($files as $file) {
-                    if (preg_match('/^image\d+\.\w+$/', $file)) {
-                        unlink($productDirURI . $file);
-                    }
-                }
-            }
-
-            array_push($paths, moveFile($tmp, "$name.$ext", $name, $productDirURI));
-            $galleryCounter++;
+    foreach ($imageUpdates as $imageType => $actions) {
+        foreach ($actions as $action => $update) {
+            
         }
-
     }
+
+
+    // foreach ($images as $image) {
+    //     $files = scandir($productDirURI);
+
+    //     if ($image["name"] != "product_image") {
+    //         $tmp = $image["tmp_name"];
+    //         $name = "thumbnail";
+    //         $ext = $image["ext"];
+    //         $path = $productDirURI . "$name." . $ext;
+
+    //         $existingImage = null;
+    //         foreach ($files as $file) {
+    //             $path = $productDirURI . $file;
+    //             if (pathinfo($path, PATHINFO_FILENAME) == $name && str_contains($image["name"], explode("/", mime_content_type($path))[0])) {
+    //                 $existingImage = $path;
+    //             }
+    //         }
+
+    //         if ($existingImage) {
+    //             array_push($paths, replaceFile($existingImage, $tmp, "$name.$ext", $name));
+    //         } else {
+    //             array_push($paths, moveFile($tmp, "$name.$ext", $name, $productDirURI));
+    //         }
+    //     } else {
+    //         $tmp = $image["tmp_name"];
+    //         $name = "image$galleryCounter";
+    //         $ext = $image["ext"];
+    //         $path = $productDirURI . "$name." . $ext;
+
+    //         if ($galleryCounter == 0) {
+    //             foreach ($files as $file) {
+    //                 if (preg_match('/^image\d+\.\w+$/', $file)) {
+    //                     unlink($productDirURI . $file);
+    //                 }
+    //             }
+    //         }
+
+    //         array_push($paths, moveFile($tmp, "$name.$ext", $name, $productDirURI));
+    //         $galleryCounter++;
+    //     }
+
+    // }
 
     return new Result(Result::SUCCESS, $paths);
 }
 
-function updateProduct($productData, $productHealthEffectsData)
+function updateProduct($productData, $productHealthEffectsData, $imageUpdates)
 {
     include_once "init.php";
 
@@ -577,25 +577,11 @@ function updateProduct($productData, $productHealthEffectsData)
         return new Result(Result::ERROR, "Hiba merült fel a feltöltés során.");
     }
 
-    $images = array();
     $paths = array();
 
-    if (isset($_FILES["thumbnail_image"])) {
-        array_push($images, array("name" => "thumbnail_image", "tmp_name" => $_FILES["thumbnail_image"]["tmp_name"], "ext" => pathinfo($_FILES["thumbnail_image"]["name"], PATHINFO_EXTENSION)));
-    }
-    if (isset($_FILES["product_images"])) {
-        $count = count($_FILES["product_images"]["name"]);
-
-        for ($i = 0; $i < $count; $i++) {
-            array_push($images, array("name" => "product_image", "tmp_name" => $_FILES["product_images"]["tmp_name"][$i], "ext" => pathinfo($_FILES["product_images"]["name"][$i], PATHINFO_EXTENSION)));
-        }
-    }
-    if (isset($_FILES["product_video"])) {
-        array_push($images, array("name" => "product_video", "tmp_name" => $_FILES["product_video"]["tmp_name"], "ext" => pathinfo($_FILES["product_video"]["name"], PATHINFO_EXTENSION)));
-    }
-
-    if (count($images) > 0) {
-        $result = updateProductDirectory($productData, $images);
+    if ($imageUpdates) {
+        $imageUpdates = groupUpdates($imageUpdates);
+        $result = updateProductDirectory($productData, $imageUpdates);
         if ($result->isError()) {
             return $result;
         }
@@ -604,20 +590,15 @@ function updateProduct($productData, $productHealthEffectsData)
         if (hasError($paths))
             return new Result(Result::ERROR, "A képek mozgatása sikertelen volt.");
 
-        for ($i = 0; $i < count($images); $i++) {
-            $productData[$images[$i]["name"]] = $paths[$i];
+        foreach ($paths as $path) {
+            optimizeImage($path);
         }
     }
+    return new Result(Result::SUCCESS, "Sikeres termék módosítás!");
 
     $result = updateProductData($productData, $images, $paths, $productHealthEffectsData);
     if (!$result->isSuccess()) {
         return $result;
-    }
-
-    if (count($images) > 0) {
-        foreach ($paths as $path) {
-            optimizeImage($path);
-        }
     }
 
     return new Result(Result::SUCCESS, "Sikeres termék létrehozás!");

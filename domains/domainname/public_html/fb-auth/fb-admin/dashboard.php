@@ -191,15 +191,17 @@
         }
 
         $imageUpdates = $_POST['image_updates'] ?? null;
-        var_dump($imageUpdates, $_FILES);
+        if ($imageUpdates) {
+            $imageUpdates = json_decode($imageUpdates, true);
+        }
          
-        // $result = updateProduct($productData, $productHealthEffectsData);
-        // if (!$result->isError()) {
-        //     $message = "<div class='success'>Termék sikeresen módosítva!</div></div>";
-        // }
-        // else {
-        //     $message = "<div class='error'>A termék módosítása sikertelen! {$result->message}</div></div>";
-        // }
+        $result = updateProduct($productData, $productHealthEffectsData, $imageUpdates);
+        if (!$result->isError()) {
+            $message = "<div class='success'>Termék sikeresen módosítva!</div></div>";
+        }
+        else {
+            $message = "<div class='error'>A termék módosítása sikertelen! {$result->message}</div></div>";
+        }
     }
     
     //Termék törlése

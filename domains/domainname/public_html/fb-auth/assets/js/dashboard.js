@@ -662,6 +662,7 @@ class Dashboard {
                 // Törlési adatok rögzítése meglévő képekhez
                 formUpdates.set(updateKey, {
                     action: 'delete',
+                    imageType: imageType,
                     id: imageId
                 });
                 
@@ -865,8 +866,7 @@ class Dashboard {
                                     action: 'add',
                                     imageType: imageTypeValue,
                                     fileKey: inputName,
-                                    index: currentCount, // 0-indexált pozíció
-                                    id: newId
+                                    index: currentCount, // 0-indexelt pozíció
                                 });
                             }
                             
