@@ -611,7 +611,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" enctype="multipart/form-data" data-role="modify" data-needs-confirm="true" data-confirm-message="A kategória módosítása nem visszavonható művelet!" data-show-loader="true">
+                    <form method="POST" enctype="multipart/form-data" data-role="modify" data-title="category-modify" data-needs-confirm="true" data-confirm-message="A kategória módosítása nem visszavonható művelet!" data-show-loader="true">
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-autofill-fields="true" data-search-type="category" data-id-input="category_id_modify" data-type-input="category_type_modify">
@@ -1113,7 +1113,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" enctype="multipart/form-data" data-role="modify" data-needs-confirm="true" data-confirm-message="A termék módosítása nem visszavonható művelet!" data-show-loader="true">
+                    <form method="POST" enctype="multipart/form-data" data-role="modify" data-title="product-modify" data-needs-confirm="true" data-confirm-message="A termék módosítása nem visszavonható művelet!" data-show-loader="true">
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-search-type="product" data-id-input="product_id" data-autofill-fields="true">

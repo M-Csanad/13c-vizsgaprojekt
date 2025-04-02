@@ -17,7 +17,7 @@ class Dashboard {
             }
         };
 
-        this.imageUpdates = [];
+        this.imageUpdates = new Map();
 
         // Az osztály inicializálása
         this.init();
@@ -160,6 +160,8 @@ class Dashboard {
                     this.closePopup(popup);
 
                     if (form.dataset.role === "modify") {
+
+
                         let hiddenInput = form.querySelector('input[name="image_updates"]');
             
                         // Ha nincs, létrehozunk egyet
@@ -492,8 +494,10 @@ class Dashboard {
                                 imageCards.push(node);
                             }
                             
+                            const formTitle = node.closest('form')?.dataset.title;
+
                             // Eseménykezelők csatolása az új képkártyákhoz
-                            imageCards.forEach(card => this.attachImageCardHandlers(card));
+                            imageCards.forEach(card => this.attachImageCardHandlers(card, formTitle));
                             
                             // Hozzáadás gombok keresése
                             const addButtons = node.querySelectorAll ? 
@@ -504,7 +508,7 @@ class Dashboard {
                             }
                             
                             // Eseménykezelők csatolása az új hozzáadás gombokhoz
-                            addButtons.forEach(button => this.attachAddButtonHandlers(button));
+                            addButtons.forEach(button => this.attachAddButtonHandlers(button, formTitle));
                         }
                     });
                 }
@@ -519,20 +523,25 @@ class Dashboard {
         
         // Meglévő képkártyák kezelése
         document.querySelectorAll('.image-card').forEach(card => {
-            this.attachImageCardHandlers(card);
+            const formTitle = card.closest('form')?.dataset.title;
+
+            this.attachImageCardHandlers(card, formTitle);
         });
         
         // Meglévő hozzáadás gombok kezelése
         document.querySelectorAll('.add-field-light').forEach(button => {
-            this.attachAddButtonHandlers(button);
+            const formTitle = button.closest('form')?.dataset.title;
+
+            this.attachAddButtonHandlers(button, formTitle);
         });
     }
     
     /**
      * Csatolja az eseménykezelőket egy képkártyához
      * @param {HTMLElement} card - A képkártya elem
+     * @param {string} formTitle - Az űrlap címe (azonosításhoz)
      */
-    attachImageCardHandlers(card) {
+    attachImageCardHandlers(card, formTitle) {
         // Törlés gomb kezelése
         const deleteBtn = card.querySelector('.action-delete');
         if (deleteBtn) {
