@@ -719,6 +719,7 @@ class Dashboard {
                     id: imageId,
                     index: storedIndex >= 0 ? storedIndex : positionIndex // Elsősorban a tárolt indexet használjuk
                 });
+
                 
                 card.remove();
                 
@@ -799,10 +800,9 @@ class Dashboard {
                                     const storedIndex = card.dataset.imageIndex ? parseInt(card.dataset.imageIndex, 10) : -1;
                                     const imageCards = card.parentElement.querySelectorAll('.image-card');
                                     const positionIndex = Array.from(imageCards).indexOf(card);
-                                    
                                     formUpdates.set(updateKey, {
                                         action: 'edit',
-                                        imageType: imageType === 'thumbnail' ? 'thumbnail' : 'product_image',
+                                        imageType: imageType === 'thumbnail' ? 'thumbnail_image' : 'product_image',
                                         fileKey: fileInput.name,
                                         index: storedIndex >= 0 ? storedIndex : positionIndex,
                                         id: imageId || editId
@@ -901,7 +901,7 @@ class Dashboard {
                             const isCategory = itemType === 'category';
                             const imageTypeValue = isCategory ? 
                                 (button.closest('.image-cards.vertical') ? 'vertical' : 'horizontal') : 
-                                (button.closest('.image-cards.thumbnail') ? 'thumbnail' : 'product_image');
+                                (button.closest('.image-cards.thumbnail') ? 'thumbnail_image' : 'product_image');
                             
                             // Kép indexének meghatározása
                             let nextIndex = 0;

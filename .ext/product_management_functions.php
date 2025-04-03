@@ -403,13 +403,11 @@ function updateProductImages($productData, $imageUpdates)
 {
     $insertIds = [];
 
-    prettyPrintArray($productData);
     foreach ($imageUpdates as $imageType => $actions) {
         foreach ($actions as $action => $updates) {
             foreach ($updates as $update) {
                 switch ($action) {
                     case 'delete':
-                        echo "Kép törlése az adatbázisból";
                         $imageId = intval($update["id"]);
                         $result = updateData("DELETE FROM `image` WHERE id = ?;", $imageId, "i");
                         if ($result->isError()) {
@@ -422,8 +420,6 @@ function updateProductImages($productData, $imageUpdates)
                         break;
 
                     case 'add':
-                        echo "Kép hozzáadása";
-
                         $path = $update["path"];
                         $path = absoluteToRelativeURL($path);
                         $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, getOrientation($path), "image"], "sss");
@@ -508,10 +504,6 @@ function updateProductDirectory($productData, &$imageUpdates)
 
     $paths = array();
 
-    echo "<br>Image Updates:<br>";
-    prettyPrintArray($imageUpdates);
-
-
     foreach ($imageUpdates as $imageType => &$actions) {
         foreach ($actions as $action => &$updates) {
             foreach ($updates as &$update) {
@@ -583,8 +575,6 @@ function updateProduct($productData, $productHealthEffectsData, $imageUpdates)
             optimizeImage($path);
         }
     }
-    var_dump($paths);
-    prettyPrintArray($imageUpdates);
 
     $result = updateProductData($productData, $imageUpdates, $productHealthEffectsData);
     if (!$result->isSuccess()) {

@@ -1,3 +1,5 @@
+import RateLimiter from "../../assets/js/ratelimit.js";
+
 /**
  * Ellenőrzi a bevitelt, hogy érvényes szám legyen a min/max korlátokon belül
  * @param {HTMLInputElement} input - A beviteli elem
@@ -101,6 +103,11 @@ export const handleQuantityChange = async (input, delta, onCartDelta = null) => 
  * @param {Function|null} onCartDelta - Opcionális callback a kosár API frissítéséhez
  */
 export const setupNumberField = (container = document, onCartDelta = null) => {
+    const limiter = new RateLimiter(
+        {
+            "change": 5
+        }
+    )
     const inputs = container.querySelectorAll('.product-quantity');
     inputs.forEach(input => {
         // Ha már be van állítva, akkor kihagyjuk
@@ -133,19 +140,35 @@ export const setupNumberField = (container = document, onCartDelta = null) => {
             }
             return;
         }
-
+        
         // Eseménykezelők hozzáadása
-        input.addEventListener('input', (e) => validateInput(e.target));
-        input.addEventListener('blur', (e) => handleBlur(e.target, onCartDelta));
+        input.addEventListener('input', (e) => {
+            const isLimited = limiter.useArea("change");
+            if (isLimited) return;
+
+            validateInput(e.target);
+        });
+        input.addEventListener('blur', (e) => {
+            const isLimited = limiter.useArea("change");
+            if (isLimited) return;
+
+            handleBlur(e.target, onCartDelta);
+        });
 
         if (addButton) {
             addButton.addEventListener('click', async () => {
+                const isLimited = limiter.useArea("change");
+                if (isLimited) return;
+
                 await handleQuantityChange(input, 1, onCartDelta);
             });
         }
 
         if (subtractButton) {
             subtractButton.addEventListener('click', async () => {
+                const isLimited = limiter.useArea("change");
+                if (isLimited) return;
+
                 await handleQuantityChange(input, -1, onCartDelta);
             });
         }
