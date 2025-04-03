@@ -34,7 +34,80 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
 </head>
 
 <body>
-<div class=transition><div class=transition-background></div><div class=transition-text><div class=hero><div class=char>F</div><div class=char>l</div><div class=char>o</div><div class=char>r</div><div class=char>e</div><div class=char>n</div><div class=char>s</div><div class=char> </div><div class=char>B</div><div class=char>o</div><div class=char>t</div><div class=char>a</div><div class=char>n</div><div class=char>i</div><div class=char>c</div><div class=char>a</div></div><div class=quote><div class=char>"</div><div class=char>A</div><div class=char> </div><div class=char>l</div><div class=char>e</div><div class=char>g</div><div class=char>n</div><div class=char>a</div><div class=char>g</div><div class=char>y</div><div class=char>o</div><div class=char>b</div><div class=char>b</div><div class=char> </div><div class=char>g</div><div class=char>a</div><div class=char>z</div><div class=char>d</div><div class=char>a</div><div class=char>g</div><div class=char>s</div><div class=char>á</div><div class=char>g</div><div class=char> </div><div class=char>a</div><div class=char>z</div><div class=char> </div><div class=char>e</div><div class=char>g</div><div class=char>é</div><div class=char>s</div><div class=char>z</div><div class=char>s</div><div class=char>é</div><div class=char>g</div><div class=char>.</div><div class=char>"</div><div class=char> </div><div class=char>-</div><div class=char> </div><div class=char>V</div><div class=char>e</div><div class=char>r</div><div class=char>g</div><div class=char>i</div><div class=char>l</div><div class=char>i</div><div class=char>u</div><div class=char>s</div></div></div></div>
+  <div class=transition>
+    <div class=transition-background></div>
+    <div class=transition-text>
+      <div class=hero>
+        <div class=char>F</div>
+        <div class=char>l</div>
+        <div class=char>o</div>
+        <div class=char>r</div>
+        <div class=char>e</div>
+        <div class=char>n</div>
+        <div class=char>s</div>
+        <div class=char> </div>
+        <div class=char>B</div>
+        <div class=char>o</div>
+        <div class=char>t</div>
+        <div class=char>a</div>
+        <div class=char>n</div>
+        <div class=char>i</div>
+        <div class=char>c</div>
+        <div class=char>a</div>
+      </div>
+      <div class=quote>
+        <div class=char>"</div>
+        <div class=char>A</div>
+        <div class=char> </div>
+        <div class=char>l</div>
+        <div class=char>e</div>
+        <div class=char>g</div>
+        <div class=char>n</div>
+        <div class=char>a</div>
+        <div class=char>g</div>
+        <div class=char>y</div>
+        <div class=char>o</div>
+        <div class=char>b</div>
+        <div class=char>b</div>
+        <div class=char> </div>
+        <div class=char>g</div>
+        <div class=char>a</div>
+        <div class=char>z</div>
+        <div class=char>d</div>
+        <div class=char>a</div>
+        <div class=char>g</div>
+        <div class=char>s</div>
+        <div class=char>á</div>
+        <div class=char>g</div>
+        <div class=char> </div>
+        <div class=char>a</div>
+        <div class=char>z</div>
+        <div class=char> </div>
+        <div class=char>e</div>
+        <div class=char>g</div>
+        <div class=char>é</div>
+        <div class=char>s</div>
+        <div class=char>z</div>
+        <div class=char>s</div>
+        <div class=char>é</div>
+        <div class=char>g</div>
+        <div class=char>.</div>
+        <div class=char>"</div>
+        <div class=char> </div>
+        <div class=char>-</div>
+        <div class=char> </div>
+        <div class=char>V</div>
+        <div class=char>e</div>
+        <div class=char>r</div>
+        <div class=char>g</div>
+        <div class=char>i</div>
+        <div class=char>l</div>
+        <div class=char>i</div>
+        <div class=char>u</div>
+        <div class=char>s</div>
+      </div>
+    </div>
+  </div>
 
   <header>
     <section id="StickyNavbar_container">
@@ -256,9 +329,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
   <script src="https://unpkg.com/lenis@1.1.14/dist/lenis.min.js"></script>
   <script src="http://localhost/fb-content/assets/js/lenis.js"></script>
 
-  <!--ionicons-->
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
 </body>
 
 </html>
