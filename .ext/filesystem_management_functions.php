@@ -229,3 +229,7 @@ function formatValue($value)
         return gettype($value) . "($value)";
     }
 }
+
+function absoluteToRelativeURL($absolute) {
+    return str_replace($_SERVER["DOCUMENT_ROOT"], ROOT_URL, $absolute);
+}

@@ -403,21 +403,18 @@ function updateProductImages($productData, $imageUpdates)
 {
     $insertIds = [];
 
-    foreach ($imageUpdates as $imageType => &$actions) {
-        foreach ($actions as $action => &$updates) {
-            foreach ($updates as &$update) {
-                $fileName = null;
-                if ($imageType == "thumbnail_image") {
-                    $fileName = "thumbnail";
-                } 
-                else {
-                    $fileName = "image" . $update["index"];
-                }
-                
+    prettyPrintArray($productData);
+    foreach ($imageUpdates as $imageType => $actions) {
+        foreach ($actions as $action => $updates) {
+            foreach ($updates as $update) {
                 switch ($action) {
                     case 'delete':
                         echo "Kép törlése az adatbázisból";
-                        
+                        $imageId = intval($update["id"]);
+                        $result = updateData("DELETE FROM `image` WHERE id = ?;", $imageId, "i");
+                        if ($result->isError()) {
+                            return $result;
+                        }
                         break;
                     
                     case 'edit':
@@ -425,7 +422,16 @@ function updateProductImages($productData, $imageUpdates)
                         break;
 
                     case 'add':
-                        echo "Kép hozzáadása";$insertIds = [];
+                        echo "Kép hozzáadása";
+
+                        $path = $update["path"];
+                        $path = absoluteToRelativeURL($path);
+                        $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, getOrientation($path), "image"], "sss");
+                        if ($result->isError() || !$result->lastInsertId) {
+                            return $result;
+                        }
+
+                        $insertIds[] = $result->lastInsertId;
                         break;
     
                     default:
@@ -437,65 +443,10 @@ function updateProductImages($productData, $imageUpdates)
     }
 
     if (count($insertIds) > 0) {
-        echo "Képek összekötése";
+        return connectProductImages($insertIds, $productData["id"]);
     }
-    // if (count($paths) == 0 || count($images) == 0) {
-    //     return new Result(Result::ERROR, "Nincs kép vagy elérési útvonal.");
-    // }
-    // if (count(array_filter($images, function ($e) {
-    //         return $e["name"] == "product_image";
-    //     })) > 0
-    // ) {
-    //     $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%image%' AND image.uri NOT LIKE '%thumbnail%' AND product_image.product_id=?;", $productData["id"], "i");
-    //     if ($result->isError()) {
-    //         return $result;
-    //     }
-    // }
-    // if (
-    //     count(array_filter($images, function ($e) {
-    //         return $e["name"] == "thumbnail_image";
-    //     })) > 0
-    // ) {
-    //     $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%thumbnail%' AND image.media_type='image' AND product_image.product_id=?;", $productData["id"], "i");
-    //     if ($result->isError()) {
-    //         return $result;
-    //     }
-    // }
-    // if (
-    //     count(array_filter($images, function ($e) {
-    //         return $e["name"] == "product_video";
-    //     })) > 0
-    // ) {
-    //     $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%thumbnail%' AND image.media_type='video' AND product_image.product_id=?;", $productData["id"], "i");
-    //     if ($result->isError()) {
-    //         return $result;
-    //     }
-    // }
-    // $ids = array();
-    // for ($i = 0; $i < count($paths); $i++) {
-    //     $image = $images[$i];
-    //     $path = str_replace($_SERVER["DOCUMENT_ROOT"], ROOT_URL, $paths[$i]);
 
-    //     if ($image["name"] == "thumbnail_image" || $image["name"] == "product_image") {
-
-    //         $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, getOrientation($path), "image"], "sss");
-    //         if ($result->isError() || !$result->lastInsertId) {
-    //             return $result;
-    //         }
-
-    //         array_push($ids, $result->lastInsertId);
-    //     } else if ($image["name"] == "product_video") {
-
-    //         $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, "horizontal", "video"], "sss");
-    //         if ($result->isError() || !$result->lastInsertId) {
-    //             return $result;
-    //         }
-
-    //         array_push($ids, $result->lastInsertId);
-    //     }
-    // }
-
-    // return connectProductImages($ids, $productData["id"]);
+    return new Result(Result::SUCCESS, "Sikeres képmódosítás!");
 }
 
 function updateProductData($productData, $imageUpdates, $productHealthEffectsData)
@@ -587,7 +538,9 @@ function updateProductDirectory($productData, &$imageUpdates)
                         $paths[] = $path;
 
                         // Hozzáadjuk az update objektumhoz
-                        $update["path"] = $path;
+                        if ($action == 'add') {
+                            $update["path"] = $path;
+                        }
                         break;
     
                     default:
@@ -596,6 +549,10 @@ function updateProductDirectory($productData, &$imageUpdates)
                 }
             }
         }
+    }
+
+    if (hasError($paths)) {
+        return new Result(Result::ERROR, "Hiba a fájlok mozgatása során.");
     }
 
     return new Result(Result::SUCCESS, $paths);
@@ -634,5 +591,5 @@ function updateProduct($productData, $productHealthEffectsData, $imageUpdates)
         return $result;
     }
 
-    return new Result(Result::SUCCESS, "Sikeres termék létrehozás!");
+    return new Result(Result::SUCCESS, "Sikeres termék módosítás!");
 }
