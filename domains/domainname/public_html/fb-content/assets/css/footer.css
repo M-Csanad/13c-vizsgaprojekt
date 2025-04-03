@@ -149,6 +149,15 @@ footer h3 {
   border-radius: 50%;
   margin: 5px 0;
 }
+
+.fb-socialinks-container .fb-socialmedia svg{
+  height: auto;
+  width: 60%;
+}
+.fb-socialinks-container .fb-socialmedia:hover svg{
+  fill:rgb(255, 255, 255)
+}
+
 .fb-f-col .fb-socialinks-container .fb-social-cont-mini {
   display: flex;
   flex-flow: row wrap;

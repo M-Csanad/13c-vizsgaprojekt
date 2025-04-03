@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
                                                     <div class="fb-social-cont-mini">
                                                         <p class="fb-text fb-socialtext">${link.name}</p>
                                                         <a class="fb-socialmedia fb-links" href="${link.url}" target="_blank" rel="noopener">
-                                                            <ion-icon role="img" class="md hydrated" name="${link.icon}"></ion-icon>
+                                                            ${link.icon}
                                                         </a>
                                                     </div>
                                                 </div>
