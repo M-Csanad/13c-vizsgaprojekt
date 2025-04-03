@@ -762,7 +762,7 @@
     <footer id="fb-footer"></footer>
 
   <div id="floatingCart" class="floating-cart">
-    <button class="floating-add-to-cart quick-add" <?= ($product["stock"] <= 0 ? 'disabled' : '') ?>>
+    <button class="floating-add-to-cart" <?= ($product["stock"] <= 0 ? 'disabled' : '') ?>>
         <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"

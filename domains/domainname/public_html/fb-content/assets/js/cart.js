@@ -116,6 +116,7 @@ class Cart {
 
     // Kosárba rakó gombok
     this.cartAddButtons = document.querySelectorAll(".add-to-cart");
+    this.floatingCartAddButton = document.querySelector(".floating-add-to-cart");
 
     this.quantityInput = document.querySelector(".product-quantity");
 
@@ -155,6 +156,8 @@ class Cart {
     this.cartAddButtons.forEach((button) =>
       button.addEventListener("click", this.add.bind(this))
     );
+
+    this.floatingCartAddButton?.addEventListener("click", this.add.bind(this));
 
     this.cartContainer.addEventListener("click", async (e) => {
       if (e.target.closest(".item-remove")) {
@@ -198,11 +201,10 @@ class Cart {
   }
 
   setupCardEvents() {
-    const cardsContainer = document.querySelector(".cards");
-    if (!cardsContainer) return;
+    document.body.addEventListener("click", (e) => {
+      // const card = e.target.closest('.card');
+      // if (!card) return;
 
-    // Handle click events on quick-add buttons within card containers
-    document.addEventListener("click", (e) => {
       const quickAddButton = e.target.closest(".quick-add");
       if (!quickAddButton) return;
 
@@ -651,12 +653,6 @@ class Cart {
 
 export default Cart;
 
-// Automatikusan inicializáljuk, ha önálló szkriptként töltődik be
-if (
-  document.currentScript &&
-  document.currentScript.getAttribute("init") !== "false"
-) {
-  document.addEventListener("DOMContentLoaded", () => {
-    window.cart = new Cart();
-  });
-}
+document.addEventListener("DOMContentLoaded", () => {
+  window.cart = new Cart();
+});

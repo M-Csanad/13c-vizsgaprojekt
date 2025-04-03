@@ -145,10 +145,6 @@ $menu_items = [
 <script type="module" src="/fb-content/assets/js/cookie_notification.js"></script>
 <script type="module" src="/fb-content/assets/js/cart.js"></script>
 <script defer src="/fb-content/assets/js/dynamic_positioning.js"></script>
-<script type="module">
-    import Cart from "/fb-content/assets/js/cart.js";
-    const cart = new Cart();
-</script>
 <script defer type="module" src="/fb-content/assets/js/search.js"></script>
 <script defer type="module" src="/fb-content/assets/js/autogenerate__navbar.js"></script>
 

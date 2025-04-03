@@ -88,10 +88,11 @@ class Notification {
         
         // Kezdeti állapot
         gsap.set(this.element, { 
-            x: '100%', 
+            y: '150%',
+            x: '50%',
             opacity: 0,
             bottom: '20px',
-            right: '20px'
+            right: '50%'
         });
         
         // Értesítés magasságának lekérése (halmozási célokra)
@@ -101,7 +102,7 @@ class Notification {
         
         // Belépési animáció
         gsap.to(this.element, {
-            x: '0%',
+            y: '0%',
             opacity: 1,
             duration: 0.5,
             ease: 'power2.out',
@@ -144,7 +145,7 @@ class Notification {
         
         // Kilépési animáció
         gsap.to(this.element, {
-            x: '100%',
+            y: '150%',
             opacity: 0,
             duration: 0.5,
             ease: 'power2.in',
@@ -171,7 +172,7 @@ class Notification {
         
         // Gyors kilépési animáció
         gsap.to(this.element, {
-            x: '100%',
+            y: '150%',
             opacity: 0,
             duration: 0.3,
             ease: 'power1.in',
