@@ -12,7 +12,7 @@ $footerData = [
             ['text' => 'Kategóriák', 'url' => "$base_url#categoryGallery"],
             ['text' => 'Adatvédelem', 'url' => "$base_url/privacy-policy"],
             ['text' => 'Rólunk', 'url' => "$base_url/about-us"],
-            ['text' => 'Szerzői jog', 'url' => '#'],
+            ['text' => 'Szerzői jog', 'url' => "$base_url/privacy-policy#copyright"],
         ],
         'Csapatunk' => [
             ['name' => 'Csanád', 'url' => "$base_url/about-us", 'icon' => $svg],
@@ -28,5 +28,3 @@ $footerData = [
 header('Content-Type: application/json');
 echo json_encode($footerData);
 exit;
-?>
-
