@@ -506,6 +506,15 @@ form > .input-grid {
     height: 100px;
 }
 
+.inline-input:has(.image-cards), .inline-input:has(.image-cards) > .input-content {
+    height: 125px;
+    overflow: visible !important;
+}
+
+.inline-input:has(.image-cards) .input-container {
+    align-items: center;
+}
+
 .inline-input > .input-content > div > textarea {
     resize: none;
     height: 100%;
@@ -674,6 +683,133 @@ form > .input-grid {
     background-color: #e8e8e8;
 }
 
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0,0,0,0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.add-field-light {
+    flex-shrink: 0;
+    display: flex;
+    user-select: none;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    height: 125px;
+    width: 125px;
+    font-size: 40px;
+    background-color: #e9e9e9;
+    border: 3px solid #a0a0a0;
+    box-shadow: 2px 2px 5px #c5c5c5;
+    color: #666666;
+    border-radius: 10px;
+    font-family: 'Courier New', Courier, monospace;
+    transition: color 0.2s ease, background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.add-field-light:hover {
+    background-color: #eaf5e3;
+    border-color: #85c838;
+    color: #447711;
+}
+
+.add-field-light label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    font-size: 40px;
+    cursor: pointer;
+}
+
+.image-cards {
+    display: flex;
+    height: 125px !important;
+    align-items: center;
+}
+
+.image-cards > .image-card {
+    border-radius: 10px;
+    height: 125px;
+    width: 125px;
+    border: 3px solid #a0a0a0;
+    box-shadow: 2px 2px 5px #c5c5c5;
+    position: relative;
+}
+
+.image-card > img {
+    border-radius: 7px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: relative;
+}
+
+.image-card::after {
+    border-radius: 7px;
+    position: absolute;
+    display: block;
+    content: "";
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background: linear-gradient(to bottom, transparent 65%, black 90%);
+}
+
+.image-card > .card-actions {
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+    width: calc(100% - 6px);
+    display: flex;
+    flex-direction: row;
+    z-index: 2;
+}
+
+.card-actions > label, .card-actions > button {
+    cursor: pointer;
+    flex-grow: 1;
+    font-size: 14px;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    padding-block: 0.2rem;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.2s ease;
+}
+
+.card-actions > label > svg, .card-actions > button > svg {
+    pointer-events: none;
+    fill: #b9b9b9;
+    will-change: transform;
+    transition: fill 0.2s ease;
+}
+
+.card-actions > label:hover > svg, .card-actions > button:hover > svg {
+    fill: #ffffff;
+    /* transform: rotate(10deg); */
+}
+
+.card-actions > label:hover, .card-actions > button:hover {
+    background-color: rgba(255, 255, 255, 0.123);
+}
+
+.action-delete.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .form-submit-primary {
     background-color: var(--background-dark);
     color: white;
@@ -776,10 +912,14 @@ section.active .section-header > svg {
         padding-block: 8px;
         padding-inline: 18px;
     }
-    .inline-input {
+    .inline-input:not(:has(.image-cards)) {
         flex-direction: column !important;
         height: 60px !important;
         gap: 5px !important;
+    }
+    .inline-input:has(.image-cards) {
+        flex-direction: column !important;
+        height: fit-content !important;
     }
     .inline-input > * {
         width: 100% !important;

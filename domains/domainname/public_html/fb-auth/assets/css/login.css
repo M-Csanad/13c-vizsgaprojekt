@@ -138,14 +138,9 @@ form {
     width: 100%;
 }
 
-.checkbox-group input[type="checkbox"] {
-    cursor: pointer;
-}
-
 .checkbox-group label {
     margin-left: 0.5rem;
     color: rgb(20, 20, 20);
-    cursor: pointer;
     font-size: 14px;
 }
 

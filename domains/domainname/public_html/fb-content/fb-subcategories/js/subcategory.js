@@ -155,6 +155,7 @@ export default class SubcategorySite {
         const pageProducts = this.filteredProducts.slice(start, end);
 
         if (pageProducts.length === 0 && this.filteredProducts.length === 0) {
+            console.log("rendered: no results");
             this.noResults();
             return;
         }
@@ -165,6 +166,8 @@ export default class SubcategorySite {
             card.style.transform = "translateY(20px)";
             this.cardsContainer.appendChild(card);
         });
+
+        console.log("rendered");
     }
 
     // Új kártyák animált megjelenítése

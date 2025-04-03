@@ -132,3 +132,104 @@ function hasUploadError()
         return $e['error'] == 1;
     })) > 0;
 }
+
+function removeFilesLike($dirURI, $needle) {
+    $files = scandir($dirURI);
+    foreach ($files as $file) {
+        if ($file === '.' || $file === '..') continue;
+
+        if (strpos($file, $needle) !== false) {
+            unlink($dirURI . $file);
+        }
+    }
+}
+
+function groupUpdates($updates)
+{
+    $desired = ['delete', 'edit', 'add'];
+    $grouped = [];
+
+    if (is_array($updates)) {
+        $types = [];
+        foreach ($updates as $update) {
+            if (isset($update['imageType']) && !in_array($update['imageType'], $types)) {
+                $types[] = $update['imageType'];
+            }
+        }
+        
+        foreach ($types as $type) {
+            $grouped[$type] = array_fill_keys($desired, []);
+        }
+        
+        foreach ($updates as $update) {
+            if (isset($update['imageType']) && isset($update['action']) && in_array($update['action'], $desired)) {
+                $grouped[$update['imageType']][$update['action']][] = $update;
+            }
+        }
+    }
+
+    foreach ($grouped as $type => &$actions) {
+        foreach ($actions as $action => $items) {
+            if (empty($items)) {
+                unset($actions[$action]);
+            }
+        }
+    }
+    return $grouped;
+}
+
+function prettyPrintArray($array, $level = 0) 
+{
+    $output = "<pre>\n";
+    $output .= formatArrayRecursive($array, $level);
+    $output .= "</pre>";
+    echo $output;
+}
+
+function formatArrayRecursive($array, $level = 0) 
+{
+    if (!is_array($array)) {
+        return formatValue($array);
+    }
+    
+    $indent = str_repeat("    ", $level);
+    $output = "Array (" . count($array) . ") {\n";
+    
+    foreach ($array as $key => $value) {
+        $output .= $indent . "    [" . (is_string($key) ? "\"$key\"" : $key) . "] => ";
+        
+        if (is_array($value)) {
+            $output .= "\n" . $indent . "    " . formatArrayRecursive($value, $level + 1);
+        } else {
+            $output .= formatValue($value) . "\n";
+        }
+    }
+    
+    $output .= $indent . "}\n";
+    return $output;
+}
+
+function formatValue($value) 
+{
+    if (is_string($value)) {
+        return "string(" . strlen($value) . ") \"$value\"";
+    } elseif (is_int($value)) {
+        return "int($value)";
+    } elseif (is_float($value)) {
+        return "float($value)";
+    } elseif (is_bool($value)) {
+        return "bool(" . ($value ? "true" : "false") . ")";
+    } elseif (is_null($value)) {
+        return "NULL";
+    } elseif (is_object($value)) {
+        return "object(" . get_class($value) . ")";
+    } elseif (is_resource($value)) {
+        return "resource(" . get_resource_type($value) . ")";
+    } else {
+        return gettype($value) . "($value)";
+    }
+}
+
+function absoluteToRelativeURL($absolute) {
+    return str_replace($_SERVER["DOCUMENT_ROOT"], ROOT_URL, $absolute);
+}

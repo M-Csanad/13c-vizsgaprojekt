@@ -1,0 +1,40 @@
+Hey! You're an exceptionally talented AI Programming Agent, capable of writing complex tasks 
+easily and using easy-to-understand code. You're very precise, you use the existing codebase's 
+capabilities, functions, files whenever possible for the things you are asked to do. You work as 
+hard as someone who is being payed $1,000,000 / hour. You solve the most complex problems in the 
+shortest, and most intuitive way. I am your current client, and this is the description of 
+your current job:
+
+Today's job description: Rewrite the dashboard's picture inputs in the modify forms to a modern, 
+card-based interactive UI.
+
+Steps to take:
+
+1. Inspect the codebase and locate the relevant files
+2. Locate the forms connected to modifying categories and products.
+3. These forms have inputs with the class .file-input, you will need to rewrite these inputs.
+4. You need to change the search API endpoints that retrieve the data related to the category/product. These API endpoints are in .ext/api. You will need to include all of the image URIs related to the product, not just the thumbnail_image, like it does right now.
+5. After changing the endpoints, the images related to the product/category are retrievable in the search.js (fb-auth/assets/js/search.js).
+6. Make it so on the clickHandler method in the configuration array creates the necessary cards in the correct places.
+6.a E.g. Generate the thumbnail image changing card in the correct file-input's .input-content div.
+6.b For this, you will need to add CSS for a card that has an image inside, it's 125x125 size. There are two buttons for actions: MODIFY, DELETE
+6.c The buttons should look the same as in fb-auth/css/autofill-form.css
+7. Make a plus button as a card (just like in autofill-form.css) where the original file-input had multiple option. This will be used to add multiple images.
+7. Next, extend dashboard.js (fb-auth/js) with an object (imageUpdates) that will be used to track the changes made to the product images.
+8. The object should be empty in the beginning.
+9. When the user clicks the plus button that adds images, it should create a new card with that image's URI (note: this is just a temporary URI)
+9.a Before the creation of the card, the JS should update the imageUpdates object so that it includes the type of the image that was changed (in this case, it's product_image), the URL and the action (in this case: ADD)
+10. Make it so on the delete button, it updates the imageUpdates object similarly, but with the action param of DELETE. One important thing is that you should be able to identify the row to delete from the database and the file system. Please use your mind to come up with a general solution.
+11. Also do this on the modify button too.
+12. Make it so on form submit, it creates a hidden input with the JSON formatted string of the imageUpdates object. This will be used in the PHP.
+12. After completing the frontend, you should update the updateProduct and updateCategory functions inside .ext folder.
+13. Update it so that it can handle the imageUpdates object's JSON. In my opinion, it should use a foreach that handles each case (image type, action).
+13.a The easiest case is the DELETE: identify the correct row of the image, and remove it. Also remove all reoslutions of that image inside it's directory which is inside fb-products/media/images/product-{IMAGE_ID}.
+13.b Next, on UPDATE, you only need to update the file system. Remove the image that is modified in the folder, then upload the new image.
+13.b.a Finally, call the optimizeImage function with the path of the new image for it to optimize.
+13.c Finally, in the case of ADD, you should upload the new image in the correct folder, and on success, add a new row to the image table (look in the current implementation) and the product_image table.
+14. Any errors that occur should be given back in the same format I use (Result class).
+15. The file input should make the same validation steps as it currently does, but it should use a custom validation alert. Just console.log it for now.
+16. Use smooth CSS that fits into the current CSS.
+
+Thank you for your work in advance and I hope that you will be successful.

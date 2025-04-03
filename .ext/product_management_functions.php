@@ -399,68 +399,53 @@ function updateProductPage($data, $table = null)
     return new Result(Result::SUCCESS, "Sikeres módosítás.");
 }
 
-function updateProductImages($productData, $images, $paths)
+function updateProductImages($productData, $imageUpdates)
 {
-    if (count($paths) == 0 || count($images) == 0) {
-        return new Result(Result::ERROR, "Nincs kép vagy elérési útvonal.");
-    }
-    if (count(array_filter($images, function ($e) {
-            return $e["name"] == "product_image";
-        })) > 0
-    ) {
-        $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%image%' AND image.uri NOT LIKE '%thumbnail%' AND product_image.product_id=?;", $productData["id"], "i");
-        if ($result->isError()) {
-            return $result;
-        }
-    }
-    if (
-        count(array_filter($images, function ($e) {
-            return $e["name"] == "thumbnail_image";
-        })) > 0
-    ) {
-        $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%thumbnail%' AND image.media_type='image' AND product_image.product_id=?;", $productData["id"], "i");
-        if ($result->isError()) {
-            return $result;
-        }
-    }
-    if (
-        count(array_filter($images, function ($e) {
-            return $e["name"] == "product_video";
-        })) > 0
-    ) {
-        $result = updateData("DELETE image FROM image INNER JOIN product_image ON image.id=product_image.image_id WHERE image.uri LIKE '%thumbnail%' AND image.media_type='video' AND product_image.product_id=?;", $productData["id"], "i");
-        if ($result->isError()) {
-            return $result;
-        }
-    }
-    $ids = array();
-    for ($i = 0; $i < count($paths); $i++) {
-        $image = $images[$i];
-        $path = str_replace($_SERVER["DOCUMENT_ROOT"], ROOT_URL, $paths[$i]);
+    $insertIds = [];
 
-        if ($image["name"] == "thumbnail_image" || $image["name"] == "product_image") {
+    foreach ($imageUpdates as $imageType => $actions) {
+        foreach ($actions as $action => $updates) {
+            foreach ($updates as $update) {
+                switch ($action) {
+                    case 'delete':
+                        $imageId = intval($update["id"]);
+                        $result = updateData("DELETE FROM `image` WHERE id = ?;", $imageId, "i");
+                        if ($result->isError()) {
+                            return $result;
+                        }
+                        break;
+                    
+                    case 'edit':
+                        // Módosításnál nem változnak az elérési útvonalak, ezért itt nem kell csinálnunk semmit.
+                        break;
 
-            $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, getOrientation($path), "image"], "sss");
-            if ($result->isError() || !$result->lastInsertId) {
-                return $result;
+                    case 'add':
+                        $path = $update["path"];
+                        $path = absoluteToRelativeURL($path);
+                        $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, getOrientation($path), "image"], "sss");
+                        if ($result->isError() || !$result->lastInsertId) {
+                            return $result;
+                        }
+
+                        $insertIds[] = $result->lastInsertId;
+                        break;
+    
+                    default:
+                        return new Result(Result::ERROR, "Ismeretlen művelet: $action");
+                        break;
+                }
             }
-
-            array_push($ids, $result->lastInsertId);
-        } else if ($image["name"] == "product_video") {
-
-            $result = updateData("INSERT INTO image(uri, orientation, media_type) VALUES (?, ?, ?);", [$path, "horizontal", "video"], "sss");
-            if ($result->isError() || !$result->lastInsertId) {
-                return $result;
-            }
-
-            array_push($ids, $result->lastInsertId);
         }
     }
 
-    return connectProductImages($ids, $productData["id"]);
+    if (count($insertIds) > 0) {
+        return connectProductImages($insertIds, $productData["id"]);
+    }
+
+    return new Result(Result::SUCCESS, "Sikeres képmódosítás!");
 }
 
-function updateProductData($productData, $images, $paths, $productHealthEffectsData)
+function updateProductData($productData, $imageUpdates, $productHealthEffectsData)
 {
 
     $fields = array("name", "unit_price", "stock", "description", "net_weight");
@@ -501,14 +486,14 @@ function updateProductData($productData, $images, $paths, $productHealthEffectsD
         return $result;
     }
 
-    if (count($images) > 0 && count($paths) > 0) {
-        return updateProductImages($productData, $images, $paths);
+    if ($imageUpdates) {
+        return updateProductImages($productData, $imageUpdates);
     }
 
     return $result;
 }
 
-function updateProductDirectory($productData, $images)
+function updateProductDirectory($productData, &$imageUpdates)
 {
 
     $productDirURI = getProductDir($productData);
@@ -517,59 +502,55 @@ function updateProductDirectory($productData, $images)
         return new Result(Result::ERROR, "Hiányzó mappa: $productDirURI");
     }
 
-    $thumbnailImages = array('thumbnail_image');
-    if (isset($_FILES['product_video']))
-        array_push($thumbnailImages, 'product_video');
-
     $paths = array();
-    $galleryCounter = 0;
 
-    foreach ($images as $image) {
-        $files = scandir($productDirURI);
+    foreach ($imageUpdates as $imageType => &$actions) {
+        foreach ($actions as $action => &$updates) {
+            foreach ($updates as &$update) {
+                $fileName = null;
+                if ($imageType == "thumbnail_image") {
+                    $fileName = "thumbnail";
+                } 
+                else {
+                    $fileName = "image" . $update["index"];
+                }
+                
+                switch ($action) {
+                    case 'delete':
+                        removeFilesLike($productDirURI, $fileName);
+                        break;
+                    
+                    case 'edit':
+                    case 'add':
+                        $file = $_FILES[$update["fileKey"]];
+                        removeFilesLike($productDirURI, $fileName);
+                        $path = moveFile($file["tmp_name"], $file["name"], $fileName, $productDirURI);
 
-        if ($image["name"] != "product_image") {
-            $tmp = $image["tmp_name"];
-            $name = "thumbnail";
-            $ext = $image["ext"];
-            $path = $productDirURI . "$name." . $ext;
+                        // Hozzáadjuk az optimalizálandó képekhez
+                        $paths[] = $path;
 
-            $existingImage = null;
-            foreach ($files as $file) {
-                $path = $productDirURI . $file;
-                if (pathinfo($path, PATHINFO_FILENAME) == $name && str_contains($image["name"], explode("/", mime_content_type($path))[0])) {
-                    $existingImage = $path;
+                        // Hozzáadjuk az update objektumhoz
+                        if ($action == 'add') {
+                            $update["path"] = $path;
+                        }
+                        break;
+    
+                    default:
+                        return new Result(Result::ERROR, "Ismeretlen művelet: $action");
+                        break;
                 }
             }
-
-            if ($existingImage) {
-                array_push($paths, replaceFile($existingImage, $tmp, "$name.$ext", $name));
-            } else {
-                array_push($paths, moveFile($tmp, "$name.$ext", $name, $productDirURI));
-            }
-        } else {
-            $tmp = $image["tmp_name"];
-            $name = "image$galleryCounter";
-            $ext = $image["ext"];
-            $path = $productDirURI . "$name." . $ext;
-
-            if ($galleryCounter == 0) {
-                foreach ($files as $file) {
-                    if (preg_match('/^image\d+\.\w+$/', $file)) {
-                        unlink($productDirURI . $file);
-                    }
-                }
-            }
-
-            array_push($paths, moveFile($tmp, "$name.$ext", $name, $productDirURI));
-            $galleryCounter++;
         }
+    }
 
+    if (hasError($paths)) {
+        return new Result(Result::ERROR, "Hiba a fájlok mozgatása során.");
     }
 
     return new Result(Result::SUCCESS, $paths);
 }
 
-function updateProduct($productData, $productHealthEffectsData)
+function updateProduct($productData, $productHealthEffectsData, $imageUpdates)
 {
     include_once "init.php";
 
@@ -577,25 +558,11 @@ function updateProduct($productData, $productHealthEffectsData)
         return new Result(Result::ERROR, "Hiba merült fel a feltöltés során.");
     }
 
-    $images = array();
     $paths = array();
 
-    if (isset($_FILES["thumbnail_image"])) {
-        array_push($images, array("name" => "thumbnail_image", "tmp_name" => $_FILES["thumbnail_image"]["tmp_name"], "ext" => pathinfo($_FILES["thumbnail_image"]["name"], PATHINFO_EXTENSION)));
-    }
-    if (isset($_FILES["product_images"])) {
-        $count = count($_FILES["product_images"]["name"]);
-
-        for ($i = 0; $i < $count; $i++) {
-            array_push($images, array("name" => "product_image", "tmp_name" => $_FILES["product_images"]["tmp_name"][$i], "ext" => pathinfo($_FILES["product_images"]["name"][$i], PATHINFO_EXTENSION)));
-        }
-    }
-    if (isset($_FILES["product_video"])) {
-        array_push($images, array("name" => "product_video", "tmp_name" => $_FILES["product_video"]["tmp_name"], "ext" => pathinfo($_FILES["product_video"]["name"], PATHINFO_EXTENSION)));
-    }
-
-    if (count($images) > 0) {
-        $result = updateProductDirectory($productData, $images);
+    if ($imageUpdates) {
+        $imageUpdates = groupUpdates($imageUpdates);
+        $result = updateProductDirectory($productData, $imageUpdates);
         if ($result->isError()) {
             return $result;
         }
@@ -604,21 +571,15 @@ function updateProduct($productData, $productHealthEffectsData)
         if (hasError($paths))
             return new Result(Result::ERROR, "A képek mozgatása sikertelen volt.");
 
-        for ($i = 0; $i < count($images); $i++) {
-            $productData[$images[$i]["name"]] = $paths[$i];
-        }
-    }
-
-    $result = updateProductData($productData, $images, $paths, $productHealthEffectsData);
-    if (!$result->isSuccess()) {
-        return $result;
-    }
-
-    if (count($images) > 0) {
         foreach ($paths as $path) {
             optimizeImage($path);
         }
     }
 
-    return new Result(Result::SUCCESS, "Sikeres termék létrehozás!");
+    $result = updateProductData($productData, $imageUpdates, $productHealthEffectsData);
+    if (!$result->isSuccess()) {
+        return $result;
+    }
+
+    return new Result(Result::SUCCESS, "Sikeres termék módosítás!");
 }

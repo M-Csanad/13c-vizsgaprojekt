@@ -39,7 +39,9 @@ node_modules/
 bin/*
 
 /vendor/
-
+*.zip
 
 # Képek
 domains/domainname/public_html/fb-content/fb-products/media/images/
+domains/domainname/public_html/fb-content/fb-categories/media/images/
+domains/domainname/public_html/fb-content/fb-subcategories/media/images/

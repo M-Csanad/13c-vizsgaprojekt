@@ -2,6 +2,7 @@ import { setupNumberField } from "../../fb-products/js/numberfield.js";
 import APIFetch from "./apifetch.js";
 import Notification from "./notification.js";
 import Popup from "./popup.js";
+import RateLimiter from "./ratelimit.js";
 
 const randomId = () => "el-" + (Math.random() + 1).toString(36).substring(7);
 
@@ -15,6 +16,9 @@ class Cart {
   cartPrice = 0;
   lastFetchResultType = null;
 
+  debounce = 1000;
+  rateLimited = false;
+
   ease = "power2.inOut";
   ease2 = "power3.inOut";
 
@@ -24,6 +28,16 @@ class Cart {
 
   async init() {
     try {
+      // Rate limiter beállítása
+      // Név - kérés / s
+      this.rateLimiter = new RateLimiter(
+        {
+          "slow"    : 1,
+          "faster"  : 2,
+          "fast"    : 10
+        }
+      );
+
       // Kosár tartalom lekérése
       const fetchPromise = this.fetchCartData();
 
@@ -102,7 +116,6 @@ class Cart {
 
     // Kosárba rakó gombok
     this.cartAddButtons = document.querySelectorAll(".add-to-cart");
-    this.quickAddButtons = document.querySelectorAll(".quick-add");
 
     this.quantityInput = document.querySelector(".product-quantity");
 
@@ -141,12 +154,6 @@ class Cart {
 
     this.cartAddButtons.forEach((button) =>
       button.addEventListener("click", this.add.bind(this))
-    );
-
-    this.quickAddButtons?.forEach((button) =>
-      button.addEventListener("click", () =>
-        this.add(null, this.getUrlFromCard(button))
-      )
     );
 
     this.cartContainer.addEventListener("click", async (e) => {
@@ -435,16 +442,17 @@ class Cart {
   }
 
   // Backend metódusok
-  // Improved add method with better error handling
-  async add(e, url = null) {
-    if (e && e.preventDefault) e.preventDefault();
 
+  async add(e, url = null) {
+    const isLimited = this.rateLimiter.useArea("slow");
+    if (isLimited) return;
+
+    if (e && e.preventDefault) e.preventDefault();
+    
     try {
       if (!url) {
         url = this.url;
       }
-
-      console.log("Adding product to cart with URL:", url);
 
       const result = await APIFetch("/api/cart/add", "POST", {
         url: url,
@@ -479,6 +487,9 @@ class Cart {
 
   // Kitöröl egy terméket a kosárból
   async remove(index) {
+    const isLimited = this.rateLimiter.useArea("slow");
+    if (isLimited) return;
+
     const product = this.data[index];
 
     const result = await APIFetch("/api/cart/remove", "DELETE", {

@@ -184,40 +184,44 @@ function removeCategoryDirectory($categoryData)
     return deleteFolder($dir);
 }
 
-function updateCategoryDirectory($categoryData, $images)
+function updateCategoryDirectory($categoryData, $imageUpdates)
 {
-
     $categoryDirURI = getCategoryDir($categoryData);
     $paths = array();
 
-    foreach ($images as $image) {
-        $name = $image["name"];
-        $tmp = $image["tmp_name"];
-        $ext = $image["ext"];
+    if (!file_exists($categoryDirURI)) {
+        return new Result(Result::ERROR, "A kategória mappája nem létezik: " . $categoryDirURI);
+    }
 
-        $files = scandir($categoryDirURI);
-
-        $existingImage = null;
-        foreach ($files as $file) {
-            $path = $categoryDirURI . $file;
-            if (pathinfo($path, PATHINFO_FILENAME) == $name) {
-                $existingImage = $path;
-            }
+    foreach ($imageUpdates as $update) {
+        if ($update["action"] !== "edit") {
+            continue;
         }
 
-        if ($existingImage) {
-            array_push($paths, replaceFile($existingImage, $tmp, "$name.$ext", $name));
-        } else {
-            array_push($paths, moveFile($tmp, "$name.$ext", $name, $categoryDirURI));
+        $imageType = $update["imageType"];
+        $fileKey = $update["fileKey"];
+        
+        if (!isset($_FILES[$fileKey]) || empty($_FILES[$fileKey]["tmp_name"])) {
+            continue;
         }
+
+        removeFilesLike($categoryDirURI, "thumbnail_image_" . $imageType);
+
+        $newFileName = "thumbnail_image_" . $imageType;
+        
+        $path = moveFile($_FILES[$fileKey]["tmp_name"], $_FILES[$fileKey]["name"], $newFileName, $categoryDirURI);
+        if (!$path) {
+            return new Result(Result::ERROR, "Hiba a fájl mozgatásakor ($fileKey).");
+        }
+        
+        $paths[] = $path;
     }
 
     return new Result(Result::SUCCESS, $paths);
 }
 
-function updateCategoryData($categoryData, $images)
+function updateCategoryData($categoryData)
 {
-
     $table = $categoryData["type"];
     $isMainCategory = $table == "category";
     $slug = format_str($categoryData["name"]);
@@ -231,12 +235,6 @@ function updateCategoryData($categoryData, $images)
     );
     $typeString = "ssss";
 
-    foreach ($images as $image) {
-        array_push($fields, $image["name"] . "_uri");
-        array_push($values, str_replace($_SERVER["DOCUMENT_ROOT"], ROOT_URL, $categoryData[$image["name"]]));
-        $typeString .= "s";
-    }
-
     if (!$isMainCategory) {
         array_push($fields, "category_id");
         array_push($values, $categoryData["parent_category_id"]);
@@ -247,9 +245,9 @@ function updateCategoryData($categoryData, $images)
     $typeString .= "i";
 
     $query = "UPDATE `$table` SET ";
-    for ($i = 0; $i < count($values) - 1; $i++) {
+    for ($i = 0; $i < count($fields); $i++) {
         $query .= "`{$fields[$i]}`=?";
-        if ($i != count($values) - 2)
+        if ($i != count($fields) - 1)
             $query .= ", ";
     }
     $query .= " WHERE `$table`.`id`=?;";
@@ -257,29 +255,17 @@ function updateCategoryData($categoryData, $images)
     return updateData($query, $values, $typeString);
 }
 
-function updateCategory($categoryData)
+function updateCategory($categoryData, $imageUpdates)
 {
     include_once "init.php";
 
     if (hasUploadError()) {
-        return "Hiba merült fel a feltöltés során.";
+        return new Result(Result::ERROR, "Hiba merült fel a feltöltés során.");
     }
 
-    $images = array();
-
-    if (isset($_FILES["thumbnail_image_vertical"])) {
-        array_push($images, array("name" => "thumbnail_image_vertical", "tmp_name" => $_FILES["thumbnail_image_vertical"]["tmp_name"], "ext" => pathinfo($_FILES["thumbnail_image_vertical"]["name"], PATHINFO_EXTENSION)));
-    }
-    if (isset($_FILES["thumbnail_image_horizontal"])) {
-        array_push($images, array("name" => "thumbnail_image_horizontal", "tmp_name" => $_FILES["thumbnail_image_horizontal"]["tmp_name"], "ext" => pathinfo($_FILES["thumbnail_image_horizontal"]["name"], PATHINFO_EXTENSION)));
-    }
-    if (isset($_FILES["thumbnail_video"])) {
-        array_push($images, array("name" => "thumbnail_video", "tmp_name" => $_FILES["thumbnail_video"]["tmp_name"], "ext" => pathinfo($_FILES["thumbnail_video"]["name"], PATHINFO_EXTENSION)));
-    }
-
-    if (count($images) > 0) {
-        $result = updateCategoryDirectory($categoryData, $images);
-
+    if ($imageUpdates) {
+        $result = updateCategoryDirectory($categoryData, $imageUpdates);
+        
         if ($result->isError()) {
             return $result;
         }
@@ -289,26 +275,15 @@ function updateCategory($categoryData)
             return new Result(Result::ERROR, "A képek mozgatásakor hiba merült fel.");
         }
 
-        for ($i = 0; $i < count($images); $i++) {
-            $categoryData[$images[$i]["name"]] = $paths[$i];
-        }
-    }
-
-    $result = updateCategoryData($categoryData, $images);
-    if ($result->isError()) {
-        return $result;
-    }
-
-    $result = updateProductPage($categoryData, $categoryData["type"]);
-    if (!$result->isSuccess()) {
-        return $result;
-    }
-
-    if (count($images) > 0) {
         foreach ($paths as $path) {
             optimizeImage($path);
         }
     }
-
+    
+    $result = updateCategoryData($categoryData);
+    if ($result->isError()) {
+        return $result;
+    }
+    
     return new Result(Result::SUCCESS, "Sikeres módosítás!");
 }

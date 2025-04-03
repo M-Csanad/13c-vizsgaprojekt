@@ -10,6 +10,7 @@ function initializeSearch(search) {
   const autofill = search.dataset.autofillFields ?? null;
   const searchConfig = {
     category: {
+      hasImageCards: true,
       autofillFields: [
         { name: "name", disabledByDefault: true },
         { name: "subname", disabledByDefault: true },
@@ -33,6 +34,7 @@ function initializeSearch(search) {
         if (!autofill) {
           itemClickHandler(item, ["id", "type", "name"]);
         } else {
+          await generateImageCards(item);
           itemClickHandler(item, ["id", "type", "name"], {
             fields: [
               { field: "name", value: item.name },
@@ -61,6 +63,7 @@ function initializeSearch(search) {
       clickHandler: async (user) => itemClickHandler(user, ["id", "name"]),
     },
     product: {
+      hasImageCards: true,
       autofillFields: [
         { name: "name", disabledByDefault: true },
         { name: "description", disabledByDefault: true },
@@ -88,6 +91,7 @@ function initializeSearch(search) {
         if (!autofill) {
           itemClickHandler(product, ["id", "name"]);
         } else {
+          await generateImageCards(product);
           itemClickHandler(product, ["id", "name"], {
             fields: [
               { field: "name", value: product.name },
@@ -180,10 +184,6 @@ function initializeSearch(search) {
       if (response.ok) {
         let data = await response.json();
 
-        if (data.type == "ERROR") {
-          console.log("Hiba a kereséskor: " + data.message);
-        }
-
         if (data.type == "SUCCESS") {
           lastContentfulSearchTerm = input;
         } else {
@@ -202,13 +202,137 @@ function initializeSearch(search) {
     }
   }
 
-  function toggleLoader(show) {
-    const loader = searchItemsContainer.querySelector(".loader");
-    if (show) {
-      loader.style.display = "block";
-    } else {
-      loader.style.display = "none";
+  async function getImages(item) {
+    let categoryType = null;
+    if (searchType == "category") {
+      if (item.parent_category) {
+        categoryType = "subcategory";
+      } else {
+        categoryType = "category";
+      }
     }
+
+    const response = await fetch(
+      `/api/images?search_type=${searchType}${categoryType ? "&type="+categoryType : ""}&id=${item.id}`,
+      {
+        method: "GET",
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        }
+      }
+    );
+
+    if (response.ok) {
+      let data = await response.json();
+      if (data.type == "SUCCESS") {
+        return data.message;
+      }
+    }
+  }
+
+  async function generateImageCards(item) {
+    const images = await getImages(item);
+    if (images) {
+      if (searchType == "category") {
+        generateCard(item, images[0]);
+      }
+      else if (searchType == "product") {
+        generateCard(item, images);
+      }
+    }
+  }
+
+  function generateCard(item, images) {
+    if (searchType == "category") {
+      searchInput.closest("form").querySelector(".image-cards.horizontal").innerHTML =
+      `
+        <div class="image-card" data-update-key="horizontal-edit">
+          <img src="${images.horizontal_uri}-768px.jpg" alt="${images.name}"/>
+          <div class="card-actions">
+              <input type="file" id="horizontal-edit" class="visually-hidden" name="horizontal-edit" accept="image/png, image/jpeg" data-orientation="horizontal" data-type="image" data-count="singular" data-image-type="horizontal" data-image-id="${images.id || ''}" tabindex="-1">
+              <label for="horizontal-edit" class="action-edit" role="button" aria-label="Edit image">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                      <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                  </svg>
+              </label>
+          </div>
+        </div>
+      `;
+
+      searchInput.closest("form").querySelector(".image-cards.vertical").innerHTML =
+      `
+        <div class="image-card" data-update-key="vertical-edit">
+          <img src="${images.vertical_uri}-768px.jpg" alt="${images.name}"/>
+          <div class="card-actions">
+              <input type="file" id="vertical-edit" class="visually-hidden" name="vertical-edit" accept="image/png, image/jpeg" data-orientation="vertical" data-type="image" data-count="singular" data-image-type="vertical" data-image-id="${images.id || ''}" tabindex="-1">
+              <label for="vertical-edit" class="action-edit" role="button" aria-label="Edit image">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                      <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                  </svg>
+              </label>
+          </div>
+        </div>
+      `;
+    }
+    else if (searchType == "product") {
+      const thumbnailContainer = searchInput.closest("form").querySelector(".image-cards.thumbnail");
+      const productImagesContainer = searchInput.closest("form").querySelector(".image-cards.product-images");
+      const thumbnail_image = images.filter(x => x.is_thumbnail)[0];
+      const product_images = images.filter(x => !x.is_thumbnail);
+
+      thumbnailContainer.innerHTML =
+      `
+        <div class="image-card" data-id="${thumbnail_image.id}" data-update-key="thumbnail-edit-${thumbnail_image.id}">
+          <img src="${thumbnail_image.uri}-768px.jpg" alt="${item.name}"/>
+          <div class="card-actions">
+              <input type="file" name="thumbnail-edit-${thumbnail_image.id}" id="thumbnail-edit-${thumbnail_image.id}" class="visually-hidden" accept="image/png, image/jpeg" data-orientation="any" data-type="image" data-count="singular" data-image-type="thumbnail" data-image-id="${thumbnail_image.id}" data-id="${item.id}" tabindex="-1">
+              <label for="thumbnail-edit-${thumbnail_image.id}" class="action-edit" role="button" aria-label="Edit image">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                      <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                  </svg>
+              </label>
+          </div>
+        </div>
+      `;
+
+      productImagesContainer.innerHTML = "";
+      for (let i = 0; i < product_images.length; i++) {
+        const image = product_images[i];
+        
+        productImagesContainer.innerHTML +=
+        `
+          <div class="image-card" data-id="${image.id}" data-update-key="product-edit-${image.id}">
+            <img src="${image.uri}-768px.jpg" alt="${item.name}"/>
+            <div class="card-actions">
+                <input type="file" name="product-edit-${image.id}" id="product-edit-${image.id}" class="visually-hidden" accept="image/png, image/jpeg" data-orientation="any" data-type="image" data-count="singular" data-image-type="product_image" data-image-id="${image.id}" data-id="${item.id}" tabindex="-1">
+                <label for="product-edit-${image.id}" class="action-edit" role="button" aria-label="Edit image">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill edit" viewBox="0 0 16 16">
+                      <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.5.5 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11z"/>
+                    </svg>
+                </label>
+                <button type="button" class="action-delete" role="button" aria-label="Delete image" data-image-id="${image.id}" data-image-type="product_image">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
+                        <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                    </svg>
+                </button>
+            </div>
+          </div>
+        `;
+      }
+      
+      productImagesContainer.innerHTML += `
+        <div class="add-field-light">
+          <input type="file" id="product-add-image" class="visually-hidden" accept="image/png, image/jpeg" data-orientation="any" data-type="image" data-count="singular" data-id="${item.id}" data-item-type="product" tabindex="-1">
+          <label for="product-add-image" role="button" aria-label="Add new image">+</label>
+        </div>
+      `;
+    }
+  }
+
+  function clearImageCards() {
+    searchInput.closest("form").querySelectorAll(".image-cards").forEach((e) => {
+      e.innerHTML = `<div class="none-selected">Nincs kiválasztva ${searchType == "category" ? "kategória" : "termék"}!</div>`;
+    });
   }
 
   // A legördülömenü feltöltése találatokkal
@@ -251,6 +375,15 @@ function initializeSearch(search) {
   }
   // A keresési találatra történő kattintás kezelése
   async function itemClickHandler(item, fields, outputData = {}) {
+    // Form title megszerzése a formTitle attribútumból
+    const parentForm = search.closest("form");
+    const formTitle = parentForm?.dataset.title || 'default';
+    
+    // Képfrissítések törlése az új elem kiválasztása előtt, ha létezik a dashboard objektum
+    if (window.dashboard && typeof window.dashboard.clearImageUpdates === 'function') {
+        window.dashboard.clearImageUpdates(formTitle);
+    }
+    
     // Háttér inputok beállítása
     fields.forEach((field) => {
       const input = search.querySelector(`input[name=${searchType}_${field}]`);
@@ -329,6 +462,17 @@ function initializeSearch(search) {
     searchInput.setCustomValidity(
       invalid ? "Kérjük válasszon egy meglévő elemet!" : ""
     );
+    
+    // Ha a mező üres, akkor töröljük a képfrissítéseket is
+    if (!searchInput.value) {
+        const parentForm = search.closest("form");
+        const formTitle = parentForm?.dataset.title || 'default';
+        
+        // Képfrissítések törlése ha a keresőmező üres 
+        if (window.dashboard && typeof window.dashboard.clearImageUpdates === 'function') {
+            window.dashboard.clearImageUpdates(formTitle);
+        }
+    }
   }
 
   // Letiltott elemek visszakapcsolása
@@ -374,6 +518,36 @@ function initializeSearch(search) {
   // Legördülőmenük letiltása
   function disableSelectInputs() {
     inputGrid.querySelectorAll("select").forEach((e) => (e.disabled = true));
+  }
+
+  // Kategória opciók feltöltése
+  async function populateOptions(select, category, table) {
+    try {
+      const response = await fetch(`/api/auth/dashboard-search`, {
+        method: "POST",
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: JSON.stringify({ category, table })
+      });
+
+      if (response.ok) {
+        const responseData = await response.json();
+
+        if (responseData.type === "ERROR" || responseData.type === "EMPTY") {
+          select.innerHTML = "";
+          return;
+        }
+
+        select.innerHTML = "";
+
+        responseData.message.forEach(category => {
+          select.innerHTML += `<option value='${category.name}' data-id='${category.id}'>${category.name}</option>`;
+        });
+      }
+    } catch (error) {
+      console.error("Kategóriák lekérdezési hiba:", error);
+    }
   }
 
   // Eseménykezelés
@@ -427,11 +601,13 @@ function initializeSearch(search) {
       validateSearchInput();
     }
 
-
     // Ha üres, vagy invalid a kereső, akkor kiürítjük az űrlapelemeket és kikapcsoljuk őket.
     if (!searchInput.value || !searchInput.checkValidity()) {
       clearAutofillFields();
       disableSelectInputs();
+      if (searchConfig[searchType].hasImageCards) {
+        clearImageCards();
+      }
     }
   });
 }

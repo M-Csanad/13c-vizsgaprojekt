@@ -30,7 +30,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
   <!--footer stylesheets-->
   <link rel="stylesheet" href="/fb-content/assets/css/footer.css" media="all" />
   <script src="/fb-content/assets/js/autogenerate__footer.js" defer></script>
-  <title>Category Cards</title>
+  <title>Ajánlataink</title>
 </head>
 
 <body>
