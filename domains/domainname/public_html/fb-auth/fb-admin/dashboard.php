@@ -721,7 +721,7 @@
                                     </div>
                                 </label>
                                 <div class="input-content">
-                                    <div class="input-container image-cards horizontal">
+                                    <div class="input-container image-cards vertical">
                                         <div class="none-selected">
                                             Nincs kiválasztva kategória!
                                         </div>
@@ -742,7 +742,7 @@
                                     </div>
                                 </label>
                                 <div class="input-content">
-                                    <div class="input-container image-cards vertical">
+                                    <div class="input-container image-cards horizontal">
                                         <div class="none-selected">
                                             Nincs kiválasztva kategória!
                                         </div>
