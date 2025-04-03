@@ -152,7 +152,12 @@ $menu_items = [
 <script defer type="module" src="/fb-content/assets/js/search.js"></script>
 <script defer type="module" src="/fb-content/assets/js/autogenerate__navbar.js"></script>
 
-<nav id="fb-navbar" class="fb-sticky" data-category='<?= json_encode($category_content); ?>'>
+<!-- Szkript a kategóriaadatok JavaScript számára történő közzétételéhez -->
+<script>
+    window.categoryData = <?= json_encode($category_content); ?>;
+</script>
+
+<nav id="fb-navbar" class="fb-sticky">
     <div id="fb-navTopWrapper" class="fb-nav-links-wrapper">
         <a id="logo_linkNav" href="<?= htmlspecialchars($base_url) ?>"><img class="fb-logo" src="<?= $logo_url ?>"
                 alt="logo" /></a>

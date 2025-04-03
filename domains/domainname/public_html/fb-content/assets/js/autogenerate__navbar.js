@@ -1,37 +1,66 @@
 import Search from "./search.js";
 
 document.addEventListener("DOMContentLoaded", function () {
+  const categoryData = window.categoryData || [];
   const navLink = document.getElementById("fb-navlink-category");
   const subContentContainer = document.getElementById("fb-subcontentContainer");
 
-  navLink.addEventListener("click", function () {
-    resetAnimations();
+  // Validációs a categoryData tömbre
+  if (!Array.isArray(categoryData) || categoryData.length === 0) {
+    console.warn("Navigációs hiba: Nincs elérhető kategória adat.");
 
-    subContentContainer.classList.add("flex-block");
-    subContentContainer.classList.remove("hidden");
-    subContentContainer.style.display = "flex";
-    subContentContainer.style.top = "100%";
-    subContentContainer.style.opacity = "1";
-    subContentContainer.style.position = "relative";
+    // Átirányítjuk a felhasználót a főoldalra a kategorychooser részhez
+    if (navLink) {
+      navLink.addEventListener("click", function (e) {
+        e.preventDefault();
+        console.log("Navigálás a főoldalra a kategória választóhoz");
 
-    let delay = 100;
-    setTimeout(() => {
-      document
-        .querySelectorAll(".fb-nav-subcontent-frame")
-        .forEach((frame, index) => {
-          setTimeout(() => {
-            frame.style.opacity = "1";
-          }, delay * index);
-        });
-      document
-        .querySelectorAll(".fb-nav-imgcontent-frame")
-        .forEach((frame, index) => {
-          setTimeout(() => {
-            frame.style.opacity = "1";
-          }, delay * (index + 2));
-        });
-    }, 500);
-  });
+        // Ellenőrizzük, hogy a főoldalon vagyunk-e
+        const isHomePage =
+          window.location.pathname === "/" ||
+          window.location.pathname === "/index.php";
+
+        if (isHomePage) {
+          // Ha a főoldalon vagyunk, csak görgessünk a kategória választóhoz
+          const categoryChooser = document.getElementById("categorychooser");
+          if (categoryChooser) {
+            categoryChooser.scrollIntoView({ behavior: "smooth" });
+          }
+        } else {
+          window.location.href = "http://localhost/#categorychooser";
+        }
+      });
+    }
+  } else {
+    navLink.addEventListener("click", function () {
+      resetAnimations();
+
+      subContentContainer.classList.add("flex-block");
+      subContentContainer.classList.remove("hidden");
+      subContentContainer.style.display = "flex";
+      subContentContainer.style.top = "100%";
+      subContentContainer.style.opacity = "1";
+      subContentContainer.style.position = "relative";
+
+      let delay = 100;
+      setTimeout(() => {
+        document
+          .querySelectorAll(".fb-nav-subcontent-frame")
+          .forEach((frame, index) => {
+            setTimeout(() => {
+              frame.style.opacity = "1";
+            }, delay * index);
+          });
+        document
+          .querySelectorAll(".fb-nav-imgcontent-frame")
+          .forEach((frame, index) => {
+            setTimeout(() => {
+              frame.style.opacity = "1";
+            }, delay * (index + 2));
+          });
+      }, 500);
+    });
+  }
 
   subContentContainer.addEventListener("mouseleave", function () {
     subContentContainer.style.top = "-100%";
@@ -69,6 +98,6 @@ document.addEventListener("DOMContentLoaded", function () {
     hamburgerMenu.classList.toggle("hidden");
     hamburgerMenu.classList.toggle("active");
   });
-  
+
   const search = new Search();
 });
