@@ -232,15 +232,16 @@ main {
 }
 
 .card-pattern {
-  background-image: url(http://localhost//fb-content/assets/media/images/logos/herbalLogo_mini_white.png);
+  background-image: url(http://localhost//fb-content/assets/media/images/logos/herbalLogo_mini_white_largeSpace.png);
   position: absolute;
-  background-size: 50px 50px;
+  background-size: 60px 60px;
+  filter: invert();
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-repeat: space;
-  opacity: 0.15;
+  opacity: 0.1;
   z-index: 1;
 }
 
