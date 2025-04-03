@@ -68,7 +68,7 @@ h6 {
   z-index: 2;
 }
 #BGDT01 {
-  color: var(--dark_secondary);
+  color: var(--dark_tertiary);
   font-size: clamp(12rem, calc(18rem + 0.39vw), 35rem);
   text-transform: uppercase;
   font-family: "Poppins";
@@ -77,7 +77,7 @@ h6 {
   transform: translateY(120%);
 }
 #BGDT02 {
-  color: var(--dark_tertiary);
+  color: var(--dark_quaternary);
   font-size: clamp(10rem, calc(18rem + 0.39vw), 20rem);
   font-weight: 300;
   text-transform: capitalize;
@@ -86,7 +86,7 @@ h6 {
   transform: translateY(60%);
 }
 #BGDT03 {
-  color: var(--dark_secondary);
+  color: var(--dark_tertiary);
   font-size: clamp(12rem, calc(18rem + 0.39vw), 30rem);
   text-transform: capitalize;
   font-family: "Maitree";
@@ -96,7 +96,7 @@ h6 {
   mix-blend-mode: difference;
 }
 #BGDT04 {
-  color: var(--dark_tertiary);
+  color: var(--dark_quaternary);
   font-size: clamp(10rem, calc(14rem + 0.39vw), 20rem);
   font-weight: 600;
   text-transform: uppercase;
