@@ -51,7 +51,7 @@ load_env(__DIR__ . '/../../../../.ext/.env');
         <form method="post" id="login" class="light">
             <div class="form-header">
                 <h1>Üdvözöljük!</h1>
-                <div>Adja meg az e-mail címét és jelszavát.</div>
+                <div>Adja meg az felhasználónevét és jelszavát.</div>
             </div>
             <div class="form-body">
                 <div class="input-wrapper">
