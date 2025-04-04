@@ -95,6 +95,13 @@ function deleteFolder($folderPath)
     return rmdir($folderPath);
 }
 
+function saveFile($file, $directory, $filename)
+{
+    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
+    $path = $directory . $filename . "." . $extension;
+    return move_uploaded_file($file['tmp_name'], $path) ? $path : false;
+}
+
 function moveFile($tmp, $name, $basename, $dir)
 {
     $extension = pathinfo($name, PATHINFO_EXTENSION);

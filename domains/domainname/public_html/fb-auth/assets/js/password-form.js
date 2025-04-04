@@ -1,4 +1,5 @@
 import APIFetch from "/fb-content/assets/js/apifetch.js";
+import RateLimiter from "../../../fb-content/assets/js/ratelimit.js";
 
 class PasswordForm {
     actionTimeout = 10000;
@@ -16,6 +17,10 @@ class PasswordForm {
     }
 
     initDOM(dom) {
+        this.limiter = new RateLimiter({
+            "slow": 1,
+        });
+
         this.formDom = dom;
         this.form = {
             "oldPass": {
@@ -284,6 +289,10 @@ class PasswordForm {
     }
 
     async send() {
+
+        const isLimited = this.limiter.useArea("slow");
+        if (isLimited) return;
+
         if (!this.validateForm()) return;
 
         const data = this.getFormData(true);

@@ -22,20 +22,20 @@ load_env(__DIR__ . '/../../../../.ext/.env');
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Florens Botanica - Bejelentkezés</title>
 
-    <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
-    <link rel="stylesheet" href="./fb-auth/assets/css/inputs-light.css">
-    <link rel="stylesheet" href="./fb-auth/assets/css/login.css">
+    <link rel="preload" href="/fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="/fb-auth/assets/css/root.css">
+    <link rel="stylesheet" href="/fb-auth/assets/css/inputs-light.css">
+    <link rel="stylesheet" href="/fb-auth/assets/css/login.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
 
     <script src="https://www.google.com/recaptcha/enterprise.js?render=<?php echo $_ENV['RECAPTCHA_SITE_KEY']; ?>"></script>
-    <script src="./fb-auth/assets/js/prevent-resubmit.js" defer></script>
+    <script src="/fb-auth/assets/js/prevent-resubmit.js" defer></script>
 
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="/fb-content/assets/js/page_transition.js"></script>
-    <script type="module" defer src="./fb-auth/assets/js/login.js"></script>
+    <script type="module" defer src="/fb-auth/assets/js/login.js"></script>
 </head>
 
 <body>
@@ -43,10 +43,10 @@ load_env(__DIR__ . '/../../../../.ext/.env');
     <div class="main">
         <div class="side-image">
             <div class="bg visible"
-                style="background-image: url('./fb-content/assets/media/images/site/login/bg0.jpg');"></div>
-            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg1.jpg');"></div>
-            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg2.jpg');"></div>
-            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg3.jpg');"></div>
+                style="background-image: url('/fb-content/assets/media/images/site/login/bg0.jpg');"></div>
+            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg1.jpg');"></div>
+            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg2.jpg');"></div>
+            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg3.jpg');"></div>
         </div>
         <form method="post" id="login" class="light">
             <div class="form-header">

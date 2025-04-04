@@ -1,6 +1,12 @@
 <?php
 /* --------------------------- Termék létrehozása --------------------------- */
 
+/**
+ * Visszaadja a termék könyvtárának elérési útját a megadott termékadatok alapján.
+ *
+ * @param array $productData A termék adatai, amelyek alapján a könyvtár elérési útja meghatározásra kerül.
+ * @return string A termék könyvtárának elérési útja.
+ */
 function getProductDir($productData)
 {
     $baseDir = $_SERVER["DOCUMENT_ROOT"] . "/fb-content/fb-products/media/images/";
@@ -8,6 +14,29 @@ function getProductDir($productData)
     return $baseDir . $dirName;
 }
 
+
+/**
+ * Létrehozza a termékhez tartozó könyvtárat és elmenti a feltöltött fájlokat.
+ *
+ * @param array $productData A termék adatai, amely alapján a könyvtár létrejön.
+ * 
+ * @return Result A művelet eredménye:
+ *                - SUCCESS: Ha a könyvtár létrejött és a fájlok sikeresen elmentésre kerültek.
+ *                - ERROR: Ha a könyvtár már létezik, vagy a fájlok mentése sikertelen.
+ *
+ * A függvény a következő lépéseket hajtja végre:
+ * 1. Meghatározza a termék könyvtárának URI-ját a `getProductDir` függvény segítségével.
+ * 2. Létrehozza a könyvtárat a `createDirectory` függvény segítségével.
+ *    - Ha a könyvtár már létezik, hibát ad vissza.
+ * 3. Elmenti a feltöltött fájlokat:
+ *    - `thumbnail_image`: A termék indexképe.
+ *    - `product_video`: (opcionális) A termékhez tartozó videó.
+ *    - `product_images`: Több kép, amely a termékhez tartozik.
+ * 4. Ha bármelyik fájl mentése sikertelen, hibát ad vissza.
+ * 5. Ha minden sikeres, visszaadja a mentett fájlok elérési útvonalait.
+ *
+ * Megjegyzés: A `$_FILES` globális változót használja a feltöltött fájlok eléréséhez.
+ */
 function createProductDirectory($productData)
 {
     $paths = [];
@@ -50,18 +79,17 @@ function createProductDirectory($productData)
     return new Result(Result::SUCCESS, $paths);
 }
 
-function saveFile($file, $directory, $filename)
-{
-    $extension = pathinfo($file['name'], PATHINFO_EXTENSION);
-    $path = $directory . $filename . "." . $extension;
-    return move_uploaded_file($file['tmp_name'], $path) ? $path : false;
-}
-
-
-// A termékadatok feltöltése a `product` táblába
+/**
+ * Feltölti a termékadatokat a `product` táblába.
+ *
+ * @param array $data A termék adatai, amelyeket fel kell tölteni.
+ * 
+ * @return QueryResult A művelet eredménye. Siker esetén a feltöltött sorok azonosítóit tartalmazza.
+ * 
+ * A függvény a megadott adatokat beszúrja a `product` adatbázis táblába.
+ */
 function uploadProductData($data)
 {
-
     $fields = array("name", "unit_price", "stock", "description", "net_weight");
     $values = array(
         $data['name'],
@@ -78,7 +106,17 @@ function uploadProductData($data)
     return updateData($query, $values, "siisi");
 }
 
-// A termék képeinek feltöltése az `image` táblába
+/**
+ * Termék képek feltöltését végző függvény.
+ *
+ * @param array $paths A feltöltendő képek vagy videók fájlútvonalainak tömbje.
+ * 
+ * @return Result A művelet eredménye. Siker esetén a feltöltött sorok azonosítóit tartalmazza.
+ * 
+ * A függvény a megadott fájlok alapján meghatározza a média típusát (kép vagy videó),
+ * valamint a tájolást (ha kép). Ezután az adatokat elmenti az `image` adatbázis táblába.
+ * Ha bármelyik beszúrás sikertelen, a függvény azonnal visszatér a hibával.
+ */
 function uploadProductImages($paths)
 {
 
@@ -104,7 +142,15 @@ function uploadProductImages($paths)
     return new Result(Result::SUCCESS, $insertIds);
 }
 
-// A A termékképek és a termék összekapcsolása `product_image` táblába való feltöltéssel
+/**
+ * A megadott képek és a termék közötti kapcsolatot hozza létre az adatbázisban.
+ *
+ * @param array $insertIds Azoknak a képeknek az azonosítói, amelyeket a termékhez kell kapcsolni.
+ * @param int $productId A termék azonosítója, amelyhez a képeket kapcsolni kell.
+ * 
+ * @return Result A művelet eredményét tartalmazó objektum. Siker esetén SUCCESS állapotot ad vissza,
+ *                hiba esetén a megfelelő hibainformációval tér vissza.
+ */
 function connectProductImages($insertIds, $productId)
 {
     foreach ($insertIds as $image) {
@@ -117,6 +163,15 @@ function connectProductImages($insertIds, $productId)
     return new Result(Result::SUCCESS, "A termékképek feltöltése sikeres volt.");
 }
 
+/**
+ * Összekapcsolja a termékeket a címkékkel az adatbázisban.
+ *
+ * @param int $id A termék azonosítója, amelyhez a címkéket kapcsolni kell.
+ * @param array $tags Egy tömb, amely a kapcsolni kívánt címkék azonosítóit tartalmazza.
+ *
+ * @return QueryResult A művelet eredményét tartalmazó objektum. Siker esetén SUCCESS állapotot ad vissza,
+ *                hiba esetén a megfelelő hibainformációval tér vissza.
+ */
 function connectProductTags($id, $tags)
 {
     $placeholderList = implode(", ", array_fill(0, count($tags), "(?, ?)"));
@@ -131,6 +186,15 @@ function connectProductTags($id, $tags)
     return updateData("INSERT INTO product_tag (tag_id, product_id) VALUES $placeholderList;", $values, $typeString);
 }
 
+/**
+ * Összekapcsolja a termékeket az egészségügyi hatásokkal az adatbázisban.
+ *
+ * @param int $id A termék azonosítója, amelyhez az egészségügyi hatásokat kapcsolni kell.
+ * @param array $productHealthEffectsData Egy tömb, amely a kapcsolni kívánt egészségügyi hatásokat tartalmazza.
+ *
+ * @return Result A művelet eredményét tartalmazó objektum. Siker esetén SUCCESS állapotot ad vissza,
+ *                hiba esetén a megfelelő hibainformációval tér vissza.
+ */
 function connectProductHealthEffects($id, $productHealthEffectsData)
 {
     $results = array();
@@ -156,7 +220,17 @@ function connectProductHealthEffects($id, $productHealthEffectsData)
     return new Result(Result::SUCCESS, "Az egészségügyi hatások feltöltése sikeres volt.");
 }
 
-// Termék létrehozása - Fő függvény
+/**
+ * Létrehozza a terméket az adatbázisban és a fájlrendszerben.
+ *
+ * @param array $productData A termék adatai, amelyeket fel kell tölteni.
+ * @param array $productPageData A termékoldal adatai.
+ * @param array $productCategoryData A termékkategória adatai.
+ * @param array $productHealthEffectsData A termék egészségügyi hatásai.
+ *
+ * @return Result A művelet eredménye. Siker esetén SUCCESS állapotot ad vissza,
+ *                hiba esetén a megfelelő hibainformációval tér vissza.
+ */
 function createProduct($productData, $productPageData, $productCategoryData, $productHealthEffectsData)
 {
     include_once "init.php";
@@ -233,7 +307,14 @@ function createProduct($productData, $productPageData, $productCategoryData, $pr
 
 /* ----------------------------- Termék törlése ----------------------------- */
 
-// Termék törlése az adatbázisból
+/**
+ * Törli a terméket az adatbázisból.
+ *
+ * @param array $productData A termék adatai, amelyeket törölni kell.
+ *
+ * @return Result A művelet eredménye. Siker esetén SUCCESS állapotot ad vissza,
+ *                hiba esetén a megfelelő hibainformációval tér vissza.
+ */
 function removeProductFromDB($productData)
 {
     $result = updateData("DELETE `image` FROM `image` INNER JOIN product_image ON image.id=product_image.image_id WHERE product_image.product_id=?;", $productData['id'], "i");
@@ -253,12 +334,27 @@ function removeProductFromDB($productData)
 }
 
 // Termék mappájának törlése
+/**
+ * Törli a termék könyvtárát a fájlrendszerből.
+ *
+ * @param array $productData A termék adatai, amelynek könyvtárát törölni kell.
+ *
+ * @return bool True, ha a törlés sikeres volt, különben false.
+ */
 function removeProductDirectory($productData)
 {
     return deleteFolder(getProductDir($productData));
 }
 
 // Termék törlése - Fő függvény
+/**
+ * Törli a terméket az adatbázisból és a fájlrendszerből.
+ *
+ * @param array $productData A termék adatai, amelyeket törölni kell.
+ *
+ * @return Result A művelet eredménye. Siker esetén SUCCESS állapotot ad vissza,
+ *                hiba esetén a megfelelő hibainformációval tér vissza.
+ */
 function removeProduct($productData)
 {
     include_once 'init.php';
@@ -278,8 +374,23 @@ function removeProduct($productData)
     return new Result(Result::SUCCESS, "A termék sikeresen törölve lett.");
 }
 
-/* ---------------------------- Termék módosítása --------------------------- */
+/* ---------------------------- Termék módosítása ---------------------------- */
 
+/**
+ * Frissíti a termék egészségügyi hatásait az adatbázisban.
+ *
+ * @param int $id A termék azonosítója.
+ * @param array $productHealthEffectsData Az egészségügyi hatások adatai, amelyeket frissíteni kell.
+ *        A tömb két kulcsot tartalmazhat: "benefits" és "side_effects", amelyek egészségügyi hatás azonosítókat tartalmaznak.
+ *
+ * @return Result A művelet eredménye:
+ *         - Result::SUCCESS, ha a frissítés sikeres volt vagy nem történt változás.
+ *         - Result::ERROR, ha hiba történt a frissítés során.
+ *
+ * A függvény először törli a megadott termékhez tartozó összes egészségügyi hatást a `product_health_effect` táblából.
+ * Ha a megadott adatok üresek, akkor nem történik további művelet, és sikeres eredményt ad vissza.
+ * Ha vannak új egészségügyi hatások, azokat beszúrja a táblába.
+ */
 function updateProductHealthEffect($id, $productHealthEffectsData)
 {
 
@@ -313,6 +424,20 @@ function updateProductHealthEffect($id, $productHealthEffectsData)
     return new Result(Result::SUCCESS, "Sikeres törlés.");
 }
 
+/**
+ * Frissíti a termék címkéit az adatbázisban.
+ *
+ * @param array $productData A termék adatai, amelyeket frissíteni kell.
+ *        A tömbnek tartalmaznia kell a "tags" kulcsot, amely egy tömböt tartalmaz a címkék azonosítóival.
+ *
+ * @return Result A művelet eredménye:
+ *         - Result::SUCCESS, ha a frissítés sikeres volt vagy nem történt változás.
+ *         - Result::ERROR, ha hiba történt a frissítés során.
+ *
+ * A függvény először törli a megadott termékhez tartozó összes címkét a `product_tag` táblából.
+ * Ha a megadott adatok üresek, akkor nem történik további művelet, és sikeres eredményt ad vissza.
+ * Ha vannak új címkék, azokat beszúrja a táblába.
+ */
 function updateProductTags($productData)
 {
 
@@ -344,6 +469,20 @@ function updateProductTags($productData)
     return new Result(Result::SUCCESS, "Sikeres törlés.");
 }
 
+/**
+ * Frissíti a termékoldalakat az adatbázisban.
+ *
+ * @param array $data A termékoldal adatai, amelyeket frissíteni kell.
+ *        A tömbnek tartalmaznia kell a "name" és "original_name" kulcsokat.
+ * @param string|null $table Az adatbázis tábla neve, amelyhez a frissítést végre kell hajtani.
+ *
+ * @return Result A művelet eredménye:
+ *         - Result::SUCCESS, ha a frissítés sikeres volt vagy nem történt változás.
+ *         - Result::ERROR, ha hiba történt a frissítés során.
+ *
+ * A függvény először ellenőrzi, hogy van-e termékoldal a megadott kategória alatt.
+ * Ha nincs, akkor sikeres eredményt ad vissza. Ha van, akkor frissíti a link_slug és page_title mezőket.
+ */
 function updateProductPage($data, $table = null)
 {
     if (!$table)
@@ -399,6 +538,19 @@ function updateProductPage($data, $table = null)
     return new Result(Result::SUCCESS, "Sikeres módosítás.");
 }
 
+/**
+ * Frissíti a termék képeit az adatbázisban.
+ *
+ * @param array $productData A termék adatai, amelyeket frissíteni kell.
+ * @param array $imageUpdates A képek frissítési műveletei (pl. törlés, szerkesztés, hozzáadás).
+ *
+ * @return Result A művelet eredménye:
+ *         - Result::SUCCESS, ha a frissítés sikeres volt.
+ *         - Result::ERROR, ha hiba történt a frissítés során.
+ *
+ * A függvény végrehajtja a megadott képek frissítési műveleteit (törlés, szerkesztés, hozzáadás)
+ * és visszaadja a művelet eredményét.
+ */
 function updateProductImages($productData, $imageUpdates)
 {
     $insertIds = [];
@@ -451,6 +603,19 @@ function updateProductImages($productData, $imageUpdates)
     return new Result(Result::SUCCESS, "Sikeres képmódosítás!");
 }
 
+/**
+ * Frissíti a termék adatait az adatbázisban.
+ *
+ * @param array $productData A termék adatai, amelyeket frissíteni kell.
+ * @param array $imageUpdates A képek frissítési műveletei (pl. törlés, szerkesztés, hozzáadás).
+ * @param array $productHealthEffectsData A termék egészségügyi hatásai.
+ *
+ * @return Result A művelet eredménye:
+ *         - Result::SUCCESS, ha a frissítés sikeres volt.
+ *         - Result::ERROR, ha hiba történt a frissítés során.
+ *
+ * A függvény végrehajtja a megadott termékadatok frissítési műveleteit és visszaadja a művelet eredményét.
+ */
 function updateProductData($productData, $imageUpdates, $productHealthEffectsData)
 {
 
@@ -499,6 +664,18 @@ function updateProductData($productData, $imageUpdates, $productHealthEffectsDat
     return $result;
 }
 
+/**
+ * Frissíti a termék könyvtárát és a fájlokat a fájlrendszerben.
+ *
+ * @param array $productData A termék adatai, amelyeket frissíteni kell.
+ * @param array $imageUpdates A képek frissítési műveletei (pl. törlés, szerkesztés, hozzáadás).
+ *
+ * @return Result A művelet eredménye:
+ *         - Result::SUCCESS, ha a frissítés sikeres volt.
+ *         - Result::ERROR, ha hiba történt a frissítés során.
+ *
+ * A függvény végrehajtja a megadott képek frissítési műveleteit és visszaadja a művelet eredményét.
+ */
 function updateProductDirectory($productData, &$imageUpdates)
 {
 
@@ -554,6 +731,16 @@ function updateProductDirectory($productData, &$imageUpdates)
     return new Result(Result::SUCCESS, $paths);
 }
 
+/**
+ * Frissíti a terméket az adatbázisban és a fájlrendszerben.
+ *
+ * @param array $productData A termék adatai, amelyeket frissíteni kell.
+ * @param array $productHealthEffectsData A termék egészségügyi hatásai.
+ * @param array $imageUpdates A képek frissítési műveletei (pl. törlés, szerkesztés, hozzáadás).
+ *
+ * @return Result A művelet eredménye. Siker esetén SUCCESS állapotot ad vissza,
+ *                hiba esetén a megfelelő hibainformációval tér vissza.
+ */
 function updateProduct($productData, $productHealthEffectsData, $imageUpdates)
 {
     include_once "init.php";

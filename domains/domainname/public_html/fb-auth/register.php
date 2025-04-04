@@ -21,10 +21,10 @@ load_env(__DIR__ . '/../../../../.ext/.env');
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Florens Botanica - Regisztráció</title>
 
-    <link rel="preload" href="./fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
-    <link rel="stylesheet" href="./fb-auth/assets/css/root.css">
-    <link rel="stylesheet" href="./fb-auth/assets/css/register.css">
-    <link rel="stylesheet" href="./fb-auth/assets/css/inputs-light.css">
+    <link rel="preload" href="/fb-auth/assets/fonts/Raleway.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="/fb-auth/assets/css/root.css">
+    <link rel="stylesheet" href="/fb-auth/assets/css/register.css">
+    <link rel="stylesheet" href="/fb-auth/assets/css/inputs-light.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="stylesheet" href="/fb-content/assets/css/font.css" />
@@ -32,16 +32,16 @@ load_env(__DIR__ . '/../../../../.ext/.env');
     <script async defer src="https://www.google.com/recaptcha/enterprise.js?render=<?php echo $_ENV['RECAPTCHA_SITE_KEY']; ?>"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script defer src="/fb-content/assets/js/page_transition.js"></script>
-    <script type="module" defer src="./fb-auth/assets/js/register.js"></script>
+    <script type="module" defer src="/fb-auth/assets/js/register.js"></script>
 </head>
 <body>
 <div class=transition><div class=transition-background></div><div class=transition-text><div class=hero><div class=char>F</div><div class=char>l</div><div class=char>o</div><div class=char>r</div><div class=char>e</div><div class=char>n</div><div class=char>s</div><div class=char> </div><div class=char>B</div><div class=char>o</div><div class=char>t</div><div class=char>a</div><div class=char>n</div><div class=char>i</div><div class=char>c</div><div class=char>a</div></div><div class=quote><div class=char>"</div><div class=char>A</div><div class=char> </div><div class=char>l</div><div class=char>e</div><div class=char>g</div><div class=char>n</div><div class=char>a</div><div class=char>g</div><div class=char>y</div><div class=char>o</div><div class=char>b</div><div class=char>b</div><div class=char> </div><div class=char>g</div><div class=char>a</div><div class=char>z</div><div class=char>d</div><div class=char>a</div><div class=char>g</div><div class=char>s</div><div class=char>á</div><div class=char>g</div><div class=char> </div><div class=char>a</div><div class=char>z</div><div class=char> </div><div class=char>e</div><div class=char>g</div><div class=char>é</div><div class=char>s</div><div class=char>z</div><div class=char>s</div><div class=char>é</div><div class=char>g</div><div class=char>.</div><div class=char>"</div><div class=char> </div><div class=char>-</div><div class=char> </div><div class=char>V</div><div class=char>e</div><div class=char>r</div><div class=char>g</div><div class=char>i</div><div class=char>l</div><div class=char>i</div><div class=char>u</div><div class=char>s</div></div></div></div>
     <div class="main">
         <div class="side-image">
-            <div class="bg visible" style="background-image: url('./fb-content/assets/media/images/site/login/bg0.jpg');"></div>
-            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg1.jpg');"></div>
-            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg2.jpg');"></div>
-            <div class="bg" style="background-image: url('./fb-content/assets/media/images/site/login/bg3.jpg');"></div>
+            <div class="bg visible" style="background-image: url('/fb-content/assets/media/images/site/login/bg0.jpg');"></div>
+            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg1.jpg');"></div>
+            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg2.jpg');"></div>
+            <div class="bg" style="background-image: url('/fb-content/assets/media/images/site/login/bg3.jpg');"></div>
         </div>
         <form action="" method="post" id="register" class="light">
             <div class="form-header">

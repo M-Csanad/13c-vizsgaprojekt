@@ -1,4 +1,5 @@
 import APIFetch from "/fb-content/assets/js/apifetch.js";
+import RateLimiter from "../../../fb-content/assets/js/ratelimit.js";
 
 class PersonalDetailsForm {
 
@@ -21,6 +22,10 @@ class PersonalDetailsForm {
 
 	// DOM elemek lekérdezése és eltárolása későbbi használathoz
 	initDOM(dom) {
+		this.limiter = new RateLimiter({
+			"avatar": 2
+		});
+
 		this.formDom = dom;
 		this.formWrapper = dom.parentElement;
 
@@ -349,6 +354,9 @@ class PersonalDetailsForm {
 
 	// Backend metódusok
 	async save(input) {
+		const isLimited = this.limiter.useArea("avatar");
+		if (isLimited) return;
+
 		// Az adatok backend számára megfelelő formázása
 		switch (input.type) {
 			case "avatar":

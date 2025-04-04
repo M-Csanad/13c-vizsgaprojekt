@@ -78,9 +78,9 @@
     <meta name="description" content="Profil beállítások">
     <title>Beállítások</title>
     
-    <link rel="stylesheet" href="./fb-auth/assets/css/settings.css">
-    <link rel="stylesheet" href="./fb-auth/assets/css/inputs.css">
-    <link rel="stylesheet" href="./fb-auth/assets/css/autofill-form.css">
+    <link rel="stylesheet" href="/fb-auth/assets/css/settings.css">
+    <link rel="stylesheet" href="/fb-auth/assets/css/inputs.css">
+    <link rel="stylesheet" href="/fb-auth/assets/css/autofill-form.css">
     <link rel="stylesheet" href="/fb-content/assets/css/page_transition.css">
     <link rel="icon" href="/fb-content/assets/media/images/logos/herbalLogo_mini_white2.png" type="image/x-icon">
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.1.14/dist/lenis.css" />
