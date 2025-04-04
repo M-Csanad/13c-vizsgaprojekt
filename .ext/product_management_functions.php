@@ -416,7 +416,13 @@ function updateProductImages($productData, $imageUpdates)
                         break;
                     
                     case 'edit':
-                        // Módosításnál nem változnak az elérési útvonalak, ezért itt nem kell csinálnunk semmit.
+                        $path = $update["path"];
+                        $path = absoluteToRelativeURL($path);
+                        $result = updateData("UPDATE `image` SET uri = ?, orientation = ? WHERE id = ?", [$path, getOrientation($path), $update["id"]], "sss");
+                        if ($result->isError()) {
+                            return $result;
+                        }
+
                         break;
 
                     case 'add':
@@ -530,9 +536,7 @@ function updateProductDirectory($productData, &$imageUpdates)
                         $paths[] = $path;
 
                         // Hozzáadjuk az update objektumhoz
-                        if ($action == 'add') {
-                            $update["path"] = $path;
-                        }
+                        $update["path"] = $path;
                         break;
     
                     default:
@@ -580,6 +584,6 @@ function updateProduct($productData, $productHealthEffectsData, $imageUpdates)
     if (!$result->isSuccess()) {
         return $result;
     }
-
+    
     return new Result(Result::SUCCESS, "Sikeres termék módosítás!");
 }
