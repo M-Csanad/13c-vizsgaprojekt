@@ -1,3 +1,5 @@
+import CursorScroller from "./cursorscroller.js";
+
 /**
  * Dashboard osztály - Az adminisztrációs felület JavaScript funkcionalitását kezeli
  * A kód jobb kezelhetőség és modularitás érdekében osztályba szervezve
@@ -117,6 +119,10 @@ class Dashboard {
         if (this.categoryType) {
             this.categoryType.addEventListener("change", () => this.handleCategoryTypeChange());
         }
+
+        document.querySelectorAll(".image-cards").forEach(x => {
+            const handler = new CursorScroller(x);
+        });
         
         // Globális Escape billentyű kezelés
         window.addEventListener("keydown", (e) => {

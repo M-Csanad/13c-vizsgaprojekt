@@ -247,7 +247,7 @@ function initializeSearch(search) {
       searchInput.closest("form").querySelector(".image-cards.horizontal").innerHTML =
       `
         <div class="image-card" data-update-key="horizontal-edit">
-          <img src="${images.horizontal_uri}-768px.jpg" alt="${images.name}"/>
+          <img src="${images.horizontal_uri}-768px.jpg" alt="${images.name}" draggable="false"/>
           <div class="card-actions">
               <input type="file" id="horizontal-edit" class="visually-hidden" name="horizontal-edit" accept="image/jpeg" data-orientation="horizontal" data-type="image" data-count="singular" data-image-type="horizontal" data-image-id="${images.id || ''}" tabindex="-1">
               <label for="horizontal-edit" class="action-edit" role="button" aria-label="Edit image">
@@ -262,7 +262,7 @@ function initializeSearch(search) {
       searchInput.closest("form").querySelector(".image-cards.vertical").innerHTML =
       `
         <div class="image-card" data-update-key="vertical-edit">
-          <img src="${images.vertical_uri}-768px.jpg" alt="${images.name}"/>
+          <img src="${images.vertical_uri}-768px.jpg" alt="${images.name}" draggable="false"/>
           <div class="card-actions">
               <input type="file" id="vertical-edit" class="visually-hidden" name="vertical-edit" accept="image/jpeg" data-orientation="vertical" data-type="image" data-count="singular" data-image-type="vertical" data-image-id="${images.id || ''}" tabindex="-1">
               <label for="vertical-edit" class="action-edit" role="button" aria-label="Edit image">
@@ -283,7 +283,7 @@ function initializeSearch(search) {
       thumbnailContainer.innerHTML =
       `
         <div class="image-card" data-id="${thumbnail_image.id}" data-update-key="thumbnail-edit-${thumbnail_image.id}">
-          <img src="${thumbnail_image.uri}-768px.jpg" alt="${item.name}"/>
+          <img src="${thumbnail_image.uri}-768px.jpg" alt="${item.name}" draggable="false"/>
           <div class="card-actions">
               <input type="file" name="thumbnail-edit-${thumbnail_image.id}" id="thumbnail-edit-${thumbnail_image.id}" class="visually-hidden" accept="image/jpeg" data-orientation="any" data-type="image" data-count="singular" data-image-type="thumbnail" data-image-id="${thumbnail_image.id}" data-id="${item.id}" tabindex="-1">
               <label for="thumbnail-edit-${thumbnail_image.id}" class="action-edit" role="button" aria-label="Edit image">
@@ -302,7 +302,7 @@ function initializeSearch(search) {
         productImagesContainer.innerHTML +=
         `
           <div class="image-card" data-id="${image.id}" data-update-key="product-edit-${image.id}">
-            <img src="${image.uri}-768px.jpg" alt="${item.name}"/>
+            <img src="${image.uri}-768px.jpg" alt="${item.name}" draggable="false"/>
             <div class="card-actions">
                 <input type="file" name="product-edit-${image.id}" id="product-edit-${image.id}" class="visually-hidden" accept="image/jpeg" data-orientation="any" data-type="image" data-count="singular" data-image-type="product_image" data-image-id="${image.id}" data-id="${item.id}" tabindex="-1">
                 <label for="product-edit-${image.id}" class="action-edit" role="button" aria-label="Edit image">

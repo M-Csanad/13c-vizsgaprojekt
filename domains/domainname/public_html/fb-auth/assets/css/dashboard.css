@@ -734,15 +734,20 @@ form > .input-grid {
     display: flex;
     height: 125px !important;
     align-items: center;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
 }
 
 .image-cards > .image-card {
+    scroll-snap-align: start;
+    user-select: none;
     border-radius: 10px;
     height: 125px;
     width: 125px;
     border: 3px solid #a0a0a0;
     box-shadow: 2px 2px 5px #c5c5c5;
     position: relative;
+    flex-shrink: 0;
 }
 
 .image-card > img {
@@ -912,7 +917,7 @@ section.active .section-header > svg {
         padding-block: 8px;
         padding-inline: 18px;
     }
-    .inline-input:not(:has(.image-cards)) {
+    .inline-input:not(:has(.image-cards, .tag-body)) {
         flex-direction: column !important;
         height: 60px !important;
         gap: 5px !important;
@@ -920,6 +925,10 @@ section.active .section-header > svg {
     .inline-input:has(.image-cards) {
         flex-direction: column !important;
         height: fit-content !important;
+        gap: 5px !important;
+    }
+    .inline-input:has(.tag-body) {
+        flex-direction: column !important;
     }
     .inline-input > * {
         width: 100% !important;

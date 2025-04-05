@@ -64,20 +64,16 @@ class RateLimiter {
     }
 
     /**
-     * Megpróbál hozzáférni egy területhez, ellenőrizve a korlátozásokat
+     * Visszaadja, hogy az adott terület korlátozva van-e (pl. ha túl sok kérés érkezik)
      * @param {string} area - A használni kívánt terület neve
      * @returns {boolean} true, ha a hívás korlátozva van (túl gyakori), false ha engedélyezett
      */
     useArea(area) {        
         const areaId = this.getAreaIndex(area);
         const time = performance.now();
+        const lastAccess = this.lastAccess(areaId);
 
-        if (this.lastAccess(areaId) < 0) {
-            this.setLastAccess(areaId, time);
-            return false;
-        }
-        
-        if (time - this.lastAccess(areaId) >= this.debounceTime(areaId)) {
+        if (lastAccess < 0 || time - lastAccess >= this.debounceTime(areaId)) {
             this.setLastAccess(areaId, time);
             return false;
         }

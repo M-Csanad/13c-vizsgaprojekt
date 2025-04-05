@@ -55,3 +55,23 @@
 ::-ms-reveal {
     display: none;
 }
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    width: 0;
+    background: transparent;
+}
+
+body {
+    --is-mobile: 0;
+}
+
+@media (pointer: coarse) {
+    body {
+        --is-mobile: 1;
+    }
+}

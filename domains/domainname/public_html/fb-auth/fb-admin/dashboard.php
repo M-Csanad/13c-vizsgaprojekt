@@ -721,7 +721,7 @@
                                     </div>
                                 </label>
                                 <div class="input-content">
-                                    <div class="input-container image-cards vertical">
+                                    <div class="input-container image-cards vertical no-scrollbar">
                                         <div class="none-selected">
                                             Nincs kiválasztva kategória!
                                         </div>
@@ -742,7 +742,7 @@
                                     </div>
                                 </label>
                                 <div class="input-content">
-                                    <div class="input-container image-cards horizontal">
+                                    <div class="input-container image-cards horizontal no-scrollbar">
                                         <div class="none-selected">
                                             Nincs kiválasztva kategória!
                                         </div>
@@ -1340,7 +1340,7 @@
                                     </div>
                                 </label>
                                 <div class="input-content">
-                                    <div class="input-container image-cards thumbnail">
+                                    <div class="input-container image-cards thumbnail no-scrollbar">
                                         <div class="none-selected">
                                             Nincs kiválasztva termék!
                                         </div>
@@ -1354,7 +1354,7 @@
                                     </div>
                                 </label>
                                 <div class="input-content">
-                                    <div class="input-container image-cards product-images">
+                                    <div class="input-container image-cards product-images no-scrollbar">
                                         <div class="none-selected">
                                             Nincs kiválasztva termék!
                                         </div>
@@ -1628,6 +1628,7 @@
                                         <select name="role" id="role" required disabled>
                                             <option value="Guest">Guest</option>
                                             <option value="Administrator">Administrator</option>
+                                            <option value="Bot">Bot</option>
                                         </select>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
                                             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>

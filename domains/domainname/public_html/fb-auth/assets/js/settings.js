@@ -1,18 +1,13 @@
 import AutofillForm from "./autofill-form.js";
 import PasswordForm from "./password-form.js";
 import PersonalDetailsForm from "./personal-form.js";
+import MobileDetector from "./mobiledetector.js";
 
 // ----------------------------
 // Mobil / Érintőképernyős eszköz érzékelése
 // ----------------------------
 
-const isMobile = detectMobileDevice();
-
-function detectMobileDevice() {
-  const cssMobile = getComputedStyle(document.body).getPropertyValue("--is-mobile") === "1";
-  const touchDevice = ("ontouchstart" in window) || (navigator.msMaxTouchPoints > 0);
-  return cssMobile || touchDevice;
-}
+const isMobile = MobileDetector.detect();
 
 // ----------------------------
 // Menü navigáció
