@@ -29,6 +29,7 @@ class CursorScroller {
         this.scrollElement.addEventListener("mousedown", this.handleMouseDown.bind(this));
         this.scrollElement.addEventListener("mouseup", this.handleMouseUp.bind(this));
         this.scrollElement.addEventListener("mousemove", this.handleMouseMove.bind(this));
+        this.scrollElement.addEventListener("mouseleave", this.handleMouseUp.bind(this));
     }
 
     /**
