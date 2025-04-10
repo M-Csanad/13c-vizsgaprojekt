@@ -156,8 +156,8 @@ class BotUserCreator:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Bot felhasználók létrehozása')
-    parser.add_argument('-c', '--count', type=int, default=1,
-                        help='Hány felhasználót generáljunk egy batch-ben (alapértelmezett: 1)')
+    parser.add_argument('-c', '--count', type=int, default=3,
+                        help='Hány felhasználót generáljunk egy batch-ben (alapértelmezett: 3)')
     parser.add_argument('-b', '--batches', type=int, default=1,
                         help='Hány batch-et generáljunk (alapértelmezett: 1)')
     parser.add_argument('-f', '--file', type=str, default='bot_accounts.json',

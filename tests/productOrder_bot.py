@@ -874,7 +874,7 @@ def run_bots_in_parallel(total_bots, concurrent_bots, use_login=False):
 if __name__ == "__main__":
     # Parancssori argumentumok feldolgozása
     parser = argparse.ArgumentParser(description='Webshop automatizált tesztelő botok párhuzamos futtatása')
-    parser.add_argument('-t', '--total', type=int, default=9, help='Botok teljes száma (alapértelmezett: 9)')
+    parser.add_argument('-t', '--total', type=int, default=8, help='Botok teljes száma (alapértelmezett: 8)')
     parser.add_argument('-c', '--concurrent', type=int, default=2,
                         help='Egyszerre futó botok száma (alapértelmezett: 2)')
     parser.add_argument('-l', '--login', action='store_true',
