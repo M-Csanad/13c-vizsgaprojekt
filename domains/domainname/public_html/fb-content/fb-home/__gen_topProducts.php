@@ -5,6 +5,11 @@ include_once BASE_PATH . '/error_logger.php';
 include_once BASE_PATH . '/solid_func.php';
 
 
+/*
+ * A legnépszerűbb termékek betöltése az adatbázisból és megjelenítése.
+ * A függvény a legtöbb értékeléssel rendelkező, raktáron lévő termékeket keresi meg,
+ * majd HTML formátumban jeleníti meg őket egy carousel számára.
+ */
 function generateTopProducts()
 {
 
@@ -17,7 +22,7 @@ function generateTopProducts()
 
 
     $sql = "SELECT p.id, p.name, p.unit_price, p.description, p.stock,
-                i.uri AS image_uri,
+                MAX(i.uri) AS image_uri,
                 COALESCE(AVG(r.rating), 0) as avg_rating,
                 COUNT(DISTINCT r.id) as review_count
             FROM product p
@@ -25,7 +30,7 @@ function generateTopProducts()
             LEFT JOIN image i ON pi.image_id = i.id
             LEFT JOIN review r ON p.id = r.product_id
             WHERE p.stock > 0
-            GROUP BY p.id, p.name, p.unit_price, p.description, p.stock, i.uri
+            GROUP BY p.id, p.name, p.unit_price, p.description, p.stock
             ORDER BY review_count DESC, avg_rating DESC
             LIMIT 10";
 
@@ -51,7 +56,6 @@ function generateTopProducts()
             $stock = (int)$row['stock'];
             $imageUri = $row['image_uri'];
 
-            // Get product page info
             $pageQuery = "SELECT link_slug FROM product_page WHERE product_id = ?";
             $stmt = $conn->prepare($pageQuery);
             $stmt->bind_param("i", $productId);
@@ -66,7 +70,6 @@ function generateTopProducts()
 
             $stmt->close();
 
-            // Get base image path without extension
             $basePath = preg_replace('/\.[^.]+$/', '', $imageUri);
 
             echo '<div class="swiper-slide">
@@ -76,11 +79,9 @@ function generateTopProducts()
             if ($imageUri) {
                 echo '<img src="' . $imageUri . '" alt="' . $productName . '" loading="lazy" />';
             } else {
-                // Fallback for when no image is found
                 echo '<img src="/fb-content/assets/media/images/site/no_image.jpg" alt="' . $productName . '" loading="lazy" />';
             }
 
-            // Changed the button class from "book-now" to "quick-add" and added data attributes
             echo '    <button class="quick-add" data-product-id="' . $productId . '" data-product-url="' . $productUrl . '">Kosárba</button>
                       </div>
                       <div class="swiper-card">
