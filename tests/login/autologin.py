@@ -7,8 +7,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
 def Login(driver, username, password, findLink = True):
+    """
+    Bejelentkezés végrehajtása a megadott felhasználónévvel és jelszóval
+
+    Paraméterek:
+        driver: Selenium WebDriver példány
+        username: Felhasználónév a bejelentkezéshez
+        password: Jelszó a bejelentkezéshez
+        findLink: Keresse-e meg a login linkjét, vagy már a login oldalon vagyunk
+    """
     print("\nBejeletkezés...")
-    
+
     # Navigálás a bejelentkező oldalra
     if findLink:
         driver.find_element(by=By.CSS_SELECTOR, value="a[href='/login']").click()
@@ -23,7 +32,7 @@ def Login(driver, username, password, findLink = True):
 
     # Bejelentkezés gombra kattintás
     driver.find_element(by=By.CSS_SELECTOR, value="input[name='login']").click()
-    
+
     # Ellenőrizzük, hogy sikeres volt-e a bejelentkezés
     try:
         error_message = WebDriverWait(driver, 3).until(
@@ -35,5 +44,5 @@ def Login(driver, username, password, findLink = True):
         pass
 
     WebDriverWait(driver, 10).until(lambda d: d.current_url != "http://localhost/login")
-    
+
     print("✓ Bejelentkezés megtörtént")

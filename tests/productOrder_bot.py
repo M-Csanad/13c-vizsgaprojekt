@@ -8,6 +8,7 @@ from selenium.common.exceptions import TimeoutException, NoSuchElementException,
 from tests.utility.chromedriver_headless import webdriver, Options
 from tests.utility.user_generator import UserGenerator
 from tests.utility.review_generator import ReviewGenerator
+from tests.login.autologin import Login
 import time
 import random
 import re
@@ -15,7 +16,13 @@ import argparse
 import concurrent.futures
 # For folder creation
 import os
+import json
 from datetime import datetime
+# Add lorem for review text generation
+import lorem
+
+# Constants
+BOT_ACCOUNTS_PATH = "c:/xampp/htdocs/13c-vizsgaprojekt/tests/utility/bot_accounts.json"
 
 def wait_for_element(driver, by, value, timeout=10):
     """Várakozás egy elem megjelenésére és visszaadása"""
@@ -53,7 +60,7 @@ def wait_for_clickable(driver, by, value, timeout=10):
 def extract_product_count(text):
     """Kinyeri a termékek számát a szövegből"""
     match = re.search(r'(\d+)\s+term[éė]k', text)
-    if match:
+    if (match):
         return int(match.group(1))
     return 0
 
@@ -87,19 +94,64 @@ def navigate_by_url(driver, url):
         print(f"  URL navigációs hiba: {str(e)}")
         return False
 
-def run_bot(index: int):
+def get_bot_account():
+    """Létező bot fiók adatainak beolvasása"""
+    if os.path.exists(BOT_ACCOUNTS_PATH):
+        try:
+            with open(BOT_ACCOUNTS_PATH, 'r', encoding='utf-8') as f:
+                accounts = json.load(f)
+                if accounts:
+                    # Véletlenszerű fiók kiválasztása
+                    account = random.choice(accounts)
+                    # Convert user_name to username to match expected structure
+                    if "user_name" in account and "username" not in account:
+                        account["username"] = account["user_name"]
+                    return account
+        except Exception as e:
+            print(f"Hiba a bot fiókok beolvasásakor: {e}")
+    return None
+
+def run_bot(index: int, use_login=False):
+    """
+    Vásárlási folyamat végrehajtása egy bot által
+
+    Paraméterek:
+        index: A bot egyedi azonosítója
+        use_login: Bejelentkezzen-e a bot létező fiókkal
+    """
     print(f"\n--- Bot #{index+1} indul ---")
     # Új headless driver példány
     chrome_options = Options()
     chrome_options.add_argument("--headless=new")
-    chrome_options.add_argument("--window-size=1920,1080")
+    chrome_options.add_argument("--disable-gpu")  # Néhány esetben stabilabbá teszi a headless módot
+    chrome_options.add_argument("--no-sandbox")  # Bizonyos környezetekben szükséges
+    chrome_options.add_argument("--disable-dev-shm-usage")  # Memóriahasználat optimalizálása
     driver = webdriver.Chrome(options=chrome_options)
 
-    # 1) Felhasználó generálása
-    user = UserGenerator.generate()
-    print(f"  Generált felhasználó: {user['username']}, {user['email']}")
+    # User data that will be used in the process
+    user = None
+
+    # Store product URL for later review
+    product_info = {"url": None}
 
     try:
+        # 1) Felhasználó bejelentkezés vagy generálás
+        if use_login:
+            # Use existing bot account
+            bot_account = get_bot_account()
+            if bot_account:
+                print(f"  Bot fiók használata: {bot_account['username']}")
+                driver.get("http://localhost/login")
+                Login(driver, bot_account["user_name"], bot_account["password"], False)
+                user = bot_account
+            else:
+                print("  Nem található bot fiók, új felhasználó generálása helyette.")
+                user = UserGenerator.generate()
+        else:
+            # Generate new user as before
+            user = UserGenerator.generate()
+            print(f"  Generált felhasználó: {user['username']}, {user['email']}")
+
         # 2) Főoldal betöltése
         driver.get("http://localhost")
         print("  Főoldal betöltve")
@@ -428,6 +480,7 @@ def run_bot(index: int):
             if product_links:
                 product_link = product_links[0]
                 product_url = product_link.get_attribute('href')
+                product_info["url"] = product_url
 
                 # Próbáljunk rákattintani - először standard módon
                 try:
@@ -717,6 +770,14 @@ def run_bot(index: int):
 
         # 9) Visszajelzés a sikeres futásról
         print(f"  Bot #{index+1} sikeresen lefutott!")
+
+        # Return more information when login is used
+        if use_login and user:
+            return {
+                "success": True,
+                "user": user,
+                "product_info": product_info
+            }
         return True  # Sikeres befejezés
 
     except Exception as e:
@@ -730,19 +791,26 @@ def run_bot(index: int):
             print(f"  Képernyőmentés mentve: {screenshot_path}")
         except Exception as screenshot_error:
             print(f"  Nem sikerült képernyőmentést készíteni: {str(screenshot_error)}")
+
+        if use_login:
+            return {
+                "success": False,
+                "error": str(e)
+            }
         return False  # Sikertelen befejezés
     finally:
         driver.quit()
 
-def run_bots_in_parallel(total_bots, concurrent_bots):
+def run_bots_in_parallel(total_bots, concurrent_bots, use_login=False):
     """
-    Futtatja a botokat párhuzamosan, egyszerre csak a megadott számút.
+    Több bot párhuzamos futtatása a vásárlási folyamat teszteléséhez
 
-    Args:
+    Paraméterek:
         total_bots: Az összes futtatandó bot száma
-        concurrent_bots: Egyszerre futó botok száma
+        concurrent_bots: Egyidejűleg futó botok maximális száma
+        use_login: Bejelentkezzenek-e a botok létező fiókokkal
     """
-    print(f"\n=== {total_bots} bot indítása, egyszerre {concurrent_bots} fut ===\n")
+    print(f"\n=== {total_bots} bot indítása, egyszerre {concurrent_bots} fut {'(bejelentkezéssel)' if use_login else ''} ===\n")
 
     # Készítsünk egy mappát a futtatás időpontjával
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
@@ -751,19 +819,31 @@ def run_bots_in_parallel(total_bots, concurrent_bots):
 
     successful = 0
     failed = 0
+    order_results = []  # Save order results for review process
 
     # Párhuzamos futtatás ThreadPoolExecutor-ral
     with concurrent.futures.ThreadPoolExecutor(max_workers=concurrent_bots) as executor:
         # Feladatok létrehozása és beküldése
-        futures = [executor.submit(run_bot, i) for i in range(total_bots)]
+        futures = [executor.submit(run_bot, i, use_login) for i in range(total_bots)]
 
         # Eredmények begyűjtése
         for i, future in enumerate(concurrent.futures.as_completed(futures)):
             try:
-                if future.result():
-                    successful += 1
-                else:
-                    failed += 1
+                result = future.result()
+
+                if isinstance(result, dict):  # Detailed result with login
+                    if result["success"]:
+                        successful += 1
+                        # Save for potential review
+                        order_results.append(result)
+                    else:
+                        failed += 1
+                else:  # Simple boolean result
+                    if result:
+                        successful += 1
+                    else:
+                        failed += 1
+
                 print(f"Bot #{i+1} befejezve. Eddig sikeres: {successful}, hibás: {failed}")
             except Exception as exc:
                 print(f"Bot kivétel: {exc}")
@@ -782,15 +862,35 @@ def run_bots_in_parallel(total_bots, concurrent_bots):
         f.write(f"Hibás: {failed}\n")
         f.write(f"Összesen: {total_bots}\n")
 
-    return successful, failed
+    # Save order data if login was used, for review processing
+    if use_login and order_results:
+        orders_file = f"{run_dir}/orders.json"
+        with open(orders_file, 'w', encoding='utf-8') as f:
+            json.dump(order_results, f, indent=2, ensure_ascii=False)
+        print(f"Rendelési információk mentve: {orders_file}")
+
+    return successful, failed, order_results if use_login else None
 
 if __name__ == "__main__":
     # Parancssori argumentumok feldolgozása
     parser = argparse.ArgumentParser(description='Webshop automatizált tesztelő botok párhuzamos futtatása')
     parser.add_argument('-t', '--total', type=int, default=9, help='Botok teljes száma (alapértelmezett: 9)')
-    parser.add_argument('-c', '--concurrent', type=int, default=3,
-                        help='Egyszerre futó botok száma (alapértelmezett: 3)')
+    parser.add_argument('-c', '--concurrent', type=int, default=2,
+                        help='Egyszerre futó botok száma (alapértelmezett: 2)')
+    parser.add_argument('-l', '--login', action='store_true',
+                        help='Bejelentkezés bot fiókkal vendég helyett')
+    parser.add_argument('-r', '--review', action='store_true',
+                        help='Értékelések írása a vásárlás után (csak bejelentkezéssel működik)')
     args = parser.parse_args()
 
     # Botok futtatása a megadott paraméterekkel
-    run_bots_in_parallel(args.total, args.concurrent)
+    result = run_bots_in_parallel(args.total, args.concurrent, args.login)
+
+    # Ha a review opció be van kapcsolva, indítsuk el a review_product.py-t
+    if args.login and args.review and result and result[2]:
+        print("\nVásárlások sikeresen befejezve, értékelési folyamat indítása...")
+        try:
+            from tests.review.review_product import process_orders
+            process_orders(result[2])
+        except Exception as e:
+            print(f"Hiba az értékelési folyamat során: {str(e)}")

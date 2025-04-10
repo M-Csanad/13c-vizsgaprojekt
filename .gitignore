@@ -28,6 +28,9 @@ debugs/
 debug/
 error/
 errors/
+runs/
+run/
+temp/
 *.log
 *.logs
 *.tmp

@@ -1,0 +1,57 @@
+# Python Bot Parancsok - Futtatható parancsok listája
+
+## Felhasználó generátor
+python tests/utility/user_generator.py
+  Leírás: 10 véletlenszerű felhasználót generál és az SQL beszúrási kódot a vágólapra másolja.
+
+## Bot felhasználók létrehozása
+python tests/utility/create_bot_users.py [OPCIÓK]
+  Leírás: Bot felhasználókat hoz létre, JSON fájlba és opcionálisan az adatbázisba menti őket.
+
+  Opciók:
+    -c, --count SZÁM      Hány felhasználót generáljon egy kötegben (alapértelmezett: 3)
+    -b, --batches SZÁM    Hány köteget generáljon (alapértelmezett: 3)
+    -f, --file FÁJLNÉV    A JSON fájl útvonala (alapértelmezett: bot_accounts.json)
+    -e, --execute         SQL végrehajtása az adatbázisban (alapértelmezett: kikapcsolva)
+
+  Példák:
+    python tests/utility/create_bot_users.py -c 10 -b 3
+      30 bot felhasználót generál (3 kötegben, egyenként 10) és JSON-be menti őket
+
+    python tests/utility/create_bot_users.py -c 5 -e
+      5 bot felhasználót generál, JSON-be és az adatbázisba is elmenti
+
+## Vásárlási bot
+python tests/productOrder_bot.py [OPCIÓK]
+  Leírás: Automata botokat futtat a webshopban vásárlási folyamat tesztelésére.
+
+  Opciók:
+    -t, --total SZÁM      Futtatandó botok teljes száma (alapértelmezett: 8)
+    -c, --concurrent SZÁM Egyszerre párhuzamosan futó botok száma (alapértelmezett: 2)
+    -l, --login           Bejelentkezés létező bot fiókokkal (alapértelmezett: kikapcsolva)
+    -r, --review          Értékelések írása vásárlás után (csak bejelentkezéssel működik)
+
+  Példák:
+    python tests/productOrder_bot.py -t 20 -c 4
+      20 vásárlási botot futtat, maximum 4-et párhuzamosan, vendégként
+
+    python tests/productOrder_bot.py -t 5 -l
+      5 vásárlási botot futtat, létező bot fiókokkal bejelentkezve
+
+    python tests/productOrder_bot.py -t 3 -l -r
+      3 vásárlási botot futtat bejelentkezve, amelyek a vásárlás után értékeléseket is írnak
+
+## Értékelés generátor (közvetlenül futtatható)
+python tests/review/review_product.py [OPCIÓK]
+  Leírás: Termékértékeléseket generál a már létező bot felhasználókkal.
+
+  Opciók:
+    -c, --count SZÁM      Generálandó értékelések száma (alapértelmezett: 5)
+    -p, --product URL     Termék URL-je, amire az értékelés készül (kötelező)
+    -a, --admin           Admin fiókkal hagyja jóvá az értékeléseket (opcionális)
+
+  Példa:
+    python tests/review/review_product.py -c 3 -p http://localhost/valami/slug/...
+      3 értékelést generál a megadott URL-en lévő termékhez
+
+

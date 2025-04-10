@@ -16,13 +16,13 @@ class BotUserCreator:
     @staticmethod
     def create_users(count=1, batch_count=1, json_path="tests/utility/bot_accounts.json", execute_sql=False):
         """
-        Creates bot users and adds them to database and JSON file
+        Bot felhasználók létrehozása és mentése az adatbázisba és JSON fájlba
 
-        Args:
-            count: Number of users to create per batch
-            batch_count: Number of batches to create
-            json_path: Path to the JSON file for storing bot accounts
-            execute_sql: Whether to execute SQL directly on the database
+        Paraméterek:
+            count: Hány felhasználó jöjjön létre kötegenkénk
+            batch_count: Hány köteg felhasználót hozzunk létre
+            json_path: A JSON fájl útvonala a bot fiókok tárolásához
+            execute_sql: Közvetlen SQL végrehajtás az adatbázisban
         """
         total_count = count * batch_count
         print(f"\n\033[1mGenerálás {total_count} bot felhasználó ({batch_count} batch × {count} felhasználó)...\033[0m")

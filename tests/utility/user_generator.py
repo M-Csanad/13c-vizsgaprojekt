@@ -9,7 +9,6 @@ import pyperclip
 
 class UserGenerator:
 
-    # Férfi keresztnevek
     male_first_names = [
         "István", "János", "József", "László", "Zoltán", "Sándor", "Ferenc", "Gábor",
         "Attila", "Péter", "Tamás", "Mihály", "András", "Tibor", "Imre", "Balázs",
@@ -20,7 +19,6 @@ class UserGenerator:
         "Márió", "Ottó", "Patrik", "Rudolf", "Sebestyén", "Dávid", "Zalán"
     ]
 
-    # Női keresztnevek
     female_first_names = [
         "Mária", "Erzsébet", "Katalin", "Éva", "Ilona", "Anna", "Zsuzsanna", "Margit",
         "Judit", "Ágnes", "Andrea", "Erika", "Krisztina", "Irén", "Gabriella", "Adrienn", "Mimi"
@@ -31,7 +29,6 @@ class UserGenerator:
         "Rita", "Rozália", "Tünde", "Veronika", "Zita", "Zsófia", "Csillag"
     ]
 
-    # Vezetéknevek
     last_names = [
         "Nagy", "Kovács", "Tóth", "Szabó", "Horváth", "Varga", "Kiss", "Molnár",
         "Németh", "Farkas", "Balogh", "Papp", "Takács", "Juhász", "Mészáros", "Szűcs",
@@ -42,8 +39,6 @@ class UserGenerator:
         "Veres", "Vincze", "Vörös", "Zsiga", "Kecske", "Blank"
     ]
 
-
-    # Email domainek (nem létezők)
     email_domains = [
         "bot.example.com", "bot.example.org", "bot.example.net"
     ]
@@ -65,7 +60,7 @@ class UserGenerator:
 
     @staticmethod
     def generate_username(last_name, first_name):
-        """Felhasználónév készítése névből"""
+        """Egyedi, valószerű felhasználónév generálása a névből"""
         # Ékezetek eltávolítása és kisbetűsítés
         last = UserGenerator.remove_accents(last_name.lower())
         first = UserGenerator.remove_accents(first_name.lower())
@@ -107,7 +102,7 @@ class UserGenerator:
 
     @staticmethod
     def generate_email(last_name, first_name):
-        """Email cím készítése névből"""
+        """Email cím létrehozása a felhasználó nevéből"""
         # Ékezetek eltávolítása és kisbetűsítés
         last = UserGenerator.remove_accents(last_name.lower())
         first = UserGenerator.remove_accents(first_name.lower())
@@ -122,7 +117,7 @@ class UserGenerator:
 
     @staticmethod
     def generate(count=1, male=random.choice([True, False])):
-        """Véletlenszerű felhasználó(k) generálása egyedi felhasználónévvel és email címmel"""
+        """Véletlenszerű tesztfelhasználó(k) létrehozása egyedi felhasználónévvel és email címmel"""
         pwd_gen = PasswordGenerator()
         users = []
         used_usernames = set()
@@ -176,7 +171,7 @@ class UserGenerator:
 
     @staticmethod
     def generateAsSQL(count=10):
-        """Véletlenszerű felhasználó(k) generálása SQL formátumban"""
+        """SQL beszúró utasítások generálása a felhasználói adatokkal, vágólapra másolással"""
 
         chance_of_repetition = 1 - math.exp(-(count * (count - 1)) / UserGenerator.NAMES_COUNT)
         print(f"\n\033[1m{count} felhasználó generálása...\033[0m")
