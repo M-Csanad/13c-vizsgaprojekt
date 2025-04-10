@@ -37,7 +37,7 @@ class QueryResult extends Result {
      * @return QueryResult Az újonnan létrehozott példány.
      * @throws InvalidArgumentException Ha a megadott típus nem támogatott.
      */
-    public function __construct(int $type, mixed $message, string $query = null, mixed $params = null, ?int $code = null, ?int $affectedRows = null, ?int $lastInsertId = null) {
+    public function __construct(int $type, mixed $message, ?string $query = null, mixed $params = null, ?int $code = null, ?int $affectedRows = null, ?int $lastInsertId = null) {
         parent::__construct($type, $message);
 
         $this->code = $code;

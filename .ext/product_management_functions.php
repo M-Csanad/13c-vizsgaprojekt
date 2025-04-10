@@ -774,3 +774,39 @@ function updateProduct($productData, $productHealthEffectsData, $imageUpdates)
     
     return new Result(Result::SUCCESS, "Sikeres termék módosítás!");
 }
+
+
+function getProductIdFromURL($url) {
+    include_once "router_helpers.php";
+    $segments = explode('/', ltrim($url, '/'));
+
+    // Ha nem 3 elemű az URL, akkor biztos, hogy nem termék
+    if (count($segments) !== 3) {
+        http_response_code(400);
+        $result = new Result(Result::ERROR, 'Hibás URL');
+        echo $result->toJSON();
+        exit();
+    }
+
+    // URL adatok kinyerése
+    $parents = array_slice($segments, 0, 2);
+    $product = array_slice($segments, 2, 1)[0];
+
+    // Termék azonosító lekérése
+    $result = isValidProduct($product, $parents);
+    if ($result->isError()) {
+        http_response_code(400);
+        $result = new Result(Result::ERROR, 'Hibás lekérdezés');
+        echo $result->toJSON();
+        exit();
+    }
+
+    if ($result->isEmpty()) {
+        http_response_code(400);
+        $result = new Result(Result::ERROR, 'Ismeretlen termék');
+        echo $result->toJSON();
+        exit();
+    }
+
+    return new Result(Result::SUCCESS, $result->message[0]);
+}

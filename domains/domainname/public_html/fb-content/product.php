@@ -62,28 +62,14 @@
     }
 
     // Értékelések lekérdezése
-    $page = isset($_GET['review_page']) ? intval($_GET['review_page']) : 1;
-    $perPage = 5;
-
-    $reviewsResult = getProductReviews($product["id"], $page, $perPage);
-    if ($reviewsResult->isError()) {
-      logError("Sikertelen termék értékelés lekérdezés: ".$reviewsResult->toJSON(true), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
+    $reviewStats = getReviewStats($product['id']);
+    if ($reviewStats->isError()) {
+      logError("Sikertelen értékelés lekérdezés: " . json_encode($reviewStats), "productpage.log", $_SERVER["DOCUMENT_ROOT"] . "/../../../.logs");
       http_response_code(404);
       include $_SERVER["DOCUMENT_ROOT"] . "/fb-functions/error/error-404.html";
       exit;
     }
-
-    $reviewData = $reviewsResult->message;
-    $reviews = $reviewData['reviews'];
-    $pagination = $reviewData['pagination'];
-
-    if (is_array($reviews)) {
-      $reviewNum = $pagination['total'];
-      $avgReview = 0;
-      if ($reviewNum > 0) {
-        $avgReview = array_sum(array_map(function($e) { return $e["rating"]; }, $reviews)) / $reviewNum;
-      }
-    }
+    $reviewStats = $reviewStats->message;
 
     // Hasonló termékek lekérése
     $relatedProducts = null;
@@ -292,12 +278,12 @@
           <span class="price-currency">Ft</span>
         </div>
         <div class="inline-container">
-          <?php if (is_array($reviews)): ?>
+          <?php if ($reviewStats['review_count'] > 0): ?>
             <div
               class="avg-review"
               aria-label="Átlagos értékelés"
-              data-rating="<?= htmlspecialchars($avgReview) ?>"
-              data-reviews="<?= htmlspecialchars($reviewNum) ?>"
+              data-rating="<?= htmlspecialchars($reviewStats['average_rating']) ?>"
+              data-reviews="<?= htmlspecialchars($reviewStats['review_count']) ?>"
             ></div>
           <?php endif; ?>
           <div class="stock-indicator">
@@ -512,7 +498,7 @@
       <?php if ($isLoggedIn): ?>
         <div class="review-form-container">
           <form class="review-form" action="">
-            <?php if (is_string($reviews) || empty($reviews)): ?>
+            <?php if ($reviewStats['review_count'] == 0): ?>
               <div class="title">Légy te az első, aki értékeli ezt a terméket!</div>
             <?php else: ?>
               <div class="title">Oszd meg véleményedet velünk!</div>
@@ -566,80 +552,12 @@
           </form>
         </div>
       <?php else: ?>
-        <?php if (is_string($reviews) || empty($reviews)): ?>
+        <?php if ($reviewStats['review_count'] == 0): ?>
           <div class="form-subtitle">Még nincsenek értékelések ehhez a termékhez.</div>
         <?php endif; ?>
       <?php endif; ?>
-      <?php if (is_array($reviews) && !empty($reviews)): ?>
-        <div class="review-container">
-          <?php foreach ($reviews as $review): ?>
-            <div class="review">
-              <div class="review-head">
-                <div class="review-info">
-                  <div class="user">
-                    <div class="profile-pic">
-                      <img src="<?= htmlspecialchars($review["pfp_uri"]); ?>" alt="" />
-                      <?php if ($review["verified_purchase"]): ?>
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16" >
-                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
-                      </svg>
-                      <?php endif; ?>
-                    </div>
-                    <div class="profile-info">
-                      <div class="name"><?= htmlspecialchars($review["last_name"] . " " . $review["first_name"]); ?></div>
-                      <div class="verified"><?= $review["verified_purchase"] ? "Hitelesített vásárló" : "Felhasználó"; ?></div>
-                    </div>
-                  </div>
-                  <div class="stars-title">
-                    <div class="review-stars stars" data-rating="<?= htmlspecialchars($review["rating"]) ?>"></div>
-                    <div class="review-title"><?= htmlspecialchars($review["title"]) ?></div>
-                  </div>
-                </div>
-                <div class="date"><?= htmlspecialchars($review["created_at"]) ?></div>
-              </div>
-              <div class="review-body">
-                <div class="review-text">
-                  <?= htmlspecialchars($review["description"]) ?>
-                </div>
-              </div>
-            </div>
-          <?php endforeach; ?>
-
-          <!-- Pagination Controls -->
-          <?php if ($pagination['totalPages'] > 1): ?>
-          <div class="review-pagination">
-            <?php if ($pagination['currentPage'] > 1): ?>
-              <a href="?review_page=<?= $pagination['currentPage'] - 1 ?>" class="page-link prev">&laquo; Előző</a>
-            <?php endif; ?>
-
-            <?php
-            $startPage = max(1, $pagination['currentPage'] - 2);
-            $endPage = min($pagination['totalPages'], $pagination['currentPage'] + 2);
-
-            if ($startPage > 1): ?>
-              <a href="?review_page=1" class="page-link">1</a>
-              <?php if ($startPage > 2): ?>
-              <span class="page-ellipsis">...</span>
-              <?php endif; ?>
-            <?php endif; ?>
-
-            <?php for ($i = $startPage; $i <= $endPage; $i++): ?>
-              <a href="?review_page=<?= $i ?>" class="page-link <?= $i == $pagination['currentPage'] ? 'active' : '' ?>"><?= $i ?></a>
-            <?php endfor; ?>
-
-            <?php if ($endPage < $pagination['totalPages']): ?>
-              <?php if ($endPage < $pagination['totalPages'] - 1): ?>
-              <span class="page-ellipsis">...</span>
-              <?php endif; ?>
-              <a href="?review_page=<?= $pagination['totalPages'] ?>" class="page-link"><?= $pagination['totalPages'] ?></a>
-            <?php endif; ?>
-
-            <?php if ($pagination['currentPage'] < $pagination['totalPages']): ?>
-              <a href="?review_page=<?= $pagination['currentPage'] + 1 ?>" class="page-link next">Következő &raquo;</a>
-            <?php endif; ?>
-          </div>
-          <?php endif; ?>
-        </div>
+      <?php if ($reviewStats['review_count'] > 0): ?>
+        <div class="review-container"></div>
       <?php endif; ?>
     </section>
     <section class="recommendations">
