@@ -8,7 +8,7 @@ class ProductPage {
         this.isNavAnimating = false;
         this.frameId = null;
         this.scrollFrameId = null;
-        this.reviewsPerPage = 5;
+        this.reviewsPerPage = 3;
 
         this.initDOM();
         this.bindEvents();
@@ -146,29 +146,33 @@ class ProductPage {
         }
     }
 
-    async generateReviewSection() {
-        await this.getReviews();
-
-        if (!this.avgReviewElement) return;
-
-        const rating = parseFloat(this.avgReviewElement.getAttribute('data-rating'));
-        const reviewCount = parseInt(this.avgReviewElement.getAttribute('data-reviews'));
-
-        this.avgReviewElement.innerHTML = `
-            <div class="rating-number">${rating.toFixed(1)}</div>
-            <div class="stars-and-reviews">
-                <div class="stars" data-rating="${rating}"></div>
-                <div class="review-count">${reviewCount} értékelés</div>
-            </div>
-        `;
-        this.generateStars(this.avgReviewElement.querySelector('.stars'));
-
-        this.generateReviewCards();
+    async getReviews(page = 1) {
+        if (!page) return;
+        const response = await APIFetch(`/api/product/reviews?url=${encodeURIComponent(window.location.pathname)}&page=${page}`);
+        if (response.ok)
+        {
+            const reviewsData = (await response.json()).message;
+            if (reviewsData.pagination.total > 0) {
+                this.reviews = reviewsData.reviews;
+                this.pagination = reviewsData.pagination;
+            }
+            else {
+                this.reviews = [];
+                this.pagination = null;
+            }
+        }
     }
 
     generateReviewCards()
     {
         this.reviewContainer.innerHTML = "";
+
+        if (!this.pagination || this.pagination.totalPages <= 1) {
+            this.reviewContainer.classList.add('single-page');
+        } else {
+            this.reviewContainer.classList.remove('single-page');
+        }
+        
         this.reviews?.forEach(r => {
             this.reviewContainer.innerHTML += 
             `
@@ -204,6 +208,114 @@ class ProductPage {
             `;
         });
         
+        // Generate pagination if needed
+        this.generatePagination();
+        
+        // Generate stars for all reviews
+        document.querySelectorAll('.review .review-stars').forEach(el => this.generateStars(el));
+    }
+
+    generatePagination() {
+        // Remove existing pagination if any
+        const existingPagination = document.querySelector('.review-pagination');
+        if (existingPagination) {
+            existingPagination.remove();
+        }
+
+        // Only create pagination if we have pagination data and more than one page
+        if (!this.pagination || this.pagination.totalPages <= 1) {
+            return;
+        }
+
+        const currentPage = parseInt(this.pagination.currentPage);
+        const totalPages = parseInt(this.pagination.totalPages);
+
+        const paginationContainer = document.createElement('div');
+        paginationContainer.className = 'pagination review-pagination';
+        
+        // Previous button
+        const prevButton = document.createElement('button');
+        prevButton.textContent = 'Előző';
+        prevButton.disabled = currentPage <= 1;
+        prevButton.addEventListener('click', () => this.changePage(currentPage - 1));
+        paginationContainer.appendChild(prevButton);
+
+        // Page numbers
+        const pageNumbers = document.createElement('div');
+        pageNumbers.className = 'page-numbers';
+
+        // Determine which page numbers to show
+        let startPage = Math.max(1, currentPage - 2);
+        let endPage = Math.min(totalPages, startPage + 4);
+        
+        if (endPage - startPage < 4) {
+            startPage = Math.max(1, endPage - 4);
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            const pageNumber = document.createElement('div');
+            pageNumber.className = 'page-number' + (i === currentPage ? ' active' : '');
+            pageNumber.textContent = i;
+            pageNumber.addEventListener('click', () => this.changePage(i));
+            pageNumbers.appendChild(pageNumber);
+        }
+        
+        paginationContainer.appendChild(pageNumbers);
+
+        // Next button
+        const nextButton = document.createElement('button');
+        nextButton.textContent = 'Következő';
+        nextButton.disabled = currentPage >= totalPages;
+        nextButton.addEventListener('click', () => this.changePage(currentPage + 1));
+        paginationContainer.appendChild(nextButton);
+
+        // Append to review container
+        this.reviewContainer.parentNode.appendChild(paginationContainer);
+    }
+
+    async changePage(page) {
+        gsap.to(this.reviewContainer, {
+            opacity: 0,
+            duration: 0.3,
+            ease: "power2.out"
+        });
+        
+        await new Promise(resolve => setTimeout(resolve, 350));
+        
+        await this.getReviews(page);
+        
+        this.generateReviewCards();
+        
+        this.reviewContainer.scrollTop = 0;
+        
+        gsap.fromTo(this.reviewContainer, 
+            { opacity: 0 },
+            { 
+                opacity: 1, 
+                duration: 0.4, 
+                ease: "power2.in" 
+            }
+        );
+    }
+
+    async generateReviewSection() {
+        await this.getReviews();
+
+        if (!this.avgReviewElement) return;
+
+        const rating = parseFloat(this.avgReviewElement.getAttribute('data-rating'));
+        const reviewCount = parseInt(this.avgReviewElement.getAttribute('data-reviews'));
+
+        this.avgReviewElement.innerHTML = `
+            <div class="rating-number">${rating.toFixed(1)}</div>
+            <div class="stars-and-reviews">
+                <div class="stars" data-rating="${rating}"></div>
+                <div class="review-count">${reviewCount} értékelés</div>
+            </div>
+        `;
+        this.generateStars(this.avgReviewElement.querySelector('.stars'));
+
+        this.generateReviewCards();
     }
 
     checkBigButtonVisibility() {
@@ -497,21 +609,6 @@ class ProductPage {
             }
         } catch (err) {
             console.error('Hiba a kosárba rakáskor:', err);
-        }
-    }
-
-    async getReviews(page = 1) {
-        if (!page) return;
-        const response = await APIFetch(`/api/product/reviews?url=${encodeURIComponent(window.location.pathname)}&page=${page}`);
-        if (response.ok)
-        {
-            const reviewsData = (await response.json()).message;
-            if (reviewsData.pagination.total > 0) {
-                this.reviews = reviewsData.reviews;
-            }
-            else {
-                this.reviews = [];
-            }
         }
     }
 }

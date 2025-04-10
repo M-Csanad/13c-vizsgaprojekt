@@ -557,6 +557,7 @@
         <?php endif; ?>
       <?php endif; ?>
       <?php if ($reviewStats['review_count'] > 0): ?>
+        <hr>
         <div class="review-container"></div>
       <?php endif; ?>
     </section>

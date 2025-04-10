@@ -7,7 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 include_once __DIR__."/../init.php";
-$reviewsPerPage = 5;
+$reviewsPerPage = 3;
 
 if (!isset($_GET['url']) || !isset($_GET['page'])) {
     http_response_code(400);
