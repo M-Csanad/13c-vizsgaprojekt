@@ -82,13 +82,34 @@ function makeReview($reviewData) {
  * @param int $perPage Értékelések száma oldalanként
  * @return Result Az értékeléseket tartalmazó eredmény objektum
  */
+function getReviewStats($productId) {
+    // Lekérjük az értékelések számát és az átlagos értékelést
+    $result = selectData(
+        "SELECT COUNT(*) as review_count, AVG(rating) as average_rating
+         FROM review
+         WHERE product_id = ?",
+        [$productId],
+        "i"
+    );
+
+    if ($result->isError()) {
+        return new Result(Result::ERROR, "Hiba az értékelési statisztikák lekérdezése során.");
+    }
+
+    // Visszaadjuk az értékelések számát és az átlagos értékelést
+    return new Result(Result::SUCCESS, [
+        'review_count' => $result->message[0]['review_count'],
+        'average_rating' => round($result->message[0]['average_rating'], 2)
+    ]);
+}
+
 function getProductReviews($productId, $page = 1, $perPage = 5) {
     $offset = ($page - 1) * $perPage;
 
     // Lapozáshoz szükséges az összes értékelés számának lekérése
     $countResult = selectData(
         "SELECT COUNT(*) as total FROM review WHERE product_id = ?",
-        [$productId],
+        $productId,
         "i"
     );
 
@@ -99,13 +120,11 @@ function getProductReviews($productId, $page = 1, $perPage = 5) {
     $totalReviews = $countResult->message[0]['total'];
     $totalPages = ceil($totalReviews / $perPage);
 
-    // Felhasználói adatokkal és lapozással rendelkező értékelések lekérése
     $result = selectData(
-        "SELECT review.id, review.user_id, review.product_id, review.rating, review.description,
+        "SELECT review.id, review.rating, review.description,
                 review.title, review.verified_purchase, DATE(review.created_at) AS created_at,
-                user.id, user.email, user.user_name, user.password_hash, user.role,
-                user.cookie_id, user.cookie_expires_at, user.first_name, user.last_name,
-                avatar.uri as pfp_uri, user.created_at AS user_created_at
+                user.user_name, user.first_name, user.last_name,
+                avatar.uri as pfp_uri
          FROM review
          INNER JOIN user ON review.user_id = user.id
          INNER JOIN avatar ON avatar.id=user.avatar_id

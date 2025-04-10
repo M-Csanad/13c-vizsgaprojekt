@@ -30,6 +30,7 @@ $routes = [
 
     // Értékelés
     '/api/review'                   => $API.'/review.php',
+    '/api/product/reviews'          => $API.'/get_product_reviews.php',
 
     // Automatikus kitöltés
     '/api/autofill/add'             => $API.'/autofill_add.php',

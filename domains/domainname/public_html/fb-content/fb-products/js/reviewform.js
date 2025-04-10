@@ -75,11 +75,6 @@ if (reviewSubmitter) {
         successText.textContent = "Sikeres küldés!";
       }
       didSubmit = true;
-
-      // Oldal újratöltése rövid késleltetés után az új értékelés megjelenítéséhez
-      setTimeout(() => {
-        window.location.reload();
-      }, 2000);
     }
     else {
       // Hibaüzenet megjelenítése

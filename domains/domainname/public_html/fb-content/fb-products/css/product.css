@@ -7,7 +7,6 @@
 @font-face {
   font-family: "Playfair Display";
   src: url("../../assets/font/PlayfairDisplay-VariableFont_wght.woff2") format("woff2");
-  /* font-weight: 100 900; A betűtípus vastagsági tartománya */
   font-style: normal;
   font-display: swap;
 }
@@ -15,7 +14,6 @@
 @font-face {
   font-family: "Roboto";
   src: url("../../assets/font/Roboto-Regular.woff2") format("woff2");
-  /* font-weight: 100 900; A betűtípus vastagsági tartománya */
   font-style: normal;
   font-display: swap;
 }
@@ -28,6 +26,8 @@
 }
 
 html {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -774,24 +774,48 @@ hr {
 }
 
 .review-container {
+  overflow: hidden;
   max-width: 100%;
+  height: 700px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   gap: 1rem;
-  border-block: 1px solid #555;
   margin-top: 2rem;
+  max-height: fit-content;
+  min-height: 700px;
+  padding-right: 10px;
+  scrollbar-width: thin;
+  scrollbar-color: #c0fa63 #1d1d1d;
+  margin-bottom: 1rem;
+  transition: height 0.4s ease-in-out, max-height 0.4s ease-in-out;
+}
+
+.review-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.review-container::-webkit-scrollbar-track {
+  background: #1d1d1d;
+}
+
+.review-container::-webkit-scrollbar-thumb {
+  background-color: #c0fa63;
+  border-radius: 4px;
 }
 
 .review {
-  padding-block: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  max-width: min(800px, 100%);
   width: 100%;
-  justify-content: center;
+  max-width: 800px;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 10px;
+}
+
+.review:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
 }
 
 .review > .review-head {
@@ -799,6 +823,7 @@ hr {
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
+  margin-bottom: 10px;
 }
 
 .review > .review-head > .review-info {
@@ -842,12 +867,13 @@ hr {
 }
 
 .review > .review-head > .review-info > .user > .profile-info > .name {
-  font-size: 18px;
+  font-size: 14px;
+  font-weight: 500;
 }
 
 .review > .review-head > .review-info > .user > .profile-info > .verified {
-  font-size: 14px;
-  color: #ddd;
+  font-size: 11px;
+  color: #aaa;
 }
 
 .review > .review-head > .review-info > .stars-title {
@@ -870,13 +896,30 @@ hr {
   align-items: flex-end;
   flex-wrap: wrap;
   gap: 0.5rem;
-  font-size: 18px;
+  font-size: 15px;
+  font-weight: 500;
   font-style: italic;
+  margin-bottom: 2px;
+  color: #fff;
 }
 
 .review > .review-head > .date {
-  color: #ddd;
+  white-space: nowrap;
+  color: #999;
+  font-size: 12px;
   font-style: italic;
+}
+
+.review-text {
+  font-size: 13px;
+  line-height: 1.4;
+  color: #ddd;
+  max-height: 5.6em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
 }
 
 .products-wrapper {
@@ -1620,4 +1663,254 @@ body.top-show #top-button {
 
 .profile-info .verified.verified-purchase {
   color: #e6dc87;
+}
+/* Add at the end of the file */
+
+/* Review Pagination Styles */
+.review-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem;
+}
+
+.review-pagination button {
+    background: transparent;
+    border: 2px solid #ffe260;
+    color: #ffe260;
+    padding: 0.7rem 1.4rem;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.review-pagination button:enabled:hover {
+    background-color: #ffe2601c;
+}
+
+.review-pagination button:enabled:active {
+    background-color: #ffe260;
+    color: #1d1d1d;
+}
+
+.review-pagination button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    border-color: #929292;
+    color: #929292;
+}
+
+.review-pagination button:disabled:hover {
+    background-color: #ffffff1c;
+}
+
+.review-pagination .page-numbers {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.review-pagination .page-number {
+    min-width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid #666;
+    border-radius: 50%;
+    color: #666;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+    will-change: transform, opacity;
+}
+
+.review-pagination .page-number:hover {
+    border-color: #ffe260;
+    color: #ffe260;
+}
+
+.review-pagination .page-number:active {
+    background-color: #ffe2601c;
+}
+
+.review-pagination .page-number.active {
+    background-color: #ffe260;
+    border-color: #ffe260;
+    color: #1d1d1d;
+}
+
+/* Review styles - make text smaller and add truncation */
+.review-text {
+    font-size: 14px;
+    line-height: 1.5;
+    color: #e0e0e0;
+    max-height: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 5;  /* Number of lines to show */
+    -webkit-box-orient: vertical;
+}
+
+.review-title {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: #fff;
+}
+
+.review {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 10px;
+}
+
+.review:last-child {
+    border-bottom: none;
+}
+
+.review-head {
+    margin-bottom: 10px;
+}
+
+.review .date {
+    font-size: 12px;
+    color: #999;
+}
+
+.review .user .name {
+    font-size: 15px;
+}
+
+.review .verified {
+    font-size: 12px;
+    color: #b3b3b3;
+}
+
+/* Fixed height review container */
+.review-container {
+    max-height: fit-content;
+    min-height: 700px;
+    padding-right: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: #c0fa63 #1d1d1d;
+    margin-bottom: 1rem;
+    transition: height 0.4s ease-in-out, max-height 0.4s ease-in-out;
+}
+
+.review-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.review-container::-webkit-scrollbar-track {
+    background: #1d1d1d;
+}
+
+.review-container::-webkit-scrollbar-thumb {
+    background-color: #c0fa63;
+    border-radius: 4px;
+}
+
+/* Compact review styling */
+.review {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+}
+
+.review:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+/* Smaller text for review contents */
+.review-head {
+    margin-bottom: 0.5rem;
+}
+
+.review .user .name {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.review .verified {
+    font-size: 11px;
+    color: #aaa;
+}
+
+.review .review-title {
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+
+.review-text {
+    font-size: 13px;
+    line-height: 1.4;
+    color: #ddd;
+    max-height: 5.6em; /* 4 lines at 1.4 line-height */
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    text-overflow: ellipsis;
+}
+
+.stars > span {
+    width: 18px;
+    height: 18px;
+}
+
+/* Mobile-specific styles */
+@media screen and (max-width: 576px) {
+    .review-container {
+        height: 800px;
+        min-height: fit-content;
+        padding-right: 5px;
+    }
+    
+    .review {
+        padding: 10px 5px;
+        margin-bottom: 10px;
+    }
+    
+    .review-text {
+        font-size: 12px;
+        -webkit-line-clamp: 3; /* Show fewer lines on mobile */
+        max-height: 4.2em;
+    }
+    
+    .review .profile-pic img {
+        width: 32px;
+        height: 32px;
+    }
+    
+    .stars > span {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .review-pagination {
+        gap: 0.5rem;
+    }
+    
+    .review-pagination button {
+        padding: 0.5rem 1rem;
+        font-size: 14px;
+    }
+    
+    .review-pagination .page-number {
+        min-width: 32px;
+        height: 32px;
+    }
+}
+
+.review-container.single-page {
+    max-height: fit-content !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding-bottom: 20px;
+    min-height: auto !important;
 }
