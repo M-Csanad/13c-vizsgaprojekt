@@ -9,6 +9,8 @@ class ProductPage {
         this.frameId = null;
         this.scrollFrameId = null;
         this.reviewsPerPage = 3;
+        this.currentPage = 1;
+        this.totalPages = 1;
 
         this.initDOM();
         this.bindEvents();
@@ -107,6 +109,25 @@ class ProductPage {
 
         // Megosztás gomb kezelése
         this.shareButton?.addEventListener('click', () => this.handleShare());
+
+        // Add pagination button handlers
+        const paginationContainer = document.querySelector('.review-pagination');
+        if (paginationContainer) {
+            const prevButton = paginationContainer.querySelector('.prev-page-btn');
+            const nextButton = paginationContainer.querySelector('.next-page-btn');
+
+            prevButton?.addEventListener('click', () => {
+                if (this.currentPage > 1) {
+                    this.changePage(this.currentPage - 1);
+                }
+            });
+
+            nextButton?.addEventListener('click', () => {
+                if (this.currentPage < this.totalPages) {
+                    this.changePage(this.currentPage + 1);
+                }
+            });
+        }
     }
 
     async initialize() {
@@ -154,20 +175,21 @@ class ProductPage {
             const reviewsData = (await response.json()).message;
             if (reviewsData.pagination.total > 0) {
                 this.reviews = reviewsData.reviews;
-                this.pagination = reviewsData.pagination;
+                this.currentPage = parseInt(reviewsData.pagination.currentPage);
+                this.totalPages = parseInt(reviewsData.pagination.totalPages);
             }
             else {
                 this.reviews = [];
-                this.pagination = null;
+                this.currentPage = 1;
+                this.totalPages = 1;
             }
         }
     }
 
-    generateReviewCards()
-    {
+    generateReviewCards() {
         this.reviewContainer.innerHTML = "";
 
-        if (!this.pagination || this.pagination.totalPages <= 1) {
+        if (this.totalPages <= 1) {
             this.reviewContainer.classList.add('single-page');
         } else {
             this.reviewContainer.classList.remove('single-page');
@@ -208,72 +230,83 @@ class ProductPage {
             `;
         });
         
-        // Generate pagination if needed
-        this.generatePagination();
-        
-        // Generate stars for all reviews
+        // Lapozás állapot és értékelési csillagok frissítése
+        this.updatePaginationState();
         document.querySelectorAll('.review .review-stars').forEach(el => this.generateStars(el));
     }
 
-    generatePagination() {
-        // Remove existing pagination if any
-        const existingPagination = document.querySelector('.review-pagination');
-        if (existingPagination) {
-            existingPagination.remove();
-        }
+    // Lapozás állapotának frissítése
+    updatePaginationState() {
+        const paginationContainer = document.querySelector('.review-pagination');
+        if (!paginationContainer) return;
 
-        // Only create pagination if we have pagination data and more than one page
-        if (!this.pagination || this.pagination.totalPages <= 1) {
+        if (this.totalPages <= 1) {
+            paginationContainer.style.display = 'none';
             return;
         }
-
-        const currentPage = parseInt(this.pagination.currentPage);
-        const totalPages = parseInt(this.pagination.totalPages);
-
-        const paginationContainer = document.createElement('div');
-        paginationContainer.className = 'pagination review-pagination';
         
-        // Previous button
-        const prevButton = document.createElement('button');
-        prevButton.textContent = 'Előző';
-        prevButton.disabled = currentPage <= 1;
-        prevButton.addEventListener('click', () => this.changePage(currentPage - 1));
-        paginationContainer.appendChild(prevButton);
+        paginationContainer.style.display = 'flex';
+        
+        // Gombok állapotának frissítése
+        const prevButton = paginationContainer.querySelector('.prev-page-btn');
+        const nextButton = paginationContainer.querySelector('.next-page-btn');
+        
+        prevButton.disabled = this.currentPage <= 1;
+        nextButton.disabled = this.currentPage >= this.totalPages;
+        
+        // Oldalszámok frissítése
+        this.updatePageNumbers();
+    }
 
-        // Page numbers
-        const pageNumbers = document.createElement('div');
-        pageNumbers.className = 'page-numbers';
+    // Oldalszámok állapotának frissítése
+    updatePageNumbers() {
+        const pageNumbers = document.querySelector('.review-pagination .page-numbers');
+        if (!pageNumbers) return;
 
-        // Determine which page numbers to show
-        let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, startPage + 4);
+        // Látható oldalszámok tartományának kiszámítása
+        let startPage = Math.max(1, this.currentPage - 2);
+        let endPage = Math.min(this.totalPages, startPage + 4);
         
         if (endPage - startPage < 4) {
             startPage = Math.max(1, endPage - 4);
         }
 
-        for (let i = startPage; i <= endPage; i++) {
-            const pageNumber = document.createElement('div');
-            pageNumber.className = 'page-number' + (i === currentPage ? ' active' : '');
-            pageNumber.textContent = i;
-            pageNumber.addEventListener('click', () => this.changePage(i));
-            pageNumbers.appendChild(pageNumber);
+        // Meglévő oldalszám gombok állapotának frissítése vagy létrehozása
+        const existingButtons = pageNumbers.children;
+        const neededButtons = endPage - startPage + 1;
+
+        // Felesleges gombok eltávolítása
+        while (existingButtons.length > neededButtons) {
+            pageNumbers.removeChild(pageNumbers.lastChild);
         }
-        
-        paginationContainer.appendChild(pageNumbers);
 
-        // Next button
-        const nextButton = document.createElement('button');
-        nextButton.textContent = 'Következő';
-        nextButton.disabled = currentPage >= totalPages;
-        nextButton.addEventListener('click', () => this.changePage(currentPage + 1));
-        paginationContainer.appendChild(nextButton);
+        // Hiányzó gombok létrehozása
+        while (existingButtons.length < neededButtons) {
+            const button = document.createElement('div');
+            button.className = 'page-number';
+            button.addEventListener('click', (e) => {
+                const page = parseInt(e.target.textContent);
+                if (page !== this.currentPage) {
+                    this.changePage(page);
+                }
+            });
+            pageNumbers.appendChild(button);
+        }
 
-        // Append to review container
-        this.reviewContainer.parentNode.appendChild(paginationContainer);
+        // Gombok számozásának és aktív állapotának frissítése
+        Array.from(existingButtons).forEach((button, i) => {
+            const pageNum = startPage + i;
+            button.textContent = pageNum;
+            button.classList.toggle('active', pageNum === this.currentPage);
+        });
     }
 
     async changePage(page) {
+        if (page < 1 || page > this.totalPages || page === this.currentPage) {
+            return;
+        }
+        
+        // Fade out
         gsap.to(this.reviewContainer, {
             opacity: 0,
             duration: 0.3,
@@ -282,12 +315,16 @@ class ProductPage {
         
         await new Promise(resolve => setTimeout(resolve, 350));
         
+        // Get new reviews
         await this.getReviews(page);
         
+        // Generate review cards and update pagination
         this.generateReviewCards();
         
+        // Scroll to top of reviews
         this.reviewContainer.scrollTop = 0;
         
+        // Fade in
         gsap.fromTo(this.reviewContainer, 
             { opacity: 0 },
             { 

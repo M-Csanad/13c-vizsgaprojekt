@@ -1645,7 +1645,6 @@ body.top-show #top-button {
   text-decoration: underline;
 }
 
-/* Verified Purchase Badge Styling */
 .profile-pic svg {
   position: absolute;
   width: 15px;
@@ -1664,9 +1663,7 @@ body.top-show #top-button {
 .profile-info .verified.verified-purchase {
   color: #e6dc87;
 }
-/* Add at the end of the file */
 
-/* Review Pagination Styles */
 .review-pagination {
     display: flex;
     justify-content: center;
@@ -1676,6 +1673,10 @@ body.top-show #top-button {
     padding: 1rem;
 }
 
+.review-pagination > * {
+    user-select: none;
+}
+
 .review-pagination button {
     background: transparent;
     border: 2px solid #ffe260;
@@ -1683,7 +1684,7 @@ body.top-show #top-button {
     padding: 0.7rem 1.4rem;
     border-radius: 30px;
     cursor: pointer;
-    transition: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
 .review-pagination button:enabled:hover {
@@ -1700,10 +1701,7 @@ body.top-show #top-button {
     cursor: not-allowed;
     border-color: #929292;
     color: #929292;
-}
-
-.review-pagination button:disabled:hover {
-    background-color: #ffffff1c;
+    transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease, opacity 0.3s ease;
 }
 
 .review-pagination .page-numbers {
@@ -1717,21 +1715,20 @@ body.top-show #top-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #666;
+    border: 2px solid #ffe260;
     border-radius: 50%;
-    color: #666;
+    color: #ffe260;
     cursor: pointer;
     transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
     will-change: transform, opacity;
 }
 
 .review-pagination .page-number:hover {
-    border-color: #ffe260;
-    color: #ffe260;
+    background-color: #ffe2601c;
 }
 
 .review-pagination .page-number:active {
-    background-color: #ffe2601c;
+    background-color: #ffe2600c;
 }
 
 .review-pagination .page-number.active {
