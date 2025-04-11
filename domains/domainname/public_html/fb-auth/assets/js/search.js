@@ -169,6 +169,7 @@ function initializeSearch(search) {
     let data = new FormData();
     data.append("search_type", searchType);
     data.append("search_term", input);
+
     if (input.length > 0) {
       const response = await fetch(
         `/api/auth/dashboard-search`,

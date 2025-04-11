@@ -718,6 +718,10 @@ body.top-show #top-button {
     padding: 1rem;
 }
 
+.pagination > * {
+    user-select: none;
+}
+
 .pagination button {
     background: transparent;
     border: 2px solid #ffe260;
@@ -759,21 +763,20 @@ body.top-show #top-button {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 2px solid #666;
+    border: 2px solid #ffe260;
     border-radius: 50%;
-    color: #666;
+    color: #ffe260;
     cursor: pointer;
     transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
     will-change: transform, opacity;
 }
 
 .pagination .page-number:hover {
-    border-color: #ffe260;
-    color: #ffe260;
+    background-color: #ffe2601c;
 }
 
 .pagination .page-number:active {
-    background-color: #ffe2601c;
+    background-color: #ffe2600d;
 }
 
 .pagination .page-number.active {
