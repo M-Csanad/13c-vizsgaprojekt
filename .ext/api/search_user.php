@@ -13,7 +13,7 @@ if ($searchTerm) {
     if (is_numeric($searchTerm)) {
         $searchTerm = intval($searchTerm);
 
-        $query = "SELECT user.id, user.user_name as 'name', user.role, user.email, user.first_name, user.last_name, user.phone FROM user WHERE user.id = ?";
+        $query = "SELECT user.id, user.user_name as 'name', user.role, user.email, user.first_name, user.last_name, user.phone FROM user WHERE user.id = ? LIMIT 100";
         $params = [$searchTerm];
         $typeString = "i";
         if (!$includeSelf) {
@@ -39,7 +39,7 @@ if ($searchTerm) {
             $params[] = $user["id"];
             $typeString .= "i";
         }
-        $query .= " ORDER BY user.role, user.user_name;";
+        $query .= " ORDER BY user.role, user.user_name LIMIT 100;";
 
         $matches = selectData($query, $params, $typeString);
     }

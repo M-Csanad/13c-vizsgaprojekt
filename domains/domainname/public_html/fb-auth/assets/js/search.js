@@ -447,7 +447,7 @@ function initializeSearch(search) {
     validateSearchInput();
     if (item.role) {
       disableRoleOption(item.role);
-      selectFirstValidOption(inputGrid.querySelector("select"));
+      selectRoleOption(inputGrid.querySelector("select"), item.role);
       enableDisabledInputs();
     }
   }
@@ -468,6 +468,10 @@ function initializeSearch(search) {
       element.querySelector("option:checked").selected = false;
     }
     element.querySelector("option:enabled").selected = true;
+  }
+
+  function selectRoleOption(element, role) {
+    element.value = role;
   }
 
   // A rejtett mezők értékének visszaállítása
@@ -540,7 +544,7 @@ function initializeSearch(search) {
 
   // Legördülőmenük letiltása
   function disableSelectInputs() {
-    inputGrid.querySelectorAll("select").forEach((e) => (e.disabled = true));
+    inputGrid.querySelectorAll("select").forEach((e) => {e.disabled = true; selectFirstValidOption(e)});
   }
 
   // Kategória opciók feltöltése
