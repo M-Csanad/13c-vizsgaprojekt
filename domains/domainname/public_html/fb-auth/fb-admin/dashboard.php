@@ -288,7 +288,7 @@
         }
     }
     
-    // Jogosultság változtatása
+    // Felhasználó változtatása
     if (isset($_POST['modify_user_data'])) {
         $userData = [
             "user_name" => $_POST['username'],
@@ -308,7 +308,7 @@
 
         $userId = intval($_POST['user_data_id']);
         $result = updateUserData($userId, $userData);
-        if ($result->isSuccess()) {
+        if (!$result->isError()) {
             $message = "<div class='success'>Sikeres művelet!</div>";
         }
         else {
@@ -1706,7 +1706,7 @@
                                 <label for="first_name"><div>Keresztnév</div></label>
                                 <div class="input-content">
                                     <div class="input-container">
-                                        <input type="tel" name="first_name" id="first_name_modify" required disabled>
+                                        <input type="text" name="first_name" id="first_name_modify" required disabled autocomplete="off">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
                                             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
                                         </svg>
@@ -1724,7 +1724,7 @@
                                 <label for="password_modify"><div>Jelszó</div></label>
                                 <div class="input-content">
                                     <div class="input-container">
-                                        <input type="password" name="passwd" id="password_modify" autocomplete="new-password" disabled placeholder="Titkosított jelszó">
+                                        <input type="text" name="passwd" id="password_modify" autocomplete="new-password" disabled placeholder="Titkosított jelszó">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
                                             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
                                         </svg>

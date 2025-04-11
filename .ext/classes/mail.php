@@ -225,6 +225,26 @@ class Mail {
                 }
                 break;
 
+            case 'password_change':
+                // Betöltjük a megfelelő sablont
+                $templateFile = Mail::TEMPLATE_PATH . $type . '.html';
+                
+                // Ellenőrizzük, hogy létezik-e a sablon fájl
+                if (!file_exists($templateFile)) {
+                    log_Error("Email sablon nem található: " . $templateFile, "mail_error.txt");
+                    throw new Result(Result::ERROR, "Email sablon nem található: ".$templateFile);
+                }
+                
+                // Betöltjük a sablon tartalmát
+                $template = file_get_contents($templateFile);
+                
+                // Alapvető változók cseréje
+                $template = str_replace('{NAME}', $name, $template);
+                
+                // Jelszóváltoztatás specifikus változók cseréje
+                $template = str_replace('{CHANGE_DATE}', $data['change_date'], $template);
+                break;
+
             default:
                 // Betöltjük a megfelelő sablont
                 $templateFile = Mail::TEMPLATE_PATH . $type . '.html';
@@ -296,6 +316,11 @@ class Mail {
                 $template = str_replace('{ORDER_DATE}', $data['orderDate'], $template);
                 $template = str_replace('{ORDER_TOTAL}', $data['orderTotal'], $template);
                 $template = str_replace('{NEW_STATUS}', $data['newStatus'], $template);
+                break;
+
+            case 'password_change':
+                // Jelszóváltoztatás specifikus változók cseréje
+                $template = str_replace('{CHANGE_DATE}', $data['change_date'], $template);
                 break;
         }
         

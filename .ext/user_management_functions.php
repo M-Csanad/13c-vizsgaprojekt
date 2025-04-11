@@ -100,6 +100,25 @@ function sendPasswordResetEmail($user) {
     return $result;
 }
 
+// Jelszóváltoztatási értesítés küldése
+function sendPasswordChangeEmail($user) {
+    $changeDate = date('Y-m-d H:i:s');
+    
+    $recipient = [
+        "email" => $user["email"],
+        "name" => $user["last_name"]." ".$user["first_name"]
+    ];
+    
+    $mail = [
+        "subject" => "Jelszó módosítás értesítés",
+        "body" => Mail::getMailBody("password_change", $recipient["name"], ['change_date' => $changeDate]),
+        "alt" => Mail::getMailAltBody("password_change", $recipient["name"], ['change_date' => $changeDate])
+    ];
+
+    $mailer = new Mail();
+    return $mailer->sendTo($recipient, $mail, true);
+}
+
 function resetUserPassword(int $userId, string $password): Result {
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
     
@@ -148,7 +167,7 @@ function updateUserData($userId, $data) {
         ],
         "password" => [
             "rule" => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{}|\\;:\'",.<>\/?~]).{8,64}$/',
-            "message" => "A jelszó nem felel meg a követelményeknek"
+            "message" => "A jelszó nem felel meg a követelményeknek! (legalább 8 karakter, egy kis- és nagybetű, szám és speciális karakter)"
         ],
         "role" => [
             "rule" => '/^(Administrator|Guest|Bot)$/',
@@ -161,8 +180,6 @@ function updateUserData($userId, $data) {
             "message" => "Kérjük adjon meg egy érvényes telefonszámot."
         ]
     ];
-    prettyPrintArray($data);
-    prettyPrintArray($_POST);
 
     $validator = new InputValidator($data, $validationRules);
     $validationResult = $validator->test();
@@ -173,6 +190,26 @@ function updateUserData($userId, $data) {
     // Jogosultság módosítás
     if (isset($data["role"])) {
         $result = modifyRole($userId, $data["role"]);
+        unset($data["role"]);
+        if (!$result->isSuccess()) {
+            return $result;
+        }
+    }
+
+    // Jelszó módosítása
+    if (isset($data["password"])) {
+        $passwordHash = password_hash($data["password"], PASSWORD_DEFAULT);
+        $result = modifyPassword($userId, $passwordHash);
+        
+        if ($result->isSuccess()) {
+            // Felhasználó adatainak lekérése email küldéshez
+            $userResult = getUserData($userId);
+            if ($userResult->isSuccess() && !empty($userResult->message)) {
+                $result = sendPasswordChangeEmail($userResult->message[0]);
+            }
+        }
+        
+        unset($data["password"]);
         if (!$result->isSuccess()) {
             return $result;
         }
