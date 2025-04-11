@@ -117,10 +117,83 @@ function modifyRole($userId, $role) {
 
 // Személyes adatok módodítása
 function updatePersonalDetails($column, $data, $userId, $type) {
-    return updateData("UPDATE user SET $column=? WHERE id=?", [$data, $userId], $type);
+    return updateData("UPDATE user SET $column = ? WHERE id = ?", [$data, $userId], $type);
 }
 
 // Felhasználó törlése
 function deleteUser($userId) {
     return updateData("DELETE FROM user WHERE id=?", $userId, "i");
+}
+
+// Felhasználó adatainak módosítása (vezérlőpult)
+function updateUserData($userId, $data) {
+
+    // Validálás
+    $validationRules = [
+        "username" => [
+            "rule" => '/^[\w-]{3,20}$/',
+            "message" => "A felhasználónév 3-20 karakter hosszú lehet és csak betűket, számokat és kötőjelet tartalmazhat"
+        ],
+        "email" => [
+            "rule" => '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/',
+            "message" => "Kérjük adjon meg egy érvényes email címet"
+        ],
+        "firstname" => [
+            "rule" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
+            "message" => "Kérjük adja meg a keresztnevét"
+        ],
+        "lastname" => [
+            "rule" => '/^[A-Za-záéíóöőúüűÁÉÍÓÖŐÚÜŰ]+$/',
+            "message" => "Kérjük adja meg a vezetéknevét"
+        ],
+        "password" => [
+            "rule" => '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{}|\\;:\'",.<>\/?~]).{8,64}$/',
+            "message" => "A jelszó nem felel meg a követelményeknek"
+        ],
+        "role" => [
+            "rule" => '/^(Administrator|Guest|Bot)$/',
+            "message" => "A megadott jogosultság nem érvényes"
+        ],
+        "phone" => [
+            "rule" => function ($value) {
+                return $value == NULL || preg_match('/^(\+36|06)(\d{9})$/', $value);
+            },
+            "message" => "Kérjük adjon meg egy érvényes telefonszámot."
+        ]
+    ];
+    prettyPrintArray($data);
+    prettyPrintArray($_POST);
+
+    $validator = new InputValidator($data, $validationRules);
+    $validationResult = $validator->test();
+    if ($validationResult->isError()) {
+        return $validationResult;
+    }
+
+    // Jogosultság módosítás
+    if (isset($data["role"])) {
+        $result = modifyRole($userId, $data["role"]);
+        if (!$result->isSuccess()) {
+            return $result;
+        }
+    }
+
+    $query = "UPDATE user SET ";
+    $params = [];
+    $types = "";
+
+    foreach ($data as $column => $value) {
+        if ($column == "id") continue;
+        $query .= "$column = ?, ";
+        $params[] = $value;
+        $types .= "s";
+    }
+
+    // Az utolsó vessző eltávolítása
+    $query = rtrim($query, ", ");
+    $query .= " WHERE id = ?";
+    $params[] = $userId;
+    $types .= "i";
+
+    return updateData($query, $params, $types);
 }

@@ -289,14 +289,30 @@
     }
     
     // Jogosultság változtatása
-    if (isset($_POST['modify_role'])) {
-        $userId = intval($_POST['user_id']);
-        $role = $_POST['role'];
-        if (modifyRole($userId, $role)->isSuccess()) {
+    if (isset($_POST['modify_user_data'])) {
+        $userData = [
+            "user_name" => $_POST['username'],
+            "first_name" => $_POST['first_name'],
+            "last_name" => $_POST['last_name'],
+            "email" => $_POST['email'],
+            "phone" => $_POST['phone'] == "" ? NULL : $_POST['phone'],
+        ];
+
+        if (isset($_POST['role']) && !empty($_POST['role'])) {
+            $userData["role"] = $_POST['role'];
+        }
+
+        if (isset($_POST['passwd']) && !empty($_POST['passwd'])) {
+            $userData["password"] = $_POST['passwd'];
+        }
+
+        $userId = intval($_POST['user_data_id']);
+        $result = updateUserData($userId, $userData);
+        if ($result->isSuccess()) {
             $message = "<div class='success'>Sikeres művelet!</div>";
         }
         else {
-            $message = "<div class='error'>A művelet sikertelen!</div>";
+            $message = "<div class='error'>{$result->message}</div>";
         }
     }
 
@@ -1597,7 +1613,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" autocomplete="off" id="form-role" data-needs-confirm="true" data-confirm-message="Adminisztrátori jogokkal csak megbízható személyeket lásson el!">
+                    <form method="POST" autocomplete="off" id="form-role" data-needs-confirm="true" data-confirm-message="A felhasználó módosítása nem visszavonható művelet!">
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-search-type="user_data" data-id-input="user_data_id">
@@ -1744,7 +1760,7 @@
                             </div>
                         </div>
                         <div class="form-submit-wrapper">
-                            <input type="submit" value="Módosítás" class="form-submit-primary" name='modify_role'>
+                            <input type="submit" value="Módosítás" class="form-submit-primary" name='modify_user_data'>
                         </div>
                     </form>
                     <div class="items"></div>
