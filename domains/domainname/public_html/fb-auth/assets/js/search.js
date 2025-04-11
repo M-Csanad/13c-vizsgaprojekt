@@ -62,6 +62,28 @@ function initializeSearch(search) {
                 <div><b>#${user.id} ${user.name}</b> - ${user.email} (<i>${user.role}</i>)</div>`,
       clickHandler: async (user) => itemClickHandler(user, ["id", "name"]),
     },
+    user_data: {
+      autofillFields: [
+        { name: "username", disabledByDefault: true },
+        { name: "email", disabledByDefault: true },
+        { name: "phone", disabledByDefault: true },
+        { name: "last_name", disabledByDefault: true },
+        { name: "first_name", disabledByDefault: true },
+        { name: "passwd", disabledByDefault: true },
+      ],
+      template: (user) => `
+                <div><b>#${user.id} ${user.name}</b> - ${user.email} (<i>${user.role}</i>)</div>`,
+      clickHandler: async (user) => itemClickHandler(user, ["id", "name"], {
+        fields: [
+          { field: "username", value: user.name },
+          { field: "email", value: user.email },
+          { field: "phone", value: user.phone },
+          { field: "last_name", value: user.last_name },
+          { field: "first_name", value: user.first_name },
+          { field: "passwd", value: "" },
+        ],
+      }),
+    },
     product: {
       hasImageCards: true,
       autofillFields: [

@@ -71,6 +71,7 @@ switch ($searchType) {
         break;
 
     case 'user':
+    case 'user_data':
         if (!isset($_POST["search_term"]) || empty($_POST["search_term"])) {
             header("bad request", true, 400);
             echo json_encode("Hiányos adat!", JSON_UNESCAPED_UNICODE);

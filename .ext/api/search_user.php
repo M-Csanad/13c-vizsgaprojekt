@@ -13,7 +13,7 @@ if ($searchTerm) {
     if (is_numeric($searchTerm)) {
         $searchTerm = intval($searchTerm);
 
-        $query = "SELECT user.id, user.user_name as 'name', user.role, user.email FROM user WHERE user.id = ?";
+        $query = "SELECT user.id, user.user_name as 'name', user.role, user.email, user.first_name, user.last_name, user.phone FROM user WHERE user.id = ?";
         $params = [$searchTerm];
         $typeString = "i";
         if (!$includeSelf) {
@@ -27,7 +27,7 @@ if ($searchTerm) {
         $matches = selectData($query, $params, $typeString);
     }
     else {
-        $query = "SELECT user.id, user.user_name as 'name', user.role, user.email
+        $query = "SELECT user.id, user.user_name as 'name', user.role, user.email, user.first_name, user.last_name, user.phone
                     FROM user 
                     WHERE (user.user_name LIKE ? 
                     OR user.email LIKE ?
@@ -44,5 +44,5 @@ if ($searchTerm) {
         $matches = selectData($query, $params, $typeString);
     }
 
-    echo $matches->toJSON(true);
+    echo $matches->toJSON();
 }
