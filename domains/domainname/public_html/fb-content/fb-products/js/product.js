@@ -6,6 +6,7 @@ class ProductPage {
         // Állapot változók inicializálása
         this.isZoom = false;
         this.isNavAnimating = false;
+        this.isChangingPage = false;
         this.frameId = null;
         this.scrollFrameId = null;
         this.reviewsPerPage = 3;
@@ -116,16 +117,22 @@ class ProductPage {
             const prevButton = paginationContainer.querySelector('.prev-page-btn');
             const nextButton = paginationContainer.querySelector('.next-page-btn');
 
-            prevButton?.addEventListener('click', () => {
+            prevButton?.addEventListener('click', async () => {
+                if (this.isChangingPage) return;
+                this.isChangingPage = true;
                 if (this.currentPage > 1) {
-                    this.changePage(this.currentPage - 1);
+                    await this.changePage(this.currentPage - 1);
                 }
+                this.isChangingPage = false;
             });
 
-            nextButton?.addEventListener('click', () => {
+            nextButton?.addEventListener('click', async () => {
+                if (this.isChangingPage) return;
+                this.isChangingPage = true;
                 if (this.currentPage < this.totalPages) {
-                    this.changePage(this.currentPage + 1);
+                    await this.changePage(this.currentPage + 1);
                 }
+                this.isChangingPage = false;
             });
         }
     }
@@ -284,11 +291,14 @@ class ProductPage {
         while (existingButtons.length < neededButtons) {
             const button = document.createElement('div');
             button.className = 'page-number';
-            button.addEventListener('click', (e) => {
+            button.addEventListener('click', async (e) => {
+                if (this.isChangingPage) return;
+                this.isChangingPage = true;
                 const page = parseInt(e.target.textContent);
                 if (page !== this.currentPage) {
-                    this.changePage(page);
+                    await this.changePage(page);
                 }
+                this.isChangingPage = false;
             });
             pageNumbers.appendChild(button);
         }
