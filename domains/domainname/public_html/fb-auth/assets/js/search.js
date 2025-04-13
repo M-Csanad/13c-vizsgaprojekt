@@ -445,9 +445,14 @@ function initializeSearch(search) {
     searchInput.value = item.name ? item.name : item.id;
     toggleDropdown(false);
     validateSearchInput();
+
     if (item.role) {
       disableRoleOption(item.role);
       selectRoleOption(inputGrid.querySelector("select"), item.role);
+      enableDisabledInputs();
+    }
+
+    if (formTitle == "product_page_new") {
       enableDisabledInputs();
     }
   }
@@ -464,10 +469,17 @@ function initializeSearch(search) {
 
   // Egy select elem első érvényes opciójának kiválasztása
   function selectFirstValidOption(element) {
+    let option;
     if (element.value) {
-      element.querySelector("option:checked").selected = false;
+      option = element.querySelector("option:checked");
+      if (option) {
+        option.selected = false;
+      }
     }
-    element.querySelector("option:enabled").selected = true;
+    option = element.querySelector("option:enabled");
+    if (option) {
+      option.selected = true;
+    }
   }
 
   function selectRoleOption(element, role) {
@@ -505,7 +517,7 @@ function initializeSearch(search) {
   // Letiltott elemek visszakapcsolása
   function enableDisabledInputs() {
     const disabledInputs = inputGrid.querySelectorAll(
-      "input:disabled, select:disabled"
+      "input:disabled, select:disabled, textarea:disabled"
     );
     disabledInputs.forEach((input) => {
       input.disabled = false;
@@ -545,6 +557,11 @@ function initializeSearch(search) {
   // Legördülőmenük letiltása
   function disableSelectInputs() {
     inputGrid.querySelectorAll("select").forEach((e) => {e.disabled = true; selectFirstValidOption(e)});
+  }
+
+  // Szövegmezők letiltása
+  function disableTextareas() {
+    inputGrid.querySelectorAll("textarea").forEach((e) => {e.disabled = true; selectFirstValidOption(e)});
   }
 
   // Kategória opciók feltöltése
@@ -632,6 +649,7 @@ function initializeSearch(search) {
     if (!searchInput.value || !searchInput.checkValidity()) {
       clearAutofillFields();
       disableSelectInputs();
+      disableTextareas();
       if (searchConfig[searchType].hasImageCards) {
         clearImageCards();
       }
