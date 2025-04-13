@@ -156,7 +156,7 @@ class Mail {
                 $itemsHtml = '';
                 foreach ($data['items'] as $item) {
                     $subtotal = $item['unit_price'] * $item['quantity'];
-                    $itemsHtml .= "<td style='text-align: center;'>{$item['name']}</td><td style='text-align: center;'>{$item['quantity']} db</td><td style='text-align: center;'>{$subtotal} Ft</td></li>";
+                    $itemsHtml .= "<tr><td style='text-align: center;'>{$item['name']}</td><td style='text-align: center;'>{$item['quantity']} db</td><td style='text-align: center;'>{$subtotal} Ft</td></tr>";
                 }
                 $template = str_replace('{ORDER_ITEMS}', $itemsHtml, $template);
                 break;
@@ -245,6 +245,19 @@ class Mail {
                 $template = str_replace('{CHANGE_DATE}', $data['change_date'], $template);
                 break;
 
+            case 'cancel_order':
+                $templateFile = Mail::TEMPLATE_PATH . $type . '.html';
+                
+                if (!file_exists($templateFile)) {
+                    log_Error("Email sablon nem található: " . $templateFile, "mail_error.txt");
+                    throw new Result(Result::ERROR, "Email sablon nem található: ".$templateFile);
+                }
+                
+                $template = file_get_contents($templateFile);
+                $template = str_replace('{NAME}', $name, $template);
+                $template = str_replace('{ORDER_NUMBER}', $data['orderNumber'], $template);
+                break;
+
             default:
                 // Betöltjük a megfelelő sablont
                 $templateFile = Mail::TEMPLATE_PATH . $type . '.html';
@@ -321,6 +334,11 @@ class Mail {
             case 'password_change':
                 // Jelszóváltoztatás specifikus változók cseréje
                 $template = str_replace('{CHANGE_DATE}', $data['change_date'], $template);
+                break;
+
+            case 'cancel_order':
+                $template = str_replace('{NAME}', $name, $template);
+                $template = str_replace('{ORDER_NUMBER}', $data['orderNumber'], $template);
                 break;
         }
         

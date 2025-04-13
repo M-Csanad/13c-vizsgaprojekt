@@ -217,4 +217,32 @@ function updateOrderStatus($orderId, $newStatus) {
     $mailer = new Mail();
     return $mailer->sendTo($recipient, $mail, true);
 }
-?>
+
+function cancelOrder($orderId) {
+    $orderId = intval($orderId);
+    
+    $orderResult = getOrderFromId($orderId);
+    if ($orderResult->isEmpty()) {
+        return new Result(Result::ERROR, "A megadott rendelés nem található.");
+    }
+    $order = $orderResult->message[0];
+    
+    $updateResult = updateData("UPDATE `order` SET status = 'Törölve' WHERE id = ?", [$orderId], 'i');
+    if ($updateResult->isError()) {
+        return new Result(Result::ERROR, "Hiba a rendelés törlése során: " . $updateResult->message);
+    }
+
+    $recipient = [
+        "email" => $order["email"],
+        "name" => $order["last_name"]." ".$order["first_name"]
+    ];
+
+    $mail = [
+        "subject" => "Rendelés törölve",
+        "body" => Mail::getMailBody("cancel_order", $recipient["name"], ["orderNumber" => $order["id"]]),
+        "alt" => Mail::getMailAltBody("cancel_order", $recipient["name"], ["orderNumber" => $order["id"]])
+    ];
+
+    $mailer = new Mail();
+    return $mailer->sendTo($recipient, $mail, true);
+}

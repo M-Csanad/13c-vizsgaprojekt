@@ -1,0 +1,16 @@
+RENDELÉS SZTORNÓZVA
+
+Kedves {NAME},
+
+Értesítjük, hogy a(z) #{ORDER_NUMBER} számú rendelése sztornózásra került.
+
+FONTOS INFORMÁCIÓK:
+- A rendelés véglegesen törölve lett rendszerünkből
+- Amennyiben már megtörtént a fizetés, a teljes összeget visszautaljuk
+- A visszautalás 5-7 munkanapon belül megtörténik
+
+Amennyiben kérdése van a sztornózással kapcsolatban, kérjük, vegye fel velünk a kapcsolatot az alábbi címen:
+florensbotanica@gmail.com
+
+--
+© 2025 Florens Botanica. Minden jog fenntartva.

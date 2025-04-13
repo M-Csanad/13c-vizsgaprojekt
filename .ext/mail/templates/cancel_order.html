@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+    <meta name="supported-color-schemes" content="light dark">
+    <title>Rendelés sztornózva</title>
+    <style>
+        /* Alapértelmezett (világos mód) stílusok */
+        :root {
+            color-scheme: light dark;
+            supported-color-schemes: light dark;
+        }
+        
+        /* Sötét mód stílusok */
+        @media (prefers-color-scheme: dark) {
+            body {
+                background-color: #1a1a1a !important;
+                color: #f0f0f0 !important;
+            }
+            .container {
+                background-color: #2a2a2a !important;
+            }
+            .header {
+                background-color: #ff4444 !important;
+                background-image: linear-gradient(to bottom, #ff4444, #2a2a2a) !important;
+            }
+            .content {
+                color: #f0f0f0 !important;
+            }
+            .cancel-box {
+                background-color: #333333 !important;
+                border-left: 4px solid #ff4444 !important;
+            }
+            .footer {
+                background-color: #222222 !important;
+            }
+            .warning-text {
+                color: #ff8f8f !important;
+            }
+        }
+    </style>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, Helvetica, sans-serif; background-color: #f7f7f7; color: #333333; line-height: 1.5;">
+    <table border="0" cellpadding="0" cellspacing="0" width="100%" class="container" style="max-width: 600px; margin: 0 auto; background-color: #ffffff; border-collapse: collapse;">
+        <!-- Fejléc -->
+        <tr>
+            <td class="header" style="padding: 25px 0; text-align: center; background-color: #ff4444; color: #ffffff;">
+                <h1 style="margin: 0; font-size: 24px; font-weight: bold;">Rendelés sztornózva</h1>
+            </td>
+        </tr>
+        
+        <!-- Tartalom -->
+        <tr>
+            <td class="content" style="padding: 30px 20px;">
+                <p>Kedves <strong>{NAME}</strong>,</p>
+                <p>Értesítjük, hogy a(z) <strong>#{ORDER_NUMBER}</strong> számú rendelése sztornózásra került.</p>
+                
+                <!-- Sztornó információs doboz -->
+                <table border="0" cellpadding="0" cellspacing="0" width="100%" class="cancel-box" style="margin: 20px 0; background-color: #fff5f5; border-left: 4px solid #ff4444;">
+                    <tr>
+                        <td style="padding: 15px 20px;">
+                            <p style="margin: 5px 0; color: #ff4444; font-weight: bold;">Fontos információk:</p>
+                            <ul style="margin: 10px 0; padding-left: 20px;">
+                                <li>A rendelés véglegesen törölve lett rendszerünkből</li>
+                                <li>Amennyiben már megtörtént a fizetés, a teljes összeget visszautaljuk</li>
+                                <li>A visszautalás 5-7 munkanapon belül megtörténik</li>
+                            </ul>
+                        </td>
+                    </tr>
+                </table>
+                
+                <p>Amennyiben kérdése van a sztornózással kapcsolatban, kérjük, vegye fel velünk a kapcsolatot az alábbi címen:</p>
+                <p style="text-align: center;">
+                    <a href="mailto:florensbotanica@gmail.com" style="color: #4a6fb5; text-decoration: none;">florensbotanica@gmail.com</a>
+                </p>
+            </td>
+        </tr>
+        
+        <!-- Lábjegyzet -->
+        <tr>
+            <td class="footer" style="padding: 20px 0; text-align: center; background-color: #1d1d1d; color: #f5f5f5; font-size: 14px;">
+                <p style="margin: 0;">© 2025 Florens Botanica. Minden jog fenntartva.</p>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

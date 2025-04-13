@@ -331,6 +331,19 @@
         }
     }
 
+    // Rendelés sztornózása
+    if (isset($_POST['cancel_order'])) {
+        $orderId = intval($_POST['order_id']);
+        $result = cancelOrder($orderId);
+        
+        if (!$result->isError()) {
+            $message = "<div class='success'>A rendelés sikeresen sztornózva.</div>";
+        }
+        else {
+            $message = "<div class='error'>A rendelés sztornózása sikertelen! {$result->message}</div>";
+        }
+    }
+
     if (isset($_POST['delete_user'])) {
         $userId = intval($_POST['user_id']);
         $result = deleteUser($userId);
@@ -1882,13 +1895,13 @@
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-search-type="order" data-id-input="order_id" data-autofill-fields="true">
-                                    <input type="text" name="order_search" id="order_search_delete" placeholder="Rendelés azonosítója / Rendelő neve" required autocomplete="off">
-                                    <label for="order_search_delete" class="search-button">
+                                    <input type="text" name="order_search" id="order_search_cancel" placeholder="Rendelés azonosítója / Rendelő neve" required autocomplete="off">
+                                    <label for="order_search_cancel" class="search-button">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
                                         </svg>
                                     </label>
-                                    <input type="hidden" name="order_id" id="order_id_delete" value="null">
+                                    <input type="hidden" name="order_id" id="order_id_cancel" value="null">
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
                                     <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
@@ -1899,7 +1912,7 @@
                             </div>
                         
                         <div class="form-submit-wrapper">
-                            <input type="submit" value="Sztornózás" class="form-submit-danger" name="delete_order">
+                            <input type="submit" value="Sztornózás" class="form-submit-danger" name="cancel_order">
                         </div>
                     </form>
                     <div class="items"></div>
