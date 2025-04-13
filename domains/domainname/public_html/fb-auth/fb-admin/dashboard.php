@@ -1821,7 +1821,7 @@
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-search-type="order" data-id-input="order_id" data-autofill-fields="true">
-                                    <input type="number" name="order_search" id="order_search" placeholder="Rendelés azonosítója" required autocomplete="off">
+                                    <input type="text" name="order_search" id="order_search" placeholder="Rendelés azonosítója / Rendelő neve" required autocomplete="off">
                                     <label for="order_search" class="search-button">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                                             <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
@@ -1863,6 +1863,43 @@
                         
                         <div class="form-submit-wrapper">
                             <input type="submit" value="Állapot frissítése" class="form-submit-primary" name="update_order_status">
+                        </div>
+                    </form>
+                    <div class="items"></div>
+                </div>
+            </section>
+
+            <!-------------------------- Rendelés sztornózása ------------------------>
+            <section>
+                <div class="section-header" tabindex="0">
+                    <div class="section-title">Rendelés sztornózása</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-down section-expander" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708"/>
+                    </svg>
+                </div>
+                <div class="section-body">
+                    <form method="POST" data-needs-confirm="false">
+                        <div class="input-grid">
+                            <div class="search-wrapper">
+                                <div class="search" data-search-type="order" data-id-input="order_id" data-autofill-fields="true">
+                                    <input type="text" name="order_search" id="order_search_delete" placeholder="Rendelés azonosítója / Rendelő neve" required autocomplete="off">
+                                    <label for="order_search_delete" class="search-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
+                                        </svg>
+                                    </label>
+                                    <input type="hidden" name="order_id" id="order_id_delete" value="null">
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
+                                    <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
+                                </svg>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-x-lg invalid" viewBox="0 0 16 16">
+                                    <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
+                                </svg>
+                            </div>
+                        
+                        <div class="form-submit-wrapper">
+                            <input type="submit" value="Sztornózás" class="form-submit-danger" name="delete_order">
                         </div>
                     </form>
                     <div class="items"></div>
