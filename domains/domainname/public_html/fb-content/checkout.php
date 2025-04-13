@@ -72,8 +72,8 @@
         <svg class="flower" id="flower-2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" fill="none"><path fill="#44911B" d="m8.02 29.6 1.14.39 1.35-3.9 4.02.42a.6.6 0 0 0 .66-.54.6.6 0 0 0-.54-.66l-3.74-.39a13.2 13.2 0 0 1 5.1-6.46l4.14.44a.6.6 0 0 0 .66-.54.6.6 0 0 0-.54-.66l-2.9-.31a14.4 14.4 0 0 0 4.02-6.03l.38-1.09a.6.6 0 0 0-.37-.77.6.6 0 0 0-.77.37l-.38 1.09a13.2 13.2 0 0 1-4.05 5.82l-1.7-3.5a.6.6 0 1 0-1.1.53l1.81 3.72a14.4 14.4 0 0 0-5.28 6.59l-1.31-2.69a.6.6 0 1 0-1.1.53l1.84 3.76z"/><path fill="#86D72F" d="M23.98 2a6.74 6.74 0 0 0-3.11 9 6.73 6.73 0 0 0 3.1-9M15.8 9.05l-1.81-3.72a4.23 4.23 0 0 0-1.95 5.65l1.8 3.72a4.23 4.23 0 0 0 1.96-5.65m-5.43 6.39-2.32-4.76a5.4 5.4 0 0 0-2.5 7.22l2.33 4.76a5.41 5.41 0 0 0 2.49-7.22m17.56.03-4.12-.43a4.22 4.22 0 0 0-4.64 3.76l4.12.43a4.22 4.22 0 0 0 4.64-3.76m-8.57 6.13 5.27.55a5.4 5.4 0 0 1-5.94 4.81l-5.27-.55a5.4 5.4 0 0 1 5.94-4.81"/></svg>
         <svg class="flower" id="flower-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" fill="none"><path fill="#44911B" d="m8.02 29.6 1.14.39 1.35-3.9 4.02.42a.6.6 0 0 0 .66-.54.6.6 0 0 0-.54-.66l-3.74-.39a13.2 13.2 0 0 1 5.1-6.46l4.14.44a.6.6 0 0 0 .66-.54.6.6 0 0 0-.54-.66l-2.9-.31a14.4 14.4 0 0 0 4.02-6.03l.38-1.09a.6.6 0 0 0-.37-.77.6.6 0 0 0-.77.37l-.38 1.09a13.2 13.2 0 0 1-4.05 5.82l-1.7-3.5a.6.6 0 1 0-1.1.53l1.81 3.72a14.4 14.4 0 0 0-5.28 6.59l-1.31-2.69a.6.6 0 1 0-1.1.53l1.84 3.76z"/><path fill="#86D72F" d="M23.98 2a6.74 6.74 0 0 0-3.11 9 6.73 6.73 0 0 0 3.1-9M15.8 9.05l-1.81-3.72a4.23 4.23 0 0 0-1.95 5.65l1.8 3.72a4.23 4.23 0 0 0 1.96-5.65m-5.43 6.39-2.32-4.76a5.4 5.4 0 0 0-2.5 7.22l2.33 4.76a5.41 5.41 0 0 0 2.49-7.22m17.56.03-4.12-.43a4.22 4.22 0 0 0-4.64 3.76l4.12.43a4.22 4.22 0 0 0 4.64-3.76m-8.57 6.13 5.27.55a5.4 5.4 0 0 1-5.94 4.81l-5.27-.55a5.4 5.4 0 0 1 5.94-4.81"/></svg>
         <div class="overlay-body">
-            <div class="thank-you">Köszönjük a rendelésedet!</div>
-            <p>Nagyon örülünk, hogy a természetes megoldásokat választottad. Ha bármilyen kérdésed van, keress minket bizalommal! 🌿</p>
+            <div class="thank-you">Köszönjük a rendelését!</div>
+            <p>Nagyon örülünk, hogy a természetes megoldásokat választotta. Ha bármilyen kérdése van, keressen minket bizalommal! 🌿</p>
             <p class="from">- A Florens Botanica csapata</p>
         </div>
         <a href="/" class="back-to-home">
@@ -90,7 +90,7 @@
         <path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0M7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0z"/>
         </svg>
         <div class="overlay-body">
-            Hiba merült fel a rendelésed leadása során. Kérjük, ellenőrizd a mezők helyességét, a termékek elérhetőségét és próbáld meg újra, vagy keress meg minket. 
+            Hiba merült fel a rendelésének leadása során. Kérjük, ellenőrize a mezők helyességét, a termékek elérhetőségét és próbálja meg újra, vagy keressen meg minket. 
         </div>
         <button class="overlay-close">Újra próbálkozok</button>
     </div>
