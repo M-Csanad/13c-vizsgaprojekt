@@ -30,7 +30,7 @@
         "SELECT `order`.id, `order`.email, `order`.phone, CONCAT(`order`.last_name, ' ', `order`.first_name) AS full_name, 
         `order`.company_name, `order`.tax_number, `order`.billing_address, `order`.delivery_address, `order`.status, 
         `order`.order_total, `order`.created_at 
-        FROM `order` WHERE `order`.user_id=? ORDER BY order.created_at DESC", $user['id'], 'i'
+        FROM `order` WHERE `order`.user_id=? ORDER BY `order`.created_at DESC", $user['id'], 'i'
     );
 
     if ($result->isSuccess()) {
