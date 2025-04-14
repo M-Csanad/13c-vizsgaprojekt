@@ -16,7 +16,7 @@ export default class SubcategorySite {
         
         this.initDOM();
         this.bindEvents();
-        this.setupStarsObserver(); // Add this new method call
+        this.setupStarsObserver();
 
         // Csak akkor futtatjuk a lekéréseket, ha nem kívülről lett példányosítva az oldal
         if (!this.externalCall) {
@@ -297,7 +297,7 @@ export default class SubcategorySite {
             'asc'
         );
         
-        // Update total product count
+
         this.totalProductCount.textContent = `${this.allProducts.length} termék összesen`;
         
         this.updateUI();
@@ -329,7 +329,6 @@ export default class SubcategorySite {
     handleFilterUpdate(filteredProducts) {
         this.filteredProducts = filteredProducts;
         
-        // Apply current sorting if there is an active sort
         if (this.sortDropdown.activeSortType) {
             const [property, direction] = this.sortDropdown.activeSortType.split('-');
             this.filteredProducts = this.sortDropdown.sortProducts(
