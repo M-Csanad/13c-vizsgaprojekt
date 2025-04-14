@@ -28,7 +28,7 @@ $validationRules = [
         "errorMessage" => "Érvénytelen telefonszám"
     ],
     "streetHouse" => [
-        "pattern" => '/^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+(?: [A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+)? [a-záéíóöőúüű]{2,} \d{1,}(\.?|(?:\/[A-Z]+(?: \d+\/\d+)?))$/',
+        "pattern" => '/^[A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+(?: [A-ZÁÉÍÓÖŐÚÜŰ][a-záéíóöőúüű]+){0,2} (?:[a-záéíóöőúüű]{2,}|u\.) \d{1,}(\.?|(?:\/[A-Z]+(?: \d+\/\d+)?))$/',
         "errorMessage" => "Érvénytelen házszám (pozitív egész számnak kell lennie)"
     ],
     "sameAddress" => [

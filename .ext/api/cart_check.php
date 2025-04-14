@@ -19,13 +19,13 @@ if (!isset($_SESSION['cart']) || empty($_SESSION['cart'])) {
     exit();
 }
 
-// Create arrays for the query
+// Hozzon létre tömböket a lekérdezéshez
 $productIds = [];
 $quantities = [];
 $types = "";
 $params = [];
 
-// Prepare data for the query
+// Adatok előkészítése a lekérdezéshez
 foreach ($_SESSION['cart'] as $item) {
     $productIds[] = $item['product_id'];
     $quantities[$item['product_id']] = $item['quantity'];
@@ -33,14 +33,14 @@ foreach ($_SESSION['cart'] as $item) {
     $params[] = $item['product_id'];
 }
 
-// Build the CASE statement for comparing each product's quantity
+// CASE utasítás összeállítása az egyes termékek mennyiségének összehasonlításához
 $cases = [];
 foreach ($quantities as $id => $qty) {
     $cases[] = "WHEN id = $id THEN $qty";
 }
 $caseStatement = "CASE " . implode(" ", $cases) . " END";
 
-// Create the query to find products where stock is less than requested quantity
+// Lekérdezés létrehozása azoknak a termékeknek a megtalálásához, ahol a készlet kevesebb, mint a kért mennyiség
 $query = "SELECT id as product_id, stock 
           FROM product 
           WHERE id IN (" . str_repeat("?,", count($productIds) - 1) . "?) 
