@@ -412,37 +412,29 @@ h6 {
   user-select: none;
 }
 
-.swiper-slide .swiper-card .text-overlay .card-footer .cast .tooltip {
+.tooltip {
   position: fixed;
   pointer-events: none;
   user-select: none;
   text-align: center;
-  text-wrap: nowrap;
-  z-index: 999;
-
-  /* top: auto; */
-  left: auto;
+  white-space: nowrap;
+  z-index: 9;
   font-size: small;
   margin-inline: auto;
   width: auto;
-  transition: opacity 0.2s ease;
   color: var(--green_primary);
   background: var(--dark_primary);
   opacity: 0;
   padding: 5px;
   border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s ease;
 }
 
-.swiper-slide
-  .swiper-card
-  .text-overlay
-  .card-footer
-  .cast
-  .tag:hover
-  .tooltip {
+.tooltip[style*="--visible: 1"] {
   opacity: 1;
-  transition: opacity 0.2s ease-out;
 }
+
 
 .swiper-slide .swiper-card .text-overlay .card-footer .actions {
   display: flex;
