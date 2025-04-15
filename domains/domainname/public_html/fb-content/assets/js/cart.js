@@ -465,13 +465,11 @@ class Cart {
         await this.fetchCartData();
         this.updateUI();
 
-        // Always show a notification
         this.showNotification(
           "Termék sikeresen hozzáadva a kosárhoz",
           "success"
         );
       } else {
-        // Handle error response
         const errorData = await result.json();
         this.showNotification(
           errorData.message || "Nem sikerült a terméket a kosárhoz adni",

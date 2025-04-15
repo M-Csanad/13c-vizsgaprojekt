@@ -3,19 +3,19 @@
 include_once __DIR__ . '/env_config.php';
 
 /**
- * Establishes a database connection using environment variables, with logging.
+ * Adatbázis kapcsolat létrehozása környezeti változók használatával, naplózással.
  *
- * @return mysqli The database connection object.
- * @throws Exception If the connection fails.
+ * @return mysqli Az adatbázis kapcsolat objektuma.
+ * @throws Exception Ha a kapcsolat sikertelen.
  */
 if (!function_exists('db_connect')) {
     function db_connect()
     {
-        // Load environment variables
+        // Környezeti változók betöltése
         try {
             load_env(__DIR__ . '/.env');
         } catch (Exception $e) {
-            log_Error("Failed to load environment variables: " . $e->getMessage(), "db_error.log");
+            log_Error("Nem sikerült betölteni a környezeti változókat: " . $e->getMessage(), "db_error.log");
             throw $e;
         }
 
@@ -25,36 +25,36 @@ if (!function_exists('db_connect')) {
         $dbname = $_ENV['DB_MAIN_NAME'] ?? null;
 
         if (!$servername || !$username || !$dbname) {
-            log_Error("Missing required database configuration in .env", "db_error.log");
-            throw new Exception("Missing required database configuration in .env");
+            log_Error("Hiányzó szükséges adatbázis konfiguráció a .env fájlban", "db_error.log");
+            throw new Exception("Hiányzó szükséges adatbázis konfiguráció a .env fájlban");
         }
 
         try {
             $conn = new mysqli($servername, $username, $password, $dbname);
 
-            // Check connection
+            // Kapcsolat ellenőrzése
             if ($conn->connect_error) {
-                log_Error("Database connection failed: " . $conn->connect_error, "db_error.log");
-                throw new Exception("Connection failed: " . $conn->connect_error);
+                log_Error("Adatbázis kapcsolat sikertelen: " . $conn->connect_error, "db_error.log");
+                throw new Exception("Kapcsolat sikertelen: " . $conn->connect_error);
             }
 
-            // Set character set
+            // Karakterkészlet beállítása
             if (!$conn->set_charset("utf8mb4")) {
-                log_Error("Failed to set character set: " . $conn->error, "db_error.log");
+                log_Error("Nem sikerült beállítani a karakterkészletet: " . $conn->error, "db_error.log");
             }
 
             return $conn;
         } catch (mysqli_sql_exception $e) {
-            log_Error("SQL exception during connection: " . $e->getMessage(), "db_error.log");
-            throw new Exception("Database connection error: " . $e->getMessage());
+            log_Error("SQL kivétel a kapcsolat során: " . $e->getMessage(), "db_error.log");
+            throw new Exception("Adatbázis kapcsolat hiba: " . $e->getMessage());
         }
     }
 }
 
 /**
- * Closes the given database connection, with logging if needed.
+ * Az adott adatbázis kapcsolat lezárása, szükség esetén naplózással.
  *
- * @param mysqli $conn The database connection to close.
+ * @param mysqli $conn Az adatbázis kapcsolat, amelyet le kell zárni.
  * @return void
  */
 if (!function_exists('db_disconnect')) {
@@ -63,7 +63,7 @@ if (!function_exists('db_disconnect')) {
         if ($conn instanceof mysqli) {
             $conn->close();
         } else {
-            log_Error("Attempted to disconnect a non-mysqli object.", "db_error.log");
+            log_Error("Nem mysqli objektumot próbáltak lezárni.", "db_error.log");
         }
     }
 }

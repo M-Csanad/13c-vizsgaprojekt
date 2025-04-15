@@ -2,7 +2,7 @@
 include_once __DIR__.'/../review_functions.php';
 include_once __DIR__.'/../result_functions.php';
 
-// Handle GET request for fetching reviews with pagination
+// GET kérés kezelése vélemények lekéréséhez lapozással
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!isset($_GET['product_id'])) {
         http_response_code(400);
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     exit();
 }
 
-// Handle PUT request for submitting a new review
+// PUT kérés kezelése új vélemény beküldéséhez
 if ($_SERVER['REQUEST_METHOD'] !== 'PUT') {
     http_response_code(405);
     $result = new Result(Result::ERROR, 'Hibás metódus! Várt: PUT');

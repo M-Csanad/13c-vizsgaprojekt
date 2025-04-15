@@ -2,7 +2,6 @@
 include_once $_SERVER["DOCUMENT_ROOT"] . '/config.php';
 include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
 
-// Get search query from URL
 $searchQuery = htmlspecialchars($_GET['q'] ?? '');
 if (empty($searchQuery)) {
     header('Location: /');

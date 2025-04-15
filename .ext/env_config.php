@@ -3,35 +3,35 @@
 include_once __DIR__ . '/errorlog.php'; // Logger funkció
 
 /**
- * Load .env file and set environment variables, logging errors if necessary.
+ * Betölti a .env fájlt és beállítja a környezeti változókat, szükség esetén hibákat naplózva.
  *
- * @param string $path Path to the .env file.
+ * @param string $path A .env fájl elérési útja.
  * @return void
- * @throws Exception If the .env file does not exist or cannot be loaded.
+ * @throws Exception Ha a .env fájl nem létezik vagy nem tölthető be.
  */
 if (!function_exists('load_env')) {
     function load_env($path)
     {
         if (!file_exists($path)) {
-            log_Error("The .env file does not exist at: $path", "env_error.log");
-            throw new Exception("The .env file does not exist at: $path");
+            log_Error("A .env fájl nem létezik ezen az elérési úton: $path", "env_error.log");
+            throw new Exception("A .env fájl nem létezik ezen az elérési úton: $path");
         }
 
         $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
 
         foreach ($lines as $line) {
-            // Skip comments
+            // Hozzászólások kihagyása
             if (strpos(trim($line), '#') === 0) {
                 continue;
             }
 
-            // Split the line into name and value
+            // A sor felosztása névre és értékre
             $parts = explode('=', $line, 2);
             if (count($parts) === 2) {
                 $name = trim($parts[0]);
                 $value = trim($parts[1]);
 
-                // Add to $_ENV and $_SERVER if not already set
+                // Hozzáadás a $_ENV és $_SERVER tömbökhöz, ha még nincs beállítva
                 if (!array_key_exists($name, $_ENV)) {
                     $_ENV[$name] = $value;
                 }
@@ -40,7 +40,7 @@ if (!function_exists('load_env')) {
                     $_SERVER[$name] = $value;
                 }
             } else {
-                log_Error("Invalid line in .env file: $line", "env_error.log");
+                log_Error("Érvénytelen sor a .env fájlban: $line", "env_error.log");
             }
         }
     }

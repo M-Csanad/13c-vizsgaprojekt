@@ -1977,7 +1977,7 @@
                     </svg>
                 </div>
                 <div class="section-body">
-                    <form method="POST" data-needs-confirm="false">
+                    <form method="POST" data-needs-confirm="true" data-confirm-message="A rendelés sztornózása nem visszavonható művelet!">
                         <div class="input-grid">
                             <div class="search-wrapper">
                                 <div class="search" data-search-type="order" data-id-input="order_id" data-autofill-fields="true">

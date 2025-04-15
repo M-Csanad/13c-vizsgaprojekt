@@ -200,7 +200,6 @@ class FilterWindow {
                 return false;
             }
 
-            // Tag filter
             if (this.filters.tags?.values.size > 0) {
                 const productTagIds = product.tags ? 
                     product.tags.split(',')
