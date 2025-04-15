@@ -1,4 +1,4 @@
-<?php 
+<?php
     include_once $_SERVER["DOCUMENT_ROOT"].'/config.php';
     include_once "../../../../../.ext/init.php"; 
 
@@ -355,6 +355,12 @@
             $message = "<div class='error'>A felhasználó törlése sikertelen! {$result->message}</div>";
         }
     }
+
+    // Statisztikák
+    $statistics = getStatistics();
+    if ($statistics instanceof QueryResult) {
+        $statistics = null;
+    }
 ?>
 <!DOCTYPE html>
 <html lang="hu">
@@ -373,6 +379,7 @@
     <link rel="stylesheet" href="./fb-auth/assets/css/table.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/loader.css">
     <link rel="stylesheet" href="./fb-auth/assets/css/multiselect.css">
+    <link rel="stylesheet" href="./fb-auth/assets/css/statistics.css">
 
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script type="module" defer src="./fb-auth/assets/js/dashboard.js"></script>
@@ -416,6 +423,11 @@
         </div>
         <div class="page" data-pageid="3" tabindex="0">
             Felhasználók
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
+            </svg>
+        </div><div class="page" data-pageid="4" tabindex="0">
+            Statisztika
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-right" viewBox="0 0 16 16">
             <path fill-rule="evenodd" d="M1 8a.5.5 0 0 1 .5-.5h11.793l-3.147-3.146a.5.5 0 0 1 .708-.708l4 4a.5.5 0 0 1 0 .708l-4 4a.5.5 0 0 1-.708-.708L13.293 8.5H1.5A.5.5 0 0 1 1 8"/>
             </svg>
@@ -2066,6 +2078,140 @@
             </section>
         </div>
     </div>
+    <!------------------------------ Statiszika ----------------------------->
+    <div class="section-group">
+        <div class="group-body">
+            <section>
+                <?php if (isset($statistics)): ?>
+                    <div class="statistics-container">
+                        <div class="statistics-card">
+                            <div class="statistics-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                            </div>
+                            <div class="statistics-content">
+                                <h3 class="statistics-title">Felhasználók száma</h3>
+                                <p class="statistics-value" id="user_count"><?php echo htmlspecialchars($statistics["total_users"]); ?></p>
+                            </div>
+                        </div>
+                        
+                        <div class="statistics-card">
+                            <div class="statistics-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="9" cy="21" r="1"></circle>
+                                    <circle cx="20" cy="21" r="1"></circle>
+                                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                                </svg>
+                            </div>
+                            <div class="statistics-content">
+                                <h3 class="statistics-title">Rendelések száma</h3>
+                                <p class="statistics-value"><?php echo htmlspecialchars($statistics["total_orders"]); ?></p>
+                            </div>
+                        </div>
+
+                        <div class="statistics-card">
+                            <div class="statistics-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                </svg>
+                            </div>
+                            <div class="statistics-content">
+                                <h3 class="statistics-title">Értékelések száma</h3>
+                                <p class="statistics-value"><?php echo htmlspecialchars($statistics["total_reviews"]); ?></p>
+                            </div>
+                        </div>
+                        
+                        <div class="statistics-card">
+                            <div class="statistics-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                                </svg>
+                            </div>
+                            <div class="statistics-content">
+                                <h3 class="statistics-title">Termékek száma</h3>
+                                <p class="statistics-value"><?php echo htmlspecialchars($statistics["total_products"]); ?></p>
+                            </div>
+                        </div>
+                        
+                        <div class="statistics-card">
+                            <div class="statistics-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                                </svg>
+                            </div>
+                            <div class="statistics-content">
+                                <h3 class="statistics-title">Kategóriák száma</h3>
+                                <p class="statistics-value"><?php echo htmlspecialchars($statistics["total_categories"]); ?></p>
+                            </div>
+                        </div>
+                        
+                        <div class="statistics-card">
+                            <div class="statistics-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="8" y1="6" x2="21" y2="6"></line>
+                                    <line x1="8" y1="12" x2="21" y2="12"></line>
+                                    <line x1="8" y1="18" x2="21" y2="18"></line>
+                                    <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                                    <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                                    <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                                </svg>
+                            </div>
+                            <div class="statistics-content">
+                                <h3 class="statistics-title">Alkategóriák száma</h3>
+                                <p class="statistics-value"><?php echo htmlspecialchars($statistics["total_subcategories"]); ?></p>
+                            </div>
+                        </div>
+                        
+                        <div class="statistics-card revenue-card">
+                            <div class="statistics-icon">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="12" y1="1" x2="12" y2="23"></line>
+                                    <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                                </svg>
+                            </div>
+                            <div class="statistics-content">
+                                <!-- <h3 class="statistics-title">Bevétel</h3> -->
+                                <div class="revenue-details">
+                                    <div class="revenue-period">
+                                        <span class="period-label">Napi bevétel</span>
+                                        <span class="period-value"><?php echo htmlspecialchars($statistics["total_orders_value"]["daily_income"]); ?> Ft</span>
+                                    </div>
+                                    <div class="revenue-period">
+                                        <span class="period-label">Heti bevétel</span>
+                                        <span class="period-value"><?php echo htmlspecialchars($statistics["total_orders_value"]["weekly_income"]); ?> Ft</span>
+                                    </div>
+                                    <div class="revenue-period">
+                                        <span class="period-label">Havi bevétel</span>
+                                        <span class="period-value"><?php echo htmlspecialchars($statistics["total_orders_value"]["monthly_income"]); ?> Ft</span>
+                                    </div>
+                                    <div class="revenue-period">
+                                        <span class="period-label">Éves bevétel</span>
+                                        <span class="period-value"><?php echo htmlspecialchars($statistics["total_orders_value"]["yearly_income"]); ?> Ft</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <?php else: ?>
+                    <div class="statistics-error">
+                        Hiba történt a statisztikák lekérdezésekor. Kérem nézze meg a logokat! ?>
+                    </div>
+                <?php endif; ?>
+            </section>
+        </div>
+    </div>
+
     <?php if (isset($message) && !empty($message)) echo $message; ?>
 </body>
 </html>

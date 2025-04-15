@@ -234,3 +234,12 @@ function updateUserData($userId, $data) {
 
     return updateData($query, $params, $types);
 }
+
+/**
+    * Lekéri a felhasználók teljes számát
+    *
+    * @return QueryResult A lekérdezés eredménye, amely tartalmazza a felhasználók teljes számát.
+    */
+function getTotalUsers() {
+    return selectData("SELECT COUNT(*) AS total FROM user");
+}

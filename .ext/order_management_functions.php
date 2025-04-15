@@ -246,3 +246,30 @@ function cancelOrder($orderId) {
     $mailer = new Mail();
     return $mailer->sendTo($recipient, $mail, true);
 }
+
+/**
+ * Lekérdezi az összes rendelés számát.
+ *
+ * @return QueryResult A lekérdezés eredménye, amely tartalmazza az összes rendelés számát.
+ */
+function getTotalOrders() {
+    return selectData("SELECT COUNT(*) as total FROM `order`");
+}
+
+/**
+ * Lekérdezi az összes rendelés összértékét.
+ *
+ * @return QueryResult A lekérdezés eredménye, amely tartalmazza az összes rendelés összértékét.
+ */
+function getTotalOrdersValue()
+{
+    $query = "
+        SELECT
+            COALESCE(SUM(CASE WHEN YEAR(created_at) = YEAR(CURDATE()) THEN order_total ELSE 0 END), 0) as yearly_income,
+            COALESCE(SUM(CASE WHEN YEAR(created_at) = YEAR(CURDATE()) AND MONTH(created_at) = MONTH(CURDATE()) THEN order_total ELSE 0 END), 0) as monthly_income,
+            COALESCE(SUM(CASE WHEN YEARWEEK(created_at, 1) = YEARWEEK(CURDATE(), 1) THEN order_total ELSE 0 END), 0) as weekly_income,
+            COALESCE(SUM(CASE WHEN DATE(created_at) = CURDATE() THEN order_total ELSE 0 END), 0) as daily_income
+        FROM `order`;
+    ";
+    return selectData($query);
+}

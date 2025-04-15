@@ -150,4 +150,11 @@ function getProductReviews($productId, $page = 1, $perPage = 5) {
         ]
     ]);
 }
-?>
+
+/**
+ * Az összes értékelés számának lekérdezése
+ * @return QueryResult Az értékelések számát tartalmazó eredmény objektum
+ */
+function getTotalReviews() {
+    return selectData("SELECT COUNT(*) as total FROM review");
+}

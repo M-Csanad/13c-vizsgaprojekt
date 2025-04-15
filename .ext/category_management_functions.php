@@ -287,3 +287,25 @@ function updateCategory($categoryData, $imageUpdates)
     
     return new Result(Result::SUCCESS, "Sikeres módosítás!");
 }
+
+
+/**
+ * Visszaadja a kategóriák teljes számát az adatbázisból.
+ *
+ * @return QueryResult A lekérdezés eredménye, amely tartalmazza a termékek teljes számát.
+ */
+function getTotalCategories()
+{
+    return selectData("SELECT COUNT(*) as total FROM category");
+}
+
+
+/**
+ * Lekérdezi az összes alkategória számát.
+ *
+ * @return QueryResult A lekérdezés eredménye, amely tartalmazza az adatbázisban található összes alkategória darabszámát.
+ */
+function getTotalSubcategories()
+{
+    return selectData("SELECT COUNT(*) as total FROM subcategory");
+}

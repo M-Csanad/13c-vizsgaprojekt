@@ -16,4 +16,5 @@ include_once 'product_page_management_functions.php';
 include_once 'category_management_functions.php';
 include_once 'user_management_functions.php';
 include_once 'order_management_functions.php';
+include_once 'statistics_functions.php';
 include_once 'errorlog.php';

@@ -810,3 +810,13 @@ function getProductIdFromURL($url) {
 
     return new Result(Result::SUCCESS, $result->message[0]);
 }
+
+/**
+ * Visszaadja a termékek teljes számát az adatbázisban.
+ *
+ * @return QueryResult A lekérdezés eredménye, amely tartalmazza a termékek teljes számát.
+ */
+function getTotalProducts()
+{
+    return selectData("SELECT COUNT(*) as total FROM product;");
+}
