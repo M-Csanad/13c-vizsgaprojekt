@@ -790,7 +790,6 @@ h6 {
 #brand-philosophy_container {
   position: relative;
   overflow: hidden;
-  margin-top: calc(24vh + 12em);
 }
 
 #brand-philosophy_container::before {

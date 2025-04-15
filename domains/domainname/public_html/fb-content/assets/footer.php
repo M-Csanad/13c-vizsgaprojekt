@@ -18,10 +18,7 @@ $footerData = [
             ['name' => 'Csanád', 'url' => "$base_url/about-us", 'icon' => $svg],
             ['name' => 'Máté', 'url' => "$base_url/about-us", 'icon' => $svg],
         ],
-        'Sitemap' => [
-            ['text' => 'Keresés & Sitemap', 'url' => '#'],
-            ['text' => 'Sitemap oldalak', 'url' => '#'],
-        ],
+
     ],
     'copyright' => 'Copyright © 2024-2025 Florens Botanica, Egyéni Vállalkozó. A "Florens Botanica" márkanév és a cég logója, valamint a weboldal összes dizájn- és szöveges tartalma egyedileg készült. Minden jog fenntartva.'
 ];
