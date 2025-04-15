@@ -109,7 +109,7 @@ function generateTopProducts()
                 while ($tag = $result_tags->fetch_assoc()) {
                     $tagName = htmlspecialchars($tag['name']);
                     $iconURI = htmlspecialchars($tag['icon_uri']);
-                    echo '<img src="' . $iconURI . '" alt="' . $tagName . '" loading="lazy" />';
+                    echo '<div class="tag"><img src="' . $iconURI . '" alt="' . $tagName . '" loading="lazy" /></div>';
                 }
             }
 

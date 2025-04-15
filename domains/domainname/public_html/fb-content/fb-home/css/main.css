@@ -398,9 +398,50 @@ h6 {
   gap: 12px;
 }
 
-.swiper-slide .swiper-card .text-overlay .card-footer .cast img {
+.swiper-slide .swiper-card .text-overlay .card-footer .cast .tag {
+  display: inline-block;
+  position: relative;
   width: 50px;
   height: 50px;
+}
+
+.swiper-slide .swiper-card .text-overlay .card-footer .cast img {
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+}
+
+.swiper-slide .swiper-card .text-overlay .card-footer .cast .tooltip {
+  position: fixed;
+  pointer-events: none;
+  user-select: none;
+  text-align: center;
+  text-wrap: nowrap;
+  z-index: 999;
+
+  /* top: auto; */
+  left: auto;
+  font-size: small;
+  margin-inline: auto;
+  width: auto;
+  transition: opacity 0.2s ease;
+  color: var(--green_primary);
+  background: var(--dark_primary);
+  opacity: 0;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.swiper-slide
+  .swiper-card
+  .text-overlay
+  .card-footer
+  .cast
+  .tag:hover
+  .tooltip {
+  opacity: 1;
+  transition: opacity 0.2s ease-out;
 }
 
 .swiper-slide .swiper-card .text-overlay .card-footer .actions {

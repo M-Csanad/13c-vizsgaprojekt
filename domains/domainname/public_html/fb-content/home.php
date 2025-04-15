@@ -284,6 +284,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
   <script src="/fb-content/fb-home/js/videoMouseHover.js" defer></script>
   <script src="/fb-content/fb-home/js/videoContentScroll.js" defer></script>
 
+
   <!--parallax-->
   <script src="/fb-content/fb-home/js/parallaxEffect.js" defer></script>
   <script src="/fb-content/fb-home/js/imageParallaxGallery.js" defer></script>
@@ -296,6 +297,7 @@ include_once $_SERVER['DOCUMENT_ROOT'] . '/user_config.php';
   <!-- Ensure Notification.js is loaded before cart.js -->
   <script type="module" src="/fb-content/assets/js/notification.js" defer></script>
   <script type="module" src="/fb-content/assets/js/cart.js" defer></script>
+  <script src="/fb-content/fb-home/js/tooltip.js" defer></script>
 
 </head>
 

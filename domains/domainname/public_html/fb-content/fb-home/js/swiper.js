@@ -90,7 +90,7 @@ var mainSwiper = new Swiper(".bg_slider", {
     },
   },
 });
-var productSwiper = new Swiper(".topProduct_slider", {
+/* var productSwiper = new Swiper(".topProduct_slider", {
   loop: true,
   centeredSlides: true,
   spaceBetween: 0,
@@ -103,7 +103,7 @@ var productSwiper = new Swiper(".topProduct_slider", {
   },
   watchSlidesVisibility: true,
   watchSlidesProgress: true,
-});
+}); */
 
 // Add this function to generate stars based on rating
 function generateStars() {
