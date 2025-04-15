@@ -45,6 +45,15 @@ Az alkalmazásunk legfrissebb verzióját [erről a linkről](https://github.com
 - [Anima Mundi Herbals](https://animamundiherbals.com/)
 - [ManuTea](https://www.manutea.hu/)
 
+## Gource
+
+Amennyiven vizuálisan is kíváncsi vagy a projektünkre, hogyan és mennyit fejlesztettünk, kérlek használd a <b>Grouce</b> alkalmazást. Mielőtt belekezdenél, kérlek a `avatar_downloader.py` fájlt futtasd le a gyökérkönyvtárban, ahol a .git mappa található. Utána jön az alábbi:
+- 1 perces videó megtekintése mentés nélkül:
+- - `gource -1280x720 --seconds-per-day 0.326 --auto-skip-seconds 1 --user-image-dir .git/avatar_cache`
+- 1 perces videó hossz létrehozás:
+- - `gource -1280x720 --seconds-per-day 0.326 --auto-skip-seconds 1 --user-image-dir .git/avatar_cache --output-ppm-stream gource.ppm`
+- - `ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i gource.ppm -t 60 -vcodec libx264 -preset veryfast -pix_fmt yuv420p GIT_DevelopmentTime.mp4`
+
 ## Licenc
 
 A projekt egy iskolai projekt céljából készült, a forráskód bármilyen formában történő publikálása, szerkesztése, másolása a készítők engedélye nélkül tilos.
