@@ -815,7 +815,7 @@
                                 <label for="description"><div>Leírás</div></label>
                                 <div class="input-content">
                                     <div class="input-container">
-                                        <input type="text" name="description" id="description" required>
+                                        <input type="text" name="description" id="product_description" required>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
                                             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
                                         </svg>
@@ -1181,7 +1181,7 @@
                                 <label for="description_modify"><div>Leírás</div></label>
                                 <div class="input-content">
                                     <div class="input-container">
-                                        <input type="text" name="description" id="description_modify" required disabled>
+                                        <input type="text" name="description" id="product_description_modify" required disabled>
                                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-check2 valid" viewBox="0 0 16 16">
                                             <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0"/>
                                         </svg>
@@ -1850,6 +1850,80 @@
                                 </svg>
                             </div>
                             
+                            <div class="form-divider">Vásárló adatai</div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_name"><div>Teljes név</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_name" id="buyer-name"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_email"><div>E-mail cím</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_email" id="buyer-email"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_phone"><div>Telefonszám</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_phone" id="buyer-phone"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-divider">Egyéb adatok</div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_delivery"><div>Szállítási cím</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                    <div class="input-text" data-name="buyer_delivery" id="buyer-delivery"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_billing"><div>Számlázási cím</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_billing" id="buyer-billing"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_company"><div>Cég neve</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_company" id="buyer-company"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_tax"><div>Adószám</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_tax" id="buyer-tax"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-divider">Rendelés tételei</div>
+
+                            <div data-name="order_items"><i>Kérem válasszon ki egy rendelést!</i></div>
+
+                            <div class="form-divider">Módosítás</div>
                             <div class="inline-input">
                                 <label for="order_status"><div>Állapot</div></label>
                                 <div class="input-content">
@@ -1910,7 +1984,79 @@
                                     <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z"/>
                                 </svg>
                             </div>
-                        
+                            <div class="form-divider">Vásárló adatai</div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_name"><div>Teljes név</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_name" id="buyer-name-cancel"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_email"><div>E-mail cím</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_email" id="buyer-email-cancel"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_phone"><div>Telefonszám</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_phone" id="buyer-phone-cancel"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-divider">Egyéb adatok</div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_delivery"><div>Szállítási cím</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                    <div class="input-text" data-name="buyer_delivery" id="buyer-delivery-cancel"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_billing"><div>Számlázási cím</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_billing" id="buyer-billing-cancel"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_company"><div>Cég neve</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_company" id="buyer-company-cancel"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="inline-input input-readonly">
+                                <label for="buyer_tax"><div>Adószám</div></label>
+                                <div class="input-content">
+                                    <div class="input-container">
+                                        <div class="input-text" data-name="buyer_tax" id="buyer-tax-cancel"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="form-divider">Rendelés tételei</div>
+
+                            <div data-name="order_items"><i>Kérem válasszon ki egy rendelést!</i></div>
+                        </div>
                         <div class="form-submit-wrapper">
                             <input type="submit" value="Sztornózás" class="form-submit-danger" name="cancel_order">
                         </div>
