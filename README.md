@@ -47,12 +47,20 @@ Az alkalmazásunk legfrissebb verzióját [erről a linkről](https://github.com
 
 ## Gource
 
-Amennyiven vizuálisan is kíváncsi vagy a projektünkre, hogyan és mennyit fejlesztettünk, kérlek használd a <b>Grouce</b> alkalmazást. Mielőtt belekezdenél, kérlek a `avatar_downloader.py` fájlt futtasd le a gyökérkönyvtárban, ahol a .git mappa található. Utána jön az alábbi:
-- 1 perces videó megtekintése mentés nélkül:
-- - `gource -1280x720 --seconds-per-day 0.326 --auto-skip-seconds 1 --user-image-dir .git/avatar_cache`
-- 1 perces videó hossz létrehozás:
-- - `gource -1280x720 --seconds-per-day 0.326 --auto-skip-seconds 1 --user-image-dir .git/avatar_cache --output-ppm-stream gource.ppm`
-- - `ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i gource.ppm -t 60 -vcodec libx264 -preset veryfast -pix_fmt yuv420p GIT_DevelopmentTime.mp4`
+Ha vizuálisan is szeretnéd nyomon követni, hogyan és mennyit fejlesztettünk a projekten, javasoljuk a **[Gource](https://gource.io/)** alkalmazás használatát. Ez egy lenyűgöző vizualizációt nyújt a Git repository történetéről, ahol az avatarok, fájlmozgások és commitok életre kelnek egy animált idővonalon. 🤩
+
+### 🛠 Előkészületek
+1. Győződj meg róla, hogy a `.git` mappa elérhető a projekt gyökerében.
+2. Futtasd le a `avatar_downloader.py` fájlt ugyanitt – ez letölti a fejlesztők GitHub-profilképeit, így az avatarok is megjelennek: `python avatar_downloader.py`
+
+### 🔎 1 perces videó megtekintése mentés nélkül:
+- `gource -1280x720 --seconds-per-day 0.326 --auto-skip-seconds 1 --user-image-dir .git/avatar_cache`
+### 🎥 1 perces videó hossz létrehozás:
+- `gource -1280x720 --seconds-per-day 0.326 --auto-skip-seconds 1 --user-image-dir .git/avatar_cache --output-ppm-stream gource.ppm`
+- `ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i gource.ppm -t 60 -vcodec libx264 -preset veryfast -pix_fmt yuv420p GIT_DevelopmentTime.mp4`
+
+### 💡 Tipp
+A --seconds-per-day paraméter úgy lett beállítva, hogy az egész projekt fejlesztési idővonala 1 perc alatt fusson le. Az --auto-skip-seconds opcióval a commit nélküli időszakok automatikusan átugrásra kerülnek.
 
 ## Licenc
 
