@@ -163,7 +163,15 @@ function initializeSearch(search) {
     },
     order: {
       autofillFields: [
-        { name: "status", disabledByDefault: true }
+        { name: "status", disabledByDefault: true },
+        { name: "order_items", setHTML: "<p>Kérem válasszon ki egy rendelést!</p>" },
+        { name: "buyer_name", clearHTML: true },
+        { name: "buyer_email", clearHTML: true },
+        { name: "buyer_phone", clearHTML: true },
+        { name: "buyer_delivery", clearHTML: true },
+        { name: "buyer_billing", clearHTML: true },
+        { name: "buyer_company", clearHTML: true },
+        { name: "buyer_tax", clearHTML: true },
       ],
       template: (order) => {
         return `<div><b>#${order.id}</b> - ${order.user_name} (${order.user_email}) - <i>${order.status}</i> - ${order.order_total} Ft</div>`;
@@ -172,9 +180,46 @@ function initializeSearch(search) {
         if (!autofill) {
           itemClickHandler(order, ["id"]);
         } else {
+          const items = order.order_items.split(";");
           itemClickHandler(order, ["id"], {
             fields: [
               { field: "order_status", value: order.status },
+              { 
+                field: "order_items", 
+                html: `
+                  <table class="order-items-table">
+                    <thead>
+                      <tr>
+                        <th>Termék</th>
+                        <th>Darabszám</th>
+                        <th>Nettó súly</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      ${items.map(item => {
+                        const [product_name, data] = item.split(":");
+                        const [quantity, net_weight] = data.split(",");
+                        return `<tr>
+                                  <td>${product_name}</td>
+                                  <td class="quantity-cell">${quantity}</td>
+                                  <td class="quantity-cell">${net_weight}g</td>
+                                </tr>`;
+                      }).join("")}
+                      <tr class="order-total">
+                        <th>Összesen</th>
+                        <td colspan="2" class="quantity-cell">${order.order_total} Ft</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                `
+              },
+              { field: "buyer_name", html: order.user_name },
+              { field: "buyer_email", html: order.user_email },
+              { field: "buyer_phone", html: order.user_phone },
+              { field: "buyer_delivery", html: order.delivery_address },
+              { field: "buyer_billing", html: order.billing_address ? order.billing_address : "<i>Megegyezik a szállítási címmel</i>" },
+              { field: "buyer_company", html: order.company_name ? order.company_name : "<i>Nincs megadva</i>" },
+              { field: "buyer_tax", html: order.tax_number ? order.tax_number : "<i>Nincs megadva</i>" },
             ],
           });
         }
@@ -415,8 +460,8 @@ function initializeSearch(search) {
     
     // Módosításkor a kitöltendő mezők az outputData alapján töltődnek ki
     if (outputData.fields) {
-      outputData.fields.forEach(({ field, value }) => {
-        const input = parentForm.querySelector(`[name=${field}]`);
+      outputData.fields.forEach(({ field, value, html }) => {
+        const input = parentForm.querySelector(`[name=${field}], [data-name=${field}]`);
         if (input) {
           if (value || value == 0) {
 
@@ -437,6 +482,10 @@ function initializeSearch(search) {
               if (input.disabled) input.disabled = false;
               input.dispatchEvent(new Event("change"));
             }
+          }
+
+          if (html) {
+            input.innerHTML = html;
           }
         }
       });
@@ -528,9 +577,9 @@ function initializeSearch(search) {
   function clearAutofillFields() {
     // Mezők megszerzése
     const fields = searchConfig[searchType].autofillFields;
-    
     for (let field of fields) {
-      let element = parentForm.querySelector(`[name=${field.name}]`);
+      console.log(field)
+      let element = parentForm.querySelector(`[name=${field.name}], [data-name=${field.name}]`);
       if (element) {
 
         // Ha több mező van, akkor rányomunk minden bejelölt elemre
@@ -541,6 +590,11 @@ function initializeSearch(search) {
 
         // Ha alapból le van tiltva az elem, akkor letiltjuk
         if (field.disabledByDefault) element.disabled = true;
+
+        // Ha a mező HTML-jét generáltuk, akkor most kiürítjük
+        if (field.clearHTML) element.innerHTML = "";
+
+        if (field.setHTML) element.innerHTML = field.setHTML;
 
         // Ha legördülőmenü, akkor az első érvényes elemet kiválasztjuk
         // Egyébként pedig kiürítjük
