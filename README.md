@@ -51,11 +51,47 @@ Ha vizuálisan is szeretnéd nyomon követni, hogyan és mennyit fejlesztettünk
 
 ### 🛠 Előkészületek
 1. Győződj meg róla, hogy a `.git` mappa elérhető a projekt gyökerében.
-2. Futtasd le a `avatar_downloader.py` fájlt ugyanitt – ez letölti a fejlesztők GitHub-profilképeit, így az avatarok is megjelennek: `python avatar_downloader.py`
+2. Futtasd le a `avatar_downloader.py` fájlt ugyanitt – ez letölti a fejlesztők GitHub-profilképeit, így az avatarok is megjelennek: `python tests/avatar_downloader.py`
 
-### 🔎 1 perces videó megtekintése mentés nélkül:
+### ⚙️ Telepítési útmutató – Gource & FFmpeg (Windows)
+
+A Gource vizualizáció és videómentés működéséhez két eszközre van szükség: **Gource** és **FFmpeg**.
+Ezeket a következő módokon tudod telepíteni:
+
+---
+
+### ☕ Telepítés Chocolatey segítségével (Ajánlott)
+
+Ha van Chocolatey a gépeden (Windows-os csomagkezelő), akkor a legegyszerűbb mód az alábbi parancsokat rendszergazdai PowerShell-ben futtatni:
+
+```
+choco install gource
+choco install ffmpeg
+```
+
+---
+
+### 📦 Telepítés manuálisan – .zip fájllal
+
+Gource (Windows ZIP):
+- Látogass el a [Gource](https://gource.io/) oldalára:
+- Kattints a Download gombra → válaszd ki a megfelelő Windows zip build-et (pl. FossHub)
+- Csomagold ki például ebbe a mappába: `C:\Gource\`
+- Add hozzá a C:\Gource\bin mappát a rendszer PATH környezeti változóihoz: `Vezérlőpult → Rendszer → Speciális rendszerbeállítások → Környezeti változók → Path → Szerkesztés → Új → C:\Gource\bin`
+- Indíts újra egy PowerShell ablakot, és ellenőrizd a telepítést: `gource --version`
+
+FFmpeg (ZIP build):
+- Látogass el az [FFmpeg Builds](https://www.gyan.dev/ffmpeg/builds/) oldalra:
+- Töltsd le a <b>release full build</b> (ZIP) verziót
+- Csomagold ki például ebbe a mappába: `C:\FFmpeg\`
+- Add hozzá a `C:\FFmpeg\bin` mappát a rendszer PATH környezeti változóihoz
+- Ellenőrizd a telepítést: `ffmpeg -version`
+
+---
+
+#### 🔎 1 perces videó megtekintése mentés nélkül:
 - `gource -1280x720 --seconds-per-day 0.326 --auto-skip-seconds 1 --user-image-dir .git/avatar_cache`
-### 🎥 1 perces videó hossz létrehozás:
+#### 🎥 1 perces videó hossz létrehozás:
 - `gource -1280x720 --seconds-per-day 0.326 --auto-skip-seconds 1 --user-image-dir .git/avatar_cache --output-ppm-stream gource.ppm`
 - `ffmpeg -y -r 60 -f image2pipe -vcodec ppm -i gource.ppm -t 60 -vcodec libx264 -preset veryfast -pix_fmt yuv420p GIT_DevelopmentTime.mp4`
 
